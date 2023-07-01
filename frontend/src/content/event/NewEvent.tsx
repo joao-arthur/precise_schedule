@@ -10,7 +10,6 @@ function makeModel(day: Date): eventModel {
         title: "New event on " + day.toLocaleDateString(),
         name: { readOnly: false, defaultValue: "" },
         category: { readOnly: false, defaultValue: "APPOINTMENT" },
-        importance: { readOnly: false, defaultValue: "AVERAGE" },
         repeats: { readOnly: false },
         frequency: { readOnly: false, defaultValue: "NEVER" },
         weekendRepeat: { readOnly: false, defaultValue: false },

@@ -2,17 +2,14 @@ import { Icon, names } from "./Icon";
 
 type props = {
     readonly name: names;
-    readonly size: number;
-    readonly color: string;
+    readonly className: string;
     readonly onClick: () => void;
 };
 
-export function TransparentIcon(
-    { onClick, name, size, color }: props,
-) {
+export function TransparentIcon({ onClick, name, className }: props) {
     return (
         <button onClick={onClick}>
-            <Icon name={name} size={size} color={color} />
+            <Icon name={name} className={className} />
         </button>
     );
 }

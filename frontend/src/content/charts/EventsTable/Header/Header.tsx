@@ -6,7 +6,6 @@ export function Header() {
             <tr>
                 <HeaderColumn title="NAME" />
                 <HeaderColumn title="CATEGORY" />
-                <HeaderColumn title="IMPORTANCE" />
                 <HeaderColumn title="FROM" />
                 <HeaderColumn title="TO" />
                 <HeaderColumn title="REPEATS" />

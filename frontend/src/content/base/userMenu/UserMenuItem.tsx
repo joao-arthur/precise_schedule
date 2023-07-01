@@ -13,13 +13,12 @@ export function UserMenuItem({ name, icon }: props) {
             className={clss(
                 "py-3 pr-7 pl-5 cursor-pointer flex items-center rounded",
                 "hover:bg-gray-100 dark:hover:bg-dark",
+                "gap-5",
             )}
         >
             <Icon
-                className="mr-5"
                 name={icon}
-                size={20}
-                color="gray"
+                className="fill-gray w-5 h-5"
             />
             <Text>{name}</Text>
         </li>

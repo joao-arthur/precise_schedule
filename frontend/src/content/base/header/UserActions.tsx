@@ -10,8 +10,7 @@ export function UserActions() {
         <>
             <TransparentIcon
                 name="user"
-                size={30}
-                color="white"
+                className="fill-white h-8 w-8"
                 onClick={() => setUserMenuOpen(!userMenuOpen)}
             />
             <If condition={userMenuOpen}>

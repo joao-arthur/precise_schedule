@@ -9,10 +9,6 @@ function makeModel(event: eventType): eventModel {
         title: event.name,
         name: { readOnly: true, defaultValue: event.name },
         category: { readOnly: true, defaultValue: event.category },
-        importance: {
-            readOnly: true,
-            defaultValue: event.importance,
-        },
         repeats: { readOnly: true },
         frequency: { readOnly: true, defaultValue: event.frequency },
         weekendRepeat: {

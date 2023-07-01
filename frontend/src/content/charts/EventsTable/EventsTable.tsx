@@ -15,7 +15,6 @@ export function EventsTable() {
                         {
                             name,
                             category,
-                            importance,
                             from,
                             to,
                             repeats,
@@ -24,7 +23,6 @@ export function EventsTable() {
                         <tr>
                             <LeftColumn>{name}</LeftColumn>
                             <LeftColumn>{category}</LeftColumn>
-                            <LeftColumn>{importance}</LeftColumn>
                             <LeftColumn>{from}</LeftColumn>
                             <LeftColumn>{to}</LeftColumn>
                             <CenterColumn>{repeats}</CenterColumn>
@@ -38,9 +36,6 @@ export function EventsTable() {
                     <RightColumn>
                         apointment: 10% meeting: 10% birthday: 10%
                         party: 10% date: 10%
-                    </RightColumn>
-                    <RightColumn>
-                        high: 10% average: 10% low: 10%
                     </RightColumn>
                     <DisabledColumn />
                     <DisabledColumn />

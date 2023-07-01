@@ -14,11 +14,7 @@ export function LeftContent() {
         <>
             <If condition={logged()}>
                 <Link to="/charts">
-                    <ButtonIcon
-                        title="activities"
-                        name="chart"
-                        type="bigicon"
-                    />
+                    <ButtonIcon name="chart" size="medium" />
                 </Link>
             </If>
             <If condition={!isCurrentDate({ year, month })}>

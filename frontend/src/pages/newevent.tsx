@@ -13,7 +13,6 @@ import { CheckInput } from "@/components/atoms/input/CheckInput";
 import {
     categoryOptions,
     frequencyOptions,
-    importanceOptions,
 } from "@/content/event/options";
 import { useEffect } from "react";
 
@@ -23,7 +22,6 @@ type EventForm = {
     readonly begin: string;
     readonly end: string;
     readonly category: Event["category"];
-    readonly importance: Event["importance"];
     readonly frequency: Event["frequency"];
     readonly repeats: boolean;
     readonly weekendRepeat: Event["weekendRepeat"];
@@ -48,6 +46,7 @@ export default function EventRegister() {
             setValue("frequency", "1_Y");
             setValue("begin", "00:00");
             setValue("end", "23:59");
+            setValue("repeats", true);
         }
     }, [watchCategory]);
 
@@ -78,17 +77,6 @@ export default function EventRegister() {
                                     required: true,
                                 })}
                                 options={categoryOptions}
-                            />
-                        </InputField>
-                        <InputField
-                            name="importance"
-                            title="Importance"
-                        >
-                            <SelectInput
-                                {...register("importance", {
-                                    required: true,
-                                })}
-                                options={importanceOptions}
                             />
                         </InputField>
                     </Group>

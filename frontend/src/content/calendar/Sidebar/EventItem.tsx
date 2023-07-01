@@ -20,9 +20,10 @@ export function EventItem({ event }: props) {
             <Text className="text-lg text-ellipsis whitespace-nowrap overflow-hidden">
                 {event.name}
             </Text>
-            <div className="flex">
+            <div className="flex gap-2">
                 <ButtonIcon
                     name="info"
+                    size="medium"
                     onClick={() => setIsInfoVisible(true)}
                 />
                 {
@@ -34,6 +35,7 @@ export function EventItem({ event }: props) {
                 }
                 <ButtonIcon
                     name="edit"
+                    size="medium"
                     onClick={() => setIsEditVisible(true)}
                 />
                 {
@@ -49,6 +51,7 @@ export function EventItem({ event }: props) {
                 }
                 <ButtonIcon
                     name="trash"
+                    size="medium"
                     onClick={() => setIsDeleteVisible(true)}
                 />
                 {

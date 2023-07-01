@@ -2,7 +2,6 @@ export const mockedData = [
     {
         name: "Lorem ipsum dolor sit amet",
         category: "apointment",
-        importance: "high",
         from: "12/10/2021 07:27",
         to: "12/10/2021 07:27",
         repeats: "no",
@@ -10,7 +9,6 @@ export const mockedData = [
     {
         name: "consectetur adipiscing elit",
         category: "apointment",
-        importance: "average",
         from: "12/10/2021 07:27",
         to: "12/10/2021 07:27",
         repeats: "yes",
@@ -18,7 +16,6 @@ export const mockedData = [
     {
         name: "Curabitur ac pharetra orci",
         category: "birthday",
-        importance: "average",
         from: "12/10/2021 07:27",
         to: "12/10/2021 07:27",
         repeats: "yes",
@@ -26,7 +23,6 @@ export const mockedData = [
     {
         name: "a lobortis nisi",
         category: "meeting",
-        importance: "low",
         from: "12/10/2021 07:27",
         to: "12/10/2021 07:27",
         repeats: "no",
@@ -34,7 +30,6 @@ export const mockedData = [
     {
         name: "Quisque tristique congue purus",
         category: "meeting",
-        importance: "low",
         from: "12/10/2021 07:27",
         to: "12/10/2021 07:27",
         repeats: "no",

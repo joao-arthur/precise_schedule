@@ -2,7 +2,6 @@ import { useAuthPage } from "@/features/session/useAuthPage";
 import { EventsTable } from "@/content/charts/EventsTable/EventsTable";
 import { AllEvents } from "@/content/charts/AllEvents";
 import { EventsByCategory } from "@/content/charts/EventsByCategory";
-import { EventsByImportance } from "@/content/charts/EventsByImportance";
 import { Header } from "@/content/charts/Header";
 
 export default function Charts() {
@@ -20,9 +19,6 @@ export default function Charts() {
                 </div>
                 <div className="h-1/4 overflow-y-hidden">
                     <EventsByCategory />
-                </div>
-                <div className="h-1/4 overflow-y-hidden">
-                    <EventsByImportance />
                 </div>
             </div>
         </div>

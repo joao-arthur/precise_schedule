@@ -6,12 +6,10 @@ import { Group } from "@/components/atoms/layout/Group";
 import {
     categoryType,
     eventType,
-    importanceType,
     repeatFrequencyType,
 } from "../../eventType";
 import { eventModel } from "./eventModel";
 import { categoryOptions } from "./categoryOptions";
-import { importanceOptions } from "./importanteOptions";
 import { repeatFrequencyOptions } from "./repeatFrequencyOptions";
 
 type props = {
@@ -28,9 +26,6 @@ export function EventRegister(
     const [name, setName] = useState(model.name.defaultValue);
     const [category, setCategory] = useState<categoryType>(
         model.category.defaultValue,
-    );
-    const [importance, setImportance] = useState<importanceType>(
-        model.importance.defaultValue,
     );
     const [frequency, setFrequency] = useState<repeatFrequencyType>(
         model.frequency.defaultValue,
@@ -71,7 +66,6 @@ export function EventRegister(
         onSubmit({
             name,
             category,
-            importance,
             frequency,
             weekendRepeat,
             start: new Date(
@@ -126,18 +120,6 @@ export function EventRegister(
                         onChange={(newCategory) =>
                             setCategory(newCategory as categoryType)}
                         readOnly={model.category.readOnly}
-                    />
-                    <Field
-                        type="select"
-                        title="Importance"
-                        name="importance"
-                        options={importanceOptions}
-                        value={importance}
-                        onChange={(newImportance) =>
-                            setImportance(
-                                newImportance as importanceType,
-                            )}
-                        readOnly={model.importance.readOnly}
                     />
                 </Group>
                 <Group>

@@ -7,20 +7,12 @@ export function Header() {
         <SubHeader
             left={
                 <Link to="/">
-                    <ButtonIcon
-                        title="calendar"
-                        name="calendar"
-                        type="bigicon"
-                    />
+                    <ButtonIcon name="calendar" size="medium" />
                 </Link>
             }
             right={
                 <div className="flex items-center gap-2">
-                    <ButtonIcon
-                        title="filter"
-                        name="filter"
-                        type="bigicon"
-                    />
+                    <ButtonIcon name="filter" size="medium" />
                 </div>
             }
         />

@@ -11,10 +11,6 @@ function makeModel(event: eventType): eventModel {
         title: `Edit "${event.name}"`,
         name: { readOnly: true, defaultValue: event.name },
         category: { readOnly: true, defaultValue: event.category },
-        importance: {
-            readOnly: false,
-            defaultValue: event.importance,
-        },
         repeats: { readOnly: false },
         frequency: { readOnly: false, defaultValue: event.frequency },
         weekendRepeat: {

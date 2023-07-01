@@ -90,14 +90,21 @@ export function Sidebar() {
                             isMobile ? "w-screen" : "w-100",
                         )}
                     >
-                        <div className="flex justify-between m-1 border-b border-gray-300 dark:border-gray-500 transition-colors duration-500">
-                            <Text className="text-center p-4 my-auto text-3xl">
+                        <div
+                            className={clss(
+                                "flex justify-between m-1 border-b",
+                                "items-center px-5 py-4",
+                                "border-gray-300 dark:border-gray-500",
+                                "transition-colors duration-500",
+                            )}
+                        >
+                            <Text className="text-center my-auto text-3xl">
                                 {displayDayDate
                                     .toLocaleDateString()}
                             </Text>
                             <ButtonIcon
                                 name="close"
-                                type="big"
+                                size="big"
                                 onClick={() => removeSelectedDate()}
                             />
                         </div>
