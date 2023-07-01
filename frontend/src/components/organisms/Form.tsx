@@ -1,5 +1,5 @@
 import type { FormEvent, ReactNode } from "react";
-import { Button } from "../atoms/Button";
+import { Button } from "../atoms/button/Button";
 import { Text } from "../atoms/typography/Text";
 import { FilledBox } from "../atoms/layout/FilledBox";
 
@@ -26,12 +26,11 @@ export function Form({
             <FilledBox>
                 <form onSubmit={onSubmit}>
                     {children}
-                    <Button
-                        className="w-full mt-3"
-                        disabled={loading}
-                    >
-                        {action}
-                    </Button>
+                    <div className="mt-3">
+                        <Button disabled={loading}>
+                            {action}
+                        </Button>
+                    </div>
                 </form>
             </FilledBox>
         </div>

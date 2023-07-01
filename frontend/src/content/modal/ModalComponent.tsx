@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import clss from "classnames";
-import { Button } from "@/components/atoms/Button";
+import { Button } from "@/components/atoms/button/Button";
 import { Text } from "@/components/atoms/typography/Text";
 import { useDevice } from "@/lib/device/useDevice";
 

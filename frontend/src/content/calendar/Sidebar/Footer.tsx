@@ -2,7 +2,7 @@ import clss from "classnames";
 import { useState } from "react";
 import endOfYesterday from "date-fns/endOfYesterday";
 import isAfter from "date-fns/isAfter";
-import { Button } from "@/components/atoms/Button";
+import { Button } from "@/components/atoms/button/Button";
 //import { NewEvent } from "../EventRegister/NewEvent";
 import { useSession } from "@/features/session/useSession";
 
