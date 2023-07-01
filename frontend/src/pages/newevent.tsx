@@ -15,43 +15,68 @@ import {
     frequencyOptions,
     importanceOptions,
 } from "@/content/event/options";
+import { useEffect } from "react";
 
 type EventForm = {
-    readonly name: string;
-    readonly beginDate: string;
-    readonly beginTime: string;
-    readonly endDate: string;
-    readonly endTime: string;
+    readonly name: Event["name"];
+    readonly day: string;
+    readonly begin: string;
+    readonly end: string;
     readonly category: Event["category"];
     readonly importance: Event["importance"];
     readonly frequency: Event["frequency"];
     readonly repeats: boolean;
-    readonly weekendRepeat: boolean;
+    readonly weekendRepeat: Event["weekendRepeat"];
 };
 
 export default function EventRegister() {
-    const { register, handleSubmit } = useForm<EventForm>();
+    const { register, handleSubmit, watch, setValue } = useForm<
+        EventForm
+    >();
+    const watchCategory = watch("category");
+    const watchRepeats = watch("repeats");
+
+    const isBirthday = watchCategory === "BIRTHDAY";
 
     function submit(data: EventForm) {
         console.log(data);
     }
 
+    useEffect(() => {
+        console.log(watchCategory);
+        if (watchCategory === "BIRTHDAY") {
+            setValue("frequency", "1_Y");
+            setValue("begin", "00:00");
+            setValue("end", "23:59");
+        }
+    }, [watchCategory]);
+
+    useEffect(() => {
+        console.log(watchRepeats);
+    }, [watchRepeats]);
+
     return (
         <PageContent>
             <FormContainer>
                 <Form
-                    title="Access your account"
-                    action="SIGN IN"
+                    title="Register new event"
+                    action="SAVE"
                     loading={false}
                     onSubmit={handleSubmit(submit)}
                 >
                     <InputField name="name" title="Name">
-                        <TextInput {...register("name")} />
+                        <TextInput
+                            {...register("name", {
+                                required: true,
+                            })}
+                        />
                     </InputField>
                     <Group>
                         <InputField name="category" title="Category">
                             <SelectInput
-                                {...register("category")}
+                                {...register("category", {
+                                    required: true,
+                                })}
                                 options={categoryOptions}
                             />
                         </InputField>
@@ -60,49 +85,62 @@ export default function EventRegister() {
                             title="Importance"
                         >
                             <SelectInput
-                                {...register("importance")}
+                                {...register("importance", {
+                                    required: true,
+                                })}
                                 options={importanceOptions}
                             />
                         </InputField>
                     </Group>
+                    <InputField name="day" title="Day">
+                        <DateInput
+                            {...register("day", {
+                                required: true,
+                            })}
+                        />
+                    </InputField>
                     <Group>
-                        <InputField
-                            name="beginDate"
-                            title="Begin date"
-                        >
-                            <DateInput {...register("beginDate")} />
+                        <InputField name="begin" title="Begin">
+                            <TimeInput
+                                {...register("begin", {
+                                    required: true,
+                                    disabled: isBirthday,
+                                })}
+                            />
                         </InputField>
-                        <InputField
-                            name="beginTime"
-                            title="Begin time"
-                        >
-                            <TimeInput {...register("beginTime")} />
-                        </InputField>
-                    </Group>
-                    <Group>
-                        <InputField name="endDate" title="End date">
-                            <DateInput {...register("endDate")} />
-                        </InputField>
-                        <InputField name="endTime" title="End time">
-                            <TimeInput {...register("endTime")} />
+                        <InputField name="end" title="End">
+                            <TimeInput
+                                {...register("end", {
+                                    required: true,
+                                    disabled: isBirthday,
+                                })}
+                            />
                         </InputField>
                     </Group>
                     <Group>
                         <InputField name="repeats" title="Repeats">
-                            <CheckInput {...register("repeats")} />
+                            <CheckInput
+                                {...register("repeats", {
+                                    required: true,
+                                })}
+                            />
                         </InputField>
                         <InputField
                             name="weekendRepeat"
                             title="Repeats on weekend"
                         >
                             <CheckInput
-                                {...register("weekendRepeat")}
+                                {...register("weekendRepeat", {
+                                    required: true,
+                                })}
                             />
                         </InputField>
                     </Group>
                     <InputField name="frequency" title="Frequency">
                         <SelectInput
-                            {...register("frequency")}
+                            {...register("frequency", {
+                                required: true,
+                            })}
                             options={frequencyOptions}
                         />
                     </InputField>

@@ -31,8 +31,10 @@ function CheckInputComp(
             ref={forwardedRef}
             type="checkbox"
             className={clss(
-                "border border-gray-500 py-1 px-2 rounded-md text-base w-full box-border h-10",
-                "bg-white dark:bg-dark-light dark:text-pastel-gray",
+                "py-1 px-2 rounded-md text-base w-full box-border h-10 min-w-0",
+                "border border-gray-500 disabled:cursor-not-allowed",
+                "bg-white dark:bg-dark-lighter dark:text-pastel-gray",
+                "disabled:bg-gray-200 dark:disabled:bg-dark-light",
                 "transition-colors duration-500",
             )}
         />
