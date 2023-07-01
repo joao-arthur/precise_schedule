@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import clss from "classnames";
 import { useCalendar } from "@/features/calendar/useCalendar";
 import { useSession } from "@/features/session/useSession";
 import { isCurrentDate } from "@/features/calendar/isCurrentDate";
@@ -23,8 +23,9 @@ export function LeftContent() {
             </If>
             <If condition={!isCurrentDate({ year, month })}>
                 <button
-                    className={classNames(
-                        "h-10 px-1 rounded transition-colors hover:duration-200 duration-500",
+                    className={clss(
+                        "h-10 px-1 rounded",
+                        "transition-colors hover:duration-200 duration-500",
                         "text-gray-800 bg-white",
                         "border mx-1 text-lg",
                         "hover:bg-pastel-gray active:bg-pastel-gray border-gray-300",

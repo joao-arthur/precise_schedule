@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import clss from "classnames";
 //import { useGetDayEvents } from "../../../Fns/getDayEvents";
 import { Event } from "@/features/event/event";
 import { useDevice } from "@/lib/device/useDevice";
@@ -16,7 +16,7 @@ export function Events({ day }: props) {
 
     return (
         <div
-            className={classNames("flex-1 m-1", {
+            className={clss("flex-1 m-1", {
                 "w-screen": isMobile,
             })}
         >

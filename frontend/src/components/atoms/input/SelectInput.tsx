@@ -1,3 +1,4 @@
+import clss from "classnames";
 import type {
     ChangeEventHandler,
     FocusEventHandler,
@@ -34,7 +35,11 @@ function SelectInputComp(
         <select
             {...props}
             ref={forwardedRef}
-            className="border-gray-300 border rounded p-1 bg-white"
+            className={clss(
+                "border border-gray-500 py-1 px-2 rounded-md text-base w-full box-border h-10",
+                "bg-white dark:bg-dark-light dark:text-pastel-gray",
+                "transition-colors duration-500",
+            )}
         >
             {options.map((option) => (
                 <option value={option.id} key={option.id}>

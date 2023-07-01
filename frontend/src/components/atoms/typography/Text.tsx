@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import classNames from "classnames";
+import clss from "classnames";
 
 type props = {
     readonly children: ReactNode;
@@ -13,8 +13,9 @@ export function Text(
 ) {
     return (
         <span
-            className={classNames(
-                "transition-colors duration-500 select-none",
+            className={clss(
+                "select-none",
+                "transition-colors duration-500",
                 {
                     "dark:text-gray-500": disabled,
                     "dark:text-pastel-gray": !disabled,

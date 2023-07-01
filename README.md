@@ -39,5 +39,5 @@ amount of abstraction.
   - Export to PDF
 - UI
   - ✅ Dark mode
-  - Responsiveness
+  - ✅ Responsiveness
   - Multi language support / i18n

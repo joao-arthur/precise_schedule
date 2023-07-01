@@ -1,3 +1,4 @@
+import clss from "classnames";
 import { useState } from "react";
 import endOfYesterday from "date-fns/endOfYesterday";
 import isAfter from "date-fns/isAfter";
@@ -15,7 +16,13 @@ export function Footer({ day }: props) {
 
     return logged() && isAfter(day, endOfYesterday())
         ? (
-            <div className="flex justify-center m-1 py-3 border-t border-gray-300 dark:border-gray-500 transition-colors duration-500">
+            <div
+                className={clss(
+                    "flex justify-center m-1 py-3 border-t",
+                    "border-gray-300 dark:border-gray-500",
+                    "transition-colors duration-500",
+                )}
+            >
                 <Button
                     className="w-9/12"
                     onClick={() =>

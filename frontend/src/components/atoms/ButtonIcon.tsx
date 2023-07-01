@@ -1,6 +1,5 @@
-import classNames from "classnames";
+import clss from "classnames";
 import { Icon, names } from "./Icon";
-import { useDevice } from "@/lib/device/useDevice";
 
 type props = {
     readonly name: names;
@@ -43,7 +42,7 @@ export function ButtonIcon({
         <button
             title={title}
             onClick={onClick}
-            className={classNames(
+            className={clss(
                 "flex items-center justify-center rounded border border-transparent",
                 "hover:border-gray-300 active:border-gray-300 hover:bg-gray-100 active:bg-gray-200",
                 "dark:hover:border-gray-500 dark:active:border-gray-500 dark:hover:bg-dark-light dark:active:bg-dark",

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import classNames from "classnames";
+import clss from "classnames";
 
 type props = {
     readonly left?: ReactNode;
@@ -10,9 +10,10 @@ type props = {
 export function SubHeader({ left, center, right }: props) {
     return (
         <div
-            className={classNames(
+            className={clss(
                 "flex items-center border-b justify-between py-1 px-3",
-                "border-gray-300 dark:border-gray-500 transition-colors duration-500",
+                "border-gray-300 dark:border-gray-500",
+                "transition-colors duration-500",
             )}
         >
             <div className="flex w-32">{left}</div>

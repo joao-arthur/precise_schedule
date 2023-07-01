@@ -10,7 +10,8 @@ function get(): Theme {
 }
 
 function getBrowserTheme(): Theme {
-    return window.matchMedia("(prefers-color-scheme: dark)").matches
+    return globalThis.matchMedia("(prefers-color-scheme: dark)")
+            .matches
         ? "dark"
         : "light";
 }

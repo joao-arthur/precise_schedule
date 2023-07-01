@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import classNames from "classnames";
+import clss from "classnames";
 import { Button } from "@/components/atoms/Button";
 import { Text } from "@/components/atoms/typography/Text";
 import { useDevice } from "@/lib/device/useDevice";
@@ -24,7 +24,7 @@ export function ModalComponent({
     return (
         <div className="fixed w-full h-full bg-block z-10">
             <div
-                className={classNames(
+                className={clss(
                     "flex flex-col absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2",
                     "bg-white dark:bg-dark ",
                     {
@@ -41,7 +41,7 @@ export function ModalComponent({
                     {children}
                 </div>
                 <div
-                    className={classNames(
+                    className={clss(
                         "flex p-3 border-gray-300 dark:border-gray-500 border-t",
                         {
                             "flex-col": isMobile,
@@ -52,7 +52,7 @@ export function ModalComponent({
                     <Button
                         onClick={onCancel}
                         secondary
-                        className={classNames({
+                        className={clss({
                             "ml-3 w-36": isDesktop,
                             "my-1 mx-3": isMobile,
                         })}
@@ -63,7 +63,7 @@ export function ModalComponent({
                         ? (
                             <Button
                                 onClick={onConfirm}
-                                className={classNames({
+                                className={clss({
                                     "ml-3 w-36": isDesktop,
                                     "my-1 mx-3": isMobile,
                                 })}

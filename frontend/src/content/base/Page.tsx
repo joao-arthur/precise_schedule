@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { useEffect } from "react";
 import { useWindowSize } from "usehooks-ts";
-import classNames from "classnames";
+import clss from "classnames";
 import { theme } from "@/features/theme/theme";
 import { useSessionManager } from "@/features/session/useSessionManager";
 import { Header } from "./header/Header";
@@ -22,9 +22,9 @@ export function Page({ children }: props) {
     return (
         <div
             style={{ height }}
-            className={classNames(
-                "flex flex-col overflow-auto",
-                "dark:bg-dark-light transition-colors duration-500",
+            className={clss(
+                "flex flex-col overflow-auto dark:bg-dark-light",
+                "transition-colors duration-500",
             )}
         >
             <Header />

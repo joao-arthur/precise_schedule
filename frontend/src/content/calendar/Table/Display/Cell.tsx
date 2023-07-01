@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import clss from "classnames";
 import { Text } from "@/components/atoms/typography/Text";
 import { useCalendar } from "@/features/calendar/useCalendar";
 
@@ -17,7 +17,7 @@ export function Cell({ year, month, day }: props) {
     return (
         <Text
             onClick={() => toggleSelectedDate(date.toISOString())}
-            className={classNames(
+            className={clss(
                 "flex flex-1 rounded cursor-pointer justify-center items-center select-none text-xl active:text-2xl transition-all duration-75",
                 "hover:bg-primary-lighter active:bg-primary-light",
                 "dark:hover:bg-primary-darker dark:active:bg-primary-dark",

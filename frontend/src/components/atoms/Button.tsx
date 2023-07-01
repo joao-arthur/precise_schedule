@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import classNames from "classnames";
+import clss from "classnames";
 
 type props = {
     readonly children: ReactNode;
@@ -28,7 +28,7 @@ export function Button({
         <button
             title={title}
             onClick={onClick}
-            className={classNames(
+            className={clss(
                 "py-4 text-lg rounded",
                 {
                     [disabledClass]: disabled,

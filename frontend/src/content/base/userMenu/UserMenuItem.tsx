@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import clss from "classnames";
 import { Icon, names } from "@/components/atoms/Icon";
 import { Text } from "@/components/atoms/typography/Text";
 
@@ -10,7 +10,7 @@ type props = {
 export function UserMenuItem({ name, icon }: props) {
     return (
         <li
-            className={classNames(
+            className={clss(
                 "py-3 pr-7 pl-5 cursor-pointer flex items-center rounded",
                 "hover:bg-gray-100 dark:hover:bg-dark",
             )}

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createMachine } from "xstate";
 import { useMachine } from "@xstate/react";
-import classNames from "classnames";
+import clss from "classnames";
 import { useDevice } from "@/lib/device/useDevice";
 import { useCalendar } from "@/features/calendar/useCalendar";
 import { ButtonIcon } from "@/components/atoms/ButtonIcon";
@@ -65,8 +65,10 @@ export function Sidebar() {
 
     return (
         <div
-            className={classNames(
-                "flex overflow-hidden flex-0-auto bg-white dark:bg-dark-light transition-all duration-500",
+            className={clss(
+                "flex overflow-hidden flex-0-auto",
+                "bg-white dark:bg-dark-light",
+                "transition-all duration-500",
                 {
                     "w-100 border-l border-gray-300 dark:border-gray-500":
                         selectedDate && isDesktop,
@@ -76,14 +78,14 @@ export function Sidebar() {
             )}
         >
             <div
-                className={classNames(
+                className={clss(
                     "flex flex-0",
                     isMobile ? "w-screen" : "w-100",
                 )}
             >
                 <If condition={!!displayDay}>
                     <div
-                        className={classNames(
+                        className={clss(
                             "flex flex-col flex-1",
                             isMobile ? "w-screen" : "w-100",
                         )}

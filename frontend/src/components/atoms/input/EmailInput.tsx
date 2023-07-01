@@ -1,3 +1,4 @@
+import clss from "classnames";
 import type {
     ChangeEventHandler,
     FocusEventHandler,
@@ -29,7 +30,11 @@ function EmailInputComp(
             {...props}
             ref={forwardedRef}
             type="email"
-            className="border border-gray-500 py-1 px-2 rounded-md bg-white text-base w-full box-border h-10 dark:bg-dark-light dark:text-pastel-gray transition-colors duration-500"
+            className={clss(
+                "border border-gray-500 py-1 px-2 rounded-md text-base w-full box-border h-10",
+                "bg-white dark:bg-dark-light dark:text-pastel-gray",
+                "transition-colors duration-500",
+            )}
         />
     );
 }

@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import clss from "classnames";
 import { useTheme } from "@/features/theme/useTheme";
 import { useSession } from "@/features/session/useSession";
 import { Toggle } from "@/components/atoms/input/Toggle";
@@ -11,7 +11,7 @@ export function Header() {
 
     return (
         <header
-            className={classNames(
+            className={clss(
                 "flex flex-0 py-1 px-2 justify-end h-10 gap-6 items-center",
                 "bg-primary-dark dark:bg-primary-darker",
                 "transition-colors duration-500",

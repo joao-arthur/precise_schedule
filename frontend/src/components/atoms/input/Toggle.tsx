@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import clss from "classnames";
 
 type props = {
     readonly required?: boolean;
@@ -20,10 +20,11 @@ export function Toggle({
             onClick={() => {
                 onChange(!value);
             }}
-            className={classNames(
+            className={clss(
                 "cursor-pointer select-none",
                 "border w-16 h-8 rounded-2xl ",
-                "transition-all hover:duration-300 duration-500 border-transparent",
+                "border-transparent",
+                "transition-all hover:duration-300 duration-500",
                 {
                     "bg-primary": value,
                     "bg-gray-300 dark:bg-dark-light": !value,
@@ -31,7 +32,7 @@ export function Toggle({
             )}
         >
             <div
-                className={classNames(
+                className={clss(
                     "flex justify-center items-center",
                     "bg-white border-gray-500 w-6 h-6 rounded-2xl",
                     "transition-all duration-300",
