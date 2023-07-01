@@ -1,16 +1,5 @@
 import { Event } from "@/features/event/event";
 
-type importanceOption = {
-    readonly id: Event["importance"];
-    readonly label: string;
-};
-
-export const importanceOptions: readonly importanceOption[] = [
-    { id: "HIGH", label: "High" },
-    { id: "MEDIUM", label: "Medium" },
-    { id: "LOW", label: "Low" },
-];
-
 type categoryOption = {
     readonly id: Event["category"];
     readonly label: string;

@@ -16,18 +16,12 @@ type Frequency =
     | "2_Y"
     | "NEVER";
 
-type Importance =
-    | "LOW"
-    | "MEDIUM"
-    | "HIGH";
-
 export type Event = {
     readonly id: string;
     readonly name: string;
     readonly begin: Date;
     readonly end: Date;
     readonly category: Category;
-    readonly importance: Importance;
     readonly frequency: Frequency;
     readonly weekendRepeat: boolean;
 };
@@ -37,7 +31,6 @@ export type CreateEvent = {
     readonly begin: Event["begin"];
     readonly end: Event["end"];
     readonly category: Event["category"];
-    readonly importance: Event["importance"];
     readonly frequency: Event["frequency"];
     readonly weekendRepeat: Event["weekendRepeat"];
 };
@@ -47,7 +40,6 @@ export type UpdateEvent = {
     readonly begin: Event["begin"];
     readonly end: Event["end"];
     readonly category: Event["category"];
-    readonly importance: Event["importance"];
     readonly frequency: Event["frequency"];
     readonly weekendRepeat: Event["weekendRepeat"];
 };
