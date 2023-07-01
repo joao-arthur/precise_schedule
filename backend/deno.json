@@ -1,0 +1,20 @@
+{
+    "fmt": {
+        "lineWidth": 70,
+        "indentWidth": 4
+    },
+    "lint": {
+        "rules": {
+            "include": ["explicit-function-return-type"]
+        }
+    },
+    "imports": {
+        "std/": "https://deno.land/std@0.192.0/",
+        "oak/": "https://deno.land/x/oak@v12.5.0/",
+        "@ps/": "./",
+        "./": "./"
+    },
+    "tasks": {
+        "dev": "deno run ./main/main.ts"
+    }
+}
