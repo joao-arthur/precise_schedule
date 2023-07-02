@@ -1,7 +1,11 @@
 import { FloatingButton } from "@/components/atoms/button/FloatingButton";
-import { Action } from "./Action";
 import { If } from "@/components/atoms/layout/If";
 import { useState } from "react";
+import { AppointmentAction } from "./AppointmentAction";
+import { BirthdayAction } from "./BirthdayAction";
+import { DateAction } from "./DateAction";
+import { MeetingAction } from "./MeetingAction";
+import { PartyAction } from "./PartyAction";
 
 export function Actions() {
     const [open, setOpen] = useState(false);
@@ -11,31 +15,11 @@ export function Actions() {
             <div className="flex flex-col items-center gap-4">
                 <If condition={open}>
                     <div className="flex flex-col items-end gap-4">
-                        <Action
-                            title="APPOINTMENT"
-                            icon="pencil"
-                            link="/appointmentevent"
-                        />
-                        <Action
-                            title="BIRTHDAY"
-                            icon="birthday"
-                            link="/birthdayevent"
-                        />
-                        <Action
-                            title="DATE"
-                            icon="people"
-                            link="/dateevent"
-                        />
-                        <Action
-                            title="MEETING"
-                            icon="door"
-                            link="/meetingevent"
-                        />
-                        <Action
-                            title="PARTY"
-                            icon="party"
-                            link="/partyevent"
-                        />
+                        <AppointmentAction />
+                        <BirthdayAction />
+                        <DateAction />
+                        <MeetingAction />
+                        <PartyAction />
                     </div>
                 </If>
                 <div className="flex w-full justify-end">

@@ -8,7 +8,6 @@ import { ButtonIcon } from "@/components/atoms/ButtonIcon";
 import { Text } from "@/components/atoms/typography/Text";
 import { If } from "@/components/atoms/layout/If";
 import { Events } from "./Events";
-import { Footer } from "./Footer";
 
 const sidebarMachine = createMachine({
     predictableActionArguments: true,
@@ -110,7 +109,6 @@ export function Sidebar() {
                             />
                         </div>
                         <Events day={displayDayDate} />
-                        <Footer day={displayDayDate} />
                     </div>
                 </If>
             </div>
