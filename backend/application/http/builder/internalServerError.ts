@@ -3,7 +3,7 @@ import { HTTPResponse } from "../HTTPResponse.ts";
 
 export function internalServerError(): HTTPResponse<ErrorResponse> {
     return {
-        body: { message: "An unexpected error occurred!" },
         status: 500,
+        body: { message: "An unexpected error occurred!" },
     };
 }

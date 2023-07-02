@@ -12,7 +12,6 @@ export function UserMenu({ closeMenu }: props) {
     const { unlog } = useSessionManager();
 
     useEffect(() => {
-        // ¯\_(ツ)_/¯ it just works
         window.setTimeout(() => {
             window.addEventListener("click", closeMenu);
         }, 0);

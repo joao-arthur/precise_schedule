@@ -3,7 +3,7 @@ import { internalServerError } from "./internalServerError.ts";
 
 Deno.test("internalServerError", () => {
     assertEquals(internalServerError(), {
-        body: { message: "An unexpected error occurred!" },
         status: 500,
+        body: { message: "An unexpected error occurred!" },
     });
 });
