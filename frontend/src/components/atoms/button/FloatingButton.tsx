@@ -4,7 +4,7 @@ import { Icon, names } from "@/components/atoms/Icon";
 type props = {
     readonly className: string;
     readonly icon: names;
-    readonly onClick: () => void;
+    readonly onClick?: () => void;
 };
 
 export function FloatingButton({ className, icon, onClick }: props) {

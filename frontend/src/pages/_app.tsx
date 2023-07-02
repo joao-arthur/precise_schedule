@@ -12,6 +12,7 @@ export default function App(
 ) {
     return (
         <QueryClientProvider client={queryClient}>
+            <div id="modal" />
             <Toaster />
             {/*<ReactQueryDevtools initialIsOpen={false} />*/}
             <Page>

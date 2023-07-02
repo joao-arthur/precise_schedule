@@ -1,4 +1,5 @@
 import type { Event } from "@/features/event/event";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { PageContent } from "@/components/atoms/layout/PageContent";
 import { FormContainer } from "@/components/atoms/FormContainer";
@@ -14,7 +15,6 @@ import {
     categoryOptions,
     frequencyOptions,
 } from "@/content/event/options";
-import { useEffect } from "react";
 
 type EventForm = {
     readonly name: Event["name"];
@@ -26,6 +26,14 @@ type EventForm = {
     readonly repeats: boolean;
     readonly weekendRepeat: Event["weekendRepeat"];
 };
+
+/**
+ * se encontro
+ * define como não repete
+ * bloqueia os campos
+ */
+
+// repete no fim de semana só é permitido se a frequencia for 1_d ou 2_d
 
 export default function EventRegister() {
     const { register, handleSubmit, watch, setValue } = useForm<

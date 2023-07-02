@@ -19,8 +19,9 @@ type Frequency =
 export type Event = {
     readonly id: string;
     readonly name: string;
-    readonly begin: Date;
-    readonly end: Date;
+    readonly day: string;
+    readonly begin: string;
+    readonly end: string;
     readonly category: Category;
     readonly frequency: Frequency;
     readonly weekendRepeat: boolean;
@@ -28,6 +29,7 @@ export type Event = {
 
 export type CreateEvent = {
     readonly name: Event["name"];
+    readonly day: Event["day"];
     readonly begin: Event["begin"];
     readonly end: Event["end"];
     readonly category: Event["category"];
@@ -37,9 +39,47 @@ export type CreateEvent = {
 
 export type UpdateEvent = {
     readonly name: Event["name"];
+    readonly day: Event["day"];
     readonly begin: Event["begin"];
     readonly end: Event["end"];
     readonly category: Event["category"];
+    readonly frequency: Event["frequency"];
+    readonly weekendRepeat: Event["weekendRepeat"];
+};
+
+export type BirthdayEvent = {
+    readonly name: Event["name"];
+    readonly day: Event["day"];
+};
+
+export type DateEvent = {
+    readonly name: Event["name"];
+    readonly day: Event["day"];
+    readonly begin: Event["begin"];
+    readonly end: Event["end"];
+};
+
+export type PartyEvent = {
+    readonly name: Event["name"];
+    readonly day: Event["day"];
+    readonly begin: Event["begin"];
+    readonly end: Event["end"];
+};
+
+export type AppointmentEvent = {
+    readonly name: Event["name"];
+    readonly day: Event["day"];
+    readonly begin: Event["begin"];
+    readonly end: Event["end"];
+    readonly frequency: Event["frequency"];
+    readonly weekendRepeat: Event["weekendRepeat"];
+};
+
+export type MeetingEvent = {
+    readonly name: Event["name"];
+    readonly day: Event["day"];
+    readonly begin: Event["begin"];
+    readonly end: Event["end"];
     readonly frequency: Event["frequency"];
     readonly weekendRepeat: Event["weekendRepeat"];
 };

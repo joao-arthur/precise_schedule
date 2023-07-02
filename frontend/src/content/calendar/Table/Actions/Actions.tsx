@@ -11,11 +11,31 @@ export function Actions() {
             <div className="flex flex-col items-center gap-4">
                 <If condition={open}>
                     <div className="flex flex-col items-end gap-4">
-                        <Action title="APPOINTMENT" icon="pencil" />
-                        <Action title="BIRTHDAY" icon="birthday" />
-                        <Action title="DATE" icon="people" />
-                        <Action title="MEETING" icon="door" />
-                        <Action title="PARTY" icon="party" />
+                        <Action
+                            title="APPOINTMENT"
+                            icon="pencil"
+                            link="/appointmentevent"
+                        />
+                        <Action
+                            title="BIRTHDAY"
+                            icon="birthday"
+                            link="/birthdayevent"
+                        />
+                        <Action
+                            title="DATE"
+                            icon="people"
+                            link="/dateevent"
+                        />
+                        <Action
+                            title="MEETING"
+                            icon="door"
+                            link="/meetingevent"
+                        />
+                        <Action
+                            title="PARTY"
+                            icon="party"
+                            link="/partyevent"
+                        />
                     </div>
                 </If>
                 <div className="flex w-full justify-end">

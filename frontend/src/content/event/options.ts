@@ -1,18 +1,5 @@
 import { Event } from "@/features/event/event";
 
-type categoryOption = {
-    readonly id: Event["category"];
-    readonly label: string;
-};
-
-export const categoryOptions: readonly categoryOption[] = [
-    { id: "APPOINTMENT", label: "Apointment" },
-    { id: "BIRTHDAY", label: "Birthday" },
-    { id: "DATE", label: "Date" },
-    { id: "MEETING", label: "Meeting" },
-    { id: "PARTY", label: "Party" },
-];
-
 type frequencyOption = {
     readonly id: Event["frequency"];
     readonly label: string;

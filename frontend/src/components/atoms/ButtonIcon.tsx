@@ -17,7 +17,7 @@ export function ButtonIcon({ name, onClick, size }: props) {
                 "dark:hover:border-gray-500 dark:active:border-gray-500 dark:hover:bg-dark-light dark:active:bg-dark",
                 {
                     "w-10 h-10": size === "medium",
-                    "w-12 h-12": size === "big",
+                    "w-14 h-14": size === "big",
                 },
             )}
         >
@@ -27,7 +27,7 @@ export function ButtonIcon({ name, onClick, size }: props) {
                     "fill-gray-500",
                     {
                         "w-6 h-6": size === "medium",
-                        "w-7 h-7": size === "big",
+                        "w-9 h-9": size === "big",
                     },
                 )}
             />

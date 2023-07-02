@@ -24,8 +24,7 @@ amount of abstraction.
   - Two factor authentication (e-mail or app)
 - Calendar
   - Scroll months
-  - View modes (day, week, month)
-  - Total events by priority on each day cell
+  - Total events on each day cell
 - Events
   - Register
   - Edit
