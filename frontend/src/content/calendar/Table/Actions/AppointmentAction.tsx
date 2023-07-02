@@ -16,7 +16,7 @@ export function AppointmentAction() {
                 }}
             />
             <Modal
-                title="appointment"
+                title="NEW APPOINTMENT"
                 visible={openAppointment}
                 onCancel={() => {
                     setOpenAppointment(false);

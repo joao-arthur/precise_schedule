@@ -16,7 +16,7 @@ export function BirthdayAction() {
                 }}
             />
             <Modal
-                title="birthday"
+                title="NEW BIRTHDAY"
                 visible={openBirthday}
                 onCancel={() => {
                     setOpenBirthday(false);

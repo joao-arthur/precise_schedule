@@ -16,7 +16,7 @@ export function PartyAction() {
                 }}
             />
             <Modal
-                title="party"
+                title="NEW PARTY"
                 visible={openParty}
                 onCancel={() => {
                     setOpenParty(false);

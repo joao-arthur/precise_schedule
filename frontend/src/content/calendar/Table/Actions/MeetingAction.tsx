@@ -16,7 +16,7 @@ export function MeetingAction() {
                 }}
             />
             <Modal
-                title="meeting"
+                title="NEW MEETING"
                 visible={openMeeting}
                 onCancel={() => {
                     setOpenMeeting(false);

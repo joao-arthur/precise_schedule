@@ -16,7 +16,7 @@ export function DateAction() {
                 }}
             />
             <Modal
-                title="date"
+                title="NEW DATE"
                 visible={openDate}
                 onCancel={() => {
                     setOpenDate(false);

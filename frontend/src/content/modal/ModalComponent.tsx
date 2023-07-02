@@ -1,8 +1,7 @@
 import type { ReactNode } from "react";
-import clss from "classnames";
-import { Button } from "@/components/atoms/button/Button";
-import { Text } from "@/components/atoms/typography/Text";
 import { useDevice } from "@/lib/device/useDevice";
+import { DesktopModal } from "./DesktopModal";
+import { MobileModal } from "./MobileModal";
 
 export type modalProps = {
     readonly children: ReactNode;
@@ -19,61 +18,25 @@ export function ModalComponent({
 }: modalProps) {
     const device = useDevice();
     const isMobile = device.isMobile();
-    const isDesktop = device.isDesktop();
 
-    return (
-        <div className="fixed w-full h-full bg-block z-10">
-            <div
-                className={clss(
-                    "flex flex-col absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2",
-                    "bg-white dark:bg-dark ",
-                    {
-                        "w-120 max-w-4/5 border border-gray-300 dark:border-gray-500 rounded":
-                            isDesktop,
-                        "w-full h-full": isMobile,
-                    },
-                )}
+    if (isMobile) {
+        return (
+            <MobileModal
+                title={title}
+                onCancel={onCancel}
+                onConfirm={onConfirm}
             >
-                <div className="p-3 border-gray-300 dark:border-gray-500 border-b text-2xl">
-                    <Text className="select-none m-0">{title}</Text>
-                </div>
-                <div className="flex-1 overflow-auto p-3">
-                    {children}
-                </div>
-                <div
-                    className={clss(
-                        "flex p-3 border-gray-300 dark:border-gray-500 border-t",
-                        {
-                            "flex-col": isMobile,
-                            "justify-end": isDesktop,
-                        },
-                    )}
-                >
-                    <Button
-                        onClick={onCancel}
-                        secondary
-                        className={clss({
-                            "ml-3 w-36": isDesktop,
-                            "my-1 mx-3": isMobile,
-                        })}
-                    >
-                        CANCEL
-                    </Button>
-                    {onConfirm
-                        ? (
-                            <Button
-                                onClick={onConfirm}
-                                className={clss({
-                                    "ml-3 w-36": isDesktop,
-                                    "my-1 mx-3": isMobile,
-                                })}
-                            >
-                                CONFIRM
-                            </Button>
-                        )
-                        : null}
-                </div>
-            </div>
-        </div>
+                {children}
+            </MobileModal>
+        );
+    }
+    return (
+        <DesktopModal
+            title={title}
+            onCancel={onCancel}
+            onConfirm={onConfirm}
+        >
+            {children}
+        </DesktopModal>
     );
 }
