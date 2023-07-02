@@ -7,9 +7,9 @@ import { request } from "./request";
 export function useRequest() {
     const { unlog } = useSessionManager();
     const { getItem } = useLocalStorage<string>("token");
-    const token = getItem();
 
     function headers(): Headers | undefined {
+        const token = getItem();
         return token
             ? { Authorization: `Bearer ${token}` }
             : undefined;

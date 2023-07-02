@@ -1,5 +1,5 @@
-import { Display } from "./Display/Display";
-import { Navigation } from "./Navigation/Navigation";
+import { Display } from "./display/Display";
+import { Navigation } from "./navigation/Navigation";
 
 export function Content() {
     return (

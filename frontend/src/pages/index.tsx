@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { Table } from "@/content/calendar/Table/Table";
-import { Sidebar } from "@/content/calendar/Sidebar/Sidebar";
+import { Table } from "@/content/calendar/table/Table";
+import { Sidebar } from "@/content/calendar/sidebar/Sidebar";
 import { useEventAPI } from "@/features/event/useEventAPI";
 import { useSession } from "@/features/session/useSession";
 

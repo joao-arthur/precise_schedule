@@ -1,6 +1,6 @@
 import { useDevice } from "@/lib/device/useDevice";
 import { Content } from "./Content";
-import { Actions } from "./Actions/Actions";
+import { Actions } from "./actions/Actions";
 
 export function Table() {
     const device = useDevice();

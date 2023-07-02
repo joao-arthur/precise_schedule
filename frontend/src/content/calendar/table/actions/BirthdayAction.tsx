@@ -2,7 +2,6 @@ import { Action } from "./Action";
 import { useState } from "react";
 import { Modal } from "@/content/modal/Modal";
 import BirthdayEventRegister from "@/content/event/BirthdayEventRegister";
-import { useEventAPI } from "@/features/event/useEventAPI";
 
 export function BirthdayAction() {
     const [open, setOpen] = useState(false);
