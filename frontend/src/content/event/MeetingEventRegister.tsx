@@ -8,7 +8,7 @@ import { TextInput } from "@/components/atoms/input/TextInput";
 import { SelectInput } from "@/components/atoms/input/SelectInput";
 import { DateInput } from "@/components/atoms/input/DateInput";
 import { TimeInput } from "@/components/atoms/input/TimeInput";
-import { CheckInput } from "@/components/atoms/input/CheckInput";
+import { ToggleInput } from "@/components/atoms/input/ToggleInput";
 import { buildMeetingEvent } from "@/features/event/buildMeetingEvent";
 import { frequencyOptions } from "./frequencyOptions";
 import { useEventAPI } from "@/features/event/useEventAPI";
@@ -93,7 +93,7 @@ export default function MeetingEventRegister() {
                     name="weekendRepeat"
                     title="Repeats on weekend"
                 >
-                    <CheckInput
+                    <ToggleInput
                         {...register("weekendRepeat", {
                             required: true,
                             disabled: !canRepeatWeekend || isLoading,
