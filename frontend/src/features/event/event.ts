@@ -47,6 +47,7 @@ export type UpdateEvent = {
     readonly weekendRepeat: Event["weekendRepeat"];
 };
 
+//
 export type BirthdayEvent = {
     readonly name: Event["name"];
     readonly day: Event["day"];

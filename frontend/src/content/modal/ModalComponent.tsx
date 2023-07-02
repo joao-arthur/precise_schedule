@@ -6,6 +6,7 @@ import { MobileModal } from "./MobileModal";
 export type modalProps = {
     readonly children: ReactNode;
     readonly title: string;
+    readonly formId: string;
     readonly onCancel: () => void;
     readonly onConfirm?: () => void;
 };
@@ -13,6 +14,7 @@ export type modalProps = {
 export function ModalComponent({
     children,
     title,
+    formId,
     onCancel,
     onConfirm,
 }: modalProps) {
@@ -23,6 +25,7 @@ export function ModalComponent({
         return (
             <MobileModal
                 title={title}
+                formId={formId}
                 onCancel={onCancel}
                 onConfirm={onConfirm}
             >
@@ -33,6 +36,7 @@ export function ModalComponent({
     return (
         <DesktopModal
             title={title}
+            formId={formId}
             onCancel={onCancel}
             onConfirm={onConfirm}
         >

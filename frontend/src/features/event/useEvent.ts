@@ -6,7 +6,7 @@ type EventsState = {
     readonly setEvents: (events: readonly Event[]) => void;
 };
 
-export const useEvents = create<EventsState>((set) => ({
+export const useEvent = create<EventsState>((set) => ({
     events: [],
     setEvents: (events: readonly Event[]) => set({ events }),
 }));

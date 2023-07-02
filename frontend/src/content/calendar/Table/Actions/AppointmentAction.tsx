@@ -4,7 +4,7 @@ import { Modal } from "@/content/modal/Modal";
 import AppointmentEventRegister from "@/content/event/AppointmentEventRegister";
 
 export function AppointmentAction() {
-    const [openAppointment, setOpenAppointment] = useState(false);
+    const [open, setOpen] = useState(false);
 
     return (
         <>
@@ -12,17 +12,18 @@ export function AppointmentAction() {
                 title="APPOINTMENT"
                 icon="pencil"
                 onClick={() => {
-                    setOpenAppointment(!openAppointment);
+                    setOpen(!open);
                 }}
             />
             <Modal
                 title="NEW APPOINTMENT"
-                visible={openAppointment}
+                visible={open}
+                formId="AppointmentEventRegister"
                 onCancel={() => {
-                    setOpenAppointment(false);
+                    setOpen(false);
                 }}
                 onConfirm={() => {
-                    setOpenAppointment(false);
+                    window.setTimeout(() => setOpen(false), 0);
                 }}
             >
                 <AppointmentEventRegister />

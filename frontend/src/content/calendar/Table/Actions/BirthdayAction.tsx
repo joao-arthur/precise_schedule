@@ -2,9 +2,10 @@ import { Action } from "./Action";
 import { useState } from "react";
 import { Modal } from "@/content/modal/Modal";
 import BirthdayEventRegister from "@/content/event/BirthdayEventRegister";
+import { useEventAPI } from "@/features/event/useEventAPI";
 
 export function BirthdayAction() {
-    const [openBirthday, setOpenBirthday] = useState(false);
+    const [open, setOpen] = useState(false);
 
     return (
         <>
@@ -12,17 +13,18 @@ export function BirthdayAction() {
                 title="BIRTHDAY"
                 icon="birthday"
                 onClick={() => {
-                    setOpenBirthday(!openBirthday);
+                    setOpen(!open);
                 }}
             />
             <Modal
                 title="NEW BIRTHDAY"
-                visible={openBirthday}
+                visible={open}
+                formId="BirthdayEventRegister"
                 onCancel={() => {
-                    setOpenBirthday(false);
+                    setOpen(false);
                 }}
                 onConfirm={() => {
-                    setOpenBirthday(false);
+                    window.setTimeout(() => setOpen(false), 0);
                 }}
             >
                 <BirthdayEventRegister />

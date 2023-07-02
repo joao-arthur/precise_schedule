@@ -4,7 +4,7 @@ import { Modal } from "@/content/modal/Modal";
 import MeetingEventRegister from "@/content/event/MeetingEventRegister";
 
 export function MeetingAction() {
-    const [openMeeting, setOpenMeeting] = useState(false);
+    const [open, setOpen] = useState(false);
 
     return (
         <>
@@ -12,17 +12,18 @@ export function MeetingAction() {
                 title="MEETING"
                 icon="door"
                 onClick={() => {
-                    setOpenMeeting(!openMeeting);
+                    setOpen(!open);
                 }}
             />
             <Modal
                 title="NEW MEETING"
-                visible={openMeeting}
+                visible={open}
+                formId="MeetingEventRegister"
                 onCancel={() => {
-                    setOpenMeeting(false);
+                    setOpen(false);
                 }}
                 onConfirm={() => {
-                    setOpenMeeting(false);
+                    window.setTimeout(() => setOpen(false), 0);
                 }}
             >
                 <MeetingEventRegister />

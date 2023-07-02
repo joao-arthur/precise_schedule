@@ -1,7 +1,7 @@
 import type { AppointmentEvent } from "@/features/event/event";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Form } from "@/components/organisms/Form";
+import { ModalForm } from "@/components/atoms/ModalForm";
 import { InputField } from "@/components/atoms/InputField";
 import { Group } from "@/components/atoms/layout/Group";
 import { TextInput } from "@/components/atoms/input/TextInput";
@@ -11,38 +11,38 @@ import { TimeInput } from "@/components/atoms/input/TimeInput";
 import { CheckInput } from "@/components/atoms/input/CheckInput";
 import { buildAppointmentEvent } from "@/features/event/buildAppointmentEvent";
 import { frequencyOptions } from "./frequencyOptions";
+import { useEventAPI } from "@/features/event/useEventAPI";
 
 export default function AppointmentEventRegister() {
     const { register, handleSubmit, watch, setValue } = useForm<
         AppointmentEvent
     >();
+    const { mutate, isLoading } = useEventAPI().create();
+
     const watchFrequency = watch("frequency");
-    const canRepeatWeekend = ["1_D", "2_D"].includes(
-        watchFrequency,
-    );
+    const canRepeatWeekend = ["1_D", "2_D"].includes(watchFrequency);
 
     function submit(data: AppointmentEvent) {
-        console.log(buildAppointmentEvent(data));
+        const event = buildAppointmentEvent(data);
+        mutate(event);
     }
 
     useEffect(() => {
-        console.log(watchFrequency);
         if (!canRepeatWeekend) {
             setValue("weekendRepeat", false);
         }
     }, [watchFrequency]);
 
     return (
-        <Form
-            title="New apointment"
-            action="SAVE"
-            loading={false}
+        <ModalForm
+            id="AppointmentEventRegister"
             onSubmit={handleSubmit(submit)}
         >
             <InputField name="name" title="Name">
                 <TextInput
                     {...register("name", {
                         required: true,
+                        disabled: isLoading,
                     })}
                 />
             </InputField>
@@ -50,6 +50,7 @@ export default function AppointmentEventRegister() {
                 <DateInput
                     {...register("day", {
                         required: true,
+                        disabled: isLoading,
                     })}
                 />
             </InputField>
@@ -58,6 +59,7 @@ export default function AppointmentEventRegister() {
                     <TimeInput
                         {...register("begin", {
                             required: true,
+                            disabled: isLoading,
                         })}
                     />
                 </InputField>
@@ -65,6 +67,7 @@ export default function AppointmentEventRegister() {
                     <TimeInput
                         {...register("end", {
                             required: true,
+                            disabled: isLoading,
                         })}
                     />
                 </InputField>
@@ -77,6 +80,7 @@ export default function AppointmentEventRegister() {
                     <SelectInput
                         {...register("frequency", {
                             required: true,
+                            disabled: isLoading,
                         })}
                         options={frequencyOptions}
                     />
@@ -88,11 +92,11 @@ export default function AppointmentEventRegister() {
                     <CheckInput
                         {...register("weekendRepeat", {
                             required: true,
-                            disabled: !canRepeatWeekend,
+                            disabled: !canRepeatWeekend || isLoading,
                         })}
                     />
                 </InputField>
             </Group>
-        </Form>
+        </ModalForm>
     );
 }

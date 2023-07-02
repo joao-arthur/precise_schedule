@@ -9,11 +9,14 @@ export function useAppRequest() {
         return messages ? toast(req, messages) : req;
     }
 
-    function getRequest<T>(resource: string, messages?: Messages) {
+    function getRequest<T = void>(
+        resource: string,
+        messages?: Messages,
+    ) {
         return handle(requestFns.get<T>(resource), messages);
     }
 
-    function postRequest<T>(
+    function postRequest<T = void>(
         resource: string,
         body: unknown,
         messages?: Messages,
@@ -21,7 +24,7 @@ export function useAppRequest() {
         return handle(requestFns.post<T>(resource, body), messages);
     }
 
-    function putRequest<T>(
+    function putRequest<T = void>(
         resource: string,
         body: unknown,
         messages?: Messages,
@@ -29,7 +32,10 @@ export function useAppRequest() {
         return handle(requestFns.put<T>(resource, body), messages);
     }
 
-    function deleteRequest<T>(resource: string, messages?: Messages) {
+    function deleteRequest<T = void>(
+        resource: string,
+        messages?: Messages,
+    ) {
         return handle(requestFns.delete<T>(resource), messages);
     }
 

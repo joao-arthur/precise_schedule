@@ -1,33 +1,35 @@
 import type { DateEvent } from "@/features/event/event";
 import { useForm } from "react-hook-form";
-import { Form } from "@/components/organisms/Form";
+import { ModalForm } from "@/components/atoms/ModalForm";
 import { InputField } from "@/components/atoms/InputField";
 import { Group } from "@/components/atoms/layout/Group";
 import { TextInput } from "@/components/atoms/input/TextInput";
 import { DateInput } from "@/components/atoms/input/DateInput";
 import { TimeInput } from "@/components/atoms/input/TimeInput";
 import { buildDateEvent } from "@/features/event/buildDateEvent";
+import { useEventAPI } from "@/features/event/useEventAPI";
 
 export default function DateEventRegister() {
     const { register, handleSubmit } = useForm<
         DateEvent
     >();
+    const { mutate, isLoading } = useEventAPI().create();
 
     function submit(data: DateEvent) {
-        console.log(buildDateEvent(data));
+        const event = buildDateEvent(data);
+        mutate(event);
     }
 
     return (
-        <Form
-            title="New date"
-            action="SAVE"
-            loading={false}
+        <ModalForm
+            id="DateEventRegister"
             onSubmit={handleSubmit(submit)}
         >
             <InputField name="name" title="Name">
                 <TextInput
                     {...register("name", {
                         required: true,
+                        disabled: isLoading,
                     })}
                 />
             </InputField>
@@ -35,6 +37,7 @@ export default function DateEventRegister() {
                 <DateInput
                     {...register("day", {
                         required: true,
+                        disabled: isLoading,
                     })}
                 />
             </InputField>
@@ -43,6 +46,7 @@ export default function DateEventRegister() {
                     <TimeInput
                         {...register("begin", {
                             required: true,
+                            disabled: isLoading,
                         })}
                     />
                 </InputField>
@@ -50,10 +54,11 @@ export default function DateEventRegister() {
                     <TimeInput
                         {...register("end", {
                             required: true,
+                            disabled: isLoading,
                         })}
                     />
                 </InputField>
             </Group>
-        </Form>
+        </ModalForm>
     );
 }

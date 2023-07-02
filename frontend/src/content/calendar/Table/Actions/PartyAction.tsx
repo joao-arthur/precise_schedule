@@ -4,7 +4,7 @@ import { Modal } from "@/content/modal/Modal";
 import PartyEventRegister from "@/content/event/PartyEventRegister";
 
 export function PartyAction() {
-    const [openParty, setOpenParty] = useState(false);
+    const [open, setOpen] = useState(false);
 
     return (
         <>
@@ -12,17 +12,18 @@ export function PartyAction() {
                 title="PARTY"
                 icon="party"
                 onClick={() => {
-                    setOpenParty(!openParty);
+                    setOpen(!open);
                 }}
             />
             <Modal
                 title="NEW PARTY"
-                visible={openParty}
+                visible={open}
+                formId="PartyEventRegister"
                 onCancel={() => {
-                    setOpenParty(false);
+                    setOpen(false);
                 }}
                 onConfirm={() => {
-                    setOpenParty(false);
+                    window.setTimeout(() => setOpen(false), 0);
                 }}
             >
                 <PartyEventRegister />

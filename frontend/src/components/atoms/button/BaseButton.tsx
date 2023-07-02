@@ -6,15 +6,17 @@ type props = {
     readonly children: ReactNode;
     readonly onClick?: () => void;
     readonly title?: string;
+    readonly form?: string;
 };
 
 export function BaseButton(
-    { children, title, onClick, className }: props,
+    { children, title, onClick, className, form }: props,
 ) {
     return (
         <button
             title={title}
             onClick={onClick}
+            form={form}
             className={clss("py-4 text-lg rounded w-full", className)}
         >
             {children}

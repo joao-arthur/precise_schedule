@@ -10,6 +10,7 @@ type props = {
     readonly secondary?: boolean;
     readonly className?: string;
     readonly title?: string;
+    readonly form?: string;
 };
 
 export function Button({
@@ -18,6 +19,7 @@ export function Button({
     onClick,
     disabled,
     secondary,
+    form,
 }: props) {
     if (disabled) {
         return (
@@ -34,7 +36,7 @@ export function Button({
         );
     }
     return (
-        <PrimaryButton title={title} onClick={onClick}>
+        <PrimaryButton title={title} onClick={onClick} form={form}>
             {children}
         </PrimaryButton>
     );

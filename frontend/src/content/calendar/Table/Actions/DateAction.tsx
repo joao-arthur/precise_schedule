@@ -4,7 +4,7 @@ import { Modal } from "@/content/modal/Modal";
 import DateEventRegister from "@/content/event/DateEventRegister";
 
 export function DateAction() {
-    const [openDate, setOpenDate] = useState(false);
+    const [open, setOpen] = useState(false);
 
     return (
         <>
@@ -12,17 +12,18 @@ export function DateAction() {
                 title="DATE"
                 icon="people"
                 onClick={() => {
-                    setOpenDate(!openDate);
+                    setOpen(!open);
                 }}
             />
             <Modal
                 title="NEW DATE"
-                visible={openDate}
+                visible={open}
+                formId="DateEventRegister"
                 onCancel={() => {
-                    setOpenDate(false);
+                    setOpen(false);
                 }}
                 onConfirm={() => {
-                    setOpenDate(false);
+                    window.setTimeout(() => setOpen(false), 0);
                 }}
             >
                 <DateEventRegister />

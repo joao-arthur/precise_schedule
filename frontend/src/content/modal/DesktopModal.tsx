@@ -7,6 +7,7 @@ import { Text } from "@/components/atoms/typography/Text";
 export type modalProps = {
     readonly children: ReactNode;
     readonly title: string;
+    readonly formId: string;
     readonly onCancel: () => void;
     readonly onConfirm?: () => void;
 };
@@ -14,6 +15,7 @@ export type modalProps = {
 export function DesktopModal({
     children,
     title,
+    formId,
     onCancel,
     onConfirm,
 }: modalProps) {
@@ -47,7 +49,7 @@ export function DesktopModal({
                         CANCEL
                     </Button>
                     <If condition={!!onConfirm}>
-                        <Button onClick={onConfirm}>
+                        <Button onClick={onConfirm} form={formId}>
                             CONFIRM
                         </Button>
                     </If>
