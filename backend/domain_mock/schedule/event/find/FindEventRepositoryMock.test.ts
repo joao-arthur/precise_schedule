@@ -2,13 +2,13 @@ import { assertEquals } from "std/testing/asserts.ts";
 import { eventMock } from "../EventMock.ts";
 import { FindEventRepositoryMock } from "./FindEventRepositoryMock.ts";
 
-Deno.test("FindEventRepositoryMock", () => {
+Deno.test("FindEventRepositoryMock", async () => {
     assertEquals(
-        new FindEventRepositoryMock(undefined).findById(),
+        await new FindEventRepositoryMock(undefined).findById(),
         undefined,
     );
     assertEquals(
-        new FindEventRepositoryMock(eventMock).findById(),
+        await new FindEventRepositoryMock(eventMock).findById(),
         eventMock,
     );
 });

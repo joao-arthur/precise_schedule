@@ -12,9 +12,9 @@ export class LoginServiceImpl implements LoginService {
         private readonly userFinder: FindUserService,
     ) {}
 
-    public login(user: LoginModel): User {
+    public async login(user: LoginModel): Promise<User> {
         this.validator.validate(user, loginValidation);
-        const existingUser = this.userFinder.findByCredentials(
+        const existingUser = await this.userFinder.findByCredentials(
             user.username,
             user.password,
         );

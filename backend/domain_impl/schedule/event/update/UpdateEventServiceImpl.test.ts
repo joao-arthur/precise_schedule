@@ -6,9 +6,9 @@ import { UpdateEventRepositoryMock } from "@ps/domain_mock/schedule/event/update
 import { UpdateEventFactoryMock } from "@ps/domain_mock/schedule/event/update/UpdateEventFactoryMock.ts";
 import { UpdateEventServiceImpl } from "./UpdateEventServiceImpl.ts";
 
-Deno.test("UpdateEventServiceImpl", () => {
+Deno.test("UpdateEventServiceImpl", async () => {
     assertEquals(
-        new UpdateEventServiceImpl(
+        await new UpdateEventServiceImpl(
             new UpdateEventRepositoryMock(),
             new UpdateEventFactoryMock(eventMock),
         ).update(eventMock.id, updateEventModelMock),

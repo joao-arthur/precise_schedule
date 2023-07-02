@@ -4,7 +4,7 @@ import type { DeleteEventService } from "@ps/domain/schedule/event/delete/Delete
 export class DeleteEventServiceMock implements DeleteEventService {
     constructor(private readonly event: Event) {}
 
-    del(): Event {
-        return this.event;
+    public del(): Promise<Event> {
+        return Promise.resolve(this.event);
     }
 }

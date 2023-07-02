@@ -9,27 +9,34 @@ import { UsernameAlreadyRegistered } from "@ps/domain/schedule/user/uniqueInfo/U
 export class UniqueInfoServiceImpl implements UniqueInfoService {
     constructor(private readonly repository: UniqueInfoRepository) {}
 
-    validateNew(user: UniqueInfoModel): void {
-        const countUsername = this.repository.countUsername(
+    public async validateNew(user: UniqueInfoModel): Promise<void> {
+        const countUsername = await this.repository.countUsername(
             user.username,
         );
         if (countUsername > 0) {
             throw new UsernameAlreadyRegistered();
         }
-        const countEmail = this.repository.countEmail(user.email);
+        const countEmail = await this.repository.countEmail(
+            user.email,
+        );
         if (countEmail > 0) {
             throw new EmailAlreadyRegistered();
         }
     }
 
-    validateExisting(user: UniqueInfoModel, oldUser: User): void {
-        const countUsername = this.repository.countUsername(
+    public async validateExisting(
+        user: UniqueInfoModel,
+        oldUser: User,
+    ): Promise<void> {
+        const countUsername = await this.repository.countUsername(
             user.username,
         );
         if (countUsername > 0 && user.username !== oldUser.username) {
             throw new UsernameAlreadyRegistered();
         }
-        const countEmail = this.repository.countEmail(user.email);
+        const countEmail = await this.repository.countEmail(
+            user.email,
+        );
         if (countEmail > 0 && user.email !== oldUser.email) {
             throw new EmailAlreadyRegistered();
         }

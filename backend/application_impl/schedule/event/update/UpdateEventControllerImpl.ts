@@ -17,11 +17,13 @@ export class UpdateEventControllerImpl
     implements UpdateEventController {
     constructor(private readonly service: UpdateEventService) {}
 
-    public handle(
+    public async handle(
         request: HTTPRequest<UpdateEventModel, IdParam<Event["id"]>>,
-    ): HTTPResponse<Event | ValidationResult | ErrorResponse> {
+    ): Promise<
+        HTTPResponse<Event | ValidationResult | ErrorResponse>
+    > {
         try {
-            const result = this.service.update(
+            const result = await this.service.update(
                 request.params.id,
                 request.body,
             );

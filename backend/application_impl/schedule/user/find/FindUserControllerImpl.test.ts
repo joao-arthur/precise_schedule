@@ -5,9 +5,9 @@ import { userMock } from "@ps/domain_mock/schedule/user/UserMock.ts";
 import { httpRequestParamsMock } from "@ps/application_mock/http/httpRequestMock.ts";
 import { ok } from "@ps/application/http/builder/ok.ts";
 
-Deno.test("FindUserControllerImpl", () => {
+Deno.test("FindUserControllerImpl", async () => {
     assertEquals(
-        new FindUserControllerImpl(
+        await new FindUserControllerImpl(
             new FindUserServiceMock(userMock),
         ).handle(httpRequestParamsMock),
         ok(userMock),

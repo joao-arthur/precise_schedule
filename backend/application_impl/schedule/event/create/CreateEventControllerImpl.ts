@@ -16,11 +16,13 @@ export class CreateEventControllerImpl
     implements CreateEventController {
     constructor(private readonly service: CreateEventService) {}
 
-    public handle(
+    public async handle(
         request: HTTPRequest<CreateEventModel, never>,
-    ): HTTPResponse<Event | ValidationResult | ErrorResponse> {
+    ): Promise<
+        HTTPResponse<Event | ValidationResult | ErrorResponse>
+    > {
         try {
-            const result = this.service.create(request.body);
+            const result = await this.service.create(request.body);
             return ok(result);
         } catch (e: unknown) {
             if (e instanceof ValidationError) {

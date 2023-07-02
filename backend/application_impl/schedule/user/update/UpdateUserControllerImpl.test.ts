@@ -5,9 +5,9 @@ import { userMock } from "@ps/domain_mock/schedule/user/UserMock.ts";
 import { httpRequestFullMock } from "@ps/application_mock/http/httpRequestMock.ts";
 import { ok } from "@ps/application/http/builder/ok.ts";
 
-Deno.test("UpdateUserControllerImpl", () => {
+Deno.test("UpdateUserControllerImpl", async () => {
     assertEquals(
-        new UpdateUserControllerImpl(
+        await new UpdateUserControllerImpl(
             new UpdateUserServiceMock(userMock),
         ).handle(httpRequestFullMock),
         ok(userMock),

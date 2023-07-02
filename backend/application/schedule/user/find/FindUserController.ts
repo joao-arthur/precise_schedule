@@ -8,5 +8,7 @@ import type { IdParam } from "../../../http/IdParam.ts";
 export type FindUserController = {
     readonly handle: (
         request: HTTPRequest<never, IdParam<User["id"]>>,
-    ) => HTTPResponse<User | ValidationResult | ErrorResponse>;
+    ) => Promise<
+        HTTPResponse<User | ValidationResult | ErrorResponse>
+    >;
 };

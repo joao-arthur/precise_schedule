@@ -9,9 +9,9 @@ import { updateUserModelMock } from "@ps/domain_mock/schedule/user/update/Update
 import { UpdateUserRepositoryMock } from "@ps/domain_mock/schedule/user/update/UpdateUserRepositoryMock.ts";
 import { UpdateUserServiceImpl } from "./UpdateUserServiceImpl.ts";
 
-Deno.test("UpdateUserServiceImpl", () => {
+Deno.test("UpdateUserServiceImpl", async () => {
     assertEquals(
-        new UpdateUserServiceImpl(
+        await new UpdateUserServiceImpl(
             new UpdateUserRepositoryMock(),
             new UniqueInfoServiceMock(),
             new UpdateUserFactoryMock(userMock),

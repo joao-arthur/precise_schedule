@@ -4,7 +4,7 @@ import type { CreateEventService } from "@ps/domain/schedule/event/create/Create
 export class CreateEventServiceMock implements CreateEventService {
     constructor(private readonly event: Event) {}
 
-    public create(): Event {
-        return this.event;
+    public create(): Promise<Event> {
+        return Promise.resolve(this.event);
     }
 }

@@ -7,9 +7,9 @@ import { CreateUserRepositoryMock } from "@ps/domain_mock/schedule/user/create/C
 import { createUserModelMock } from "@ps/domain_mock/schedule/user/create/CreateUserModelMock.ts";
 import { CreateUserServiceImpl } from "./CreateUserServiceImpl.ts";
 
-Deno.test("CreateUserServiceImpl", () => {
+Deno.test("CreateUserServiceImpl", async () => {
     assertEquals(
-        new CreateUserServiceImpl(
+        await new CreateUserServiceImpl(
             new CreateUserRepositoryMock(),
             new UniqueInfoServiceMock(),
             new CreateUserFactoryMock(userMock),

@@ -4,7 +4,7 @@ import type { CreateUserService } from "@ps/domain/schedule/user/create/CreateUs
 export class CreateUserServiceMock implements CreateUserService {
     constructor(private readonly user: User) {}
 
-    public create(): User {
-        return this.user;
+    public create(): Promise<User> {
+        return Promise.resolve(this.user);
     }
 }

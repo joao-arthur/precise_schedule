@@ -4,7 +4,7 @@ import type { UpdateUserService } from "@ps/domain/schedule/user/update/UpdateUs
 export class UpdateUserServiceMock implements UpdateUserService {
     constructor(private readonly user: User) {}
 
-    public update(): User {
-        return this.user;
+    public update(): Promise<User> {
+        return Promise.resolve(this.user);
     }
 }

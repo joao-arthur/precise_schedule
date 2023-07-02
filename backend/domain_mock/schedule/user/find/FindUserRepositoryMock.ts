@@ -4,11 +4,11 @@ import type { FindUserRepository } from "@ps/domain/schedule/user/find/FindUserR
 export class FindUserRepositoryMock implements FindUserRepository {
     constructor(private readonly user: User | undefined) {}
 
-    public findById(): User | undefined {
-        return this.user;
+    public findById(): Promise<User | undefined> {
+        return Promise.resolve(this.user);
     }
 
-    public findByCredentials(): User | undefined {
-        return this.user;
+    public findByCredentials(): Promise<User | undefined> {
+        return Promise.resolve(this.user);
     }
 }

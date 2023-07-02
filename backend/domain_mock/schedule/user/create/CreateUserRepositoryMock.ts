@@ -2,5 +2,5 @@ import type { CreateUserRepository } from "@ps/domain/schedule/user/create/Creat
 
 export class CreateUserRepositoryMock
     implements CreateUserRepository {
-    create(): void {}
+    public async create(): Promise<void> {}
 }

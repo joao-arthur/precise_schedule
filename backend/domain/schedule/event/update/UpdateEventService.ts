@@ -5,5 +5,5 @@ export type UpdateEventService = {
     readonly update: (
         id: Event["id"],
         event: UpdateEventModel,
-    ) => Event;
+    ) => Promise<Event>;
 };

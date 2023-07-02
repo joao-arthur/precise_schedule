@@ -2,9 +2,9 @@ import { assertEquals } from "std/testing/asserts.ts";
 import { eventMock } from "../EventMock.ts";
 import { CreateEventServiceMock } from "./CreateEventServiceMock.ts";
 
-Deno.test("CreateEventServiceMock", () => {
+Deno.test("CreateEventServiceMock", async () => {
     assertEquals(
-        new CreateEventServiceMock(eventMock).create(),
+        await new CreateEventServiceMock(eventMock).create(),
         eventMock,
     );
 });

@@ -4,7 +4,7 @@ import type { UpdateEventService } from "@ps/domain/schedule/event/update/Update
 export class UpdateEventServiceMock implements UpdateEventService {
     constructor(private readonly event: Event) {}
 
-    public update(): Event {
-        return this.event;
+    public update(): Promise<Event> {
+        return Promise.resolve(this.event);
     }
 }

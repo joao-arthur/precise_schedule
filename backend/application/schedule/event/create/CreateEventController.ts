@@ -8,5 +8,7 @@ import type { HTTPResponse } from "../../../http/HTTPResponse.ts";
 export type CreateEventController = {
     readonly handle: (
         request: HTTPRequest<CreateEventModel, never>,
-    ) => HTTPResponse<Event | ValidationResult | ErrorResponse>;
+    ) => Promise<
+        HTTPResponse<Event | ValidationResult | ErrorResponse>
+    >;
 };

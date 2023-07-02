@@ -8,5 +8,7 @@ import type { IdParam } from "../../../http/IdParam.ts";
 export type FindEventController = {
     readonly handle: (
         request: HTTPRequest<never, IdParam<Event["id"]>>,
-    ) => HTTPResponse<Event | ValidationResult | ErrorResponse>;
+    ) => Promise<
+        HTTPResponse<Event | ValidationResult | ErrorResponse>
+    >;
 };

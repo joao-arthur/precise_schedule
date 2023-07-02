@@ -8,5 +8,7 @@ import type { HTTPResponse } from "../../../http/HTTPResponse.ts";
 export type CreateUserController = {
     readonly handle: (
         request: HTTPRequest<CreateUserModel, never>,
-    ) => HTTPResponse<User | ValidationResult | ErrorResponse>;
+    ) => Promise<
+        HTTPResponse<User | ValidationResult | ErrorResponse>
+    >;
 };

@@ -15,11 +15,15 @@ import { internalServerError } from "@ps/application/http/builder/internalServer
 export class FindUserControllerImpl implements FindUserController {
     constructor(private readonly service: FindUserService) {}
 
-    public handle(
+    public async handle(
         request: HTTPRequest<never, IdParam<User["id"]>>,
-    ): HTTPResponse<User | ValidationResult | ErrorResponse> {
+    ): Promise<
+        HTTPResponse<User | ValidationResult | ErrorResponse>
+    > {
         try {
-            const result = this.service.findById(request.params.id);
+            const result = await this.service.findById(
+                request.params.id,
+            );
             return ok(result);
         } catch (e: unknown) {
             if (e instanceof ValidationError) {

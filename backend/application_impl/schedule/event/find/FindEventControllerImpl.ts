@@ -15,11 +15,15 @@ import { internalServerError } from "@ps/application/http/builder/internalServer
 export class FindEventControllerImpl implements FindEventController {
     constructor(private readonly service: FindEventService) {}
 
-    public handle(
+    public async handle(
         request: HTTPRequest<never, IdParam<Event["id"]>>,
-    ): HTTPResponse<Event | ValidationResult | ErrorResponse> {
+    ): Promise<
+        HTTPResponse<Event | ValidationResult | ErrorResponse>
+    > {
         try {
-            const result = this.service.findById(request.params.id);
+            const result = await this.service.findById(
+                request.params.id,
+            );
             return ok(result);
         } catch (e: unknown) {
             if (e instanceof ValidationError) {

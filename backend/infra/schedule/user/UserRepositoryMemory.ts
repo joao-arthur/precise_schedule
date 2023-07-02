@@ -4,11 +4,12 @@ import type { UserRepository } from "@ps/domain/schedule/user/UserRepository.ts"
 export class UserRepositoryMemory implements UserRepository {
     private readonly users: User[] = [];
 
-    public create(user: User): void {
+    public create(user: User): Promise<void> {
         this.users.push(user);
+        return Promise.resolve();
     }
 
-    public update(userToUpdate: User): void {
+    public update(userToUpdate: User): Promise<void> {
         this.users.splice(
             this.users.findIndex((user) =>
                 user.id === userToUpdate.id
@@ -16,32 +17,39 @@ export class UserRepositoryMemory implements UserRepository {
             1,
             userToUpdate,
         );
+        return Promise.resolve();
     }
 
-    public findById(id: User["id"]): User | undefined {
-        return this.users.find((user) => user.id === id);
+    public findById(id: User["id"]): Promise<User | undefined> {
+        return Promise.resolve(
+            this.users.find((user) => user.id === id),
+        );
     }
 
     public findByCredentials(
         username: User["username"],
         email: User["email"],
-    ): User | undefined {
-        return this.users.find((user) =>
-            user.username === username || user.email === email
+    ): Promise<User | undefined> {
+        return Promise.resolve(
+            this.users.find((user) =>
+                user.username === username || user.email === email
+            ),
         );
     }
 
-    public countUsername(username: User["username"]): number {
-        return this.users.reduce(
+    public countUsername(
+        username: User["username"],
+    ): Promise<number> {
+        return Promise.resolve(this.users.reduce(
             (acc, curr) => acc + Number(curr.username === username),
             0,
-        );
+        ));
     }
 
-    public countEmail(email: User["email"]): number {
-        return this.users.reduce(
+    public countEmail(email: User["email"]): Promise<number> {
+        return Promise.resolve(this.users.reduce(
             (acc, curr) => acc + Number(curr.email === email),
             0,
-        );
+        ));
     }
 }

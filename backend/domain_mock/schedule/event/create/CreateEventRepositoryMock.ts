@@ -2,5 +2,5 @@ import type { CreateEventRepository } from "@ps/domain/schedule/event/create/Cre
 
 export class CreateEventRepositoryMock
     implements CreateEventRepository {
-    create(): void {}
+    public async create(): Promise<void> {}
 }

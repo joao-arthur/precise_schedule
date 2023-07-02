@@ -17,11 +17,13 @@ export class UpdateUserControllerImpl
     implements UpdateUserController {
     constructor(private readonly service: UpdateUserService) {}
 
-    public handle(
+    public async handle(
         request: HTTPRequest<UpdateUserModel, IdParam<User["id"]>>,
-    ): HTTPResponse<User | ValidationResult | ErrorResponse | Error> {
+    ): Promise<
+        HTTPResponse<User | ValidationResult | ErrorResponse | Error>
+    > {
         try {
-            const result = this.service.update(
+            const result = await this.service.update(
                 request.params.id,
                 request.body,
             );

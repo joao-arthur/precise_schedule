@@ -16,11 +16,13 @@ export class CreateUserControllerImpl
     implements CreateUserController {
     constructor(private readonly service: CreateUserService) {}
 
-    public handle(
+    public async handle(
         request: HTTPRequest<CreateUserModel, never>,
-    ): HTTPResponse<User | ValidationResult | ErrorResponse> {
+    ): Promise<
+        HTTPResponse<User | ValidationResult | ErrorResponse>
+    > {
         try {
-            const result = this.service.create(request.body);
+            const result = await this.service.create(request.body);
             return ok(result);
         } catch (e: unknown) {
             if (e instanceof ValidationError) {

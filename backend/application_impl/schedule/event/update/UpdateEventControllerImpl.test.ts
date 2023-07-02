@@ -5,9 +5,9 @@ import { eventMock } from "@ps/domain_mock/schedule/event/EventMock.ts";
 import { httpRequestFullMock } from "@ps/application_mock/http/httpRequestMock.ts";
 import { ok } from "@ps/application/http/builder/ok.ts";
 
-Deno.test("UpdateEventControllerImpl", () => {
+Deno.test("UpdateEventControllerImpl", async () => {
     assertEquals(
-        new UpdateEventControllerImpl(
+        await new UpdateEventControllerImpl(
             new UpdateEventServiceMock(eventMock),
         ).handle(httpRequestFullMock),
         ok(eventMock),

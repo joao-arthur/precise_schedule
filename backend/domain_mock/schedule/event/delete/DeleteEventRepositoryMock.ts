@@ -2,5 +2,5 @@ import type { DeleteEventRepository } from "@ps/domain/schedule/event/delete/Del
 
 export class DeleteEventRepositoryMock
     implements DeleteEventRepository {
-    del(): void {}
+    public async del(): Promise<void> {}
 }

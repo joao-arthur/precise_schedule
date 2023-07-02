@@ -18,12 +18,15 @@ export class UpdateUserServiceImpl implements UpdateUserService {
         private readonly userFinder: FindUserService,
     ) {}
 
-    public update(id: User["id"], user: UpdateUserModel): User {
+    public async update(
+        id: User["id"],
+        user: UpdateUserModel,
+    ): Promise<User> {
         this.validator.validate(user, updateUserValidation);
-        const existingUser = this.userFinder.findById(id);
-        this.unique.validateExisting(user, existingUser);
+        const existingUser = await this.userFinder.findById(id);
+        await this.unique.validateExisting(user, existingUser);
         const userToUpdate = this.factory.build(user, id);
-        this.repository.update(userToUpdate);
+        await this.repository.update(userToUpdate);
         return userToUpdate;
     }
 }

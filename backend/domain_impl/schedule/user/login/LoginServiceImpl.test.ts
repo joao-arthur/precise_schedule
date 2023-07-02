@@ -5,9 +5,9 @@ import { FindUserServiceMock } from "@ps/domain_mock/schedule/user/find/FindUser
 import { loginModelMock } from "@ps/domain_mock/schedule/user/login/LoginModelMock.ts";
 import { LoginServiceImpl } from "./LoginServiceImpl.ts";
 
-Deno.test("validateUniqueUsername", () => {
+Deno.test("validateUniqueUsername", async () => {
     assertEquals(
-        new LoginServiceImpl(
+        await new LoginServiceImpl(
             new ValidatorMock(),
             new FindUserServiceMock(userMock),
         ).login(loginModelMock),

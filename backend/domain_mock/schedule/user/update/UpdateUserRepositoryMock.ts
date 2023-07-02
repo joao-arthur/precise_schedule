@@ -2,5 +2,5 @@ import type { UpdateUserRepository } from "@ps/domain/schedule/user/update/Updat
 
 export class UpdateUserRepositoryMock
     implements UpdateUserRepository {
-    public update(): void {}
+    public async update(): Promise<void> {}
 }

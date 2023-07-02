@@ -1,6 +1,6 @@
 import type { User } from "@ps/domain/schedule/user/User.ts";
 
-import { assertEquals, assertThrows } from "std/testing/asserts.ts";
+import { assertEquals, assertRejects } from "std/testing/asserts.ts";
 import { userMock } from "@ps/domain_mock/schedule/user/UserMock.ts";
 import { UniqueInfoRepositoryMock } from "@ps/domain_mock/schedule/user/uniqueInfo/UniqueInfoRepositoryMock.ts";
 import { uniqueInfoModelMock } from "@ps/domain_mock/schedule/user/uniqueInfo/UniqueInfoModelMock.ts";
@@ -19,16 +19,16 @@ const unique: User = {
     email: "a1b2c3d4e5f6@gmail.com",
 };
 
-Deno.test("UniqueInfoServiceImpl.validateNew", () => {
+Deno.test("UniqueInfoServiceImpl.validateNew", async () => {
     assertEquals(
-        new UniqueInfoServiceImpl(
+        await new UniqueInfoServiceImpl(
             new UniqueInfoRepositoryMock(0, 0),
         ).validateNew(
             uniqueInfoModelMock,
         ),
         undefined,
     );
-    assertThrows(
+    await assertRejects(
         () =>
             new UniqueInfoServiceImpl(
                 new UniqueInfoRepositoryMock(1, 0),
@@ -37,7 +37,7 @@ Deno.test("UniqueInfoServiceImpl.validateNew", () => {
             ),
         UsernameAlreadyRegistered,
     );
-    assertThrows(
+    await assertRejects(
         () =>
             new UniqueInfoServiceImpl(
                 new UniqueInfoRepositoryMock(0, 1),
@@ -48,9 +48,9 @@ Deno.test("UniqueInfoServiceImpl.validateNew", () => {
     );
 });
 
-Deno.test("validateUniqueEmail.validateExisting", () => {
+Deno.test("validateUniqueEmail.validateExisting", async () => {
     assertEquals(
-        new UniqueInfoServiceImpl(
+        await new UniqueInfoServiceImpl(
             new UniqueInfoRepositoryMock(0, 0),
         ).validateExisting(
             uniqueInfoModelMock,
@@ -58,7 +58,7 @@ Deno.test("validateUniqueEmail.validateExisting", () => {
         ),
         undefined,
     );
-    assertThrows(
+    await assertRejects(
         () =>
             new UniqueInfoServiceImpl(
                 new UniqueInfoRepositoryMock(1, 0),
@@ -69,7 +69,7 @@ Deno.test("validateUniqueEmail.validateExisting", () => {
                 ),
         UsernameAlreadyRegistered,
     );
-    assertThrows(
+    await assertRejects(
         () =>
             new UniqueInfoServiceImpl(
                 new UniqueInfoRepositoryMock(0, 1),
@@ -82,9 +82,9 @@ Deno.test("validateUniqueEmail.validateExisting", () => {
     );
 });
 
-Deno.test("validateUniqueEmail.validateExisting", () => {
+Deno.test("validateUniqueEmail.validateExisting", async () => {
     assertEquals(
-        new UniqueInfoServiceImpl(
+        await new UniqueInfoServiceImpl(
             new UniqueInfoRepositoryMock(0, 0),
         ).validateExisting(
             uniqueInfoModelMock,
@@ -93,7 +93,7 @@ Deno.test("validateUniqueEmail.validateExisting", () => {
         undefined,
     );
     assertEquals(
-        new UniqueInfoServiceImpl(
+        await new UniqueInfoServiceImpl(
             new UniqueInfoRepositoryMock(1, 0),
         ).validateExisting(
             uniqueInfoModelMock,
@@ -102,7 +102,7 @@ Deno.test("validateUniqueEmail.validateExisting", () => {
         undefined,
     );
     assertEquals(
-        new UniqueInfoServiceImpl(
+        await new UniqueInfoServiceImpl(
             new UniqueInfoRepositoryMock(0, 1),
         ).validateExisting(
             uniqueInfoModelMock,

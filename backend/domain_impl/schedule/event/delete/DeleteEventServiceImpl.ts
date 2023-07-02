@@ -9,9 +9,9 @@ export class DeleteEventServiceImpl implements DeleteEventService {
         private readonly finder: FindEventService,
     ) {}
 
-    del(id: Event["id"]): Event {
-        const eventToDelete = this.finder.findById(id);
-        this.repository.del(id);
+    public async del(id: Event["id"]): Promise<Event> {
+        const eventToDelete = await this.finder.findById(id);
+        await this.repository.del(id);
         return eventToDelete;
     }
 }

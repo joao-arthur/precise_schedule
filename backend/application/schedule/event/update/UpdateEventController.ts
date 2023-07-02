@@ -9,5 +9,7 @@ import type { IdParam } from "../../../http/IdParam.ts";
 export type UpdateEventController = {
     readonly handle: (
         request: HTTPRequest<UpdateEventModel, IdParam<Event["id"]>>,
-    ) => HTTPResponse<Event | ValidationResult | ErrorResponse>;
+    ) => Promise<
+        HTTPResponse<Event | ValidationResult | ErrorResponse>
+    >;
 };

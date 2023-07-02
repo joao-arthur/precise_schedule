@@ -5,9 +5,9 @@ import { userMock } from "@ps/domain_mock/schedule/user/UserMock.ts";
 import { httpRequestBodyMock } from "@ps/application_mock/http/httpRequestMock.ts";
 import { ok } from "@ps/application/http/builder/ok.ts";
 
-Deno.test("CreateUserControllerImpl", () => {
+Deno.test("CreateUserControllerImpl", async () => {
     assertEquals(
-        new CreateUserControllerImpl(
+        await new CreateUserControllerImpl(
             new CreateUserServiceMock(userMock),
         ).handle(httpRequestBodyMock),
         ok(userMock),

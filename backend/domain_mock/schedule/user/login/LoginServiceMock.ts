@@ -4,7 +4,7 @@ import type { LoginService } from "@ps/domain/schedule/user/login/LoginService.t
 export class LoginServiceMock implements LoginService {
     constructor(private readonly user: User) {}
 
-    public login(): User {
-        return this.user;
+    public login(): Promise<User> {
+        return Promise.resolve(this.user);
     }
 }

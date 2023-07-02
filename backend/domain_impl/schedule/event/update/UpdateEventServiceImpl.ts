@@ -11,10 +11,13 @@ export class UpdateEventServiceImpl implements UpdateEventService {
         //private readonly validator: Validator,
     ) {}
 
-    public update(id: Event["id"], event: UpdateEventModel): Event {
+    public async update(
+        id: Event["id"],
+        event: UpdateEventModel,
+    ): Promise<Event> {
         // this.validator.validate(event, updateEventValidation);
         const buildedEvent = this.factory.build(event, id);
-        this.repository.update(buildedEvent);
+        await this.repository.update(buildedEvent);
         return buildedEvent;
     }
 }

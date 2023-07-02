@@ -6,9 +6,9 @@ import { CreateEventRepositoryMock } from "@ps/domain_mock/schedule/event/create
 import { CreateEventFactoryMock } from "@ps/domain_mock/schedule/event/create/CreateEventFactoryMock.ts";
 import { CreateEventServiceImpl } from "./CreateEventServiceImpl.ts";
 
-Deno.test("CreateEventServiceImpl", () => {
+Deno.test("CreateEventServiceImpl", async () => {
     assertEquals(
-        new CreateEventServiceImpl(
+        await new CreateEventServiceImpl(
             new CreateEventRepositoryMock(),
             new CreateEventFactoryMock(eventMock),
         ).create(createEventModelMock),

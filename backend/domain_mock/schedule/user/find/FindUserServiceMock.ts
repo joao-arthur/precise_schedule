@@ -4,11 +4,11 @@ import type { FindUserService } from "@ps/domain/schedule/user/find/FindUserServ
 export class FindUserServiceMock implements FindUserService {
     constructor(private readonly user: User) {}
 
-    public findById(): User {
-        return this.user;
+    public findById(): Promise<User> {
+        return Promise.resolve(this.user);
     }
 
-    public findByCredentials(): User {
-        return this.user;
+    public findByCredentials(): Promise<User> {
+        return Promise.resolve(this.user);
     }
 }

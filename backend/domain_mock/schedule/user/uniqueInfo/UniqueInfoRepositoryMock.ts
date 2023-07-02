@@ -7,11 +7,11 @@ export class UniqueInfoRepositoryMock
         private readonly numEmail: number,
     ) {}
 
-    public countUsername(): number {
-        return this.numUsername;
+    public countUsername(): Promise<number> {
+        return Promise.resolve(this.numUsername);
     }
 
-    public countEmail(): number {
-        return this.numEmail;
+    public countEmail(): Promise<number> {
+        return Promise.resolve(this.numEmail);
     }
 }

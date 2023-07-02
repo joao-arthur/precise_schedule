@@ -2,5 +2,5 @@ import type { UpdateEventRepository } from "@ps/domain/schedule/event/update/Upd
 
 export class UpdateEventRepositoryMock
     implements UpdateEventRepository {
-    public update(): void {}
+    public async update(): Promise<void> {}
 }

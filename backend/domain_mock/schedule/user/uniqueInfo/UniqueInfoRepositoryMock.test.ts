@@ -1,10 +1,13 @@
 import { assertEquals } from "std/testing/asserts.ts";
 import { UniqueInfoRepositoryMock } from "./UniqueInfoRepositoryMock.ts";
 
-Deno.test("UniqueInfoRepositoryMock", () => {
+Deno.test("UniqueInfoRepositoryMock", async () => {
     assertEquals(
-        new UniqueInfoRepositoryMock(1, 2).countUsername(),
+        await new UniqueInfoRepositoryMock(1, 2).countUsername(),
         1,
     );
-    assertEquals(new UniqueInfoRepositoryMock(1, 2).countEmail(), 2);
+    assertEquals(
+        await new UniqueInfoRepositoryMock(1, 2).countEmail(),
+        2,
+    );
 });

@@ -2,13 +2,13 @@ import { assertEquals } from "std/testing/asserts.ts";
 import { userMock } from "../UserMock.ts";
 import { FindUserServiceMock } from "./FindUserServiceMock.ts";
 
-Deno.test("FindUserServiceMock", () => {
+Deno.test("FindUserServiceMock", async () => {
     assertEquals(
-        new FindUserServiceMock(userMock).findById(),
+        await new FindUserServiceMock(userMock).findById(),
         userMock,
     );
     assertEquals(
-        new FindUserServiceMock(userMock).findByCredentials(),
+        await new FindUserServiceMock(userMock).findByCredentials(),
         userMock,
     );
 });

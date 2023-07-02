@@ -9,5 +9,7 @@ import type { IdParam } from "../../../http/IdParam.ts";
 export type UpdateUserController = {
     readonly handle: (
         request: HTTPRequest<UpdateUserModel, IdParam<User["id"]>>,
-    ) => HTTPResponse<User | ValidationResult | ErrorResponse>;
+    ) => Promise<
+        HTTPResponse<User | ValidationResult | ErrorResponse>
+    >;
 };

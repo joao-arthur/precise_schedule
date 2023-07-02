@@ -16,11 +16,11 @@ export class CreateUserServiceImpl implements CreateUserService {
         private readonly validator: Validator,
     ) {}
 
-    public create(user: CreateUserModel): User {
+    public async create(user: CreateUserModel): Promise<User> {
         this.validator.validate(user, createUserValidation);
-        this.unique.validateNew(user);
+        await this.unique.validateNew(user);
         const buildedUser = this.factory.build(user);
-        this.repository.create(buildedUser);
+        await this.repository.create(buildedUser);
         return buildedUser;
     }
 }

@@ -7,19 +7,19 @@ import { UserNotFound } from "@ps/domain/schedule/user/find/UserNotFound.ts";
 export class FindUserServiceImpl implements FindUserService {
     constructor(private readonly repository: FindUserRepository) {}
 
-    public findById(id: User["id"]): User {
-        const maybeUser = this.repository.findById(id);
+    public async findById(id: User["id"]): Promise<User> {
+        const maybeUser = await this.repository.findById(id);
         if (!maybeUser) {
             throw new UserNotFound();
         }
         return maybeUser;
     }
 
-    public findByCredentials(
+    public async findByCredentials(
         username: User["username"],
         password: User["password"],
-    ): User {
-        const maybeUser = this.repository.findByCredentials(
+    ): Promise<User> {
+        const maybeUser = await this.repository.findByCredentials(
             username,
             password,
         );

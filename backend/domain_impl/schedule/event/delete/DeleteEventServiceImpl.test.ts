@@ -4,9 +4,9 @@ import { DeleteEventRepositoryMock } from "@ps/domain_mock/schedule/event/delete
 import { FindEventServiceMock } from "@ps/domain_mock/schedule/event/find/FindEventServiceMock.ts";
 import { DeleteEventServiceImpl } from "./DeleteEventServiceImpl.ts";
 
-Deno.test("DeleteEventServiceImpl", () => {
+Deno.test("DeleteEventServiceImpl", async () => {
     assertEquals(
-        new DeleteEventServiceImpl(
+        await new DeleteEventServiceImpl(
             new DeleteEventRepositoryMock(),
             new FindEventServiceMock(eventMock),
         ).del(eventMock.id),
