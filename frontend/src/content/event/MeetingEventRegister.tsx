@@ -10,12 +10,12 @@ import { SelectInput } from "@/components/atoms/input/SelectInput";
 import { DateInput } from "@/components/atoms/input/DateInput";
 import { TimeInput } from "@/components/atoms/input/TimeInput";
 import { CheckInput } from "@/components/atoms/input/CheckInput";
-import { frequencyOptions } from "@/content/event/options";
 import { SubHeader } from "@/content/base/subHeader/SubHeader";
 import { Link } from "@/components/atoms/Link";
 import { ButtonIcon } from "@/components/atoms/ButtonIcon";
 import { PageContent } from "@/components/atoms/layout/PageContent";
 import { buildMeetingEvent } from "@/features/event/buildMeetingEvent";
+import { frequencyOptions } from "./frequencyOptions";
 
 export default function MeetingEventRegister() {
     const { register, handleSubmit, watch, setValue } = useForm<

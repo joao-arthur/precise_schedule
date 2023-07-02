@@ -1,7 +1,7 @@
 import { Action } from "./Action";
 import { useState } from "react";
 import { Modal } from "@/content/modal/Modal";
-import DateEventRegister from "@/pages/dateevent";
+import DateEventRegister from "@/content/event/DateEventRegister";
 
 export function DateAction() {
     const [openDate, setOpenDate] = useState(false);

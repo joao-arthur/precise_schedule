@@ -1,7 +1,7 @@
 import { Action } from "./Action";
 import { useState } from "react";
 import { Modal } from "@/content/modal/Modal";
-import AppointmentEventRegister from "@/pages/appointmentevent";
+import AppointmentEventRegister from "@/content/event/AppointmentEventRegister";
 
 export function AppointmentAction() {
     const [openAppointment, setOpenAppointment] = useState(false);
