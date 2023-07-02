@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { TransparentIcon } from "@/components/atoms/TransparentIcon";
 import { UserMenu } from "../userMenu/UserMenu";
 import { If } from "@/components/atoms/layout/If";
 
 export function UserActions() {
     const [userMenuOpen, setUserMenuOpen] = useState(false);
-
+    const closeMenu = useCallback(() => setUserMenuOpen(false), []);
     return (
         <>
             <TransparentIcon
@@ -14,7 +14,7 @@ export function UserActions() {
                 onClick={() => setUserMenuOpen(!userMenuOpen)}
             />
             <If condition={userMenuOpen}>
-                <UserMenu />
+                <UserMenu closeMenu={closeMenu} />
             </If>
         </>
     );

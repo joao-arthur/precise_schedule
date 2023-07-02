@@ -7,13 +7,18 @@ type props = {
     readonly onClick?: () => void;
 };
 
-export function Text({ onClick, className, children }: props) {
+export function FilledText(
+    { onClick, className, children }: props,
+) {
     return (
         <span
             className={clss(
-                "select-none",
+                "px-2 p-1 select-none rounded-md",
+                "border dark:border-gray-600",
+                "bg-white dark:bg-dark-light",
                 "transition-colors duration-500",
-                "text-dark dark:text-pastel-gray",
+                "dark:text-pastel-gray",
+                "shadow-sm shadow-gray-800",
                 className,
             )}
             onClick={onClick}

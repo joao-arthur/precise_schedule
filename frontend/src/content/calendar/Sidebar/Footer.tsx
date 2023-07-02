@@ -18,7 +18,7 @@ export function Footer({ day }: props) {
         ? (
             <div
                 className={clss(
-                    "flex justify-center m-1 py-3 border-t",
+                    "flex justify-center m-1 scroll-px-24 py-3 border-t",
                     "border-gray-300 dark:border-gray-500",
                     "transition-colors duration-500",
                 )}

@@ -66,6 +66,7 @@ export function Sidebar() {
     return (
         <div
             className={clss(
+                "z-10",
                 "flex overflow-hidden flex-0-auto",
                 "bg-white dark:bg-dark-light",
                 "transition-all duration-500",
@@ -103,7 +104,7 @@ export function Sidebar() {
                                     .toLocaleDateString()}
                             </Text>
                             <ButtonIcon
-                                name="close"
+                                name="x"
                                 size="big"
                                 onClick={() => removeSelectedDate()}
                             />

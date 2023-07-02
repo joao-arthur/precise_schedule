@@ -18,14 +18,12 @@ export function Cell({ year, month, day }: props) {
         <Text
             onClick={() => toggleSelectedDate(date.toISOString())}
             className={clss(
-                "flex flex-1 rounded cursor-pointer justify-center items-center select-none text-xl active:text-2xl transition-all duration-75",
+                "flex flex-1 rounded cursor-pointer justify-center items-center select-none text-xl active:text-2xl",
                 "hover:bg-primary-lighter active:bg-primary-light",
                 "dark:hover:bg-primary-darker dark:active:bg-primary-dark",
-                {
-                    "text-gray-500": !isInMonth,
-                },
+                "transition-all duration-500",
+                { "text-gray-500 dark:text-gray-500": !isInMonth },
             )}
-            disabled={!isInMonth}
         >
             {date.getDate()}
         </Text>

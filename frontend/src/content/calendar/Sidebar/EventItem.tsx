@@ -34,7 +34,7 @@ export function EventItem({ event }: props) {
     />*/
                 }
                 <ButtonIcon
-                    name="edit"
+                    name="pencil"
                     size="medium"
                     onClick={() => setIsEditVisible(true)}
                 />

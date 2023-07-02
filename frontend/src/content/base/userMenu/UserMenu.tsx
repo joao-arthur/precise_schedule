@@ -1,19 +1,23 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import clss from "classnames";
 import { useSessionManager } from "@/features/session/useSessionManager";
 import { Link } from "@/components/atoms/Link";
 import { UserMenuItem } from "./UserMenuItem";
 
-export function UserMenu() {
-    const [userMenuOpen, setUserMenuOpen] = useState(false);
-    const onOutClick = () => setUserMenuOpen(false);
+type props = {
+    readonly closeMenu: () => void;
+};
+
+export function UserMenu({ closeMenu }: props) {
     const { unlog } = useSessionManager();
 
     useEffect(() => {
-        globalThis.addEventListener("click", onOutClick);
-        return () =>
-            globalThis.removeEventListener("click", onOutClick);
-    }, [onOutClick, userMenuOpen]);
+        // ¯\_(ツ)_/¯ it just works
+        window.setTimeout(() => {
+            window.addEventListener("click", closeMenu);
+        }, 0);
+        return () => window.removeEventListener("click", closeMenu);
+    }, []);
 
     return (
         <nav
@@ -23,12 +27,12 @@ export function UserMenu() {
                 "transition-colors duration-500",
             )}
         >
-            <ul onClick={onOutClick}>
+            <ul>
                 <Link to="/settings">
-                    <UserMenuItem name="Settings" icon="settings" />
+                    <UserMenuItem name="Settings" icon="cog-wheel" />
                 </Link>
                 <div onClick={unlog}>
-                    <UserMenuItem name="Sign out" icon="signOut" />
+                    <UserMenuItem name="Sign out" icon="door" />
                 </div>
             </ul>
         </nav>

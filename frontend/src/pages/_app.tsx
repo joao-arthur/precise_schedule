@@ -13,7 +13,7 @@ export default function App(
     return (
         <QueryClientProvider client={queryClient}>
             <Toaster />
-            <ReactQueryDevtools initialIsOpen={false} />
+            {/*<ReactQueryDevtools initialIsOpen={false} />*/}
             <Page>
                 <Component {...pageProps} />
             </Page>
