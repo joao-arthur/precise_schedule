@@ -1,5 +1,5 @@
-import { Chart } from "./Chart";
 import { randomColor } from "@/lib/objects/randomColor";
+import { Chart } from "./Chart";
 
 export function EventsByCategory() {
     const data = [

@@ -10,7 +10,7 @@ in _Next.js_. I've been using this project to practice programming.
 ## Philosophy
 
 The **backend** is written with the biggest care, applying DDD and an
-layered architecture. The **fronend** is written using a minimal
+layered architecture. The **frontend** is written using a minimal
 amount of abstraction.
 
 ## Requirements

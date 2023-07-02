@@ -20,7 +20,11 @@ export default function AppointmentEventRegister() {
     const { mutate, isLoading } = useEventAPI().create();
 
     const watchFrequency = watch("frequency");
-    const canRepeatWeekend = ["1_D", "2_D"].includes(watchFrequency);
+    const canRepeatWeekend = watchFrequency
+        ? ["1_D", "2_D"].includes(
+            watchFrequency,
+        )
+        : true;
 
     function submit(data: AppointmentEvent) {
         const event = buildAppointmentEvent(data);
