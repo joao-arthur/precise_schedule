@@ -1,4 +1,4 @@
-import { RouterContext } from "oak/mod.ts";
+import { Router, RouterContext } from "oak/mod.ts";
 import { CreateEventModel } from "@ps/domain/schedule/event/create/CreateEventModel.ts";
 import { CreateEventServiceImpl } from "@ps/domain_impl/schedule/event/create/CreateEventServiceImpl.ts";
 import { UpdateEventServiceImpl } from "@ps/domain_impl/schedule/event/update/UpdateEventServiceImpl.ts";
@@ -14,20 +14,6 @@ import { EventRepository } from "@ps/domain/schedule/event/EventRepository.ts";
 import { IdGenerator } from "@ps/domain/generation/IdGenerator.ts";
 import { Validator } from "@ps/domain/validation/Validator.ts";
 
-type EventContext = RouterContext<
-    "/event",
-    Record<string | number, string | undefined>,
-    Record<string, any>
->;
-
-type EventIdContext = RouterContext<
-    "/event/:id",
-    {
-        id: string;
-    } & Record<string | number, string | undefined>,
-    Record<string, any>
->;
-
 export class EventControllerOakAdapter {
     constructor(
         private readonly idGenerator: IdGenerator,
@@ -35,7 +21,58 @@ export class EventControllerOakAdapter {
         private readonly repository: EventRepository,
     ) {}
 
-    public async postEvent(context: EventContext): Promise<void> {
+    public initRoutes(router: Router<Record<string, any>>): void {
+        router
+            .get("/event", async (context) => {
+                //204 no content
+                await eventControllerAdapter.getEvents(context);
+            })
+            .post("/event/APPOINTMENT", async (context) => {
+                //201 created
+                await eventControllerAdapter.postEvent(context);
+            })
+            .post("/event/BIRTHDAY", async (context) => {
+                //201 created
+                await eventControllerAdapter.postEvent(context);
+            })
+            .post("/event/DATE", async (context) => {
+                //201 created
+                await eventControllerAdapter.postEvent(context);
+            })
+            .post("/event/MEETING", async (context) => {
+                //201 created
+                await eventControllerAdapter.postEvent(context);
+            })
+            .post("/event/PARTY", async (context) => {
+                //201 created
+                await eventControllerAdapter.postEvent(context);
+            })
+            .put("/event/APPOINTMENT/:id", async (context) => {
+                //204 no content
+                await eventControllerAdapter.postEvent(context);
+            })
+            .put("/event/BIRTHDAY/:id", async (context) => {
+                //204 no content
+                await eventControllerAdapter.postEvent(context);
+            })
+            .put("/event/DATE/:id", async (context) => {
+                //204 no content
+                await eventControllerAdapter.postEvent(context);
+            })
+            .put("/event/MEETING/:id", async (context) => {
+                //204 no content
+                await eventControllerAdapter.postEvent(context);
+            })
+            .put("/event/PARTY/:id", async (context) => {
+                //204 no content
+                await eventControllerAdapter.postEvent(context);
+            })
+            .delete("/event/:id", async (context) => {
+                await eventControllerAdapter.getEvent(context);
+            });
+    }
+
+    private async postEvent(context: EventContext): Promise<void> {
         const createEventService = new CreateEventServiceImpl(
             this.repository,
             new CreateEventFactoryImpl(this.idGenerator),
@@ -53,7 +90,7 @@ export class EventControllerOakAdapter {
         context.response.status = response.status;
     }
 
-    public async putEvent(context: EventIdContext): Promise<void> {
+    private async putEvent(context: EventIdContext): Promise<void> {
         const updateEventService = new UpdateEventServiceImpl(
             this.repository,
             new UpdateEventFactoryImpl(),
@@ -73,7 +110,7 @@ export class EventControllerOakAdapter {
         context.response.status = response.status;
     }
 
-    public async getEvent(context: EventIdContext): Promise<void> {
+    private async getEvent(context: EventIdContext): Promise<void> {
         const findEventService = new FindEventServiceImpl(
             this.repository,
         );

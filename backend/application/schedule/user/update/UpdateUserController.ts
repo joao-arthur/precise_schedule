@@ -10,6 +10,6 @@ export type UpdateUserController = {
     readonly handle: (
         request: HTTPRequest<UpdateUserModel, IdParam<User["id"]>>,
     ) => Promise<
-        HTTPResponse<User | ValidationResult | ErrorResponse>
+        HTTPResponse<undefined | ValidationResult | ErrorResponse>
     >;
 };

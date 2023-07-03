@@ -9,9 +9,9 @@ import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
 import type { IdParam } from "@ps/application/http/IdParam.ts";
 
 import { ValidationError } from "@ps/domain/validation/ValidationError.ts";
-import { ok } from "@ps/application/http/builder/ok.ts";
 import { badRequest } from "@ps/application/http/builder/badRequest.ts";
 import { internalServerError } from "@ps/application/http/builder/internalServerError.ts";
+import { noContent } from "@ps/application/http/builder/noContent.ts";
 
 export class UpdateUserControllerImpl
     implements UpdateUserController {
@@ -20,14 +20,16 @@ export class UpdateUserControllerImpl
     public async handle(
         request: HTTPRequest<UpdateUserModel, IdParam<User["id"]>>,
     ): Promise<
-        HTTPResponse<User | ValidationResult | ErrorResponse | Error>
+        HTTPResponse<
+            undefined | ValidationResult | ErrorResponse | Error
+        >
     > {
         try {
-            const result = await this.service.update(
+            await this.service.update(
                 request.params.id,
                 request.body,
             );
-            return ok(result);
+            return noContent();
         } catch (e: unknown) {
             if (e instanceof ValidationError) {
                 return badRequest(e.result);

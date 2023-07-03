@@ -1,5 +1,5 @@
 import type { Validator } from "@ps/domain/validation/Validator.ts";
-import type { User } from "@ps/domain/schedule/user/User.ts";
+import type { Session } from "@ps/domain/session/Session.ts";
 import type { FindUserService } from "@ps/domain/schedule/user/find/FindUserService.ts";
 import type { LoginModel } from "@ps/domain/schedule/user/login/LoginModel.ts";
 import type { LoginService } from "@ps/domain/schedule/user/login/LoginService.ts";
@@ -12,12 +12,12 @@ export class LoginServiceImpl implements LoginService {
         private readonly userFinder: FindUserService,
     ) {}
 
-    public async login(user: LoginModel): Promise<User> {
+    public async login(user: LoginModel): Promise<Session> {
         this.validator.validate(user, loginValidation);
         const existingUser = await this.userFinder.findByCredentials(
             user.username,
             user.password,
         );
-        return existingUser;
+        return { token: "mock token" };
     }
 }

@@ -9,24 +9,17 @@ type Frequency =
     | "1_D"
     | "2_D"
     | "1_W"
-    | "2_W"
     | "1_M"
-    | "2_M"
     | "3_M"
     | "6_M"
     | "1_Y"
     | "2_Y"
-    | "5_Y"
-    | "10_Y"
     | "NEVER";
-
-type Status = "active" | "excluded";
 
 type Info = {
     readonly category: Category;
     readonly frequency: Frequency;
     readonly weekendRepeat: boolean;
-    readonly status: Status;
     readonly createdAt: Date;
     readonly updatedAt: Date;
 };

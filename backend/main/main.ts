@@ -30,25 +30,9 @@ const eventControllerAdapter = new EventControllerOakAdapter(
 );
 
 const router = new Router();
-router
-    .post("/user", async (context) => {
-        await userControllerAdapter.postUser(context);
-    })
-    .put("/user/:id", async (context) => {
-        await userControllerAdapter.putUser(context);
-    })
-    .get("/user/:id", async (context) => {
-        await userControllerAdapter.getUser(context);
-    })
-    .post("/event", async (context) => {
-        await eventControllerAdapter.postEvent(context);
-    })
-    .put("/event/:id", async (context) => {
-        await eventControllerAdapter.putEvent(context);
-    })
-    .get("/event/:id", async (context) => {
-        await eventControllerAdapter.getEvent(context);
-    });
+
+userControllerAdapter.initRoutes(router);
+eventControllerAdapter.initRoutes(router);
 
 const app = new Application();
 app.use(oakCors());

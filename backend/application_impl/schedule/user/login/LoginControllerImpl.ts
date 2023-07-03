@@ -1,28 +1,28 @@
 import type { ValidationResult } from "@ps/domain/validation/ValidationResult.ts";
-import type { CreateUserModel } from "@ps/domain/schedule/user/create/CreateUserModel.ts";
-import type { CreateUserService } from "@ps/domain/schedule/user/create/CreateUserService.ts";
-import type { CreateUserController } from "@ps/application/schedule/user/create/CreateUserController.ts";
+import type { Session } from "@ps/domain/session/Session.ts";
+import type { LoginModel } from "@ps/domain/schedule/user/login/LoginModel.ts";
+import type { LoginService } from "@ps/domain/schedule/user/login/LoginService.ts";
+import type { LoginController } from "@ps/application/schedule/user/login/LoginController.ts";
 import type { ErrorResponse } from "@ps/application/http/ErrorResponse.ts";
 import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
 import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
 
 import { ValidationError } from "@ps/domain/validation/ValidationError.ts";
+import { ok } from "@ps/application/http/builder/ok.ts";
 import { badRequest } from "@ps/application/http/builder/badRequest.ts";
 import { internalServerError } from "@ps/application/http/builder/internalServerError.ts";
-import { created } from "@ps/application/http/builder/created.ts";
 
-export class CreateUserControllerImpl
-    implements CreateUserController {
-    constructor(private readonly service: CreateUserService) {}
+export class LoginControllerImpl implements LoginController {
+    constructor(private readonly service: LoginService) {}
 
     public async handle(
-        request: HTTPRequest<CreateUserModel, never>,
+        request: HTTPRequest<LoginModel, never>,
     ): Promise<
-        HTTPResponse<undefined | ValidationResult | ErrorResponse>
+        HTTPResponse<Session | ValidationResult | ErrorResponse>
     > {
         try {
-            await this.service.create(request.body);
-            return created();
+            const result = await this.service.login(request.body);
+            return ok(result);
         } catch (e: unknown) {
             if (e instanceof ValidationError) {
                 return badRequest(e.result);
