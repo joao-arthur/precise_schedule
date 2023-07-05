@@ -3,6 +3,6 @@ import type { CreateAppointmentEvent } from "./CreateAppointmentEvent.ts";
 
 export type CreateAppointmentEventFactory = {
     readonly build: (
-        appointEvent: CreateAppointmentEvent,
+        event: CreateAppointmentEvent,
     ) => CreateEventModel;
 };
