@@ -18,10 +18,7 @@ amount of abstraction.
 - User
   - Register
   - Login
-  - Define user and general settings
-  - Use Google and Facebook to register and login
-  - Better password validation
-  - Two factor authentication (e-mail or app)
+  - Email notification by browser
 - Calendar
   - Scroll months
   - Total events on each day cell
@@ -30,13 +27,8 @@ amount of abstraction.
   - Edit
   - Read
   - Delete
-  - Filter
-  - Search
 - Charts
   - Read
-  - Filter
-  - Export to PDF
 - UI
   - ✅ Dark mode
   - ✅ Responsiveness
-  - Multi language support / i18n
