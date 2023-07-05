@@ -5,4 +5,7 @@ export type CreateEventModel = {
     readonly day: Event["day"];
     readonly begin: Event["begin"];
     readonly end: Event["end"];
+    readonly category: Event["category"];
+    readonly frequency: Event["frequency"];
+    readonly weekendRepeat: Event["weekendRepeat"];
 };

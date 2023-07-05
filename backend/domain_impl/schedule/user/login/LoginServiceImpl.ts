@@ -9,12 +9,12 @@ import { loginValidation } from "@ps/domain/schedule/user/login/loginValidation.
 export class LoginServiceImpl implements LoginService {
     constructor(
         private readonly validator: Validator,
-        private readonly userFinder: FindUserService,
+        private readonly findService: FindUserService,
     ) {}
 
     public async login(user: LoginModel): Promise<Session> {
         this.validator.validate(user, loginValidation);
-        const existingUser = await this.userFinder.findByCredentials(
+        const existingUser = await this.findService.findByCredentials(
             user.username,
             user.password,
         );

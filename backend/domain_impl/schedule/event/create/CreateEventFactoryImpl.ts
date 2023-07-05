@@ -13,6 +13,11 @@ export class CreateEventFactoryImpl implements CreateEventFactory {
             day: event.day,
             begin: event.begin,
             end: event.end,
+            category: event.category,
+            frequency: event.frequency,
+            weekendRepeat: event.weekendRepeat,
+            createdAt: new Date(),
+            updatedAt: new Date(),
         };
     }
 }

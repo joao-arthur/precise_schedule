@@ -8,6 +8,11 @@ Deno.test("CreateEventFactoryImpl", () => {
         new CreateEventFactoryImpl(new IdGeneratorMock("id")).build(
             createEventModelMock,
         ),
-        { id: "id", ...createEventModelMock },
+        {
+            id: "id",
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            ...createEventModelMock,
+        },
     );
 });

@@ -22,9 +22,9 @@ export type Event = {
     readonly day: string;
     readonly begin: string;
     readonly end: string;
-    //readonly category: Category;
-    //readonly frequency: Frequency;
-    //readonly weekendRepeat: boolean;
-    //readonly createdAt: Date;
-    //readonly updatedAt: Date;
+    readonly category: Category;
+    readonly frequency: Frequency;
+    readonly weekendRepeat: boolean;
+    readonly createdAt: Date;
+    readonly updatedAt: Date;
 };

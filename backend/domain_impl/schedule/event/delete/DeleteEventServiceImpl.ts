@@ -6,12 +6,12 @@ import type { DeleteEventService } from "@ps/domain/schedule/event/delete/Delete
 export class DeleteEventServiceImpl implements DeleteEventService {
     constructor(
         private readonly repository: DeleteEventRepository,
-        private readonly finder: FindEventService,
+        private readonly findService: FindEventService,
     ) {}
 
     public async del(id: Event["id"]): Promise<Event> {
-        const eventToDelete = await this.finder.findById(id);
+        const existingEvent = await this.findService.findById(id);
         await this.repository.del(id);
-        return eventToDelete;
+        return existingEvent;
     }
 }

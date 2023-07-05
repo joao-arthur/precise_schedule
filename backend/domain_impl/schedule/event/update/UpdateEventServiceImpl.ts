@@ -3,12 +3,14 @@ import type { UpdateEventRepository } from "@ps/domain/schedule/event/update/Upd
 import type { UpdateEventFactory } from "@ps/domain/schedule/event/update/UpdateEventFactory.ts";
 import type { UpdateEventService } from "@ps/domain/schedule/event/update/UpdateEventService.ts";
 import type { UpdateEventModel } from "@ps/domain/schedule/event/update/UpdateEventModel.ts";
+import type { FindEventService } from "@ps/domain/schedule/event/find/FindEventService.ts";
 
 export class UpdateEventServiceImpl implements UpdateEventService {
     constructor(
         private readonly repository: UpdateEventRepository,
         private readonly factory: UpdateEventFactory,
         //private readonly validator: Validator,
+        private readonly findService: FindEventService,
     ) {}
 
     public async update(
@@ -16,7 +18,8 @@ export class UpdateEventServiceImpl implements UpdateEventService {
         event: UpdateEventModel,
     ): Promise<Event> {
         // this.validator.validate(event, updateEventValidation);
-        const buildedEvent = this.factory.build(event, id);
+        const existingEvent = await this.findService.findById(id);
+        const buildedEvent = this.factory.build(event, existingEvent);
         await this.repository.update(buildedEvent);
         return buildedEvent;
     }
