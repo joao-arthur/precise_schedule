@@ -6,12 +6,13 @@ import type { CreateEventFactory } from "@ps/domain/schedule/event/create/Create
 export class CreateEventFactoryImpl implements CreateEventFactory {
     constructor(private readonly idGenerator: IdGenerator) {}
 
-    public build(user: CreateEventModel): Event {
+    public build(event: CreateEventModel): Event {
         return {
             id: this.idGenerator.generate(),
-            name: user.name,
-            begin: user.begin,
-            end: user.end,
+            name: event.name,
+            day: event.day,
+            begin: event.begin,
+            end: event.end,
         };
     }
 }

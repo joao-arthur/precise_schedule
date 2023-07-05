@@ -16,22 +16,15 @@ type Frequency =
     | "2_Y"
     | "NEVER";
 
-type Info = {
-    readonly category: Category;
-    readonly frequency: Frequency;
-    readonly weekendRepeat: boolean;
-    readonly createdAt: Date;
-    readonly updatedAt: Date;
-};
-
-type Notification = {
-    readonly browserNotification: boolean;
-    readonly emailNotification: boolean;
-};
-
 export type Event = {
     readonly id: string;
     readonly name: string;
-    readonly begin: Date;
-    readonly end: Date;
+    readonly day: string;
+    readonly begin: string;
+    readonly end: string;
+    //readonly category: Category;
+    //readonly frequency: Frequency;
+    //readonly weekendRepeat: boolean;
+    //readonly createdAt: Date;
+    //readonly updatedAt: Date;
 };

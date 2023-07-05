@@ -1,18 +1,19 @@
-import { Router, RouterContext } from "oak/mod.ts";
-import { CreateEventModel } from "@ps/domain/schedule/event/create/CreateEventModel.ts";
+import type { CreateEventModel } from "@ps/domain/schedule/event/create/CreateEventModel.ts";
+import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
+import type { IdParam } from "@ps/application/http/IdParam.ts";
+import type { EventRepository } from "@ps/domain/schedule/event/EventRepository.ts";
+import type { IdGenerator } from "@ps/domain/generation/IdGenerator.ts";
+import type { Validator } from "@ps/domain/validation/Validator.ts";
+
+import { Router } from "oak/mod.ts";
 import { CreateEventServiceImpl } from "@ps/domain_impl/schedule/event/create/CreateEventServiceImpl.ts";
 import { UpdateEventServiceImpl } from "@ps/domain_impl/schedule/event/update/UpdateEventServiceImpl.ts";
 import { CreateEventFactoryImpl } from "@ps/domain_impl/schedule/event/create/CreateEventFactoryImpl.ts";
 import { UpdateEventFactoryImpl } from "@ps/domain_impl/schedule/event/update/UpdateEventFactoryImpl.ts";
 import { FindEventServiceImpl } from "@ps/domain_impl/schedule/event/find/FindEventServiceImpl.ts";
-import { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
-import { IdParam } from "@ps/application/http/IdParam.ts";
 import { CreateEventControllerImpl } from "@ps/application_impl/schedule/event/create/CreateEventControllerImpl.ts";
 import { UpdateEventControllerImpl } from "@ps/application_impl/schedule/event/update/UpdateEventControllerImpl.ts";
 import { FindEventControllerImpl } from "@ps/application_impl/schedule/event/find/FindEventControllerImpl.ts";
-import { EventRepository } from "@ps/domain/schedule/event/EventRepository.ts";
-import { IdGenerator } from "@ps/domain/generation/IdGenerator.ts";
-import { Validator } from "@ps/domain/validation/Validator.ts";
 
 export class EventControllerOakAdapter {
     constructor(

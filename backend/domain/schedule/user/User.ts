@@ -10,13 +10,6 @@ export enum Status {
     excluding = "excluding",
 }
 
-type Info = {
-    readonly status: Status;
-    readonly language: Language;
-    readonly createdAt: Date;
-    readonly updatedAt: Date;
-};
-
 type Password = {
     readonly pepper: string;
     readonly salt: string;
@@ -31,6 +24,10 @@ export type User = {
     readonly email: string;
     readonly username: string;
     readonly password: string;
+    //readonly status: Status;
+    //readonly language: Language;
+    //readonly createdAt: Date;
+    //readonly updatedAt: Date;
 };
 
 type DatabaseUser = {

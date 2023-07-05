@@ -3,12 +3,13 @@ import type { UpdateEventModel } from "@ps/domain/schedule/event/update/UpdateEv
 import type { UpdateEventFactory } from "@ps/domain/schedule/event/update/UpdateEventFactory.ts";
 
 export class UpdateEventFactoryImpl implements UpdateEventFactory {
-    public build(user: UpdateEventModel, id: Event["id"]): Event {
+    public build(event: UpdateEventModel, id: Event["id"]): Event {
         return {
             id,
-            name: user.name,
-            begin: user.begin,
-            end: user.end,
+            name: event.name,
+            day: event.day,
+            begin: event.begin,
+            end: event.end,
         };
     }
 }
