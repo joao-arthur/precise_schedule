@@ -1,8 +1,6 @@
-import type { ValidationResult } from "@ps/domain/validation/ValidationResult.ts";
 import type { User } from "@ps/domain/schedule/user/User.ts";
 import type { FindUserService } from "@ps/domain/schedule/user/find/FindUserService.ts";
 import type { FindUserController } from "@ps/application/schedule/user/find/FindUserController.ts";
-import type { ErrorResponse } from "@ps/application/http/ErrorResponse.ts";
 import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
 import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
 import type { IdParam } from "@ps/application/http/IdParam.ts";
@@ -17,9 +15,7 @@ export class FindUserControllerImpl implements FindUserController {
 
     public async handle(
         request: HTTPRequest<never, IdParam<User["id"]>>,
-    ): Promise<
-        HTTPResponse<User | ValidationResult | ErrorResponse>
-    > {
+    ): Promise<HTTPResponse> {
         try {
             const result = await this.service.findById(
                 request.params.id,

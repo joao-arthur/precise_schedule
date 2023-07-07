@@ -1,6 +1,8 @@
 import { HTTPResponse } from "../HTTPResponse.ts";
 
-export function badRequest<Error>(error: Error): HTTPResponse<Error> {
+export function badRequest(
+    error: Record<string, unknown>,
+): HTTPResponse {
     return {
         status: 400,
         body: error,

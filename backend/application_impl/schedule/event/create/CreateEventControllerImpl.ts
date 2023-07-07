@@ -1,9 +1,6 @@
-import type { ValidationResult } from "@ps/domain/validation/ValidationResult.ts";
-import type { Event } from "@ps/domain/schedule/event/Event.ts";
 import type { CreateEventModel } from "@ps/domain/schedule/event/create/CreateEventModel.ts";
 import type { CreateEventService } from "@ps/domain/schedule/event/create/CreateEventService.ts";
 import type { CreateEventController } from "@ps/application/schedule/event/create/CreateEventController.ts";
-import type { ErrorResponse } from "@ps/application/http/ErrorResponse.ts";
 import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
 import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
 
@@ -19,7 +16,7 @@ export class CreateEventControllerImpl
     public async handle(
         request: HTTPRequest<CreateEventModel, never>,
     ): Promise<
-        HTTPResponse<Event | ValidationResult | ErrorResponse>
+        HTTPResponse
     > {
         try {
             const result = await this.service.create(request.body);

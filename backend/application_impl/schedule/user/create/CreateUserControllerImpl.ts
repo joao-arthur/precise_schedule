@@ -1,8 +1,6 @@
-import type { ValidationResult } from "@ps/domain/validation/ValidationResult.ts";
 import type { CreateUserModel } from "@ps/domain/schedule/user/create/CreateUserModel.ts";
 import type { CreateUserService } from "@ps/domain/schedule/user/create/CreateUserService.ts";
 import type { CreateUserController } from "@ps/application/schedule/user/create/CreateUserController.ts";
-import type { ErrorResponse } from "@ps/application/http/ErrorResponse.ts";
 import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
 import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
 
@@ -17,9 +15,7 @@ export class CreateUserControllerImpl
 
     public async handle(
         request: HTTPRequest<CreateUserModel, never>,
-    ): Promise<
-        HTTPResponse<undefined | ValidationResult | ErrorResponse>
-    > {
+    ): Promise<HTTPResponse> {
         try {
             await this.service.create(request.body);
             return created();

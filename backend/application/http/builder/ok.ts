@@ -1,6 +1,6 @@
 import { HTTPResponse } from "../HTTPResponse.ts";
 
-export function ok<Body>(data: Body): HTTPResponse<Body> {
+export function ok(data: Record<string, unknown>): HTTPResponse {
     return {
         status: 200,
         body: data,

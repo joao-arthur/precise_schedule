@@ -1,9 +1,7 @@
-import type { ValidationResult } from "@ps/domain/validation/ValidationResult.ts";
 import type { User } from "@ps/domain/schedule/user/User.ts";
 import type { UpdateUserModel } from "@ps/domain/schedule/user/update/UpdateUserModel.ts";
 import type { UpdateUserService } from "@ps/domain/schedule/user/update/UpdateUserService.ts";
 import type { UpdateUserController } from "@ps/application/schedule/user/update/UpdateUserController.ts";
-import type { ErrorResponse } from "@ps/application/http/ErrorResponse.ts";
 import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
 import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
 import type { IdParam } from "@ps/application/http/IdParam.ts";
@@ -19,11 +17,7 @@ export class UpdateUserControllerImpl
 
     public async handle(
         request: HTTPRequest<UpdateUserModel, IdParam<User["id"]>>,
-    ): Promise<
-        HTTPResponse<
-            undefined | ValidationResult | ErrorResponse | Error
-        >
-    > {
+    ): Promise<HTTPResponse> {
         try {
             await this.service.update(
                 request.params.id,

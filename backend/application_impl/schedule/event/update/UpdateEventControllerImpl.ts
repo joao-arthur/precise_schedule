@@ -1,9 +1,7 @@
-import type { ValidationResult } from "@ps/domain/validation/ValidationResult.ts";
 import type { Event } from "@ps/domain/schedule/event/Event.ts";
 import type { UpdateEventModel } from "@ps/domain/schedule/event/update/UpdateEventModel.ts";
 import type { UpdateEventService } from "@ps/domain/schedule/event/update/UpdateEventService.ts";
 import type { UpdateEventController } from "@ps/application/schedule/event/update/UpdateEventController.ts";
-import type { ErrorResponse } from "@ps/application/http/ErrorResponse.ts";
 import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
 import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
 import type { IdParam } from "@ps/application/http/IdParam.ts";
@@ -19,9 +17,7 @@ export class UpdateEventControllerImpl
 
     public async handle(
         request: HTTPRequest<UpdateEventModel, IdParam<Event["id"]>>,
-    ): Promise<
-        HTTPResponse<Event | ValidationResult | ErrorResponse>
-    > {
+    ): Promise<HTTPResponse> {
         try {
             const result = await this.service.update(
                 request.params.id,

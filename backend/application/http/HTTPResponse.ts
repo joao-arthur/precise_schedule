@@ -1,4 +1,4 @@
-export type HTTPResponse<Body> = {
+export type HTTPResponse = {
     readonly status: number;
-    readonly body: Body;
+    readonly body: Record<string, unknown> | undefined;
 };

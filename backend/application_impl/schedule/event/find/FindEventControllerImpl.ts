@@ -1,8 +1,6 @@
-import type { ValidationResult } from "@ps/domain/validation/ValidationResult.ts";
 import type { Event } from "@ps/domain/schedule/event/Event.ts";
 import type { FindEventService } from "@ps/domain/schedule/event/find/FindEventService.ts";
 import type { FindEventController } from "@ps/application/schedule/event/find/FindEventController.ts";
-import type { ErrorResponse } from "@ps/application/http/ErrorResponse.ts";
 import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
 import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
 import type { IdParam } from "@ps/application/http/IdParam.ts";
@@ -17,9 +15,7 @@ export class FindEventControllerImpl implements FindEventController {
 
     public async handle(
         request: HTTPRequest<never, IdParam<Event["id"]>>,
-    ): Promise<
-        HTTPResponse<Event | ValidationResult | ErrorResponse>
-    > {
+    ): Promise<HTTPResponse> {
         try {
             const result = await this.service.findById(
                 request.params.id,
