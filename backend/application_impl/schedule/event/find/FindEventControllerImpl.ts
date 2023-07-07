@@ -3,13 +3,14 @@ import type { FindEventService } from "@ps/domain/schedule/event/find/FindEventS
 import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
 import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
 import type { IdParam } from "@ps/application/http/IdParam.ts";
+import type { FindEventController } from "@ps/application/schedule/event/find/FindEventController.ts";
 
 import { ValidationError } from "@ps/domain/validation/ValidationError.ts";
 import { ok } from "@ps/application/http/builder/ok.ts";
 import { badRequest } from "@ps/application/http/builder/badRequest.ts";
 import { internalServerError } from "@ps/application/http/builder/internalServerError.ts";
 
-export class FindEventControllerImpl {
+export class FindEventControllerImpl implements FindEventController {
     constructor(private readonly service: FindEventService) {}
 
     public async handle(

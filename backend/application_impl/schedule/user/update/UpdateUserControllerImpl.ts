@@ -4,13 +4,15 @@ import type { UpdateUserService } from "@ps/domain/schedule/user/update/UpdateUs
 import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
 import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
 import type { IdParam } from "@ps/application/http/IdParam.ts";
+import type { UpdateUserController } from "@ps/application/schedule/user/update/UpdateUserController.ts";
 
 import { ValidationError } from "@ps/domain/validation/ValidationError.ts";
 import { badRequest } from "@ps/application/http/builder/badRequest.ts";
 import { internalServerError } from "@ps/application/http/builder/internalServerError.ts";
 import { noContent } from "@ps/application/http/builder/noContent.ts";
 
-export class UpdateUserControllerImpl {
+export class UpdateUserControllerImpl
+    implements UpdateUserController {
     constructor(private readonly service: UpdateUserService) {}
 
     public async handle(
