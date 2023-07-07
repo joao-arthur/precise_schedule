@@ -1,6 +1,5 @@
 import type { User } from "@ps/domain/schedule/user/User.ts";
 import type { FindUserService } from "@ps/domain/schedule/user/find/FindUserService.ts";
-import type { FindUserController } from "@ps/application/schedule/user/find/FindUserController.ts";
 import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
 import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
 import type { IdParam } from "@ps/application/http/IdParam.ts";
@@ -10,7 +9,7 @@ import { ok } from "@ps/application/http/builder/ok.ts";
 import { badRequest } from "@ps/application/http/builder/badRequest.ts";
 import { internalServerError } from "@ps/application/http/builder/internalServerError.ts";
 
-export class FindUserControllerImpl implements FindUserController {
+export class FindUserControllerImpl {
     constructor(private readonly service: FindUserService) {}
 
     public async handle(

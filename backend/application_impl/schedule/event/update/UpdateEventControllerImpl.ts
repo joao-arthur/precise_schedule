@@ -1,7 +1,6 @@
 import type { Event } from "@ps/domain/schedule/event/Event.ts";
 import type { UpdateEventModel } from "@ps/domain/schedule/event/update/UpdateEventModel.ts";
 import type { UpdateEventService } from "@ps/domain/schedule/event/update/UpdateEventService.ts";
-import type { UpdateEventController } from "@ps/application/schedule/event/update/UpdateEventController.ts";
 import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
 import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
 import type { IdParam } from "@ps/application/http/IdParam.ts";
@@ -11,8 +10,7 @@ import { ok } from "@ps/application/http/builder/ok.ts";
 import { badRequest } from "@ps/application/http/builder/badRequest.ts";
 import { internalServerError } from "@ps/application/http/builder/internalServerError.ts";
 
-export class UpdateEventControllerImpl
-    implements UpdateEventController {
+export class UpdateEventControllerImpl {
     constructor(private readonly service: UpdateEventService) {}
 
     public async handle(

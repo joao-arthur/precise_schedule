@@ -1,6 +1,5 @@
 import type { CreateUserModel } from "@ps/domain/schedule/user/create/CreateUserModel.ts";
 import type { CreateUserService } from "@ps/domain/schedule/user/create/CreateUserService.ts";
-import type { CreateUserController } from "@ps/application/schedule/user/create/CreateUserController.ts";
 import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
 import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
 
@@ -9,8 +8,7 @@ import { badRequest } from "@ps/application/http/builder/badRequest.ts";
 import { internalServerError } from "@ps/application/http/builder/internalServerError.ts";
 import { created } from "@ps/application/http/builder/created.ts";
 
-export class CreateUserControllerImpl
-    implements CreateUserController {
+export class CreateUserControllerImpl {
     constructor(private readonly service: CreateUserService) {}
 
     public async handle(
