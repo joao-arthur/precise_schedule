@@ -1,15 +1,27 @@
 import type { HTTPRequest } from "../../application/http/HTTPRequest.ts";
 import { IdParam } from "../../application/http/IdParam.ts";
 
-export const httpRequestBodyMock = {
+type BodyMock = {
+    readonly body: any;
+};
+
+type FullMock = {
+    readonly body: any;
+    readonly params: IdParam<"id">;
+};
+
+export const httpRequestBodyMock: BodyMock = {
     body: {},
-} as HTTPRequest<any, never>;
+};
 
-export const httpRequestParamsMock = {
+export const httpRequestParamsMock: HTTPRequest<
+    undefined,
+    IdParam<"id">
+> = {
     params: { id: "id" },
-} as HTTPRequest<never, IdParam<"id">>;
+};
 
-export const httpRequestFullMock: HTTPRequest<any, IdParam<"id">> = {
+export const httpRequestFullMock: FullMock = {
     body: {},
     params: { id: "id" },
 };

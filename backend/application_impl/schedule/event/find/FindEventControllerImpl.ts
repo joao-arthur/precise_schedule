@@ -14,7 +14,7 @@ export class FindEventControllerImpl implements FindEventController {
     constructor(private readonly service: FindEventService) {}
 
     public async handle(
-        request: HTTPRequest<never, IdParam<Event["id"]>>,
+        request: HTTPRequest<undefined, IdParam<Event["id"]>>,
     ): Promise<HTTPResponse> {
         try {
             const result = await this.service.findById(

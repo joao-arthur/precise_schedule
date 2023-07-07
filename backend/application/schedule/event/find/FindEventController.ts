@@ -5,6 +5,6 @@ import type { IdParam } from "@ps/application/http/IdParam.ts";
 
 export type FindEventController = {
     readonly handle: (
-        request: HTTPRequest<never, IdParam<Event["id"]>>,
+        request: HTTPRequest<undefined, IdParam<Event["id"]>>,
     ) => Promise<HTTPResponse>;
 };

@@ -16,7 +16,7 @@ export class CreateDateEventControllerImpl
     ) {}
 
     public async handle(
-        request: HTTPRequest<CreateDateEvent, never>,
+        request: HTTPRequest<CreateDateEvent, undefined>,
     ): Promise<HTTPResponse> {
         try {
             await this.service.create(request.body);

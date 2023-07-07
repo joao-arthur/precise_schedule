@@ -4,6 +4,6 @@ import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
 
 export type CreateDateEventController = {
     readonly handle: (
-        request: HTTPRequest<CreateDateEvent, never>,
+        request: HTTPRequest<CreateDateEvent, undefined>,
     ) => Promise<HTTPResponse>;
 };

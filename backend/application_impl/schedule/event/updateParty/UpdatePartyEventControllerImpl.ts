@@ -1,3 +1,4 @@
+import type { Event } from "@ps/domain/schedule/event/Event.ts";
 import type { UpdatePartyEvent } from "@ps/domain/schedule/event/updateParty/UpdatePartyEvent.ts";
 import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
 import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
@@ -17,7 +18,7 @@ export class UpdatePartyEventControllerImpl
     ) {}
 
     public async handle(
-        request: HTTPRequest<UpdatePartyEvent, IdParam<string>>,
+        request: HTTPRequest<UpdatePartyEvent, IdParam<Event["id"]>>,
     ): Promise<HTTPResponse> {
         try {
             await this.service.update(

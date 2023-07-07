@@ -16,7 +16,7 @@ export class CreateBirthdayEventControllerImpl
     ) {}
 
     public async handle(
-        request: HTTPRequest<CreateBirthdayEvent, never>,
+        request: HTTPRequest<CreateBirthdayEvent, undefined>,
     ): Promise<HTTPResponse> {
         try {
             await this.service.create(request.body);

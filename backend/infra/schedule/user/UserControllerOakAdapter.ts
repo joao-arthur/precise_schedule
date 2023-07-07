@@ -1,10 +1,6 @@
-import type { LoginModel } from "../../../domain/schedule/user/login/LoginModel.ts";
-import type { CreateUserModel } from "@ps/domain/schedule/user/create/CreateUserModel.ts";
-import type { IdParam } from "@ps/application/http/IdParam.ts";
 import type { UserRepository } from "@ps/domain/schedule/user/UserRepository.ts";
 import type { IdGenerator } from "@ps/domain/generation/IdGenerator.ts";
 import type { Validator } from "@ps/domain/validation/Validator.ts";
-import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
 
 import { Router } from "oak/mod.ts";
 import { CreateUserServiceImpl } from "@ps/domain_impl/schedule/user/create/CreateUserServiceImpl.ts";
@@ -43,9 +39,9 @@ export class UserControllerOakAdapter {
                     type: "json",
                 })
                     .value;
-                const response = await createUserController.handle(
-                    { body } as HTTPRequest<CreateUserModel, never>,
-                );
+                const response = await createUserController.handle({
+                    body,
+                });
                 context.response.body = response.body;
                 context.response.status = response.status;
             })
@@ -66,9 +62,10 @@ export class UserControllerOakAdapter {
                 })
                     .value;
                 const params = { id: context.params.id };
-                const response = await updateUserController.handle(
-                    { body, params },
-                );
+                const response = await updateUserController.handle({
+                    body,
+                    params,
+                });
                 context.response.body = response.body;
                 context.response.status = response.status;
             })
@@ -83,7 +80,7 @@ export class UserControllerOakAdapter {
                     id: context.params.id,
                 };
                 const response = await findUserController.handle(
-                    { params } as HTTPRequest<never, IdParam<string>>,
+                    { params },
                 );
                 context.response.body = response.body;
                 context.response.status = response.status;
@@ -100,9 +97,9 @@ export class UserControllerOakAdapter {
                     type: "json",
                 })
                     .value;
-                const response = await loginController.handle(
-                    { body } as HTTPRequest<LoginModel, never>,
-                );
+                const response = await loginController.handle({
+                    body,
+                });
                 context.response.body = response.body;
                 context.response.status = response.status;
             });

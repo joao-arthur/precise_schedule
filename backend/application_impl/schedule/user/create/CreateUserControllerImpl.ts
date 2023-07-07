@@ -14,7 +14,7 @@ export class CreateUserControllerImpl
     constructor(private readonly service: CreateUserService) {}
 
     public async handle(
-        request: HTTPRequest<CreateUserModel, never>,
+        request: HTTPRequest<CreateUserModel, undefined>,
     ): Promise<HTTPResponse> {
         try {
             await this.service.create(request.body);

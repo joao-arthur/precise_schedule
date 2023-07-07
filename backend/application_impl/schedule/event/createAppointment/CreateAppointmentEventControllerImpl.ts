@@ -16,7 +16,7 @@ export class CreateAppointmentEventControllerImpl
     ) {}
 
     public async handle(
-        request: HTTPRequest<CreateAppointmentEvent, never>,
+        request: HTTPRequest<CreateAppointmentEvent, undefined>,
     ): Promise<HTTPResponse> {
         try {
             await this.service.create(request.body);

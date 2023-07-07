@@ -14,7 +14,7 @@ export class FindUserControllerImpl implements FindUserController {
     constructor(private readonly service: FindUserService) {}
 
     public async handle(
-        request: HTTPRequest<never, IdParam<User["id"]>>,
+        request: HTTPRequest<undefined, IdParam<User["id"]>>,
     ): Promise<HTTPResponse> {
         try {
             const result = await this.service.findById(

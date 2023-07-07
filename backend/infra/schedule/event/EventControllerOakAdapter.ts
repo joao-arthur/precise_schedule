@@ -1,10 +1,4 @@
-import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
 import type { EventRepository } from "@ps/domain/schedule/event/EventRepository.ts";
-import type { CreateAppointmentEvent } from "@ps/domain/schedule/event/createAppointment/CreateAppointmentEvent.ts";
-import type { CreateBirthdayEvent } from "@ps/domain/schedule/event/createBirthday/CreateBirthdayEvent.ts";
-import type { CreateDateEvent } from "@ps/domain/schedule/event/createDate/CreateDateEvent.ts";
-import type { CreateMeetingEvent } from "@ps/domain/schedule/event/createMeeting/CreateMeetingEvent.ts";
-import type { CreatePartyEvent } from "@ps/domain/schedule/event/createParty/CreatePartyEvent.ts";
 import type { IdGenerator } from "@ps/domain/generation/IdGenerator.ts";
 import type { Validator } from "@ps/domain/validation/Validator.ts";
 
@@ -77,12 +71,9 @@ export class EventControllerOakAdapter {
                 const body = await context.request.body({
                     type: "json",
                 }).value;
-                const response = await updateUserController.handle(
-                    { body } as HTTPRequest<
-                        CreateAppointmentEvent,
-                        never
-                    >,
-                );
+                const response = await updateUserController.handle({
+                    body,
+                });
                 context.response.body = response.body;
                 context.response.status = response.status;
             })
@@ -103,12 +94,9 @@ export class EventControllerOakAdapter {
                 const body = await context.request.body({
                     type: "json",
                 }).value;
-                const response = await updateUserController.handle(
-                    { body } as HTTPRequest<
-                        CreateBirthdayEvent,
-                        never
-                    >,
-                );
+                const response = await updateUserController.handle({
+                    body,
+                });
                 context.response.body = response.body;
                 context.response.status = response.status;
             })
@@ -129,12 +117,9 @@ export class EventControllerOakAdapter {
                 const body = await context.request.body({
                     type: "json",
                 }).value;
-                const response = await updateUserController.handle(
-                    { body } as HTTPRequest<
-                        CreateDateEvent,
-                        never
-                    >,
-                );
+                const response = await updateUserController.handle({
+                    body,
+                });
                 context.response.body = response.body;
                 context.response.status = response.status;
             })
@@ -155,12 +140,9 @@ export class EventControllerOakAdapter {
                 const body = await context.request.body({
                     type: "json",
                 }).value;
-                const response = await updateUserController.handle(
-                    { body } as HTTPRequest<
-                        CreateMeetingEvent,
-                        never
-                    >,
-                );
+                const response = await updateUserController.handle({
+                    body,
+                });
                 context.response.body = response.body;
                 context.response.status = response.status;
             })
@@ -181,12 +163,9 @@ export class EventControllerOakAdapter {
                 const body = await context.request.body({
                     type: "json",
                 }).value;
-                const response = await updateUserController.handle(
-                    { body } as HTTPRequest<
-                        CreatePartyEvent,
-                        never
-                    >,
-                );
+                const response = await updateUserController.handle({
+                    body,
+                });
                 context.response.body = response.body;
                 context.response.status = response.status;
             })

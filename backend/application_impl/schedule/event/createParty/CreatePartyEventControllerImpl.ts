@@ -16,7 +16,7 @@ export class CreatePartyEventControllerImpl
     ) {}
 
     public async handle(
-        request: HTTPRequest<CreatePartyEvent, never>,
+        request: HTTPRequest<CreatePartyEvent, undefined>,
     ): Promise<HTTPResponse> {
         try {
             await this.service.create(request.body);

@@ -13,7 +13,7 @@ export class LoginControllerImpl implements LoginController {
     constructor(private readonly service: LoginService) {}
 
     public async handle(
-        request: HTTPRequest<LoginModel, never>,
+        request: HTTPRequest<LoginModel, undefined>,
     ): Promise<HTTPResponse> {
         try {
             const result = await this.service.login(request.body);
