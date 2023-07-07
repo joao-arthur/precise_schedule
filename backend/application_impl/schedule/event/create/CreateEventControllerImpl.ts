@@ -13,9 +13,7 @@ export class CreateEventControllerImpl {
 
     public async handle(
         request: HTTPRequest<CreateEventModel, never>,
-    ): Promise<
-        HTTPResponse
-    > {
+    ): Promise<HTTPResponse> {
         try {
             const result = await this.service.create(request.body);
             return ok(result);
