@@ -11,7 +11,7 @@ export class CreatePartyEventFactoryImpl
             begin: event.begin,
             end: event.end,
             category: "PARTY",
-            frequency: "1_Y",
+            frequency: "NEVER",
             weekendRepeat: false,
         };
     }

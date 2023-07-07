@@ -11,7 +11,7 @@ export class CreateDateEventFactoryImpl
             begin: event.begin,
             end: event.end,
             category: "DATE",
-            frequency: "1_Y",
+            frequency: "NEVER",
             weekendRepeat: false,
         };
     }
