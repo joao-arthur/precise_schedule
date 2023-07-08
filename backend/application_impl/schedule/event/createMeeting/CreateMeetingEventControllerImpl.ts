@@ -15,7 +15,7 @@ export class CreateMeetingEventControllerImpl
     ) {}
 
     public handle(
-        request: HTTPRequest<CreateMeetingEvent, undefined>,
+        request: HTTPRequest<CreateMeetingEvent>,
     ): Promise<HTTPResponse> {
         return errorHandler(async () => {
             await this.createMeetingEventService.create(request.body);

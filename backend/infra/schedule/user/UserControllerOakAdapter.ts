@@ -14,6 +14,7 @@ import { CreateUserControllerImpl } from "@ps/application_impl/schedule/user/cre
 import { UpdateUserControllerImpl } from "@ps/application_impl/schedule/user/update/UpdateUserControllerImpl.ts";
 import { FindUserControllerImpl } from "@ps/application_impl/schedule/user/find/FindUserControllerImpl.ts";
 import { LoginControllerImpl } from "@ps/application_impl/schedule/user/login/LoginControllerImpl.ts";
+import { CreateSessionServiceJWTAdapter } from "@ps/infra/session/create/CreateSessionServiceJWTAdapter.ts";
 
 export class UserControllerOakAdapter {
     constructor(
@@ -89,6 +90,7 @@ export class UserControllerOakAdapter {
                 const loginServiceImpl = new LoginServiceImpl(
                     this.validator,
                     new FindUserServiceImpl(this.repository),
+                    new CreateSessionServiceJWTAdapter(),
                 );
                 const loginController = new LoginControllerImpl(
                     loginServiceImpl,

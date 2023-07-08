@@ -14,7 +14,7 @@ export class CreateUserControllerImpl
     ) {}
 
     public handle(
-        request: HTTPRequest<CreateUserModel, undefined>,
+        request: HTTPRequest<CreateUserModel>,
     ): Promise<HTTPResponse> {
         return errorHandler(async () => {
             await this.createUserService.create(request.body);

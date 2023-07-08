@@ -4,6 +4,6 @@ import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
 
 export type LoginController = {
     readonly handle: (
-        request: HTTPRequest<LoginModel, undefined>,
+        request: HTTPRequest<LoginModel>,
     ) => Promise<HTTPResponse>;
 };

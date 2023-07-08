@@ -170,7 +170,6 @@ export class EventControllerOakAdapter {
                 context.response.status = response.status;
             })
             .put("/event/APPOINTMENT/:id", async (context) => {
-                //204 no content
                 const updateEventService = new UpdateEventServiceImpl(
                     this.repository,
                     new UpdateEventFactoryImpl(),
@@ -197,7 +196,6 @@ export class EventControllerOakAdapter {
                 context.response.status = response.status;
             })
             .put("/event/BIRTHDAY/:id", async (context) => {
-                //204 no content
                 const updateEventService = new UpdateEventServiceImpl(
                     this.repository,
                     new UpdateEventFactoryImpl(),
@@ -224,7 +222,6 @@ export class EventControllerOakAdapter {
                 context.response.status = response.status;
             })
             .put("/event/DATE/:id", async (context) => {
-                //204 no content
                 const updateEventService = new UpdateEventServiceImpl(
                     this.repository,
                     new UpdateEventFactoryImpl(),
@@ -251,7 +248,6 @@ export class EventControllerOakAdapter {
                 context.response.status = response.status;
             })
             .put("/event/MEETING/:id", async (context) => {
-                //204 no content
                 const updateEventService = new UpdateEventServiceImpl(
                     this.repository,
                     new UpdateEventFactoryImpl(),
@@ -278,7 +274,6 @@ export class EventControllerOakAdapter {
                 context.response.status = response.status;
             })
             .put("/event/PARTY/:id", async (context) => {
-                //204 no content
                 const updateEventService = new UpdateEventServiceImpl(
                     this.repository,
                     new UpdateEventFactoryImpl(),

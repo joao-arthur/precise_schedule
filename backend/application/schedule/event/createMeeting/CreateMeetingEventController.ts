@@ -4,6 +4,6 @@ import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
 
 export type CreateMeetingEventController = {
     readonly handle: (
-        request: HTTPRequest<CreateMeetingEvent, undefined>,
+        request: HTTPRequest<CreateMeetingEvent>,
     ) => Promise<HTTPResponse>;
 };

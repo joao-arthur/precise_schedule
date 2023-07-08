@@ -11,7 +11,7 @@ export class LoginControllerImpl implements LoginController {
     constructor(private readonly loginService: LoginService) {}
 
     public handle(
-        request: HTTPRequest<LoginModel, undefined>,
+        request: HTTPRequest<LoginModel>,
     ): Promise<HTTPResponse> {
         return errorHandler(async () => {
             const result = await this.loginService.login(
