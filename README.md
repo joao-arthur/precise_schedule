@@ -18,7 +18,7 @@ amount of abstraction.
 - User
   - Register
   - Login
-  - Email notification by browser
+  - Event notification by browser
 - Calendar
   - Scroll months
   - Total events on each day cell
