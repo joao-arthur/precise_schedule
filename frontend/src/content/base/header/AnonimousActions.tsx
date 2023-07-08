@@ -9,12 +9,12 @@ export function AnonimousActions() {
         <>
             <If condition={pathname !== "/signin"}>
                 <LinkButton to="/signin">
-                    Sign in
+                    SIGN IN
                 </LinkButton>
             </If>
             <If condition={pathname !== "/signup"}>
                 <LinkButton to="/signup">
-                    Sign up
+                    SIGN UP
                 </LinkButton>
             </If>
         </>

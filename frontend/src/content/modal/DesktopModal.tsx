@@ -30,11 +30,14 @@ export function DesktopModal({
             >
                 <div
                     className={clss(
-                        "p-3 text-2xl",
-                        "border-b border-gray-300 dark:border-gray-500",
+                        "py-5 px-7 text-2xl",
+                        "bg-primary",
+                        "shadow-sm shadow-gray-500",
                     )}
                 >
-                    <Text className="select-none m-0">{title}</Text>
+                    <Text className="select-none m-0 text-white">
+                        {title}
+                    </Text>
                 </div>
                 <div className="flex-1 overflow-auto p-3">
                     {children}

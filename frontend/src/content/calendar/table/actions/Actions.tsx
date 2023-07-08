@@ -12,9 +12,9 @@ export function Actions() {
 
     return (
         <div className="absolute right-12 bottom-16">
-            <div className="flex flex-col items-center gap-4">
+            <div className="flex flex-col items-center gap-6">
                 <If condition={open}>
-                    <div className="flex flex-col items-end gap-4">
+                    <div className="flex flex-col items-end gap-5">
                         <AppointmentAction />
                         <BirthdayAction />
                         <DateAction />

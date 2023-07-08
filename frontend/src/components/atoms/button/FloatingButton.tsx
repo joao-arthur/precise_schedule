@@ -11,7 +11,10 @@ export function FloatingButton({ className, icon, onClick }: props) {
     return (
         <button
             onClick={onClick}
-            className="rounded-full bg-primary active:bg-primary-dark shadow-gray-800 shadow-md"
+            className={clss(
+                "rounded-full bg-primary active:bg-primary-dark",
+                "shadow-sm shadow-gray-800",
+            )}
         >
             <Icon
                 name={icon}

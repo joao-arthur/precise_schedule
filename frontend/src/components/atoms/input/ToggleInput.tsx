@@ -24,7 +24,7 @@ type props = forwardedProps & {
 
 function ToggleInputComp({ forwardedRef, ...props }: props) {
     return (
-        <label className="relative inline-block w-16 h-8">
+        <label className="relative inline-block w-20 h-10">
             <input
                 {...props}
                 ref={forwardedRef}
@@ -39,21 +39,18 @@ function ToggleInputComp({ forwardedRef, ...props }: props) {
                     "bg-gray-300 dark:bg-dark-lighter",
                     "transition-all duration-500",
                     //
-                    "disabled:bg-gray-200 dark:disabled:bg-dark-light",
-                    "before:top-[3px]",
-                    //
                     "before:absolute",
-                    "before:h-6",
-                    "before:w-6",
+                    "before:h-7 before:w-7",
+                    "before:top-[5px]",
+                    "before:left-[6px]",
                     "before:bg-white",
                     "before:rounded-full",
-                    "before:left-1",
                     "before:transition-all before:duration-500",
                     //
                     "peer-disabled:before:bg-gray-200 peer-disabled:bg-gray-200",
                     "peer-disabled:before:dark:bg-dark-lighter peer-disabled:dark:bg-dark-lighter",
                     "peer-checked:bg-primary peer-checked:border-primary",
-                    "peer-checked:before:left-8",
+                    "peer-checked:before:left-[45px]",
                 )}
             />
         </label>

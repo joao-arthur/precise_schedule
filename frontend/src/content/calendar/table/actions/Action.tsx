@@ -10,10 +10,10 @@ type props = {
 
 export function Action({ title, icon, onClick }: props) {
     return (
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-5">
             <FilledText>{title}</FilledText>
             <FloatingButton
-                className="w-16 h-16"
+                className="w-14 h-14"
                 icon={icon}
                 onClick={onClick}
             />

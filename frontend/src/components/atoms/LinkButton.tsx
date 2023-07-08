@@ -1,3 +1,4 @@
+import clss from "classnames";
 import type { ReactNode } from "react";
 import BaseLink from "next/link";
 
@@ -10,7 +11,12 @@ export function LinkButton({ to, children }: props) {
     return (
         <BaseLink
             href={to}
-            className="text-white border-none cursor-pointer font-semibold px-2 text hover:text-gray-200"
+            className={clss(
+                "border-none cursor-pointer py-1 px-2",
+                "text-white rounded",
+                "hover:bg-primary dark:hover:bg-primary-dark",
+                "transition-colors duration-500",
+            )}
         >
             {children}
         </BaseLink>
