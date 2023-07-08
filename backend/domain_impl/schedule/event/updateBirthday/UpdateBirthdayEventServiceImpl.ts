@@ -1,11 +1,13 @@
 import type { Event } from "@ps/domain/schedule/event/Event.ts";
 import type { UpdateEventService } from "@ps/domain/schedule/event/update/UpdateEventService.ts";
 import type { UpdateBirthdayEvent } from "@ps/domain/schedule/event/updateBirthday/UpdateBirthdayEvent.ts";
-import type { UpdateBirthdayEventFactoryImpl } from "../updateBirthday/UpdateBirthdayEventFactoryImpl.ts";
+import type { UpdateBirthdayEventFactory } from "@ps/domain/schedule/event/updateBirthday/UpdateBirthdayEventFactory.ts";
+import type { UpdateBirthdayEventService } from "@ps/domain/schedule/event/updateBirthday/UpdateBirthdayEventService.ts";
 
-export class UpdateBirthdayEventServiceImpl {
+export class UpdateBirthdayEventServiceImpl
+    implements UpdateBirthdayEventService {
     constructor(
-        private readonly factory: UpdateBirthdayEventFactoryImpl,
+        private readonly factory: UpdateBirthdayEventFactory,
         private readonly service: UpdateEventService,
     ) {}
 

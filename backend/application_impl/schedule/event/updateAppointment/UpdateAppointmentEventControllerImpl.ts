@@ -1,5 +1,6 @@
 import type { Event } from "@ps/domain/schedule/event/Event.ts";
 import type { UpdateAppointmentEvent } from "@ps/domain/schedule/event/updateAppointment/UpdateAppointmentEvent.ts";
+import type { UpdateAppointmentEventService } from "@ps/domain/schedule/event/updateAppointment/UpdateAppointmentEventService.ts";
 import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
 import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
 import type { IdParam } from "@ps/application/http/IdParam.ts";
@@ -9,12 +10,11 @@ import { ValidationError } from "@ps/domain/validation/ValidationError.ts";
 import { noContent } from "@ps/application/http/builder/noContent.ts";
 import { badRequest } from "@ps/application/http/builder/badRequest.ts";
 import { internalServerError } from "@ps/application/http/builder/internalServerError.ts";
-import { UpdateAppointmentEventServiceImpl } from "@ps/domain_impl/schedule/event/updateAppointment/UpdateAppointmentEventServiceImpl.ts";
 
 export class UpdateAppointmentEventControllerImpl
     implements UpdateAppointmentEventController {
     constructor(
-        private readonly service: UpdateAppointmentEventServiceImpl,
+        private readonly service: UpdateAppointmentEventService,
     ) {}
 
     public async handle(

@@ -1,11 +1,13 @@
 import type { Event } from "@ps/domain/schedule/event/Event.ts";
 import type { CreateEventService } from "@ps/domain/schedule/event/create/CreateEventService.ts";
 import type { CreateDateEvent } from "@ps/domain/schedule/event/createDate/CreateDateEvent.ts";
-import type { CreateDateEventFactoryImpl } from "../createDate/CreateDateEventFactoryImpl.ts";
+import type { CreateDateEventFactory } from "@ps/domain/schedule/event/createDate/CreateDateEventFactory.ts";
+import type { CreateDateEventService } from "@ps/domain/schedule/event/createDate/CreateDateEventService.ts";
 
-export class CreateDateEventServiceImpl {
+export class CreateDateEventServiceImpl
+    implements CreateDateEventService {
     constructor(
-        private readonly factory: CreateDateEventFactoryImpl,
+        private readonly factory: CreateDateEventFactory,
         private readonly service: CreateEventService,
     ) {}
 
