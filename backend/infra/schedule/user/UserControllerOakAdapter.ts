@@ -16,6 +16,10 @@ import { FindUserControllerImpl } from "@ps/application_impl/schedule/user/find/
 import { LoginControllerImpl } from "@ps/application_impl/schedule/user/login/LoginControllerImpl.ts";
 import { CreateSessionServiceJWTAdapter } from "@ps/infra/session/create/CreateSessionServiceJWTAdapter.ts";
 
+import { SessionMiddlewareImpl } from "@ps/application_impl/http/middleware/SessionMiddlewareImpl.ts";
+import { ValidateUserSessionServiceImpl } from "@ps/domain_impl/schedule/userSession/ValidateUserSessionServiceImpl.ts";
+import { DecodeSessionServiceJWTAdapter } from "@ps/infra/session/decode/DecodeSessionServiceJWTAdapter.ts";
+
 export class UserControllerOakAdapter {
     constructor(
         private readonly idGenerator: IdGenerator,
@@ -30,6 +34,7 @@ export class UserControllerOakAdapter {
                     this.repository,
                     new UniqueInfoServiceImpl(this.repository),
                     new CreateUserFactoryImpl(this.idGenerator),
+                    new CreateSessionServiceJWTAdapter(),
                     this.validator,
                 );
                 const createUserController =
@@ -47,6 +52,18 @@ export class UserControllerOakAdapter {
                 context.response.status = response.status;
             })
             .put("/user/:id", async (context) => {
+                new SessionMiddlewareImpl(
+                    new ValidateUserSessionServiceImpl(
+                        new FindUserServiceImpl(this.repository),
+                        new DecodeSessionServiceJWTAdapter(),
+                    ),
+                ).handle({
+                    headers: {
+                        Authorization: context.request.headers.get(
+                            "Authorization",
+                        ),
+                    },
+                });
                 const updateUserService = new UpdateUserServiceImpl(
                     this.repository,
                     new UniqueInfoServiceImpl(this.repository),
@@ -71,6 +88,18 @@ export class UserControllerOakAdapter {
                 context.response.status = response.status;
             })
             .get("/user/:id", async (context) => {
+                new SessionMiddlewareImpl(
+                    new ValidateUserSessionServiceImpl(
+                        new FindUserServiceImpl(this.repository),
+                        new DecodeSessionServiceJWTAdapter(),
+                    ),
+                ).handle({
+                    headers: {
+                        Authorization: context.request.headers.get(
+                            "Authorization",
+                        ),
+                    },
+                });
                 const findUserService = new FindUserServiceImpl(
                     this.repository,
                 );

@@ -41,11 +41,18 @@ import { UpdateDateEventControllerImpl } from "@ps/application_impl/schedule/eve
 import { UpdateMeetingEventControllerImpl } from "@ps/application_impl/schedule/event/updateMeeting/UpdateMeetingEventControllerImpl.ts";
 import { UpdatePartyEventControllerImpl } from "@ps/application_impl/schedule/event/updateParty/UpdatePartyEventControllerImpl.ts";
 
+import type { UserRepository } from "@ps/domain/schedule/user/UserRepository.ts";
+import { FindUserServiceImpl } from "@ps/domain_impl/schedule/user/find/FindUserServiceImpl.ts";
+import { SessionMiddlewareImpl } from "@ps/application_impl/http/middleware/SessionMiddlewareImpl.ts";
+import { ValidateUserSessionServiceImpl } from "@ps/domain_impl/schedule/userSession/ValidateUserSessionServiceImpl.ts";
+import { DecodeSessionServiceJWTAdapter } from "@ps/infra/session/decode/DecodeSessionServiceJWTAdapter.ts";
+
 export class EventControllerOakAdapter {
     constructor(
         private readonly idGenerator: IdGenerator,
         private readonly validator: Validator,
         private readonly repository: EventRepository,
+        private readonly userRepository: UserRepository,
     ) {}
 
     public initRoutes(router: Router<Record<string, any>>): void {
@@ -55,6 +62,18 @@ export class EventControllerOakAdapter {
             //    await eventControllerAdapter.getEvents(context);
             //})
             .post("/event/APPOINTMENT", async (context) => {
+                new SessionMiddlewareImpl(
+                    new ValidateUserSessionServiceImpl(
+                        new FindUserServiceImpl(this.userRepository),
+                        new DecodeSessionServiceJWTAdapter(),
+                    ),
+                ).handle({
+                    headers: {
+                        Authorization: context.request.headers.get(
+                            "Authorization",
+                        ),
+                    },
+                });
                 const createEventService = new CreateEventServiceImpl(
                     this.repository,
                     new CreateEventFactoryImpl(this.idGenerator),
@@ -78,6 +97,18 @@ export class EventControllerOakAdapter {
                 context.response.status = response.status;
             })
             .post("/event/BIRTHDAY", async (context) => {
+                new SessionMiddlewareImpl(
+                    new ValidateUserSessionServiceImpl(
+                        new FindUserServiceImpl(this.userRepository),
+                        new DecodeSessionServiceJWTAdapter(),
+                    ),
+                ).handle({
+                    headers: {
+                        Authorization: context.request.headers.get(
+                            "Authorization",
+                        ),
+                    },
+                });
                 const createEventService = new CreateEventServiceImpl(
                     this.repository,
                     new CreateEventFactoryImpl(this.idGenerator),
@@ -101,6 +132,18 @@ export class EventControllerOakAdapter {
                 context.response.status = response.status;
             })
             .post("/event/DATE", async (context) => {
+                new SessionMiddlewareImpl(
+                    new ValidateUserSessionServiceImpl(
+                        new FindUserServiceImpl(this.userRepository),
+                        new DecodeSessionServiceJWTAdapter(),
+                    ),
+                ).handle({
+                    headers: {
+                        Authorization: context.request.headers.get(
+                            "Authorization",
+                        ),
+                    },
+                });
                 const createEventService = new CreateEventServiceImpl(
                     this.repository,
                     new CreateEventFactoryImpl(this.idGenerator),
@@ -124,6 +167,18 @@ export class EventControllerOakAdapter {
                 context.response.status = response.status;
             })
             .post("/event/MEETING", async (context) => {
+                new SessionMiddlewareImpl(
+                    new ValidateUserSessionServiceImpl(
+                        new FindUserServiceImpl(this.userRepository),
+                        new DecodeSessionServiceJWTAdapter(),
+                    ),
+                ).handle({
+                    headers: {
+                        Authorization: context.request.headers.get(
+                            "Authorization",
+                        ),
+                    },
+                });
                 const createEventService = new CreateEventServiceImpl(
                     this.repository,
                     new CreateEventFactoryImpl(this.idGenerator),
@@ -147,6 +202,18 @@ export class EventControllerOakAdapter {
                 context.response.status = response.status;
             })
             .post("/event/PARTY", async (context) => {
+                new SessionMiddlewareImpl(
+                    new ValidateUserSessionServiceImpl(
+                        new FindUserServiceImpl(this.userRepository),
+                        new DecodeSessionServiceJWTAdapter(),
+                    ),
+                ).handle({
+                    headers: {
+                        Authorization: context.request.headers.get(
+                            "Authorization",
+                        ),
+                    },
+                });
                 const createEventService = new CreateEventServiceImpl(
                     this.repository,
                     new CreateEventFactoryImpl(this.idGenerator),
@@ -170,6 +237,18 @@ export class EventControllerOakAdapter {
                 context.response.status = response.status;
             })
             .put("/event/APPOINTMENT/:id", async (context) => {
+                new SessionMiddlewareImpl(
+                    new ValidateUserSessionServiceImpl(
+                        new FindUserServiceImpl(this.userRepository),
+                        new DecodeSessionServiceJWTAdapter(),
+                    ),
+                ).handle({
+                    headers: {
+                        Authorization: context.request.headers.get(
+                            "Authorization",
+                        ),
+                    },
+                });
                 const updateEventService = new UpdateEventServiceImpl(
                     this.repository,
                     new UpdateEventFactoryImpl(),
@@ -196,6 +275,18 @@ export class EventControllerOakAdapter {
                 context.response.status = response.status;
             })
             .put("/event/BIRTHDAY/:id", async (context) => {
+                new SessionMiddlewareImpl(
+                    new ValidateUserSessionServiceImpl(
+                        new FindUserServiceImpl(this.userRepository),
+                        new DecodeSessionServiceJWTAdapter(),
+                    ),
+                ).handle({
+                    headers: {
+                        Authorization: context.request.headers.get(
+                            "Authorization",
+                        ),
+                    },
+                });
                 const updateEventService = new UpdateEventServiceImpl(
                     this.repository,
                     new UpdateEventFactoryImpl(),
@@ -222,6 +313,18 @@ export class EventControllerOakAdapter {
                 context.response.status = response.status;
             })
             .put("/event/DATE/:id", async (context) => {
+                new SessionMiddlewareImpl(
+                    new ValidateUserSessionServiceImpl(
+                        new FindUserServiceImpl(this.userRepository),
+                        new DecodeSessionServiceJWTAdapter(),
+                    ),
+                ).handle({
+                    headers: {
+                        Authorization: context.request.headers.get(
+                            "Authorization",
+                        ),
+                    },
+                });
                 const updateEventService = new UpdateEventServiceImpl(
                     this.repository,
                     new UpdateEventFactoryImpl(),
@@ -248,6 +351,18 @@ export class EventControllerOakAdapter {
                 context.response.status = response.status;
             })
             .put("/event/MEETING/:id", async (context) => {
+                new SessionMiddlewareImpl(
+                    new ValidateUserSessionServiceImpl(
+                        new FindUserServiceImpl(this.userRepository),
+                        new DecodeSessionServiceJWTAdapter(),
+                    ),
+                ).handle({
+                    headers: {
+                        Authorization: context.request.headers.get(
+                            "Authorization",
+                        ),
+                    },
+                });
                 const updateEventService = new UpdateEventServiceImpl(
                     this.repository,
                     new UpdateEventFactoryImpl(),
@@ -274,6 +389,18 @@ export class EventControllerOakAdapter {
                 context.response.status = response.status;
             })
             .put("/event/PARTY/:id", async (context) => {
+                new SessionMiddlewareImpl(
+                    new ValidateUserSessionServiceImpl(
+                        new FindUserServiceImpl(this.userRepository),
+                        new DecodeSessionServiceJWTAdapter(),
+                    ),
+                ).handle({
+                    headers: {
+                        Authorization: context.request.headers.get(
+                            "Authorization",
+                        ),
+                    },
+                });
                 const updateEventService = new UpdateEventServiceImpl(
                     this.repository,
                     new UpdateEventFactoryImpl(),

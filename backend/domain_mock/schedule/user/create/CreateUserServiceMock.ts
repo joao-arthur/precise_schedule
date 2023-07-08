@@ -1,10 +1,10 @@
-import type { User } from "@ps/domain/schedule/user/User.ts";
+import type { Session } from "@ps/domain/session/Session.ts";
 import type { CreateUserService } from "@ps/domain/schedule/user/create/CreateUserService.ts";
 
 export class CreateUserServiceMock implements CreateUserService {
-    constructor(private readonly user: User) {}
+    constructor(private readonly session: Session) {}
 
-    public create(): Promise<User> {
-        return Promise.resolve(this.user);
+    public create(): Promise<Session> {
+        return Promise.resolve(this.session);
     }
 }

@@ -27,6 +27,7 @@ const eventControllerAdapter = new EventControllerOakAdapter(
     idGenerator,
     validator,
     eventRepository,
+    userRepository,
 );
 
 const router = new Router();
