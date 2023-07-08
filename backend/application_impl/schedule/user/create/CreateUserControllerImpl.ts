@@ -11,13 +11,15 @@ import { created } from "@ps/application/http/builder/created.ts";
 
 export class CreateUserControllerImpl
     implements CreateUserController {
-    constructor(private readonly service: CreateUserService) {}
+    constructor(
+        private readonly createUserService: CreateUserService,
+    ) {}
 
     public async handle(
         request: HTTPRequest<CreateUserModel, undefined>,
     ): Promise<HTTPResponse> {
         try {
-            await this.service.create(request.body);
+            await this.createUserService.create(request.body);
             return created();
         } catch (e: unknown) {
             if (e instanceof ValidationError) {

@@ -14,14 +14,15 @@ import { internalServerError } from "@ps/application/http/builder/internalServer
 export class UpdatePartyEventControllerImpl
     implements UpdatePartyEventController {
     constructor(
-        private readonly service: UpdatePartyEventService,
+        private readonly updatePartyEventService:
+            UpdatePartyEventService,
     ) {}
 
     public async handle(
         request: HTTPRequest<UpdatePartyEvent, IdParam<Event["id"]>>,
     ): Promise<HTTPResponse> {
         try {
-            await this.service.update(
+            await this.updatePartyEventService.update(
                 request.params.id,
                 request.body,
             );

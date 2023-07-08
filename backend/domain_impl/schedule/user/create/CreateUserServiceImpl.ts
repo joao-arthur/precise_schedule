@@ -11,14 +11,14 @@ import { CreateUserFactory } from "@ps/domain/schedule/user/create/CreateUserFac
 export class CreateUserServiceImpl implements CreateUserService {
     constructor(
         private readonly repository: CreateUserRepository,
-        private readonly unique: UniqueInfoService,
+        private readonly uniqueInfoService: UniqueInfoService,
         private readonly factory: CreateUserFactory,
         private readonly validator: Validator,
     ) {}
 
     public async create(user: CreateUserModel): Promise<User> {
         this.validator.validate(user, createUserValidation);
-        await this.unique.validateNew(user);
+        await this.uniqueInfoService.validateNew(user);
         const buildedUser = this.factory.build(user);
         await this.repository.create(buildedUser);
         return buildedUser;

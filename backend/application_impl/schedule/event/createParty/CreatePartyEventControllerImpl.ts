@@ -12,14 +12,15 @@ import { internalServerError } from "@ps/application/http/builder/internalServer
 export class CreatePartyEventControllerImpl
     implements CreatePartyEventController {
     constructor(
-        private readonly service: CreatePartyEventService,
+        private readonly createPartyEventService:
+            CreatePartyEventService,
     ) {}
 
     public async handle(
         request: HTTPRequest<CreatePartyEvent, undefined>,
     ): Promise<HTTPResponse> {
         try {
-            await this.service.create(request.body);
+            await this.createPartyEventService.create(request.body);
             return created();
         } catch (e: unknown) {
             if (e instanceof ValidationError) {

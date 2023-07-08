@@ -14,7 +14,8 @@ import { internalServerError } from "@ps/application/http/builder/internalServer
 export class UpdateBirthdayEventControllerImpl
     implements UpdateBirthdayEventController {
     constructor(
-        private readonly service: UpdateBirthdayEventService,
+        private readonly updateBirthdayEventService:
+            UpdateBirthdayEventService,
     ) {}
 
     public async handle(
@@ -24,7 +25,7 @@ export class UpdateBirthdayEventControllerImpl
         >,
     ): Promise<HTTPResponse> {
         try {
-            await this.service.update(
+            await this.updateBirthdayEventService.update(
                 request.params.id,
                 request.body,
             );

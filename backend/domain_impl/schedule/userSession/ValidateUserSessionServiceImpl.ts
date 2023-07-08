@@ -8,14 +8,16 @@ import { InvalidSessionError } from "@ps/domain/session/InvalidSessionError.ts";
 export class ValidateUserSessionServiceImpl
     implements ValidateUserSessionService {
     constructor(
-        private readonly findUser: FindUserService,
-        private readonly decodeSession: DecodeSessionService,
+        private readonly findUserService: FindUserService,
+        private readonly decodeSessionService: DecodeSessionService,
     ) {}
 
     public async validate(session: Session): Promise<void> {
-        const userId = await this.decodeSession.decode(session);
+        const userId = await this.decodeSessionService.decode(
+            session,
+        );
         try {
-            const existingUser = await this.findUser.findById(userId);
+            await this.findUserService.findById(userId);
         } catch {
             throw new InvalidSessionError();
         }

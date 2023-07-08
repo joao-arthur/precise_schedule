@@ -11,13 +11,13 @@ import { badRequest } from "@ps/application/http/builder/badRequest.ts";
 import { internalServerError } from "@ps/application/http/builder/internalServerError.ts";
 
 export class FindUserControllerImpl implements FindUserController {
-    constructor(private readonly service: FindUserService) {}
+    constructor(private readonly findUserService: FindUserService) {}
 
     public async handle(
         request: HTTPRequest<undefined, IdParam<User["id"]>>,
     ): Promise<HTTPResponse> {
         try {
-            const result = await this.service.findById(
+            const result = await this.findUserService.findById(
                 request.params.id,
             );
             return ok(result);

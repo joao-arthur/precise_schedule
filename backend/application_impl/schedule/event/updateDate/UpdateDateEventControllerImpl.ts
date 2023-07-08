@@ -14,14 +14,15 @@ import { internalServerError } from "@ps/application/http/builder/internalServer
 export class UpdateDateEventControllerImpl
     implements UpdateDateEventController {
     constructor(
-        private readonly service: UpdateDateEventService,
+        private readonly updateDateEventService:
+            UpdateDateEventService,
     ) {}
 
     public async handle(
         request: HTTPRequest<UpdateDateEvent, IdParam<Event["id"]>>,
     ): Promise<HTTPResponse> {
         try {
-            await this.service.update(
+            await this.updateDateEventService.update(
                 request.params.id,
                 request.body,
             );

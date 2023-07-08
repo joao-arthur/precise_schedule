@@ -11,13 +11,15 @@ import { badRequest } from "@ps/application/http/builder/badRequest.ts";
 import { internalServerError } from "@ps/application/http/builder/internalServerError.ts";
 
 export class FindEventControllerImpl implements FindEventController {
-    constructor(private readonly service: FindEventService) {}
+    constructor(
+        private readonly findEventService: FindEventService,
+    ) {}
 
     public async handle(
         request: HTTPRequest<undefined, IdParam<Event["id"]>>,
     ): Promise<HTTPResponse> {
         try {
-            const result = await this.service.findById(
+            const result = await this.findEventService.findById(
                 request.params.id,
             );
             return ok(result);

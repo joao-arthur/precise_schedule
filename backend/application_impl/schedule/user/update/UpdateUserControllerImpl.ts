@@ -13,13 +13,15 @@ import { noContent } from "@ps/application/http/builder/noContent.ts";
 
 export class UpdateUserControllerImpl
     implements UpdateUserController {
-    constructor(private readonly service: UpdateUserService) {}
+    constructor(
+        private readonly updateUserService: UpdateUserService,
+    ) {}
 
     public async handle(
         request: HTTPRequest<UpdateUserModel, IdParam<User["id"]>>,
     ): Promise<HTTPResponse> {
         try {
-            await this.service.update(
+            await this.updateUserService.update(
                 request.params.id,
                 request.body,
             );

@@ -12,10 +12,10 @@ import { updateUserValidation } from "@ps/domain/schedule/user/update/updateUser
 export class UpdateUserServiceImpl implements UpdateUserService {
     constructor(
         private readonly repository: UpdateUserRepository,
-        private readonly unique: UniqueInfoService,
+        private readonly uniqueInfoService: UniqueInfoService,
         private readonly factory: UpdateUserFactory,
         private readonly validator: Validator,
-        private readonly findService: FindUserService,
+        private readonly findUserService: FindUserService,
     ) {}
 
     public async update(
@@ -23,8 +23,11 @@ export class UpdateUserServiceImpl implements UpdateUserService {
         user: UpdateUserModel,
     ): Promise<User> {
         this.validator.validate(user, updateUserValidation);
-        const existingUser = await this.findService.findById(id);
-        await this.unique.validateExisting(user, existingUser);
+        const existingUser = await this.findUserService.findById(id);
+        await this.uniqueInfoService.validateExisting(
+            user,
+            existingUser,
+        );
         const userToUpdate = this.factory.build(user, id);
         await this.repository.update(userToUpdate);
         return userToUpdate;

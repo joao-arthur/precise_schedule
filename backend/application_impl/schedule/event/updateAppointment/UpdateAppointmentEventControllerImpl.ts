@@ -14,7 +14,8 @@ import { internalServerError } from "@ps/application/http/builder/internalServer
 export class UpdateAppointmentEventControllerImpl
     implements UpdateAppointmentEventController {
     constructor(
-        private readonly service: UpdateAppointmentEventService,
+        private readonly updateAppointmentEventService:
+            UpdateAppointmentEventService,
     ) {}
 
     public async handle(
@@ -24,7 +25,7 @@ export class UpdateAppointmentEventControllerImpl
         >,
     ): Promise<HTTPResponse> {
         try {
-            await this.service.update(
+            await this.updateAppointmentEventService.update(
                 request.params.id,
                 request.body,
             );

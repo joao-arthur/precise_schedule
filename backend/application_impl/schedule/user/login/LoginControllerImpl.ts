@@ -10,13 +10,15 @@ import { badRequest } from "@ps/application/http/builder/badRequest.ts";
 import { internalServerError } from "@ps/application/http/builder/internalServerError.ts";
 
 export class LoginControllerImpl implements LoginController {
-    constructor(private readonly service: LoginService) {}
+    constructor(private readonly loginService: LoginService) {}
 
     public async handle(
         request: HTTPRequest<LoginModel, undefined>,
     ): Promise<HTTPResponse> {
         try {
-            const result = await this.service.login(request.body);
+            const result = await this.loginService.login(
+                request.body,
+            );
             return ok(result);
         } catch (e: unknown) {
             if (e instanceof ValidationError) {
