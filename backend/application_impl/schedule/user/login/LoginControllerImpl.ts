@@ -4,27 +4,20 @@ import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
 import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
 import type { LoginController } from "@ps/application/schedule/user/login/LoginController.ts";
 
-import { ValidationError } from "@ps/domain/validation/ValidationError.ts";
 import { ok } from "@ps/application/http/builder/ok.ts";
-import { badRequest } from "@ps/application/http/builder/badRequest.ts";
-import { internalServerError } from "@ps/application/http/builder/internalServerError.ts";
+import { errorHandler } from "../../../http/error/errorHandler.ts";
 
 export class LoginControllerImpl implements LoginController {
     constructor(private readonly loginService: LoginService) {}
 
-    public async handle(
+    public handle(
         request: HTTPRequest<LoginModel, undefined>,
     ): Promise<HTTPResponse> {
-        try {
+        return errorHandler(async () => {
             const result = await this.loginService.login(
                 request.body,
             );
             return ok(result);
-        } catch (e: unknown) {
-            if (e instanceof ValidationError) {
-                return badRequest(e.result);
-            }
-            return internalServerError();
-        }
+        });
     }
 }

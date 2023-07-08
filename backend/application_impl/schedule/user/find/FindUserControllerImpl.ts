@@ -5,27 +5,20 @@ import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
 import type { IdParam } from "@ps/application/http/IdParam.ts";
 import type { FindUserController } from "@ps/application/schedule/user/find/FindUserController.ts";
 
-import { ValidationError } from "@ps/domain/validation/ValidationError.ts";
 import { ok } from "@ps/application/http/builder/ok.ts";
-import { badRequest } from "@ps/application/http/builder/badRequest.ts";
-import { internalServerError } from "@ps/application/http/builder/internalServerError.ts";
+import { errorHandler } from "../../../http/error/errorHandler.ts";
 
 export class FindUserControllerImpl implements FindUserController {
     constructor(private readonly findUserService: FindUserService) {}
 
-    public async handle(
+    public handle(
         request: HTTPRequest<undefined, IdParam<User["id"]>>,
     ): Promise<HTTPResponse> {
-        try {
+        return errorHandler(async () => {
             const result = await this.findUserService.findById(
                 request.params.id,
             );
             return ok(result);
-        } catch (e: unknown) {
-            if (e instanceof ValidationError) {
-                return badRequest(e.result);
-            }
-            return internalServerError();
-        }
+        });
     }
 }

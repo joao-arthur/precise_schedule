@@ -6,10 +6,8 @@ import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
 import type { IdParam } from "@ps/application/http/IdParam.ts";
 import type { UpdatePartyEventController } from "@ps/application/schedule/event/updateParty/UpdatePartyEventController.ts";
 
-import { ValidationError } from "@ps/domain/validation/ValidationError.ts";
 import { noContent } from "@ps/application/http/builder/noContent.ts";
-import { badRequest } from "@ps/application/http/builder/badRequest.ts";
-import { internalServerError } from "@ps/application/http/builder/internalServerError.ts";
+import { errorHandler } from "../../../http/error/errorHandler.ts";
 
 export class UpdatePartyEventControllerImpl
     implements UpdatePartyEventController {
@@ -18,20 +16,15 @@ export class UpdatePartyEventControllerImpl
             UpdatePartyEventService,
     ) {}
 
-    public async handle(
+    public handle(
         request: HTTPRequest<UpdatePartyEvent, IdParam<Event["id"]>>,
     ): Promise<HTTPResponse> {
-        try {
+        return errorHandler(async () => {
             await this.updatePartyEventService.update(
                 request.params.id,
                 request.body,
             );
             return noContent();
-        } catch (e: unknown) {
-            if (e instanceof ValidationError) {
-                return badRequest(e.result);
-            }
-            return internalServerError();
-        }
+        });
     }
 }

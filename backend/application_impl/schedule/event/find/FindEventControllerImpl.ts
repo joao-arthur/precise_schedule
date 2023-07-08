@@ -5,29 +5,22 @@ import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
 import type { IdParam } from "@ps/application/http/IdParam.ts";
 import type { FindEventController } from "@ps/application/schedule/event/find/FindEventController.ts";
 
-import { ValidationError } from "@ps/domain/validation/ValidationError.ts";
 import { ok } from "@ps/application/http/builder/ok.ts";
-import { badRequest } from "@ps/application/http/builder/badRequest.ts";
-import { internalServerError } from "@ps/application/http/builder/internalServerError.ts";
+import { errorHandler } from "../../../http/error/errorHandler.ts";
 
 export class FindEventControllerImpl implements FindEventController {
     constructor(
         private readonly findEventService: FindEventService,
     ) {}
 
-    public async handle(
+    public handle(
         request: HTTPRequest<undefined, IdParam<Event["id"]>>,
     ): Promise<HTTPResponse> {
-        try {
+        return errorHandler(async () => {
             const result = await this.findEventService.findById(
                 request.params.id,
             );
             return ok(result);
-        } catch (e: unknown) {
-            if (e instanceof ValidationError) {
-                return badRequest(e.result);
-            }
-            return internalServerError();
-        }
+        });
     }
 }

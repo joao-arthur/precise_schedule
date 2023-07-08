@@ -4,10 +4,8 @@ import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
 import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
 import type { CreateUserController } from "@ps/application/schedule/user/create/CreateUserController.ts";
 
-import { ValidationError } from "@ps/domain/validation/ValidationError.ts";
-import { badRequest } from "@ps/application/http/builder/badRequest.ts";
-import { internalServerError } from "@ps/application/http/builder/internalServerError.ts";
 import { created } from "@ps/application/http/builder/created.ts";
+import { errorHandler } from "../../../http/error/errorHandler.ts";
 
 export class CreateUserControllerImpl
     implements CreateUserController {
@@ -15,17 +13,12 @@ export class CreateUserControllerImpl
         private readonly createUserService: CreateUserService,
     ) {}
 
-    public async handle(
+    public handle(
         request: HTTPRequest<CreateUserModel, undefined>,
     ): Promise<HTTPResponse> {
-        try {
+        return errorHandler(async () => {
             await this.createUserService.create(request.body);
             return created();
-        } catch (e: unknown) {
-            if (e instanceof ValidationError) {
-                return badRequest(e.result);
-            }
-            return internalServerError();
-        }
+        });
     }
 }

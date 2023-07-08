@@ -6,10 +6,8 @@ import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
 import type { IdParam } from "@ps/application/http/IdParam.ts";
 import type { UpdateBirthdayEventController } from "@ps/application/schedule/event/updateBirthday/UpdateBirthdayEventController.ts";
 
-import { ValidationError } from "@ps/domain/validation/ValidationError.ts";
 import { noContent } from "@ps/application/http/builder/noContent.ts";
-import { badRequest } from "@ps/application/http/builder/badRequest.ts";
-import { internalServerError } from "@ps/application/http/builder/internalServerError.ts";
+import { errorHandler } from "../../../http/error/errorHandler.ts";
 
 export class UpdateBirthdayEventControllerImpl
     implements UpdateBirthdayEventController {
@@ -18,23 +16,18 @@ export class UpdateBirthdayEventControllerImpl
             UpdateBirthdayEventService,
     ) {}
 
-    public async handle(
+    public handle(
         request: HTTPRequest<
             UpdateBirthdayEvent,
             IdParam<Event["id"]>
         >,
     ): Promise<HTTPResponse> {
-        try {
+        return errorHandler(async () => {
             await this.updateBirthdayEventService.update(
                 request.params.id,
                 request.body,
             );
             return noContent();
-        } catch (e: unknown) {
-            if (e instanceof ValidationError) {
-                return badRequest(e.result);
-            }
-            return internalServerError();
-        }
+        });
     }
 }

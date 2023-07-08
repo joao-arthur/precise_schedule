@@ -4,10 +4,8 @@ import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
 import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
 import type { CreateAppointmentEventController } from "@ps/application/schedule/event/createAppointment/CreateAppointmentEventController.ts";
 
-import { ValidationError } from "@ps/domain/validation/ValidationError.ts";
 import { created } from "@ps/application/http/builder/created.ts";
-import { badRequest } from "@ps/application/http/builder/badRequest.ts";
-import { internalServerError } from "@ps/application/http/builder/internalServerError.ts";
+import { errorHandler } from "../../../http/error/errorHandler.ts";
 
 export class CreateAppointmentEventControllerImpl
     implements CreateAppointmentEventController {
@@ -16,19 +14,14 @@ export class CreateAppointmentEventControllerImpl
             CreateAppointmentEventService,
     ) {}
 
-    public async handle(
+    public handle(
         request: HTTPRequest<CreateAppointmentEvent, undefined>,
     ): Promise<HTTPResponse> {
-        try {
+        return errorHandler(async () => {
             await this.createAppointmentEventService.create(
                 request.body,
             );
             return created();
-        } catch (e: unknown) {
-            if (e instanceof ValidationError) {
-                return badRequest(e.result);
-            }
-            return internalServerError();
-        }
+        });
     }
 }
