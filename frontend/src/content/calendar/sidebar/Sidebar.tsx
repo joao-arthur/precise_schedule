@@ -68,8 +68,8 @@ export function Sidebar() {
                 "bg-white dark:bg-dark-light",
                 "transition-all duration-500",
                 {
-                    "w-100 border-l border-gray-300 dark:border-gray-500":
-                        selectedDate && !isMobile,
+                    "w-100 border-l border-gray-300 dark:border-gray-500": selectedDate &&
+                        !isMobile,
                     "w-screen": selectedDate && isMobile,
                     "w-0": !selectedDate,
                 },

@@ -1,9 +1,5 @@
 import clss from "classnames";
-import type {
-    ChangeEventHandler,
-    FocusEventHandler,
-    ForwardedRef,
-} from "react";
+import type { ChangeEventHandler, FocusEventHandler, ForwardedRef } from "react";
 import { forwardRef } from "react";
 
 type forwardedProps = {
@@ -41,11 +37,6 @@ function DateTimeInputComp(
     );
 }
 
-export const DateTimeInput = forwardRef<
-    HTMLInputElement | null,
-    forwardedProps
->(
-    (props, ref) => (
-        <DateTimeInputComp {...props} forwardedRef={ref} />
-    ),
+export const DateTimeInput = forwardRef<HTMLInputElement | null, forwardedProps>(
+    (props, ref) => <DateTimeInputComp {...props} forwardedRef={ref} />,
 );

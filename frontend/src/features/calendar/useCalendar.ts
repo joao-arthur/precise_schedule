@@ -18,9 +18,7 @@ export const useCalendar = create<CalendarState>((set) => ({
     selectedDate: "",
     toggleSelectedDate: (selectedDate: string) =>
         set((state) => ({
-            selectedDate: state.selectedDate !== selectedDate
-                ? selectedDate
-                : "",
+            selectedDate: state.selectedDate !== selectedDate ? selectedDate : "",
         })),
     removeSelectedDate: () => set({ selectedDate: "" }),
     setYear: (year: number) => set({ year }),

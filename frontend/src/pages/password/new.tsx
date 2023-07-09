@@ -1,7 +1,4 @@
-import type {
-    NewPassword,
-    PasswordMatch,
-} from "@/features/user/user";
+import type { NewPassword, PasswordMatch } from "@/features/user/user";
 import { useForm } from "react-hook-form";
 import { Form } from "@/components/organisms/Form";
 import { SubHeader } from "@/content/base/subHeader/SubHeader";

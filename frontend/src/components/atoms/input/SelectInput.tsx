@@ -1,9 +1,5 @@
 import clss from "classnames";
-import type {
-    ChangeEventHandler,
-    FocusEventHandler,
-    ForwardedRef,
-} from "react";
+import type { ChangeEventHandler, FocusEventHandler, ForwardedRef } from "react";
 import { forwardRef } from "react";
 
 type option = {
@@ -52,9 +48,6 @@ function SelectInputComp(
     );
 }
 
-export const SelectInput = forwardRef<
-    HTMLSelectElement | null,
-    forwardedProps
->(
+export const SelectInput = forwardRef<HTMLSelectElement | null, forwardedProps>(
     (props, ref) => <SelectInputComp {...props} forwardedRef={ref} />,
 );

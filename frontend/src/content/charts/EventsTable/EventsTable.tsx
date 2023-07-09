@@ -34,8 +34,7 @@ export function EventsTable() {
                 <tr>
                     <DisabledColumn />
                     <RightColumn>
-                        apointment: 10% meeting: 10% birthday: 10%
-                        party: 10% date: 10%
+                        apointment: 10% meeting: 10% birthday: 10% party: 10% date: 10%
                     </RightColumn>
                     <DisabledColumn />
                     <DisabledColumn />

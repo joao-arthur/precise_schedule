@@ -100,8 +100,7 @@ export default function SignUp() {
                 </Form>
                 <Box>
                     <Text>
-                        Already in PreciseSchedule?{" "}
-                        <Link to="/signin">Sign in</Link>
+                        Already in PreciseSchedule? <Link to="/signin">Sign in</Link>
                     </Text>
                 </Box>
             </FormContainer>

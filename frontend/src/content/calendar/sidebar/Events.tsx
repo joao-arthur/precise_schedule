@@ -20,9 +20,7 @@ export function Events({ day }: props) {
                 "w-screen": isMobile,
             })}
         >
-            {dayEvents.map((event) => (
-                <EventItem event={event} key={event.id} />
-            ))}
+            {dayEvents.map((event) => <EventItem event={event} key={event.id} />)}
         </div>
     );
 }

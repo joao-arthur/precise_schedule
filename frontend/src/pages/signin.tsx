@@ -66,8 +66,7 @@ export default function SignIn() {
                 </FilledBox>
                 <Box>
                     <Text>
-                        New to PreciseSchedule?{" "}
-                        <Link to="/signup">Create an account</Link>
+                        New to PreciseSchedule? <Link to="/signup">Create an account</Link>
                     </Text>
                 </Box>
             </FormContainer>

@@ -35,14 +35,12 @@ export default function ForgotPassword() {
                 </Form>
                 <Box>
                     <Text>
-                        Already in PreciseSchedule?{" "}
-                        <Link to="/signin">Sign in</Link>
+                        Already in PreciseSchedule? <Link to="/signin">Sign in</Link>
                     </Text>
                 </Box>
                 <Box>
                     <Text>
-                        New to PreciseSchedule?{" "}
-                        <Link to="/signup">Create an account</Link>
+                        New to PreciseSchedule? <Link to="/signup">Create an account</Link>
                     </Text>
                 </Box>
             </FormContainer>

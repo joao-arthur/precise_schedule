@@ -1,9 +1,5 @@
 import clss from "classnames";
-import type {
-    ChangeEventHandler,
-    FocusEventHandler,
-    ForwardedRef,
-} from "react";
+import type { ChangeEventHandler, FocusEventHandler, ForwardedRef } from "react";
 import { forwardRef } from "react";
 
 type forwardedProps = {
@@ -41,9 +37,6 @@ function EmailInputComp(
     );
 }
 
-export const EmailInput = forwardRef<
-    HTMLInputElement | null,
-    forwardedProps
->(
+export const EmailInput = forwardRef<HTMLInputElement | null, forwardedProps>(
     (props, ref) => <EmailInputComp {...props} forwardedRef={ref} />,
 );

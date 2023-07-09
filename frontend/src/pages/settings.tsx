@@ -85,8 +85,7 @@ export default function Settings() {
                         <Link to="#">Delete my account</Link>
                         <br />
                         <Link to="#">
-                            What info do PreciseSchedule know about
-                            you?
+                            What info do PreciseSchedule know about you?
                         </Link>
                         <br />
                     </Form>

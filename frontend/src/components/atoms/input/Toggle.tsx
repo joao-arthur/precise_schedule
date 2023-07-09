@@ -43,11 +43,7 @@ export function Toggle({
                     },
                 )}
             >
-                {value && display?.on
-                    ? display.on
-                    : !value && display?.off
-                    ? display.off
-                    : null}
+                {value && display?.on ? display.on : !value && display?.off ? display.off : null}
             </div>
         </div>
     );

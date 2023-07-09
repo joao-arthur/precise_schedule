@@ -1,8 +1,4 @@
-import {
-    FaBirthdayCake,
-    FaChartLine,
-    FaUserCircle,
-} from "react-icons/fa";
+import { FaBirthdayCake, FaChartLine, FaUserCircle } from "react-icons/fa";
 import { IoMdSettings } from "react-icons/io";
 import {
     BiCalendar,
