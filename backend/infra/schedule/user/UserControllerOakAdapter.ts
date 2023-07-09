@@ -1,6 +1,8 @@
+import type { IdParam } from "@ps/application/http/IdParam.ts";
 import type { UserRepository } from "@ps/domain/schedule/user/UserRepository.ts";
 import type { IdGenerator } from "@ps/domain/generation/IdGenerator.ts";
 import type { Validator } from "@ps/domain/validation/Validator.ts";
+import type { User } from "@ps/domain/schedule/user/User.ts";
 
 import { Router } from "oak/mod.ts";
 import { CreateUserServiceImpl } from "@ps/domain_impl/schedule/user/create/CreateUserServiceImpl.ts";
@@ -15,10 +17,9 @@ import { UpdateUserControllerImpl } from "@ps/application_impl/schedule/user/upd
 import { FindUserControllerImpl } from "@ps/application_impl/schedule/user/find/FindUserControllerImpl.ts";
 import { LoginControllerImpl } from "@ps/application_impl/schedule/user/login/LoginControllerImpl.ts";
 import { CreateSessionServiceJWTAdapter } from "@ps/infra/session/create/CreateSessionServiceJWTAdapter.ts";
-
-import { SessionMiddlewareImpl } from "@ps/application_impl/http/middleware/SessionMiddlewareImpl.ts";
-import { ValidateUserSessionServiceImpl } from "@ps/domain_impl/schedule/userSession/ValidateUserSessionServiceImpl.ts";
-import { DecodeSessionServiceJWTAdapter } from "@ps/infra/session/decode/DecodeSessionServiceJWTAdapter.ts";
+import { bodyEndpoint } from "../../http/bodyEndpoint.ts";
+import { paramsEndpoint } from "../../http/paramsEndpoint.ts";
+import { fullEndpoint } from "../../http/fullEndpoint.ts";
 
 export class UserControllerOakAdapter {
     constructor(
@@ -29,110 +30,75 @@ export class UserControllerOakAdapter {
 
     public initRoutes(router: Router<Record<string, any>>): void {
         router
-            .post("/user", async (context) => {
-                const createUserService = new CreateUserServiceImpl(
-                    this.repository,
-                    new UniqueInfoServiceImpl(this.repository),
-                    new CreateUserFactoryImpl(this.idGenerator),
-                    new CreateSessionServiceJWTAdapter(),
-                    this.validator,
-                );
-                const createUserController =
-                    new CreateUserControllerImpl(
-                        createUserService,
+            .post(
+                "/user",
+                bodyEndpoint((body) => {
+                    const createUserService =
+                        new CreateUserServiceImpl(
+                            this.repository,
+                            new UniqueInfoServiceImpl(
+                                this.repository,
+                            ),
+                            new CreateUserFactoryImpl(
+                                this.idGenerator,
+                            ),
+                            new CreateSessionServiceJWTAdapter(),
+                            this.validator,
+                        );
+                    const createUserController =
+                        new CreateUserControllerImpl(
+                            createUserService,
+                        );
+                    return createUserController.handle({ body });
+                }),
+            )
+            .put(
+                "/user/:id",
+                fullEndpoint<IdParam<User["id"]>>((body, params) => {
+                    const updateUserService =
+                        new UpdateUserServiceImpl(
+                            this.repository,
+                            new UniqueInfoServiceImpl(
+                                this.repository,
+                            ),
+                            new UpdateUserFactoryImpl(),
+                            this.validator,
+                            new FindUserServiceImpl(this.repository),
+                        );
+                    const updateUserController =
+                        new UpdateUserControllerImpl(
+                            updateUserService,
+                        );
+                    return updateUserController.handle({
+                        body,
+                        params,
+                    });
+                }),
+            )
+            .get(
+                "/user/:id",
+                paramsEndpoint<IdParam<User["id"]>>((params) => {
+                    const findUserService = new FindUserServiceImpl(
+                        this.repository,
                     );
-                const body = await context.request.body({
-                    type: "json",
-                })
-                    .value;
-                const response = await createUserController.handle({
-                    body,
-                });
-                context.response.body = response.body;
-                context.response.status = response.status;
-            })
-            .put("/user/:id", async (context) => {
-                new SessionMiddlewareImpl(
-                    new ValidateUserSessionServiceImpl(
+                    const findUserController =
+                        new FindUserControllerImpl(findUserService);
+                    return findUserController.handle({ params });
+                }),
+            )
+            .post(
+                "/user/login",
+                bodyEndpoint((body) => {
+                    const loginServiceImpl = new LoginServiceImpl(
+                        this.validator,
                         new FindUserServiceImpl(this.repository),
-                        new DecodeSessionServiceJWTAdapter(),
-                    ),
-                ).handle({
-                    headers: {
-                        Authorization: context.request.headers.get(
-                            "Authorization",
-                        ),
-                    },
-                });
-                const updateUserService = new UpdateUserServiceImpl(
-                    this.repository,
-                    new UniqueInfoServiceImpl(this.repository),
-                    new UpdateUserFactoryImpl(),
-                    this.validator,
-                    new FindUserServiceImpl(this.repository),
-                );
-                const updateUserController =
-                    new UpdateUserControllerImpl(
-                        updateUserService,
+                        new CreateSessionServiceJWTAdapter(),
                     );
-                const body = await context.request.body({
-                    type: "json",
-                })
-                    .value;
-                const params = { id: context.params.id };
-                const response = await updateUserController.handle({
-                    body,
-                    params,
-                });
-                context.response.body = response.body;
-                context.response.status = response.status;
-            })
-            .get("/user/:id", async (context) => {
-                new SessionMiddlewareImpl(
-                    new ValidateUserSessionServiceImpl(
-                        new FindUserServiceImpl(this.repository),
-                        new DecodeSessionServiceJWTAdapter(),
-                    ),
-                ).handle({
-                    headers: {
-                        Authorization: context.request.headers.get(
-                            "Authorization",
-                        ),
-                    },
-                });
-                const findUserService = new FindUserServiceImpl(
-                    this.repository,
-                );
-                const findUserController = new FindUserControllerImpl(
-                    findUserService,
-                );
-                const params = {
-                    id: context.params.id,
-                };
-                const response = await findUserController.handle(
-                    { params },
-                );
-                context.response.body = response.body;
-                context.response.status = response.status;
-            })
-            .post("/user/login", async (context) => {
-                const loginServiceImpl = new LoginServiceImpl(
-                    this.validator,
-                    new FindUserServiceImpl(this.repository),
-                    new CreateSessionServiceJWTAdapter(),
-                );
-                const loginController = new LoginControllerImpl(
-                    loginServiceImpl,
-                );
-                const body = await context.request.body({
-                    type: "json",
-                })
-                    .value;
-                const response = await loginController.handle({
-                    body,
-                });
-                context.response.body = response.body;
-                context.response.status = response.status;
-            });
+                    const loginController = new LoginControllerImpl(
+                        loginServiceImpl,
+                    );
+                    return loginController.handle({ body });
+                }),
+            );
     }
 }

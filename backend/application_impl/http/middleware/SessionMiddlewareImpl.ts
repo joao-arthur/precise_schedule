@@ -12,11 +12,7 @@ export class SessionMiddlewareImpl {
     ) {}
 
     public async handle(
-        request: HTTPRequest<
-            undefined,
-            undefined,
-            Headers
-        >,
+        request: HTTPRequest<undefined, undefined, Headers>,
     ): Promise<void> {
         const authorization = request.headers.Authorization;
         if (!authorization) {
