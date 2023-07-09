@@ -6,13 +6,9 @@ import type { Headers } from "@ps/application/http/Headers.ts";
 import { InvalidSessionError } from "@ps/domain/session/InvalidSessionError.ts";
 
 export class SessionMiddlewareImpl {
-    constructor(
-        private readonly validateUserSessionService: ValidateUserSessionService,
-    ) {}
+    constructor(private readonly validateUserSessionService: ValidateUserSessionService) {}
 
-    public async handle(
-        request: HTTPRequest<undefined, undefined, Headers>,
-    ): Promise<void> {
+    public async handle(request: HTTPRequest<undefined, undefined, Headers>): Promise<void> {
         const authorization = request.headers.Authorization;
         if (!authorization) {
             throw new InvalidSessionError();

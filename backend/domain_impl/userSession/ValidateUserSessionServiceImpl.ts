@@ -12,14 +12,12 @@ export class ValidateUserSessionServiceImpl implements ValidateUserSessionServic
     ) {}
 
     public async validate(session: Session): Promise<void> {
-        const userId = await this.decodeSessionService.decode(
-            session,
-        );
+        const userId = await this.decodeSessionService.decode(session);
         try {
             await this.findUserService.findById(userId);
         } catch {
             throw new InvalidSessionError();
         }
-        // if (user.status !== ACTIVE) throw invalid session
+        // if (user.status !== 'ACTIVE') throw new InvalidSessionError();
     }
 }

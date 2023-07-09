@@ -1,3 +1,5 @@
+import { StatusCodes } from "http-status-codes";
+
 export type Headers = {
     readonly Authorization: string;
 };
@@ -24,7 +26,8 @@ function customFetch<T>({
         body: JSON.stringify(body),
     }).then((res) => {
         if (!res.ok) throw res;
-        //if (res.status === StatusCodes.NO_CONTENT) return;
+        if (res.status === StatusCodes.NO_CONTENT) return;
+        if (res.status === StatusCodes.CREATED) return;
         return res.json();
     });
 }

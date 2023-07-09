@@ -1,9 +1,7 @@
-import { assertEquals } from "https://deno.land/std@0.192.0/testing/asserts.ts";
-
+import { assertEquals } from "std/testing/asserts.ts";
 import { ValidationError } from "@ps/domain/validation/ValidationError.ts";
 import { BusinessError } from "@ps/domain/general/BusinessError.ts";
 import { InvalidSessionError } from "@ps/domain/session/InvalidSessionError.ts";
-
 import { ok } from "@ps/application/http/builder/ok.ts";
 import { badRequest } from "@ps/application/http/builder/badRequest.ts";
 import { internalServerError } from "@ps/application/http/builder/internalServerError.ts";
