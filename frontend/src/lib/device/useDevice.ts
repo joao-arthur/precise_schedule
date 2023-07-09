@@ -8,9 +8,5 @@ export function useDevice() {
         () => device.isMobile(dimensions),
         [dimensions],
     );
-    const isDesktop = useCallback(
-        () => device.isDesktop(dimensions),
-        [dimensions],
-    );
-    return { isMobile, isDesktop };
+    return { isMobile };
 }

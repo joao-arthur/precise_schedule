@@ -27,9 +27,7 @@ const sidebarMachine = createMachine({
 });
 
 export function Sidebar() {
-    const device = useDevice();
-    const isMobile = device.isMobile();
-    const isDesktop = device.isDesktop();
+    const isMobile = useDevice().isMobile();
 
     const { selectedDate, removeSelectedDate } = useCalendar();
 
@@ -71,7 +69,7 @@ export function Sidebar() {
                 "transition-all duration-500",
                 {
                     "w-100 border-l border-gray-300 dark:border-gray-500":
-                        selectedDate && isDesktop,
+                        selectedDate && !isMobile,
                     "w-screen": selectedDate && isMobile,
                     "w-0": !selectedDate,
                 },
