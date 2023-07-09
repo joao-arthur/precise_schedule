@@ -1,8 +1,6 @@
-import type { IdParam } from "@ps/application/http/IdParam.ts";
 import type { UserRepository } from "@ps/domain/schedule/user/UserRepository.ts";
 import type { IdGenerator } from "@ps/domain/generation/IdGenerator.ts";
 import type { Validator } from "@ps/domain/validation/Validator.ts";
-import type { User } from "@ps/domain/schedule/user/User.ts";
 
 import { Router } from "oak/mod.ts";
 import { CreateUserServiceImpl } from "@ps/domain_impl/schedule/user/create/CreateUserServiceImpl.ts";
@@ -17,9 +15,9 @@ import { UpdateUserControllerImpl } from "@ps/application_impl/schedule/user/upd
 import { FindUserControllerImpl } from "@ps/application_impl/schedule/user/find/FindUserControllerImpl.ts";
 import { LoginControllerImpl } from "@ps/application_impl/schedule/user/login/LoginControllerImpl.ts";
 import { CreateSessionServiceJWTAdapter } from "@ps/infra/session/create/CreateSessionServiceJWTAdapter.ts";
-import { bodyEndpoint } from "../../http/bodyEndpoint.ts";
-import { paramsEndpoint } from "../../http/paramsEndpoint.ts";
-import { fullEndpoint } from "../../http/fullEndpoint.ts";
+import { makeBody } from "../../http/makeBody.ts";
+import { makeParams } from "../../http/makeParams.ts";
+import { makeResult } from "../../http/makeResult.ts";
 
 export class UserControllerOakAdapter {
     constructor(
@@ -31,57 +29,50 @@ export class UserControllerOakAdapter {
     // deno-lint-ignore no-explicit-any
     public initRoutes(router: Router<Record<string, any>>): void {
         router
-            .post(
-                "/user",
-                bodyEndpoint((body) => {
-                    const createUserService = new CreateUserServiceImpl(
-                        this.repository,
-                        new UniqueInfoServiceImpl(this.repository),
-                        new CreateUserFactoryImpl(this.idGenerator),
-                        new CreateSessionServiceJWTAdapter(),
-                        this.validator,
-                    );
-                    const createUserController = new CreateUserControllerImpl(
-                        createUserService,
-                    );
-                    return createUserController.handle({ body });
-                }),
-            )
-            .put(
-                "/user/:id",
-                fullEndpoint<IdParam<User["id"]>>((body, params) => {
-                    const updateUserService = new UpdateUserServiceImpl(
-                        this.repository,
-                        new UniqueInfoServiceImpl(this.repository),
-                        new UpdateUserFactoryImpl(),
-                        this.validator,
-                        new FindUserServiceImpl(this.repository),
-                    );
-                    const updateUserController = new UpdateUserControllerImpl(
-                        updateUserService,
-                    );
-                    return updateUserController.handle({ body, params });
-                }),
-            )
-            .get(
-                "/user/:id",
-                paramsEndpoint<IdParam<User["id"]>>((params) => {
-                    const findUserService = new FindUserServiceImpl(this.repository);
-                    const findUserController = new FindUserControllerImpl(findUserService);
-                    return findUserController.handle({ params });
-                }),
-            )
-            .post(
-                "/user/login",
-                bodyEndpoint((body) => {
-                    const loginServiceImpl = new LoginServiceImpl(
-                        this.validator,
-                        new FindUserServiceImpl(this.repository),
-                        new CreateSessionServiceJWTAdapter(),
-                    );
-                    const loginController = new LoginControllerImpl(loginServiceImpl);
-                    return loginController.handle({ body });
-                }),
-            );
+            .post("/user", async (ctx) => {
+                const body = await makeBody(ctx);
+                const createUserService = new CreateUserServiceImpl(
+                    this.repository,
+                    new UniqueInfoServiceImpl(this.repository),
+                    new CreateUserFactoryImpl(this.idGenerator),
+                    new CreateSessionServiceJWTAdapter(),
+                    this.validator,
+                );
+                const createUserController = new CreateUserControllerImpl(createUserService);
+                const res = await createUserController.handle({ body });
+                makeResult(res, ctx);
+            })
+            .put("/user/:id", async (ctx) => {
+                const body = await makeBody(ctx);
+                const params = await makeParams(ctx);
+                const updateUserService = new UpdateUserServiceImpl(
+                    this.repository,
+                    new UniqueInfoServiceImpl(this.repository),
+                    new UpdateUserFactoryImpl(),
+                    this.validator,
+                    new FindUserServiceImpl(this.repository),
+                );
+                const updateUserController = new UpdateUserControllerImpl(updateUserService);
+                const res = await updateUserController.handle({ body, params });
+                makeResult(res, ctx);
+            })
+            .get("/user/:id", async (ctx) => {
+                const params = await makeParams(ctx);
+                const findUserService = new FindUserServiceImpl(this.repository);
+                const findUserController = new FindUserControllerImpl(findUserService);
+                const res = await findUserController.handle({ params });
+                makeResult(res, ctx);
+            })
+            .post("/user/login", async (ctx) => {
+                const body = await makeBody(ctx);
+                const loginServiceImpl = new LoginServiceImpl(
+                    this.validator,
+                    new FindUserServiceImpl(this.repository),
+                    new CreateSessionServiceJWTAdapter(),
+                );
+                const loginController = new LoginControllerImpl(loginServiceImpl);
+                const res = await loginController.handle({ body });
+                makeResult(res, ctx);
+            });
     }
 }
