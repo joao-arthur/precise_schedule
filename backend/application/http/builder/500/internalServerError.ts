@@ -1,4 +1,4 @@
-import { HTTPResponse } from "../HTTPResponse.ts";
+import { HTTPResponse } from "../../HTTPResponse.ts";
 
 export function internalServerError(): HTTPResponse {
     return {

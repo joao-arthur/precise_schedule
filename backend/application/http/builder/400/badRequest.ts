@@ -1,4 +1,4 @@
-import { HTTPResponse } from "../HTTPResponse.ts";
+import { HTTPResponse } from "../../HTTPResponse.ts";
 
 export function badRequest(
     body: Record<string, unknown>,

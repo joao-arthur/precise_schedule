@@ -4,7 +4,7 @@ import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
 import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
 import type { CreateBirthdayEventController } from "@ps/application/schedule/event/createBirthday/CreateBirthdayEventController.ts";
 
-import { created } from "@ps/application/http/builder/created.ts";
+import { created } from "@ps/application/http/builder/200/created.ts";
 import { errorHandler } from "../../../http/error/errorHandler.ts";
 
 export class CreateBirthdayEventControllerImpl implements CreateBirthdayEventController {

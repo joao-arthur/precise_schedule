@@ -6,7 +6,7 @@ import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
 import type { IdParam } from "@ps/application/http/IdParam.ts";
 import type { UpdateMeetingEventController } from "@ps/application/schedule/event/updateMeeting/UpdateMeetingEventController.ts";
 
-import { noContent } from "@ps/application/http/builder/noContent.ts";
+import { noContent } from "@ps/application/http/builder/200/noContent.ts";
 import { errorHandler } from "../../../http/error/errorHandler.ts";
 
 export class UpdateMeetingEventControllerImpl implements UpdateMeetingEventController {

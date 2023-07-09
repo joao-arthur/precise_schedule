@@ -5,7 +5,7 @@ import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
 import type { IdParam } from "@ps/application/http/IdParam.ts";
 import type { FindUserController } from "@ps/application/schedule/user/find/FindUserController.ts";
 
-import { ok } from "@ps/application/http/builder/ok.ts";
+import { ok } from "@ps/application/http/builder/200/ok.ts";
 import { errorHandler } from "../../../http/error/errorHandler.ts";
 
 export class FindUserControllerImpl implements FindUserController {
