@@ -9,11 +9,8 @@ import type { UpdateUserController } from "@ps/application/schedule/user/update/
 import { noContent } from "@ps/application/http/builder/noContent.ts";
 import { errorHandler } from "../../../http/error/errorHandler.ts";
 
-export class UpdateUserControllerImpl
-    implements UpdateUserController {
-    constructor(
-        private readonly updateUserService: UpdateUserService,
-    ) {}
+export class UpdateUserControllerImpl implements UpdateUserController {
+    constructor(private readonly updateUserService: UpdateUserService) {}
 
     public handle(
         request: HTTPRequest<UpdateUserModel, IdParam<User["id"]>>,

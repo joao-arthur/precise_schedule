@@ -7,8 +7,7 @@ import { SessionPayload } from "../SessionPayload.ts";
 import { InvalidSessionError } from "@ps/domain/session/InvalidSessionError.ts";
 import { key } from "../key.ts";
 
-export class DecodeSessionServiceJWTAdapter
-    implements DecodeSessionService {
+export class DecodeSessionServiceJWTAdapter implements DecodeSessionService {
     public async decode(session: Session): Promise<User["id"]> {
         try {
             const payload = await verify(session.token, key);

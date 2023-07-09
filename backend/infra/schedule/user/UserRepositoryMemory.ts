@@ -11,9 +11,7 @@ export class UserRepositoryMemory implements UserRepository {
 
     public update(userToUpdate: User): Promise<void> {
         this.users.splice(
-            this.users.findIndex((user) =>
-                user.id === userToUpdate.id
-            ),
+            this.users.findIndex((user) => user.id === userToUpdate.id),
             1,
             userToUpdate,
         );
@@ -31,9 +29,7 @@ export class UserRepositoryMemory implements UserRepository {
         email: User["email"],
     ): Promise<User | undefined> {
         return Promise.resolve(
-            this.users.find((user) =>
-                user.username === username || user.email === email
-            ),
+            this.users.find((user) => user.username === username || user.email === email),
         );
     }
 

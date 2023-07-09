@@ -9,12 +9,8 @@ import type { UpdateBirthdayEventController } from "@ps/application/schedule/eve
 import { noContent } from "@ps/application/http/builder/noContent.ts";
 import { errorHandler } from "../../../http/error/errorHandler.ts";
 
-export class UpdateBirthdayEventControllerImpl
-    implements UpdateBirthdayEventController {
-    constructor(
-        private readonly updateBirthdayEventService:
-            UpdateBirthdayEventService,
-    ) {}
+export class UpdateBirthdayEventControllerImpl implements UpdateBirthdayEventController {
+    constructor(private readonly updateBirthdayEventService: UpdateBirthdayEventService) {}
 
     public handle(
         request: HTTPRequest<

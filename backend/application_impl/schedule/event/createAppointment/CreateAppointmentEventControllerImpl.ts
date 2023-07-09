@@ -7,20 +7,14 @@ import type { CreateAppointmentEventController } from "@ps/application/schedule/
 import { created } from "@ps/application/http/builder/created.ts";
 import { errorHandler } from "../../../http/error/errorHandler.ts";
 
-export class CreateAppointmentEventControllerImpl
-    implements CreateAppointmentEventController {
-    constructor(
-        private readonly createAppointmentEventService:
-            CreateAppointmentEventService,
-    ) {}
+export class CreateAppointmentEventControllerImpl implements CreateAppointmentEventController {
+    constructor(private readonly createAppointmentEventService: CreateAppointmentEventService) {}
 
     public handle(
         request: HTTPRequest<CreateAppointmentEvent>,
     ): Promise<HTTPResponse> {
         return errorHandler(async () => {
-            await this.createAppointmentEventService.create(
-                request.body,
-            );
+            await this.createAppointmentEventService.create(request.body);
             return created();
         });
     }

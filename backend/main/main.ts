@@ -1,7 +1,4 @@
-import {
-    Application,
-    Router,
-} from "https://deno.land/x/oak@v12.5.0/mod.ts";
+import { Application, Router } from "https://deno.land/x/oak@v12.5.0/mod.ts";
 import { oakCors } from "https://deno.land/x/cors@v1.2.2/mod.ts";
 import { UserControllerOakAdapter } from "../infra/schedule/user/UserControllerOakAdapter.ts";
 import { UserRepositoryMemory } from "@ps/infra/schedule/user/UserRepositoryMemory.ts";

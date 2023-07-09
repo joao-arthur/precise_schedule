@@ -4,8 +4,7 @@ import type { CreateMeetingEvent } from "@ps/domain/schedule/event/createMeeting
 import type { CreateMeetingEventFactory } from "@ps/domain/schedule/event/createMeeting/CreateMeetingEventFactory.ts";
 import type { CreateMeetingEventService } from "@ps/domain/schedule/event/createMeeting/CreateMeetingEventService.ts";
 
-export class CreateMeetingEventServiceImpl
-    implements CreateMeetingEventService {
+export class CreateMeetingEventServiceImpl implements CreateMeetingEventService {
     constructor(
         private readonly factory: CreateMeetingEventFactory,
         private readonly service: CreateEventService,

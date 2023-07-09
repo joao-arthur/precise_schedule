@@ -4,8 +4,7 @@ import type { UpdateMeetingEvent } from "@ps/domain/schedule/event/updateMeeting
 import type { UpdateMeetingEventFactory } from "@ps/domain/schedule/event/updateMeeting/UpdateMeetingEventFactory.ts";
 import type { UpdateMeetingEventService } from "@ps/domain/schedule/event/updateMeeting/UpdateMeetingEventService.ts";
 
-export class UpdateMeetingEventServiceImpl
-    implements UpdateMeetingEventService {
+export class UpdateMeetingEventServiceImpl implements UpdateMeetingEventService {
     constructor(
         private readonly factory: UpdateMeetingEventFactory,
         private readonly service: UpdateEventService,

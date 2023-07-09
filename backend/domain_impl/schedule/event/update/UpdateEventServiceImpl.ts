@@ -18,9 +18,7 @@ export class UpdateEventServiceImpl implements UpdateEventService {
         event: UpdateEventModel,
     ): Promise<Event> {
         // this.validator.validate(event, updateEventValidation);
-        const existingEvent = await this.findEventService.findById(
-            id,
-        );
+        const existingEvent = await this.findEventService.findById(id);
         const buildedEvent = this.factory.build(event, existingEvent);
         await this.repository.update(buildedEvent);
         return buildedEvent;

@@ -9,12 +9,8 @@ import type { UpdateMeetingEventController } from "@ps/application/schedule/even
 import { noContent } from "@ps/application/http/builder/noContent.ts";
 import { errorHandler } from "../../../http/error/errorHandler.ts";
 
-export class UpdateMeetingEventControllerImpl
-    implements UpdateMeetingEventController {
-    constructor(
-        private readonly updateMeetingEventService:
-            UpdateMeetingEventService,
-    ) {}
+export class UpdateMeetingEventControllerImpl implements UpdateMeetingEventController {
+    constructor(private readonly updateMeetingEventService: UpdateMeetingEventService) {}
 
     public handle(
         request: HTTPRequest<

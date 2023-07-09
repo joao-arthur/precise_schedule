@@ -7,12 +7,8 @@ import type { CreatePartyEventController } from "@ps/application/schedule/event/
 import { created } from "@ps/application/http/builder/created.ts";
 import { errorHandler } from "../../../http/error/errorHandler.ts";
 
-export class CreatePartyEventControllerImpl
-    implements CreatePartyEventController {
-    constructor(
-        private readonly createPartyEventService:
-            CreatePartyEventService,
-    ) {}
+export class CreatePartyEventControllerImpl implements CreatePartyEventController {
+    constructor(private readonly createPartyEventService: CreatePartyEventService) {}
 
     public handle(
         request: HTTPRequest<CreatePartyEvent>,

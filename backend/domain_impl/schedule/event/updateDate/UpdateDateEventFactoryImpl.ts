@@ -2,8 +2,7 @@ import type { UpdateEventModel } from "@ps/domain/schedule/event/update/UpdateEv
 import type { UpdateDateEvent } from "@ps/domain/schedule/event/updateDate/UpdateDateEvent.ts";
 import type { UpdateDateEventFactory } from "@ps/domain/schedule/event/updateDate/UpdateDateEventFactory.ts";
 
-export class UpdateDateEventFactoryImpl
-    implements UpdateDateEventFactory {
+export class UpdateDateEventFactoryImpl implements UpdateDateEventFactory {
     public build(event: UpdateDateEvent): UpdateEventModel {
         return {
             name: event.name,

@@ -7,12 +7,8 @@ import type { CreateDateEventController } from "@ps/application/schedule/event/c
 import { created } from "@ps/application/http/builder/created.ts";
 import { errorHandler } from "../../../http/error/errorHandler.ts";
 
-export class CreateDateEventControllerImpl
-    implements CreateDateEventController {
-    constructor(
-        private readonly createDateEventService:
-            CreateDateEventService,
-    ) {}
+export class CreateDateEventControllerImpl implements CreateDateEventController {
+    constructor(private readonly createDateEventService: CreateDateEventService) {}
 
     public handle(
         request: HTTPRequest<CreateDateEvent>,

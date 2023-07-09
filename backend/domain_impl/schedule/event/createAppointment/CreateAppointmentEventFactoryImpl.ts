@@ -2,8 +2,7 @@ import type { CreateEventModel } from "@ps/domain/schedule/event/create/CreateEv
 import type { CreateAppointmentEvent } from "@ps/domain/schedule/event/createAppointment/CreateAppointmentEvent.ts";
 import type { CreateAppointmentEventFactory } from "@ps/domain/schedule/event/createAppointment/CreateAppointmentEventFactory.ts";
 
-export class CreateAppointmentEventFactoryImpl
-    implements CreateAppointmentEventFactory {
+export class CreateAppointmentEventFactoryImpl implements CreateAppointmentEventFactory {
     public build(event: CreateAppointmentEvent): CreateEventModel {
         return {
             name: event.name,

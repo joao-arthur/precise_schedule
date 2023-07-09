@@ -12,27 +12,21 @@ import { errorHandler } from "./errorHandler.ts";
 
 Deno.test("errorHandler ValidationError", async () => {
     assertEquals(
-        await errorHandler(() =>
-            Promise.reject(new ValidationError({ ping: ["pong"] }))
-        ),
+        await errorHandler(() => Promise.reject(new ValidationError({ ping: ["pong"] }))),
         badRequest({ ping: ["pong"] }),
     );
 });
 
 Deno.test("errorHandler BusinessError", async () => {
     assertEquals(
-        await errorHandler(() =>
-            Promise.reject(new BusinessError("Thela Hun Ginjeet"))
-        ),
+        await errorHandler(() => Promise.reject(new BusinessError("Thela Hun Ginjeet"))),
         badRequest({ message: "Thela Hun Ginjeet" }),
     );
 });
 
 Deno.test("errorHandler InvalidSessionError", async () => {
     assertEquals(
-        await errorHandler(() =>
-            Promise.reject(new InvalidSessionError())
-        ),
+        await errorHandler(() => Promise.reject(new InvalidSessionError())),
         unauthorized(),
     );
 });
@@ -46,9 +40,7 @@ Deno.test("errorHandler reject", async () => {
 
 Deno.test("errorHandler resolve", async () => {
     assertEquals(
-        await errorHandler(() =>
-            Promise.resolve(ok({ arguments: "talk" }))
-        ),
+        await errorHandler(() => Promise.resolve(ok({ arguments: "talk" }))),
         ok({ arguments: "talk" }),
     );
 });

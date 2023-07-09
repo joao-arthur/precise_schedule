@@ -1,6 +1,6 @@
 {
     "fmt": {
-        "lineWidth": 70,
+        "lineWidth": 100,
         "indentWidth": 4
     },
     "lint": {

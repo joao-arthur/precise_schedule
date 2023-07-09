@@ -7,8 +7,7 @@ import { InvalidSessionError } from "@ps/domain/session/InvalidSessionError.ts";
 
 export class SessionMiddlewareImpl {
     constructor(
-        private readonly validateUserSessionService:
-            ValidateUserSessionService,
+        private readonly validateUserSessionService: ValidateUserSessionService,
     ) {}
 
     public async handle(

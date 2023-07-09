@@ -7,19 +7,14 @@ import type { CreateUserController } from "@ps/application/schedule/user/create/
 import { ok } from "@ps/application/http/builder/ok.ts";
 import { errorHandler } from "../../../http/error/errorHandler.ts";
 
-export class CreateUserControllerImpl
-    implements CreateUserController {
-    constructor(
-        private readonly createUserService: CreateUserService,
-    ) {}
+export class CreateUserControllerImpl implements CreateUserController {
+    constructor(private readonly createUserService: CreateUserService) {}
 
     public handle(
         request: HTTPRequest<CreateUserModel>,
     ): Promise<HTTPResponse> {
         return errorHandler(async () => {
-            const result = await this.createUserService.create(
-                request.body,
-            );
+            const result = await this.createUserService.create(request.body);
             return ok(result);
         });
     }

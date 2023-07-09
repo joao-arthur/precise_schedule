@@ -5,8 +5,7 @@ import type { ValidateUserSessionService } from "@ps/domain/userSession/Validate
 
 import { InvalidSessionError } from "@ps/domain/session/InvalidSessionError.ts";
 
-export class ValidateUserSessionServiceImpl
-    implements ValidateUserSessionService {
+export class ValidateUserSessionServiceImpl implements ValidateUserSessionService {
     constructor(
         private readonly findUserService: FindUserService,
         private readonly decodeSessionService: DecodeSessionService,

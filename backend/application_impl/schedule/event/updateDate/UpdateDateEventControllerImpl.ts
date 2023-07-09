@@ -9,12 +9,8 @@ import type { UpdateDateEventController } from "@ps/application/schedule/event/u
 import { noContent } from "@ps/application/http/builder/noContent.ts";
 import { errorHandler } from "../../../http/error/errorHandler.ts";
 
-export class UpdateDateEventControllerImpl
-    implements UpdateDateEventController {
-    constructor(
-        private readonly updateDateEventService:
-            UpdateDateEventService,
-    ) {}
+export class UpdateDateEventControllerImpl implements UpdateDateEventController {
+    constructor(private readonly updateDateEventService: UpdateDateEventService) {}
 
     public handle(
         request: HTTPRequest<UpdateDateEvent, IdParam<Event["id"]>>,

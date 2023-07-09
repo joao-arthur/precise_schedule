@@ -14,9 +14,7 @@ export class LoginControllerImpl implements LoginController {
         request: HTTPRequest<LoginModel>,
     ): Promise<HTTPResponse> {
         return errorHandler(async () => {
-            const result = await this.loginService.login(
-                request.body,
-            );
+            const result = await this.loginService.login(request.body);
             return ok(result);
         });
     }

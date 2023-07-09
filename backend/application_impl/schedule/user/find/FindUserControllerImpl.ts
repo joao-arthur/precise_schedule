@@ -15,9 +15,7 @@ export class FindUserControllerImpl implements FindUserController {
         request: HTTPRequest<undefined, IdParam<User["id"]>>,
     ): Promise<HTTPResponse> {
         return errorHandler(async () => {
-            const result = await this.findUserService.findById(
-                request.params.id,
-            );
+            const result = await this.findUserService.findById(request.params.id);
             return ok(result);
         });
     }

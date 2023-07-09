@@ -9,12 +9,8 @@ import type { UpdateAppointmentEventController } from "@ps/application/schedule/
 import { noContent } from "@ps/application/http/builder/noContent.ts";
 import { errorHandler } from "../../../http/error/errorHandler.ts";
 
-export class UpdateAppointmentEventControllerImpl
-    implements UpdateAppointmentEventController {
-    constructor(
-        private readonly updateAppointmentEventService:
-            UpdateAppointmentEventService,
-    ) {}
+export class UpdateAppointmentEventControllerImpl implements UpdateAppointmentEventController {
+    constructor(private readonly updateAppointmentEventService: UpdateAppointmentEventService) {}
 
     public handle(
         request: HTTPRequest<

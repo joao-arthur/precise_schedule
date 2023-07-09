@@ -16,11 +16,10 @@ export class LoginServiceImpl implements LoginService {
 
     public async login(user: LoginModel): Promise<Session> {
         this.validator.validate(user, loginValidation);
-        const existingUser = await this.findUserService
-            .findByCredentials(
-                user.username,
-                user.password,
-            );
+        const existingUser = await this.findUserService.findByCredentials(
+            user.username,
+            user.password,
+        );
         return this.createSessionService.create(existingUser.id);
     }
 }

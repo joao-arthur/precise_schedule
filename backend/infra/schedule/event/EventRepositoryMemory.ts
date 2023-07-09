@@ -11,9 +11,7 @@ export class EventRepositoryMemory implements EventRepository {
 
     public update(userToUpdate: Event): Promise<void> {
         this.events.splice(
-            this.events.findIndex((event) =>
-                event.id === userToUpdate.id
-            ),
+            this.events.findIndex((event) => event.id === userToUpdate.id),
             1,
             userToUpdate,
         );
@@ -23,16 +21,11 @@ export class EventRepositoryMemory implements EventRepository {
     public findById(
         id: Event["id"],
     ): Promise<Event | undefined> {
-        return Promise.resolve(
-            this.events.find((event) => event.id === id),
-        );
+        return Promise.resolve(this.events.find((event) => event.id === id));
     }
 
     public del(id: Event["id"]): Promise<void> {
-        this.events.splice(
-            this.events.findIndex((event) => event.id === id),
-            1,
-        );
+        this.events.splice(this.events.findIndex((event) => event.id === id), 1);
         return Promise.resolve();
     }
 }

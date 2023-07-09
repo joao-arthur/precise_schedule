@@ -9,12 +9,8 @@ import type { UpdatePartyEventController } from "@ps/application/schedule/event/
 import { noContent } from "@ps/application/http/builder/noContent.ts";
 import { errorHandler } from "../../../http/error/errorHandler.ts";
 
-export class UpdatePartyEventControllerImpl
-    implements UpdatePartyEventController {
-    constructor(
-        private readonly updatePartyEventService:
-            UpdatePartyEventService,
-    ) {}
+export class UpdatePartyEventControllerImpl implements UpdatePartyEventController {
+    constructor(private readonly updatePartyEventService: UpdatePartyEventService) {}
 
     public handle(
         request: HTTPRequest<UpdatePartyEvent, IdParam<Event["id"]>>,

@@ -28,61 +28,46 @@ export class UserControllerOakAdapter {
         private readonly repository: UserRepository,
     ) {}
 
+    // deno-lint-ignore no-explicit-any
     public initRoutes(router: Router<Record<string, any>>): void {
         router
             .post(
                 "/user",
                 bodyEndpoint((body) => {
-                    const createUserService =
-                        new CreateUserServiceImpl(
-                            this.repository,
-                            new UniqueInfoServiceImpl(
-                                this.repository,
-                            ),
-                            new CreateUserFactoryImpl(
-                                this.idGenerator,
-                            ),
-                            new CreateSessionServiceJWTAdapter(),
-                            this.validator,
-                        );
-                    const createUserController =
-                        new CreateUserControllerImpl(
-                            createUserService,
-                        );
+                    const createUserService = new CreateUserServiceImpl(
+                        this.repository,
+                        new UniqueInfoServiceImpl(this.repository),
+                        new CreateUserFactoryImpl(this.idGenerator),
+                        new CreateSessionServiceJWTAdapter(),
+                        this.validator,
+                    );
+                    const createUserController = new CreateUserControllerImpl(
+                        createUserService,
+                    );
                     return createUserController.handle({ body });
                 }),
             )
             .put(
                 "/user/:id",
                 fullEndpoint<IdParam<User["id"]>>((body, params) => {
-                    const updateUserService =
-                        new UpdateUserServiceImpl(
-                            this.repository,
-                            new UniqueInfoServiceImpl(
-                                this.repository,
-                            ),
-                            new UpdateUserFactoryImpl(),
-                            this.validator,
-                            new FindUserServiceImpl(this.repository),
-                        );
-                    const updateUserController =
-                        new UpdateUserControllerImpl(
-                            updateUserService,
-                        );
-                    return updateUserController.handle({
-                        body,
-                        params,
-                    });
+                    const updateUserService = new UpdateUserServiceImpl(
+                        this.repository,
+                        new UniqueInfoServiceImpl(this.repository),
+                        new UpdateUserFactoryImpl(),
+                        this.validator,
+                        new FindUserServiceImpl(this.repository),
+                    );
+                    const updateUserController = new UpdateUserControllerImpl(
+                        updateUserService,
+                    );
+                    return updateUserController.handle({ body, params });
                 }),
             )
             .get(
                 "/user/:id",
                 paramsEndpoint<IdParam<User["id"]>>((params) => {
-                    const findUserService = new FindUserServiceImpl(
-                        this.repository,
-                    );
-                    const findUserController =
-                        new FindUserControllerImpl(findUserService);
+                    const findUserService = new FindUserServiceImpl(this.repository);
+                    const findUserController = new FindUserControllerImpl(findUserService);
                     return findUserController.handle({ params });
                 }),
             )
@@ -94,9 +79,7 @@ export class UserControllerOakAdapter {
                         new FindUserServiceImpl(this.repository),
                         new CreateSessionServiceJWTAdapter(),
                     );
-                    const loginController = new LoginControllerImpl(
-                        loginServiceImpl,
-                    );
+                    const loginController = new LoginControllerImpl(loginServiceImpl);
                     return loginController.handle({ body });
                 }),
             );

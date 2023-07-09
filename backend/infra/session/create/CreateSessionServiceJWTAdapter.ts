@@ -6,8 +6,7 @@ import type { SessionPayload } from "../SessionPayload.ts";
 import { create, getNumericDate } from "djwt/mod.ts";
 import { key } from "../key.ts";
 
-export class CreateSessionServiceJWTAdapter
-    implements CreateSessionService {
+export class CreateSessionServiceJWTAdapter implements CreateSessionService {
     private static EXP_SEC = 60 * 60 * 2;
 
     public async create(userId: User["id"]): Promise<Session> {
