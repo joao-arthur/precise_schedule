@@ -62,14 +62,12 @@ export class EventControllerOakAdapter {
                     this.repository,
                     new CreateEventFactoryImpl(this.idGenerator),
                 );
-                const updateUserService = new CreateAppointmentEventServiceImpl(
+                const service = new CreateAppointmentEventServiceImpl(
                     new CreateAppointmentEventFactoryImpl(),
                     createEventService,
                 );
-                const updateUserController = new CreateAppointmentEventControllerImpl(
-                    updateUserService,
-                );
-                const res = await updateUserController.handle({ body });
+                const controller = new CreateAppointmentEventControllerImpl(service);
+                const res = await controller.handle({ body });
                 makeResult(res, ctx);
             })
             .post("/event/BIRTHDAY", async (ctx) => {
@@ -78,14 +76,12 @@ export class EventControllerOakAdapter {
                     this.repository,
                     new CreateEventFactoryImpl(this.idGenerator),
                 );
-                const updateUserService = new CreateBirthdayEventServiceImpl(
+                const service = new CreateBirthdayEventServiceImpl(
                     new CreateBirthdayEventFactoryImpl(),
                     createEventService,
                 );
-                const updateUserController = new CreateBirthdayEventControllerImpl(
-                    updateUserService,
-                );
-                const res = await updateUserController.handle({ body });
+                const controller = new CreateBirthdayEventControllerImpl(service);
+                const res = await controller.handle({ body });
                 makeResult(res, ctx);
             })
             .post("/event/DATE", async (ctx) => {
@@ -94,12 +90,12 @@ export class EventControllerOakAdapter {
                     this.repository,
                     new CreateEventFactoryImpl(this.idGenerator),
                 );
-                const updateUserService = new CreateDateEventServiceImpl(
+                const service = new CreateDateEventServiceImpl(
                     new CreateDateEventFactoryImpl(),
                     createEventService,
                 );
-                const updateUserController = new CreateDateEventControllerImpl(updateUserService);
-                const res = await updateUserController.handle({ body });
+                const controller = new CreateDateEventControllerImpl(service);
+                const res = await controller.handle({ body });
                 makeResult(res, ctx);
             })
             .post("/event/MEETING", async (ctx) => {
@@ -108,14 +104,12 @@ export class EventControllerOakAdapter {
                     this.repository,
                     new CreateEventFactoryImpl(this.idGenerator),
                 );
-                const updateUserService = new CreateMeetingEventServiceImpl(
+                const service = new CreateMeetingEventServiceImpl(
                     new CreateMeetingEventFactoryImpl(),
                     createEventService,
                 );
-                const updateUserController = new CreateMeetingEventControllerImpl(
-                    updateUserService,
-                );
-                const res = await updateUserController.handle({ body });
+                const controller = new CreateMeetingEventControllerImpl(service);
+                const res = await controller.handle({ body });
                 makeResult(res, ctx);
             })
             .post("/event/PARTY", async (ctx) => {
@@ -124,12 +118,12 @@ export class EventControllerOakAdapter {
                     this.repository,
                     new CreateEventFactoryImpl(this.idGenerator),
                 );
-                const updateUserService = new CreatePartyEventServiceImpl(
+                const service = new CreatePartyEventServiceImpl(
                     new CreatePartyEventFactoryImpl(),
                     createEventService,
                 );
-                const updateUserController = new CreatePartyEventControllerImpl(updateUserService);
-                const res = await updateUserController.handle({ body });
+                const controller = new CreatePartyEventControllerImpl(service);
+                const res = await controller.handle({ body });
                 makeResult(res, ctx);
             })
             .put("/event/APPOINTMENT/:id", async (ctx) => {
@@ -140,14 +134,12 @@ export class EventControllerOakAdapter {
                     new UpdateEventFactoryImpl(),
                     new FindEventServiceImpl(this.repository),
                 );
-                const updateUserService = new UpdateAppointmentEventServiceImpl(
+                const service = new UpdateAppointmentEventServiceImpl(
                     new UpdateAppointmentEventFactoryImpl(),
                     updateEventService,
                 );
-                const updateUserController = new UpdateAppointmentEventControllerImpl(
-                    updateUserService,
-                );
-                const res = await updateUserController.handle({ body, params });
+                const controller = new UpdateAppointmentEventControllerImpl(service);
+                const res = await controller.handle({ body, params });
                 makeResult(res, ctx);
             })
             .put("/event/BIRTHDAY/:id", async (ctx) => {
@@ -158,14 +150,12 @@ export class EventControllerOakAdapter {
                     new UpdateEventFactoryImpl(),
                     new FindEventServiceImpl(this.repository),
                 );
-                const updateUserService = new UpdateBirthdayEventServiceImpl(
+                const service = new UpdateBirthdayEventServiceImpl(
                     new UpdateBirthdayEventFactoryImpl(),
                     updateEventService,
                 );
-                const updateUserController = new UpdateBirthdayEventControllerImpl(
-                    updateUserService,
-                );
-                const res = await updateUserController.handle({ body, params });
+                const controller = new UpdateBirthdayEventControllerImpl(service);
+                const res = await controller.handle({ body, params });
                 makeResult(res, ctx);
             })
             .put("/event/DATE/:id", async (ctx) => {
@@ -176,12 +166,12 @@ export class EventControllerOakAdapter {
                     new UpdateEventFactoryImpl(),
                     new FindEventServiceImpl(this.repository),
                 );
-                const updateUserService = new UpdateDateEventServiceImpl(
+                const service = new UpdateDateEventServiceImpl(
                     new UpdateDateEventFactoryImpl(),
                     updateEventService,
                 );
-                const updateUserController = new UpdateDateEventControllerImpl(updateUserService);
-                const res = await updateUserController.handle({ body, params });
+                const controller = new UpdateDateEventControllerImpl(service);
+                const res = await controller.handle({ body, params });
                 makeResult(res, ctx);
             })
             .put("/event/MEETING/:id", async (ctx) => {
@@ -192,14 +182,12 @@ export class EventControllerOakAdapter {
                     new UpdateEventFactoryImpl(),
                     new FindEventServiceImpl(this.repository),
                 );
-                const updateUserService = new UpdateMeetingEventServiceImpl(
+                const service = new UpdateMeetingEventServiceImpl(
                     new UpdateMeetingEventFactoryImpl(),
                     updateEventService,
                 );
-                const updateUserController = new UpdateMeetingEventControllerImpl(
-                    updateUserService,
-                );
-                const res = await updateUserController.handle({ body, params });
+                const controller = new UpdateMeetingEventControllerImpl(service);
+                const res = await controller.handle({ body, params });
                 makeResult(res, ctx);
             })
             .put("/event/PARTY/:id", async (ctx) => {
@@ -210,12 +198,12 @@ export class EventControllerOakAdapter {
                     new UpdateEventFactoryImpl(),
                     new FindEventServiceImpl(this.repository),
                 );
-                const updateUserService = new UpdatePartyEventServiceImpl(
+                const service = new UpdatePartyEventServiceImpl(
                     new UpdatePartyEventFactoryImpl(),
                     updateEventService,
                 );
-                const updateUserController = new UpdatePartyEventControllerImpl(updateUserService);
-                const res = await updateUserController.handle({ body, params });
+                const controller = new UpdatePartyEventControllerImpl(service);
+                const res = await controller.handle({ body, params });
                 makeResult(res, ctx);
             });
         //.delete("/event/:id", async (context) => {

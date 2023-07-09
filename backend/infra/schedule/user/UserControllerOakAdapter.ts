@@ -31,47 +31,47 @@ export class UserControllerOakAdapter {
         router
             .post("/user", async (ctx) => {
                 const body = await makeBody(ctx);
-                const createUserService = new CreateUserServiceImpl(
+                const service = new CreateUserServiceImpl(
                     this.repository,
                     new UniqueInfoServiceImpl(this.repository),
                     new CreateUserFactoryImpl(this.idGenerator),
                     new CreateSessionServiceJWTAdapter(),
                     this.validator,
                 );
-                const createUserController = new CreateUserControllerImpl(createUserService);
-                const res = await createUserController.handle({ body });
+                const controller = new CreateUserControllerImpl(service);
+                const res = await controller.handle({ body });
                 makeResult(res, ctx);
             })
             .put("/user/:id", async (ctx) => {
                 const body = await makeBody(ctx);
                 const params = await makeParams(ctx);
-                const updateUserService = new UpdateUserServiceImpl(
+                const service = new UpdateUserServiceImpl(
                     this.repository,
                     new UniqueInfoServiceImpl(this.repository),
                     new UpdateUserFactoryImpl(),
                     this.validator,
                     new FindUserServiceImpl(this.repository),
                 );
-                const updateUserController = new UpdateUserControllerImpl(updateUserService);
-                const res = await updateUserController.handle({ body, params });
+                const controller = new UpdateUserControllerImpl(service);
+                const res = await controller.handle({ body, params });
                 makeResult(res, ctx);
             })
             .get("/user/:id", async (ctx) => {
                 const params = await makeParams(ctx);
-                const findUserService = new FindUserServiceImpl(this.repository);
-                const findUserController = new FindUserControllerImpl(findUserService);
-                const res = await findUserController.handle({ params });
+                const service = new FindUserServiceImpl(this.repository);
+                const controller = new FindUserControllerImpl(service);
+                const res = await controller.handle({ params });
                 makeResult(res, ctx);
             })
             .post("/user/login", async (ctx) => {
                 const body = await makeBody(ctx);
-                const loginServiceImpl = new LoginServiceImpl(
+                const service = new LoginServiceImpl(
                     this.validator,
                     new FindUserServiceImpl(this.repository),
                     new CreateSessionServiceJWTAdapter(),
                 );
-                const loginController = new LoginControllerImpl(loginServiceImpl);
-                const res = await loginController.handle({ body });
+                const controller = new LoginControllerImpl(service);
+                const res = await controller.handle({ body });
                 makeResult(res, ctx);
             });
     }
