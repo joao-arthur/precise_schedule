@@ -4,16 +4,14 @@ import { ModalForm } from "@/components/atoms/ModalForm";
 import { InputField } from "@/components/atoms/InputField";
 import { TextInput } from "@/components/atoms/input/TextInput";
 import { DateInput } from "@/components/atoms/input/DateInput";
-import { buildBirthdayEvent } from "@/features/event/buildBirthdayEvent";
 import { useEventAPI } from "@/features/event/useEventAPI";
 
 export default function BirthdayEventRegister() {
     const { register, handleSubmit } = useForm<BirthdayEvent>();
-    const { mutate, isLoading } = useEventAPI().create();
+    const { mutate, isLoading } = useEventAPI().createBirthday();
 
     function submit(data: BirthdayEvent) {
-        const event = buildBirthdayEvent(data);
-        mutate(event);
+        mutate(data);
     }
 
     return (

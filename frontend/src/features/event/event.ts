@@ -27,27 +27,6 @@ export type Event = {
     readonly weekendRepeat: boolean;
 };
 
-export type CreateEvent = {
-    readonly name: Event["name"];
-    readonly day: Event["day"];
-    readonly begin: Event["begin"];
-    readonly end: Event["end"];
-    readonly category: Event["category"];
-    readonly frequency: Event["frequency"];
-    readonly weekendRepeat: Event["weekendRepeat"];
-};
-
-export type UpdateEvent = {
-    readonly name: Event["name"];
-    readonly day: Event["day"];
-    readonly begin: Event["begin"];
-    readonly end: Event["end"];
-    readonly category: Event["category"];
-    readonly frequency: Event["frequency"];
-    readonly weekendRepeat: Event["weekendRepeat"];
-};
-
-//
 export type BirthdayEvent = {
     readonly name: Event["name"];
     readonly day: Event["day"];

@@ -6,18 +6,16 @@ import { Group } from "@/components/atoms/layout/Group";
 import { TextInput } from "@/components/atoms/input/TextInput";
 import { DateInput } from "@/components/atoms/input/DateInput";
 import { TimeInput } from "@/components/atoms/input/TimeInput";
-import { buildPartyEvent } from "@/features/event/buildPartyEvent";
 import { useEventAPI } from "@/features/event/useEventAPI";
 
 export default function PartyEventRegister() {
     const { register, handleSubmit } = useForm<
         PartyEvent
     >();
-    const { mutate, isLoading } = useEventAPI().create();
+    const { mutate, isLoading } = useEventAPI().createParty();
 
     function submit(data: PartyEvent) {
-        const event = buildPartyEvent(data);
-        mutate(event);
+        mutate(data);
     }
 
     return (

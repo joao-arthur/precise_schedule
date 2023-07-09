@@ -8,6 +8,7 @@ export type Messages = {
 
 export function toast<T>(promise: Promise<T>, messages: Messages) {
     return hotToast.promise(promise, messages, {
+        position: "top-left",
         style: {
             minWidth: "250px",
         },

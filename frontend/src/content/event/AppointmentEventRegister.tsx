@@ -9,7 +9,6 @@ import { SelectInput } from "@/components/atoms/input/SelectInput";
 import { DateInput } from "@/components/atoms/input/DateInput";
 import { TimeInput } from "@/components/atoms/input/TimeInput";
 import { ToggleInput } from "@/components/atoms/input/ToggleInput";
-import { buildAppointmentEvent } from "@/features/event/buildAppointmentEvent";
 import { frequencyOptions } from "./frequencyOptions";
 import { useEventAPI } from "@/features/event/useEventAPI";
 
@@ -17,7 +16,7 @@ export default function AppointmentEventRegister() {
     const { register, handleSubmit, watch, setValue } = useForm<
         AppointmentEvent
     >();
-    const { mutate, isLoading } = useEventAPI().create();
+    const { mutate, isLoading } = useEventAPI().createAppointment();
 
     const watchFrequency = watch("frequency");
     const canRepeatWeekend = watchFrequency
@@ -27,8 +26,7 @@ export default function AppointmentEventRegister() {
         : true;
 
     function submit(data: AppointmentEvent) {
-        const event = buildAppointmentEvent(data);
-        mutate(event);
+        mutate(data);
     }
 
     useEffect(() => {

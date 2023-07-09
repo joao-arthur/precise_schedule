@@ -33,7 +33,7 @@ function ToggleInputComp({ forwardedRef, ...props }: props) {
             />
             <span
                 className={clss(
-                    "absolute cursor-pointer top-0 left-0 bottom-0 right-0",
+                    "absolute top-0 left-0 bottom-0 right-0",
                     "rounded-full",
                     "border border-gray-500",
                     "bg-gray-300 dark:bg-dark-lighter",
@@ -51,6 +51,7 @@ function ToggleInputComp({ forwardedRef, ...props }: props) {
                     "peer-disabled:before:dark:bg-dark-lighter peer-disabled:dark:bg-dark-lighter",
                     "peer-checked:bg-primary peer-checked:border-primary",
                     "peer-checked:before:left-[45px]",
+                    "cursor-pointer peer-disabled:cursor-not-allowed",
                 )}
             />
         </label>
