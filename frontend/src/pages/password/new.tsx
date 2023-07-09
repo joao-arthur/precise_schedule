@@ -14,7 +14,6 @@ type NewPasswordInfo = NewPassword & PasswordMatch;
 
 export default function NewPassword() {
     useAuthPage();
-
     const { register, handleSubmit } = useForm<NewPasswordInfo>();
 
     function handle(data: NewPasswordInfo) {

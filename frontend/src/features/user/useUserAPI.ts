@@ -3,35 +3,26 @@ import { useMutation } from "react-query";
 import { useAppRequest } from "@/lib/request/useAppRequest";
 import { Session } from "../session/session";
 
-export function useUserAPI() {
+export function useUserCreate() {
     const request = useAppRequest();
+    return useMutation(
+        "user/create",
+        (user: CreateUser) =>
+            request.post<Session>("user", user, {
+                loading: "registering you...",
+                success: `Welcome ${user.username}`,
+            }),
+    );
+}
 
-    function create() {
-        return useMutation(
-            "user/create",
-            (user: CreateUser) =>
-                request.post<Session>("user", user, {
-                    loading: "registering you...",
-                    error: "We were unable to register you!",
-                    success: `Welcome ${user.username}`,
-                }),
-        );
-    }
-
-    function login() {
-        return useMutation(
-            "user/login",
-            (user: Login) =>
-                request.post<Session>("user/login", user, {
-                    loading: "logging in...",
-                    error: "User not found!",
-                    success: `Welcome ${user.username}`,
-                }),
-        );
-    }
-
-    return {
-        create,
-        login,
-    };
+export function useUserLogin() {
+    const request = useAppRequest();
+    return useMutation(
+        "user/login",
+        (user: Login) =>
+            request.post<Session>("user/login", user, {
+                loading: "logging in...",
+                success: `Welcome ${user.username}`,
+            }),
+    );
 }

@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useAnonPage } from "@/features/session/useAnonPage";
 import { useSessionManager } from "@/features/session/useSessionManager";
-import { useUserAPI } from "@/features/user/useUserAPI";
+import { useUserCreate } from "@/features/user/useUserAPI";
 import { Text } from "@/components/atoms/typography/Text";
 import { Link } from "@/components/atoms/Link";
 import { TextInput } from "@/components/atoms/input/TextInput";
@@ -22,7 +22,7 @@ export default function SignUp() {
     useAnonPage();
     const { register, handleSubmit } = useForm<CreateUserForm>();
     const { log } = useSessionManager();
-    const { mutate, isLoading, data } = useUserAPI().create();
+    const { mutate, isLoading, data } = useUserCreate();
 
     useEffect(() => {
         if (data) {

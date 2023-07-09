@@ -2,7 +2,7 @@ import type { Login } from "@/features/user/user";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useAnonPage } from "@/features/session/useAnonPage";
-import { useUserAPI } from "@/features/user/useUserAPI";
+import { useUserLogin } from "@/features/user/useUserAPI";
 import { useSessionManager } from "@/features/session/useSessionManager";
 import { Text } from "@/components/atoms/typography/Text";
 import { Link } from "@/components/atoms/Link";
@@ -19,7 +19,7 @@ export default function SignIn() {
     useAnonPage();
     const { register, handleSubmit } = useForm<Login>();
     const { log } = useSessionManager();
-    const { mutate, isLoading, data } = useUserAPI().login();
+    const { mutate, isLoading, data } = useUserLogin();
 
     useEffect(() => {
         if (data) {

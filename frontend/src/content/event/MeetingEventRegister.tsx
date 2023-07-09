@@ -10,13 +10,11 @@ import { DateInput } from "@/components/atoms/input/DateInput";
 import { TimeInput } from "@/components/atoms/input/TimeInput";
 import { ToggleInput } from "@/components/atoms/input/ToggleInput";
 import { frequencyOptions } from "./frequencyOptions";
-import { useEventAPI } from "@/features/event/useEventAPI";
+import { useCreateMeeting } from "@/features/event/useEventAPI";
 
 export default function MeetingEventRegister() {
-    const { register, handleSubmit, watch, setValue } = useForm<
-        MeetingEvent
-    >();
-    const { mutate, isLoading } = useEventAPI().createMeeting();
+    const { register, handleSubmit, watch, setValue } = useForm<MeetingEvent>();
+    const { mutate, isLoading } = useCreateMeeting();
 
     const watchFrequency = watch("frequency");
     const canRepeatWeekend = watchFrequency

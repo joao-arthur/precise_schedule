@@ -6,13 +6,11 @@ import { Group } from "@/components/atoms/layout/Group";
 import { TextInput } from "@/components/atoms/input/TextInput";
 import { DateInput } from "@/components/atoms/input/DateInput";
 import { TimeInput } from "@/components/atoms/input/TimeInput";
-import { useEventAPI } from "@/features/event/useEventAPI";
+import { useCreateDate } from "@/features/event/useEventAPI";
 
 export default function DateEventRegister() {
-    const { register, handleSubmit } = useForm<
-        DateEvent
-    >();
-    const { mutate, isLoading } = useEventAPI().createDate();
+    const { register, handleSubmit } = useForm<DateEvent>();
+    const { mutate, isLoading } = useCreateDate();
 
     function submit(data: DateEvent) {
         mutate(data);

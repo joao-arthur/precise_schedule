@@ -26,10 +26,10 @@ export class UserRepositoryMemory implements UserRepository {
 
     public findByCredentials(
         username: User["username"],
-        email: User["email"],
+        password: User["password"],
     ): Promise<User | undefined> {
         return Promise.resolve(
-            this.users.find((user) => user.username === username || user.email === email),
+            this.users.find((user) => user.username === username && user.password === password),
         );
     }
 

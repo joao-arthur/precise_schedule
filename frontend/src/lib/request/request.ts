@@ -1,4 +1,4 @@
-import { StatusCodes } from "http-status-codes";
+import { handleResponse } from "./handleResponse";
 
 export type Headers = {
     readonly Authorization: string;
@@ -24,12 +24,8 @@ function customFetch<T>({
             ...headers,
         },
         body: JSON.stringify(body),
-    }).then((res) => {
-        if (!res.ok) throw res;
-        if (res.status === StatusCodes.NO_CONTENT) return;
-        if (res.status === StatusCodes.CREATED) return;
-        return res.json();
-    });
+    })
+        .then(handleResponse);
 }
 
 export function getRequest<T>(

@@ -1,5 +1,4 @@
 import type { Headers } from "./request";
-import { StatusCodes } from "http-status-codes";
 import { useSessionManager } from "@/features/session/useSessionManager";
 import { useLocalStorage } from "../storage/useLocalStorage";
 import { request } from "./request";
@@ -10,14 +9,17 @@ export function useRequest() {
 
     function headers(): Headers | undefined {
         const token = getItem();
-        return token
-            ? { Authorization: `Bearer ${token}` }
-            : undefined;
+        return token ? { Authorization: `Bearer ${token}` } : undefined;
     }
 
-    function catchError<T extends Response>(res: T): T {
-        if (res.status === StatusCodes.UNAUTHORIZED) unlog();
-        throw new Error(res.statusText);
+    function catchError<T>(res: T): T {
+        if (res instanceof Response) {
+            unlog();
+            throw new Error();
+        }
+        if ("message" in (res as any)) {
+            throw (res as any).message;
+        }
     }
 
     function getRequest<T>(resource: string): Promise<T> {

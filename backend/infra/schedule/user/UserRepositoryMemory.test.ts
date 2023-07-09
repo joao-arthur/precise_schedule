@@ -8,7 +8,7 @@ Deno.test("UserRepositoryMemory", async () => {
     assertEquals(
         await repository.findByCredentials(
             userMock.username,
-            userMock.email,
+            userMock.password,
         ),
         undefined,
     );
@@ -17,12 +17,12 @@ Deno.test("UserRepositoryMemory", async () => {
     assertEquals(
         await repository.findByCredentials(
             userMock.username,
-            userMock.email,
+            userMock.password,
         ),
         userMock,
     );
     assertEquals(
-        await repository.findByCredentials("username2", "email2"),
+        await repository.findByCredentials("username2", "password2"),
         undefined,
     );
     assertEquals(await repository.countUsername("username2"), 0);
@@ -33,7 +33,7 @@ Deno.test("UserRepositoryMemory", async () => {
         email: "email2",
     });
     assertEquals(
-        await repository.findByCredentials("username2", "email2"),
+        await repository.findByCredentials("username2", userMock.password),
         { ...userMock, username: "username2", email: "email2" },
     );
     assertEquals(await repository.countUsername("username2"), 1);

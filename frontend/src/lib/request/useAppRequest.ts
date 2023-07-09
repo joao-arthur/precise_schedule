@@ -1,5 +1,5 @@
-import type { Messages } from "../toast";
-import { toast } from "../toast";
+import type { Messages } from "./toast";
+import { toast } from "./toast";
 import { useRequest } from "./useRequest";
 
 export function useAppRequest() {
