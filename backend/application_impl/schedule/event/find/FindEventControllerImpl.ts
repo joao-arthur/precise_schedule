@@ -1,4 +1,3 @@
-import type { Event } from "@ps/domain/schedule/event/Event.ts";
 import type { FindEventService } from "@ps/domain/schedule/event/find/FindEventService.ts";
 import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
 import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
@@ -11,7 +10,7 @@ import { errorHandler } from "../../../http/error/errorHandler.ts";
 export class FindEventControllerImpl implements FindEventController {
     constructor(private readonly findEventService: FindEventService) {}
 
-    public handle(req: HTTPRequest<undefined, IdParam<Event["id"]>>): Promise<HTTPResponse> {
+    public handle(req: HTTPRequest<undefined, IdParam>): Promise<HTTPResponse> {
         return errorHandler(async () => {
             const result = await this.findEventService.findById(req.params.id);
             return ok(result);

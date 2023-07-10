@@ -1,8 +1,7 @@
 // deno-lint-ignore-file no-explicit-any
 import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
 import type { Headers } from "@ps/application/http/Headers.ts";
-
-import { IdParam } from "@ps/application/http/IdParam.ts";
+import type { IdParam } from "@ps/application/http/IdParam.ts";
 
 type BodyMock = {
     readonly body: any;
@@ -10,14 +9,14 @@ type BodyMock = {
 
 type FullMock = {
     readonly body: any;
-    readonly params: IdParam<"id">;
+    readonly params: IdParam;
 };
 
 export const httpRequestBodyMock: BodyMock = {
     body: {},
 };
 
-export const httpRequestParamsMock: HTTPRequest<undefined, IdParam<"id">> = {
+export const httpRequestParamsMock: HTTPRequest<undefined, IdParam> = {
     params: { id: "id" },
 };
 

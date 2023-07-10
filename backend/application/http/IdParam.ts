@@ -1,3 +1,3 @@
-export type IdParam<Id> = {
-    readonly id: Id;
+export type IdParam = {
+    readonly id: string;
 };
