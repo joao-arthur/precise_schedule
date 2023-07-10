@@ -6,6 +6,7 @@ import { FindUserServiceImpl } from "@ps/domain_impl/schedule/user/find/FindUser
 import { DecodeSessionServiceJWTAdapter } from "@ps/infra/session/decode/DecodeSessionServiceJWTAdapter.ts";
 import { unauthorized } from "@ps/application_impl/http/builder/400/unauthorized.ts";
 import { SessionMiddlewareImpl } from "@ps/application_impl/http/middleware/SessionMiddlewareImpl.ts";
+import { SessionFromRequestServiceImpl } from "@ps/application_impl/http/session/SessionFromRequestServiceImpl.ts";
 
 export class SessionMiddlewareOakAdapter {
     constructor(private readonly repository: UserRepository) {}
@@ -24,6 +25,7 @@ export class SessionMiddlewareOakAdapter {
         }
         try {
             const sessionMiddleware = new SessionMiddlewareImpl(
+                new SessionFromRequestServiceImpl(),
                 new ValidateUserSessionServiceImpl(
                     new FindUserServiceImpl(this.repository),
                     new DecodeSessionServiceJWTAdapter(),
