@@ -11,11 +11,9 @@ import { errorHandler } from "../../../http/error/errorHandler.ts";
 export class FindEventControllerImpl implements FindEventController {
     constructor(private readonly findEventService: FindEventService) {}
 
-    public handle(
-        request: HTTPRequest<undefined, IdParam<Event["id"]>>,
-    ): Promise<HTTPResponse> {
+    public handle(req: HTTPRequest<undefined, IdParam<Event["id"]>>): Promise<HTTPResponse> {
         return errorHandler(async () => {
-            const result = await this.findEventService.findById(request.params.id);
+            const result = await this.findEventService.findById(req.params.id);
             return ok(result);
         });
     }

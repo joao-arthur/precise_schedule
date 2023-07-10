@@ -11,11 +11,9 @@ import { errorHandler } from "../../../http/error/errorHandler.ts";
 export class FindUserControllerImpl implements FindUserController {
     constructor(private readonly findUserService: FindUserService) {}
 
-    public handle(
-        request: HTTPRequest<undefined, IdParam<User["id"]>>,
-    ): Promise<HTTPResponse> {
+    public handle(req: HTTPRequest<undefined, IdParam<User["id"]>>): Promise<HTTPResponse> {
         return errorHandler(async () => {
-            const result = await this.findUserService.findById(request.params.id);
+            const result = await this.findUserService.findById(req.params.id);
             return ok(result);
         });
     }

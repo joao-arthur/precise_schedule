@@ -6,6 +6,6 @@ import type { IdParam } from "@ps/application/http/IdParam.ts";
 
 export type UpdateUserController = {
     readonly handle: (
-        request: HTTPRequest<UpdateUserModel, IdParam<User["id"]>>,
+        req: HTTPRequest<UpdateUserModel, IdParam<User["id"]>>,
     ) => Promise<HTTPResponse>;
 };

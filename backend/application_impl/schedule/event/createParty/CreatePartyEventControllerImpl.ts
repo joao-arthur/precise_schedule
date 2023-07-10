@@ -10,11 +10,9 @@ import { errorHandler } from "../../../http/error/errorHandler.ts";
 export class CreatePartyEventControllerImpl implements CreatePartyEventController {
     constructor(private readonly createPartyEventService: CreatePartyEventService) {}
 
-    public handle(
-        request: HTTPRequest<CreatePartyEvent>,
-    ): Promise<HTTPResponse> {
+    public handle(req: HTTPRequest<CreatePartyEvent>): Promise<HTTPResponse> {
         return errorHandler(async () => {
-            await this.createPartyEventService.create(request.body);
+            await this.createPartyEventService.create(req.body);
             return created();
         });
     }

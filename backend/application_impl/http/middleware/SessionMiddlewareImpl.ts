@@ -8,8 +8,8 @@ import { InvalidSessionError } from "@ps/domain/session/InvalidSessionError.ts";
 export class SessionMiddlewareImpl {
     constructor(private readonly validateUserSessionService: ValidateUserSessionService) {}
 
-    public async handle(request: HTTPRequest<undefined, undefined, Headers>): Promise<void> {
-        const authorization = request.headers.Authorization;
+    public async handle(req: HTTPRequest<undefined, undefined, Headers>): Promise<void> {
+        const authorization = req.headers.Authorization;
         if (!authorization) {
             throw new InvalidSessionError();
         }

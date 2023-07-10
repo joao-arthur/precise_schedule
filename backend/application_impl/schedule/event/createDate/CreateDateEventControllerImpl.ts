@@ -10,11 +10,9 @@ import { errorHandler } from "../../../http/error/errorHandler.ts";
 export class CreateDateEventControllerImpl implements CreateDateEventController {
     constructor(private readonly createDateEventService: CreateDateEventService) {}
 
-    public handle(
-        request: HTTPRequest<CreateDateEvent>,
-    ): Promise<HTTPResponse> {
+    public handle(req: HTTPRequest<CreateDateEvent>): Promise<HTTPResponse> {
         return errorHandler(async () => {
-            await this.createDateEventService.create(request.body);
+            await this.createDateEventService.create(req.body);
             return created();
         });
     }

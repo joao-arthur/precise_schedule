@@ -4,7 +4,5 @@ import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
 import type { IdParam } from "@ps/application/http/IdParam.ts";
 
 export type FindUserController = {
-    readonly handle: (
-        request: HTTPRequest<undefined, IdParam<User["id"]>>,
-    ) => Promise<HTTPResponse>;
+    readonly handle: (req: HTTPRequest<undefined, IdParam<User["id"]>>) => Promise<HTTPResponse>;
 };

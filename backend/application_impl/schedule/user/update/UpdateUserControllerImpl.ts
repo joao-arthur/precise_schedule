@@ -12,14 +12,9 @@ import { errorHandler } from "../../../http/error/errorHandler.ts";
 export class UpdateUserControllerImpl implements UpdateUserController {
     constructor(private readonly updateUserService: UpdateUserService) {}
 
-    public handle(
-        request: HTTPRequest<UpdateUserModel, IdParam<User["id"]>>,
-    ): Promise<HTTPResponse> {
+    public handle(req: HTTPRequest<UpdateUserModel, IdParam<User["id"]>>): Promise<HTTPResponse> {
         return errorHandler(async () => {
-            await this.updateUserService.update(
-                request.params.id,
-                request.body,
-            );
+            await this.updateUserService.update(req.params.id, req.body);
             return noContent();
         });
     }

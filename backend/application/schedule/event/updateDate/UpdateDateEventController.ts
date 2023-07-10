@@ -6,6 +6,6 @@ import type { IdParam } from "@ps/application/http/IdParam.ts";
 
 export type UpdateDateEventController = {
     readonly handle: (
-        request: HTTPRequest<UpdateDateEvent, IdParam<Event["id"]>>,
+        req: HTTPRequest<UpdateDateEvent, IdParam<Event["id"]>>,
     ) => Promise<HTTPResponse>;
 };

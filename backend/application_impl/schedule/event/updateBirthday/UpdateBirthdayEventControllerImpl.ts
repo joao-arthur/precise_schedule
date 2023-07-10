@@ -13,16 +13,10 @@ export class UpdateBirthdayEventControllerImpl implements UpdateBirthdayEventCon
     constructor(private readonly updateBirthdayEventService: UpdateBirthdayEventService) {}
 
     public handle(
-        request: HTTPRequest<
-            UpdateBirthdayEvent,
-            IdParam<Event["id"]>
-        >,
+        req: HTTPRequest<UpdateBirthdayEvent, IdParam<Event["id"]>>,
     ): Promise<HTTPResponse> {
         return errorHandler(async () => {
-            await this.updateBirthdayEventService.update(
-                request.params.id,
-                request.body,
-            );
+            await this.updateBirthdayEventService.update(req.params.id, req.body);
             return noContent();
         });
     }

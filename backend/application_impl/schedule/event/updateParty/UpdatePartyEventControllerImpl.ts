@@ -12,14 +12,9 @@ import { errorHandler } from "../../../http/error/errorHandler.ts";
 export class UpdatePartyEventControllerImpl implements UpdatePartyEventController {
     constructor(private readonly updatePartyEventService: UpdatePartyEventService) {}
 
-    public handle(
-        request: HTTPRequest<UpdatePartyEvent, IdParam<Event["id"]>>,
-    ): Promise<HTTPResponse> {
+    public handle(req: HTTPRequest<UpdatePartyEvent, IdParam<Event["id"]>>): Promise<HTTPResponse> {
         return errorHandler(async () => {
-            await this.updatePartyEventService.update(
-                request.params.id,
-                request.body,
-            );
+            await this.updatePartyEventService.update(req.params.id, req.body);
             return noContent();
         });
     }

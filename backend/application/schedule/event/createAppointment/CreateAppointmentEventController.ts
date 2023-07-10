@@ -3,7 +3,5 @@ import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
 import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
 
 export type CreateAppointmentEventController = {
-    readonly handle: (
-        request: HTTPRequest<CreateAppointmentEvent>,
-    ) => Promise<HTTPResponse>;
+    readonly handle: (req: HTTPRequest<CreateAppointmentEvent>) => Promise<HTTPResponse>;
 };

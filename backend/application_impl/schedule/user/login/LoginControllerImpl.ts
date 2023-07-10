@@ -10,11 +10,9 @@ import { errorHandler } from "../../../http/error/errorHandler.ts";
 export class LoginControllerImpl implements LoginController {
     constructor(private readonly loginService: LoginService) {}
 
-    public handle(
-        request: HTTPRequest<LoginModel>,
-    ): Promise<HTTPResponse> {
+    public handle(req: HTTPRequest<LoginModel>): Promise<HTTPResponse> {
         return errorHandler(async () => {
-            const result = await this.loginService.login(request.body);
+            const result = await this.loginService.login(req.body);
             return ok(result);
         });
     }

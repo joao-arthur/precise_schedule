@@ -12,14 +12,9 @@ import { errorHandler } from "../../../http/error/errorHandler.ts";
 export class UpdateDateEventControllerImpl implements UpdateDateEventController {
     constructor(private readonly updateDateEventService: UpdateDateEventService) {}
 
-    public handle(
-        request: HTTPRequest<UpdateDateEvent, IdParam<Event["id"]>>,
-    ): Promise<HTTPResponse> {
+    public handle(req: HTTPRequest<UpdateDateEvent, IdParam<Event["id"]>>): Promise<HTTPResponse> {
         return errorHandler(async () => {
-            await this.updateDateEventService.update(
-                request.params.id,
-                request.body,
-            );
+            await this.updateDateEventService.update(req.params.id, req.body);
             return noContent();
         });
     }

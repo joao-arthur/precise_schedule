@@ -13,16 +13,10 @@ export class UpdateMeetingEventControllerImpl implements UpdateMeetingEventContr
     constructor(private readonly updateMeetingEventService: UpdateMeetingEventService) {}
 
     public handle(
-        request: HTTPRequest<
-            UpdateMeetingEvent,
-            IdParam<Event["id"]>
-        >,
+        req: HTTPRequest<UpdateMeetingEvent, IdParam<Event["id"]>>,
     ): Promise<HTTPResponse> {
         return errorHandler(async () => {
-            await this.updateMeetingEventService.update(
-                request.params.id,
-                request.body,
-            );
+            await this.updateMeetingEventService.update(req.params.id, req.body);
             return noContent();
         });
     }

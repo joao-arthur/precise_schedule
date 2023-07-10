@@ -10,11 +10,9 @@ import { errorHandler } from "../../../http/error/errorHandler.ts";
 export class CreateUserControllerImpl implements CreateUserController {
     constructor(private readonly createUserService: CreateUserService) {}
 
-    public handle(
-        request: HTTPRequest<CreateUserModel>,
-    ): Promise<HTTPResponse> {
+    public handle(req: HTTPRequest<CreateUserModel>): Promise<HTTPResponse> {
         return errorHandler(async () => {
-            const result = await this.createUserService.create(request.body);
+            const result = await this.createUserService.create(req.body);
             return ok(result);
         });
     }

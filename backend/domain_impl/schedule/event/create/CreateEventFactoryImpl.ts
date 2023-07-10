@@ -7,6 +7,7 @@ export class CreateEventFactoryImpl implements CreateEventFactory {
     constructor(private readonly idGenerator: IdGenerator) {}
 
     public build(event: CreateEventModel): Event {
+        const now = new Date();
         return {
             id: this.idGenerator.generate(),
             name: event.name,
@@ -16,8 +17,8 @@ export class CreateEventFactoryImpl implements CreateEventFactory {
             category: event.category,
             frequency: event.frequency,
             weekendRepeat: event.weekendRepeat,
-            createdAt: new Date(),
-            updatedAt: new Date(),
+            createdAt: now,
+            updatedAt: now,
         };
     }
 }

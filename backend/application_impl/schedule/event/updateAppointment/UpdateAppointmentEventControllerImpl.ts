@@ -13,16 +13,10 @@ export class UpdateAppointmentEventControllerImpl implements UpdateAppointmentEv
     constructor(private readonly updateAppointmentEventService: UpdateAppointmentEventService) {}
 
     public handle(
-        request: HTTPRequest<
-            UpdateAppointmentEvent,
-            IdParam<Event["id"]>
-        >,
+        req: HTTPRequest<UpdateAppointmentEvent, IdParam<Event["id"]>>,
     ): Promise<HTTPResponse> {
         return errorHandler(async () => {
-            await this.updateAppointmentEventService.update(
-                request.params.id,
-                request.body,
-            );
+            await this.updateAppointmentEventService.update(req.params.id, req.body);
             return noContent();
         });
     }
