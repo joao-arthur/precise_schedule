@@ -4,7 +4,7 @@ import { FindUserRepositoryMock } from "@ps/domain_mock/schedule/user/find/FindU
 import { UserNotFound } from "@ps/domain/schedule/user/find/UserNotFound.ts";
 import { FindUserServiceImpl } from "./FindUserServiceImpl.ts";
 
-Deno.test("FindUserServiceImpl", async () => {
+Deno.test("FindUserServiceImpl.findById", async () => {
     await assertRejects(
         () =>
             new FindUserServiceImpl(
@@ -16,6 +16,22 @@ Deno.test("FindUserServiceImpl", async () => {
         await new FindUserServiceImpl(
             new FindUserRepositoryMock(userMock),
         ).findById(userMock.id),
+        userMock,
+    );
+});
+
+Deno.test("FindUserServiceImpl.findById", async () => {
+    await assertRejects(
+        () =>
+            new FindUserServiceImpl(
+                new FindUserRepositoryMock(undefined),
+            ).findByCredentials(userMock.username, userMock.password),
+        UserNotFound,
+    );
+    assertEquals(
+        await new FindUserServiceImpl(
+            new FindUserRepositoryMock(userMock),
+        ).findByCredentials(userMock.username, userMock.password),
         userMock,
     );
 });
