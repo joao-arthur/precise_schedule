@@ -4,7 +4,7 @@ import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
 import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
 import type { CreateMeetingEventController } from "@ps/application/schedule/event/createMeeting/CreateMeetingEventController.ts";
 
-import { created } from "@ps/application/http/builder/200/created.ts";
+import { created } from "@ps/application_impl/http/builder/200/created.ts";
 import { errorHandler } from "../../../http/error/errorHandler.ts";
 
 export class CreateMeetingEventControllerImpl implements CreateMeetingEventController {

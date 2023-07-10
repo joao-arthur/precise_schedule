@@ -4,7 +4,7 @@ import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
 import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
 import type { CreateUserController } from "@ps/application/schedule/user/create/CreateUserController.ts";
 
-import { ok } from "@ps/application/http/builder/200/ok.ts";
+import { ok } from "@ps/application_impl/http/builder/200/ok.ts";
 import { errorHandler } from "../../../http/error/errorHandler.ts";
 
 export class CreateUserControllerImpl implements CreateUserController {

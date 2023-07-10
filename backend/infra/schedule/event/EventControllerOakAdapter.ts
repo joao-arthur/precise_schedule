@@ -52,10 +52,19 @@ export class EventControllerOakAdapter {
     // deno-lint-ignore no-explicit-any
     public initRoutes(router: Router<Record<string, any>>): void {
         router
-            //.get("/event", async (context) => {
-            //    //204 no content
-            //    await eventControllerAdapter.getEvents(context);
-            //})
+            /*.get("/event", async (ctx) => {
+                const findAllEventsService = new CreateEventServiceImpl(
+                    this.repository,
+                    new CreateEventFactoryImpl(this.idGenerator),
+                );
+                const service = new CreateAppointmentEventServiceImpl(
+                    new CreateAppointmentEventFactoryImpl(),
+                    findAllEventsService,
+                );
+                const controller = new FindAllEventsControllerImpl(service);
+                const res = await controller.handle();
+                makeResult(res, ctx);
+            })*/
             .post("/event/APPOINTMENT", async (ctx) => {
                 const body = await makeBody(ctx);
                 const createEventService = new CreateEventServiceImpl(

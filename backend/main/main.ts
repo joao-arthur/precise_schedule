@@ -8,8 +8,6 @@ import { IdGeneratorRandom } from "@ps/infra/generate/IdGeneratorRandom.ts";
 import { ValidatorImpl } from "@ps/infra/validation/ValidatorImpl.ts";
 import { SessionMiddlewareOakAdapter } from "@ps/infra/session/SessionMiddlewareOakAdapter.ts";
 
-const port = 8080;
-
 const idGenerator = new IdGeneratorRandom();
 const validator = new ValidatorImpl();
 
@@ -41,6 +39,8 @@ app.use(async (context, next) => {
 });
 app.use(router.routes());
 app.use(router.allowedMethods());
+
+const port = 8080;
 
 console.log(`Server running on http://localhost:${port}/`);
 await app.listen({ port });

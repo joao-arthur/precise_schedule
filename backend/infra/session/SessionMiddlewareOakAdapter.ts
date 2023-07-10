@@ -1,7 +1,7 @@
 import type { UserRepository } from "@ps/domain/schedule/user/UserRepository.ts";
 
 import { Context, Next } from "oak/mod.ts";
-import { unauthorized } from "@ps/application/http/builder/400/unauthorized.ts";
+import { unauthorized } from "@ps/application_impl/http/builder/400/unauthorized.ts";
 import { ValidateUserSessionServiceImpl } from "@ps/domain_impl/userSession/ValidateUserSessionServiceImpl.ts";
 import { FindUserServiceImpl } from "@ps/domain_impl/schedule/user/find/FindUserServiceImpl.ts";
 import { DecodeSessionServiceJWTAdapter } from "@ps/infra/session/decode/DecodeSessionServiceJWTAdapter.ts";
