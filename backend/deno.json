@@ -17,6 +17,6 @@
         "./": "./"
     },
     "tasks": {
-        "dev": "deno run ./main/main.ts"
+        "dev": "deno run --allow-net ./main/main.ts"
     }
 }
