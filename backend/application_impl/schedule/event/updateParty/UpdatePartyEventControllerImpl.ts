@@ -6,15 +6,12 @@ import type { IdParam } from "@ps/application/http/IdParam.ts";
 import type { UpdatePartyEventController } from "@ps/application/schedule/event/updateParty/UpdatePartyEventController.ts";
 
 import { noContent } from "@ps/application_impl/http/builder/200/noContent.ts";
-import { errorHandler } from "../../../http/error/errorHandler.ts";
 
 export class UpdatePartyEventControllerImpl implements UpdatePartyEventController {
     constructor(private readonly updatePartyEventService: UpdatePartyEventService) {}
 
-    public handle(req: HTTPRequest<UpdatePartyEvent, IdParam>): Promise<HTTPResponse> {
-        return errorHandler(async () => {
-            await this.updatePartyEventService.update(req.params.id, req.body);
-            return noContent();
-        });
+    public async handle(req: HTTPRequest<UpdatePartyEvent, IdParam>): Promise<HTTPResponse> {
+        await this.updatePartyEventService.update(req.params.id, req.body);
+        return noContent();
     }
 }

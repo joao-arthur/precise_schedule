@@ -6,7 +6,8 @@ import { EventControllerOakAdapter } from "../infra/schedule/event/EventControll
 import { EventRepositoryMemory } from "@ps/infra/schedule/event/EventRepositoryMemory.ts";
 import { IdGeneratorRandom } from "@ps/infra/generate/IdGeneratorRandom.ts";
 import { ValidatorImpl } from "@ps/infra/validation/ValidatorImpl.ts";
-import { SessionMiddlewareOakAdapter } from "@ps/infra/session/SessionMiddlewareOakAdapter.ts";
+import { SessionMiddlewareOakAdapter } from "@ps/infra/http/middleware/SessionMiddlewareOakAdapter.ts";
+import { ErrorHandlerMiddlewareOakAdapter } from "@ps/infra/http/middleware/ErrorHandlerMiddlewareOakAdapter.ts";
 
 const idGenerator = new IdGeneratorRandom();
 const validator = new ValidatorImpl();
@@ -25,17 +26,21 @@ const eventControllerAdapter = new EventControllerOakAdapter(
     eventRepository,
 );
 
-const sessionMiddleware = new SessionMiddlewareOakAdapter(userRepository);
-
 const app = new Application();
 const router = new Router();
 
 userControllerAdapter.initRoutes(router);
 eventControllerAdapter.initRoutes(router);
 
+const errorHandlerMiddleware = new ErrorHandlerMiddlewareOakAdapter();
+const sessionMiddleware = new SessionMiddlewareOakAdapter(userRepository);
+
 app.use(oakCors({ origin: "http://localhost:3000" }));
-app.use(async (context, next) => {
-    await sessionMiddleware.handle(context, next);
+app.use(async (ctx, next) => {
+    await errorHandlerMiddleware.handle(ctx, next);
+});
+app.use(async (ctx, next) => {
+    await sessionMiddleware.handle(ctx, next);
 });
 app.use(router.routes());
 app.use(router.allowedMethods());

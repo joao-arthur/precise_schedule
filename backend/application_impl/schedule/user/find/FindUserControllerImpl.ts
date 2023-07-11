@@ -5,15 +5,12 @@ import type { IdParam } from "@ps/application/http/IdParam.ts";
 import type { FindUserController } from "@ps/application/schedule/user/find/FindUserController.ts";
 
 import { ok } from "@ps/application_impl/http/builder/200/ok.ts";
-import { errorHandler } from "../../../http/error/errorHandler.ts";
 
 export class FindUserControllerImpl implements FindUserController {
     constructor(private readonly findUserService: FindUserService) {}
 
-    public handle(req: HTTPRequest<undefined, IdParam>): Promise<HTTPResponse> {
-        return errorHandler(async () => {
-            const result = await this.findUserService.findById(req.params.id);
-            return ok(result);
-        });
+    public async handle(req: HTTPRequest<undefined, IdParam>): Promise<HTTPResponse> {
+        const result = await this.findUserService.findById(req.params.id);
+        return ok(result);
     }
 }

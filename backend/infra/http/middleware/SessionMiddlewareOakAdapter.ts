@@ -7,18 +7,15 @@ import { DecodeSessionServiceJWTAdapter } from "@ps/infra/session/decode/DecodeS
 import { unauthorized } from "@ps/application_impl/http/builder/400/unauthorized.ts";
 import { SessionMiddlewareImpl } from "@ps/application_impl/http/middleware/SessionMiddlewareImpl.ts";
 import { SessionFromRequestServiceImpl } from "@ps/application_impl/http/session/SessionFromRequestServiceImpl.ts";
+import { makeResult } from "@ps/infra/http/makeResult.ts";
 
 export class SessionMiddlewareOakAdapter {
     constructor(private readonly repository: UserRepository) {}
 
-    public async handle(
-        // deno-lint-ignore no-explicit-any
-        context: Context<Record<string, any>, Record<string, any>>,
-        next: Next,
-    ): Promise<void> {
-        const { request, response } = context;
-        const isLogin = request.method === "POST" && request.url.pathname === "/user/login";
-        const isUserRegister = request.method === "POST" && request.url.pathname === "/user";
+    public async handle(ctx: Context, next: Next): Promise<void> {
+        const isLogin = ctx.request.method === "POST" && ctx.request.url.pathname === "/user/login";
+        const isUserRegister = ctx.request.method === "POST" &&
+            ctx.request.url.pathname === "/user";
         if (isLogin || isUserRegister) {
             await next();
             return;
@@ -33,14 +30,12 @@ export class SessionMiddlewareOakAdapter {
             );
             await sessionMiddleware.handle({
                 headers: {
-                    Authorization: request.headers.get("Authorization"),
+                    Authorization: ctx.request.headers.get("Authorization"),
                 },
             });
             await next();
         } catch {
-            const res = unauthorized();
-            response.body = res.body;
-            response.status = res.status;
+            makeResult(unauthorized(), ctx);
             return;
         }
     }

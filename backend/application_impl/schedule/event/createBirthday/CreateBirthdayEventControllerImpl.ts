@@ -5,15 +5,12 @@ import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
 import type { CreateBirthdayEventController } from "@ps/application/schedule/event/createBirthday/CreateBirthdayEventController.ts";
 
 import { created } from "@ps/application_impl/http/builder/200/created.ts";
-import { errorHandler } from "../../../http/error/errorHandler.ts";
 
 export class CreateBirthdayEventControllerImpl implements CreateBirthdayEventController {
     constructor(private readonly createBirthdayEventService: CreateBirthdayEventService) {}
 
-    public handle(req: HTTPRequest<CreateBirthdayEvent>): Promise<HTTPResponse> {
-        return errorHandler(async () => {
-            await this.createBirthdayEventService.create(req.body);
-            return created();
-        });
+    public async handle(req: HTTPRequest<CreateBirthdayEvent>): Promise<HTTPResponse> {
+        await this.createBirthdayEventService.create(req.body);
+        return created();
     }
 }

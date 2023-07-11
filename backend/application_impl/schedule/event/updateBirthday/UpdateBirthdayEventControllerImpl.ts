@@ -6,15 +6,12 @@ import type { IdParam } from "@ps/application/http/IdParam.ts";
 import type { UpdateBirthdayEventController } from "@ps/application/schedule/event/updateBirthday/UpdateBirthdayEventController.ts";
 
 import { noContent } from "@ps/application_impl/http/builder/200/noContent.ts";
-import { errorHandler } from "../../../http/error/errorHandler.ts";
 
 export class UpdateBirthdayEventControllerImpl implements UpdateBirthdayEventController {
     constructor(private readonly updateBirthdayEventService: UpdateBirthdayEventService) {}
 
-    public handle(req: HTTPRequest<UpdateBirthdayEvent, IdParam>): Promise<HTTPResponse> {
-        return errorHandler(async () => {
-            await this.updateBirthdayEventService.update(req.params.id, req.body);
-            return noContent();
-        });
+    public async handle(req: HTTPRequest<UpdateBirthdayEvent, IdParam>): Promise<HTTPResponse> {
+        await this.updateBirthdayEventService.update(req.params.id, req.body);
+        return noContent();
     }
 }

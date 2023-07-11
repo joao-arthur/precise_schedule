@@ -1,28 +1,23 @@
+import type { ErrorHandlerMiddleware } from "@ps/application/http/middleware/ErrorHandlerMiddleware.ts";
 import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
 
 import { ValidationError } from "@ps/domain/validation/ValidationError.ts";
-import { InvalidSessionError } from "@ps/domain/session/InvalidSessionError.ts";
 import { BusinessError } from "@ps/domain/general/BusinessError.ts";
+import { InvalidSessionError } from "@ps/domain/session/InvalidSessionError.ts";
+
 import { badRequest } from "@ps/application_impl/http/builder/400/badRequest.ts";
 import { unauthorized } from "@ps/application_impl/http/builder/400/unauthorized.ts";
 import { internalServerError } from "@ps/application_impl/http/builder/500/internalServerError.ts";
 
-type CallBack = () => Promise<HTTPResponse>;
-
-export async function errorHandler(
-    cb: CallBack,
-): Promise<HTTPResponse> {
-    try {
-        const result = await cb();
-        return result;
-    } catch (e: unknown) {
-        if (e instanceof ValidationError) {
-            return badRequest(e.result);
+export class ErrorHandlerMiddlewareImpl implements ErrorHandlerMiddleware {
+    public handle(error: unknown): HTTPResponse {
+        if (error instanceof ValidationError) {
+            return badRequest(error.result);
         }
-        if (e instanceof BusinessError) {
-            return badRequest({ message: e.message });
+        if (error instanceof BusinessError) {
+            return badRequest({ message: error.message });
         }
-        if (e instanceof InvalidSessionError) {
+        if (error instanceof InvalidSessionError) {
             return unauthorized();
         }
         return internalServerError();

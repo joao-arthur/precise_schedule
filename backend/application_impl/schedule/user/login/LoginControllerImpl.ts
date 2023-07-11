@@ -5,15 +5,12 @@ import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
 import type { LoginController } from "@ps/application/schedule/user/login/LoginController.ts";
 
 import { ok } from "@ps/application_impl/http/builder/200/ok.ts";
-import { errorHandler } from "../../../http/error/errorHandler.ts";
 
 export class LoginControllerImpl implements LoginController {
     constructor(private readonly loginService: LoginService) {}
 
-    public handle(req: HTTPRequest<LoginModel>): Promise<HTTPResponse> {
-        return errorHandler(async () => {
-            const result = await this.loginService.login(req.body);
-            return ok(result);
-        });
+    public async handle(req: HTTPRequest<LoginModel>): Promise<HTTPResponse> {
+        const result = await this.loginService.login(req.body);
+        return ok(result);
     }
 }

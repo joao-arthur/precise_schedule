@@ -5,15 +5,12 @@ import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
 import type { CreatePartyEventController } from "@ps/application/schedule/event/createParty/CreatePartyEventController.ts";
 
 import { created } from "@ps/application_impl/http/builder/200/created.ts";
-import { errorHandler } from "../../../http/error/errorHandler.ts";
 
 export class CreatePartyEventControllerImpl implements CreatePartyEventController {
     constructor(private readonly createPartyEventService: CreatePartyEventService) {}
 
-    public handle(req: HTTPRequest<CreatePartyEvent>): Promise<HTTPResponse> {
-        return errorHandler(async () => {
-            await this.createPartyEventService.create(req.body);
-            return created();
-        });
+    public async handle(req: HTTPRequest<CreatePartyEvent>): Promise<HTTPResponse> {
+        await this.createPartyEventService.create(req.body);
+        return created();
     }
 }

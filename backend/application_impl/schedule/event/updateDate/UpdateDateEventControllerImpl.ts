@@ -6,15 +6,12 @@ import type { IdParam } from "@ps/application/http/IdParam.ts";
 import type { UpdateDateEventController } from "@ps/application/schedule/event/updateDate/UpdateDateEventController.ts";
 
 import { noContent } from "@ps/application_impl/http/builder/200/noContent.ts";
-import { errorHandler } from "../../../http/error/errorHandler.ts";
 
 export class UpdateDateEventControllerImpl implements UpdateDateEventController {
     constructor(private readonly updateDateEventService: UpdateDateEventService) {}
 
-    public handle(req: HTTPRequest<UpdateDateEvent, IdParam>): Promise<HTTPResponse> {
-        return errorHandler(async () => {
-            await this.updateDateEventService.update(req.params.id, req.body);
-            return noContent();
-        });
+    public async handle(req: HTTPRequest<UpdateDateEvent, IdParam>): Promise<HTTPResponse> {
+        await this.updateDateEventService.update(req.params.id, req.body);
+        return noContent();
     }
 }
