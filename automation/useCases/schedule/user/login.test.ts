@@ -1,14 +1,12 @@
 import { assertEquals } from "std/testing/asserts.ts";
+import { request } from "../../../infra/request.ts";
 
 Deno.test("Login unregistered user", async () => {
     assertEquals(
-        await fetch(
-            "http://localhost:8080/user/login",
-            {
-                method: "POST",
-                body: JSON.stringify({ username: "john", password: "0123456789s" }),
-            },
-        ).then((res) => res.json()),
+        await request.post("user/login", {
+            username: "john",
+            password: "0123456789s",
+        }),
         { message: "The user was not found!" },
     );
 });
