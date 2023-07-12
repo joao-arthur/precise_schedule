@@ -1,12 +1,11 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { request } from "../../../infra/request.ts";
+import { loginEndpoint } from "../../../domain/schedule/user/login.endpoint.ts";
 
 Deno.test("Login unregistered user", async () => {
     assertEquals(
-        await request.post("user/login", {
-            username: "john",
-            password: "0123456789s",
-        }),
+        await loginEndpoint(
+            { username: "john", password: "0123456789" },
+        ),
         { message: "The user was not found!" },
     );
 });
