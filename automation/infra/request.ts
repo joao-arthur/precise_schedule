@@ -4,7 +4,7 @@ import { State } from "../app/state.ts";
 
 type Params = {
     readonly resource: string;
-    readonly method: "GET" | "POST";
+    readonly method: "GET" | "POST" | "PUT";
     readonly body: Record<string, unknown>;
 };
 
@@ -23,7 +23,8 @@ function customFetch<T>({ resource, method, body }: Params): Promise<Res<T>> {
         },
     ).then(async (res) => {
         if ([201, 204].includes(res.status)) {
-            return { status: res.status, body: undefined };
+            const body = await res.body?.cancel();
+            return { status: res.status, body };
         }
         const body = await res.json();
         return { status: res.status, body };
@@ -38,7 +39,12 @@ export function postReq<T>(resource: string, body: Record<string, unknown>): Pro
     return customFetch({ resource, method: "POST", body });
 }
 
+export function putReq<T>(resource: string, body: Record<string, unknown>): Promise<Res<T>> {
+    return customFetch({ resource, method: "PUT", body });
+}
+
 export const request = {
     get: getReq,
     post: postReq,
+    put: putReq,
 };
