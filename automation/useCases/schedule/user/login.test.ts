@@ -6,6 +6,9 @@ Deno.test("Login unregistered user", async () => {
         await loginEndpoint(
             { username: "john", password: "0123456789" },
         ),
-        { message: "The user was not found!" },
+        {
+            status: 400,
+            body: { message: "The user was not found!" },
+        },
     );
 });

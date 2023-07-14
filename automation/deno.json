@@ -9,7 +9,8 @@
         }
     },
     "imports": {
-        "std/": "https://deno.land/std@0.193.0/"
+        "std/": "https://deno.land/std@0.193.0/",
+        "nanoid/": "https://deno.land/x/nanoid@v3.0.0/"
     },
     "tasks": {
         "test": "deno test --allow-net"
