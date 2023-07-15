@@ -1,3 +1,3 @@
 export type Headers = {
-    readonly Authorization: string | undefined | null;
+    readonly authorization: string | undefined | null;
 };

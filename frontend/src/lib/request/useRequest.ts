@@ -9,7 +9,7 @@ export function useRequest() {
 
     function headers(): Headers | undefined {
         const token = getItem();
-        return token ? { Authorization: `Bearer ${token}` } : undefined;
+        return token ? { authorization: `Bearer ${token}` } : undefined;
     }
 
     function catchError<T>(res: T): T {

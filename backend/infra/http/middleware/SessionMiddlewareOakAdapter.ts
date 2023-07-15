@@ -30,7 +30,7 @@ export class SessionMiddlewareOakAdapter {
             );
             await sessionMiddleware.handle({
                 headers: {
-                    Authorization: ctx.request.headers.get("Authorization"),
+                    authorization: ctx.request.headers.get("authorization"),
                 },
             });
             await next();

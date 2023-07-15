@@ -3,11 +3,11 @@ import { SessionFromRequestServiceImpl } from "./SessionFromRequestServiceImpl.t
 
 Deno.test("SessionFromRequestServiceImpl", () => {
     assertEquals(
-        new SessionFromRequestServiceImpl().create({ headers: { Authorization: undefined } }),
+        new SessionFromRequestServiceImpl().create({ headers: { authorization: undefined } }),
         { token: undefined },
     );
     assertEquals(
-        new SessionFromRequestServiceImpl().create({ headers: { Authorization: "Bearer 123" } }),
+        new SessionFromRequestServiceImpl().create({ headers: { authorization: "Bearer 123" } }),
         { token: "123" },
     );
 });

@@ -22,7 +22,7 @@ export const httpRequestParamsMock: HTTPRequest<undefined, IdParam> = {
 
 export const httpRequestHeadersMock: HTTPRequest<undefined, undefined, Headers> = {
     headers: {
-        Authorization: "Bearer 123",
+        authorization: "Bearer 123",
     },
 };
 

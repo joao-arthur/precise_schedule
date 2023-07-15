@@ -6,7 +6,7 @@ import type { SessionFromRequestService } from "@ps/application/http/session/Ses
 export class SessionFromRequestServiceImpl implements SessionFromRequestService {
     public create(req: HTTPRequest<undefined, undefined, Headers>): Partial<Session> {
         return {
-            token: req.headers.Authorization?.replace("Bearer ", ""),
+            token: req.headers.authorization?.replace("Bearer ", ""),
         };
     }
 }

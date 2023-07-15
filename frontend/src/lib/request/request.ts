@@ -1,7 +1,7 @@
 import { handleResponse } from "./handleResponse";
 
 export type Headers = {
-    readonly Authorization: string;
+    readonly authorization: string;
 };
 
 type params = {
