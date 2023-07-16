@@ -7,6 +7,7 @@ Deno.test("unauthorized", () => {
         {
             status: 401,
             body: undefined,
+            headers: undefined,
         },
     );
 });

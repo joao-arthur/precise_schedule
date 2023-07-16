@@ -10,7 +10,7 @@ export class CreateMeetingEventControllerImpl implements CreateMeetingEventContr
     constructor(private readonly createMeetingEventService: CreateMeetingEventService) {}
 
     public async handle(req: HTTPRequest<CreateMeetingEvent>): Promise<HTTPResponse> {
-        await this.createMeetingEventService.create(req.body);
-        return created();
+        const result = await this.createMeetingEventService.create(req.body);
+        return created(result);
     }
 }

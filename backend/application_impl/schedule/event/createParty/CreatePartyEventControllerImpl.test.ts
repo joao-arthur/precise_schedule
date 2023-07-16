@@ -10,6 +10,6 @@ Deno.test("CreatePartyEventControllerImpl", async () => {
         await new CreatePartyEventControllerImpl(
             new CreatePartyEventServiceMock(eventMock),
         ).handle(httpRequestBodyMock),
-        created(),
+        created(eventMock),
     );
 });

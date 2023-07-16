@@ -10,6 +10,7 @@ type BodyMock = {
 type FullMock = {
     readonly body: any;
     readonly params: IdParam;
+    readonly headers: undefined;
 };
 
 export const httpRequestBodyMock: BodyMock = {
@@ -29,4 +30,5 @@ export const httpRequestHeadersMock: HTTPRequest<undefined, undefined, Headers> 
 export const httpRequestFullMock: FullMock = {
     body: {},
     params: { id: "id" },
+    headers: undefined,
 };

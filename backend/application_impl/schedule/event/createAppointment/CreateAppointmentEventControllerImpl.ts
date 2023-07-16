@@ -10,7 +10,7 @@ export class CreateAppointmentEventControllerImpl implements CreateAppointmentEv
     constructor(private readonly createAppointmentEventService: CreateAppointmentEventService) {}
 
     public async handle(req: HTTPRequest<CreateAppointmentEvent>): Promise<HTTPResponse> {
-        await this.createAppointmentEventService.create(req.body);
-        return created();
+        const result = await this.createAppointmentEventService.create(req.body);
+        return created(result);
     }
 }

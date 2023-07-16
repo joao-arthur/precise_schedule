@@ -10,6 +10,6 @@ Deno.test("CreateDateEventControllerImpl", async () => {
         await new CreateDateEventControllerImpl(
             new CreateDateEventServiceMock(eventMock),
         ).handle(httpRequestBodyMock),
-        created(),
+        created(eventMock),
     );
 });

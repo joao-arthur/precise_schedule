@@ -7,6 +7,7 @@ Deno.test("badRequest", () => {
         {
             status: 400,
             body: { error: 1 },
+            headers: undefined,
         },
     );
 });

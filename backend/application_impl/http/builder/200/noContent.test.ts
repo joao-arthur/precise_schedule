@@ -7,6 +7,7 @@ Deno.test("noContent", () => {
         {
             status: 204,
             body: undefined,
+            headers: undefined,
         },
     );
 });

@@ -10,6 +10,6 @@ Deno.test("CreateAppointmentEventControllerImpl", async () => {
         await new CreateAppointmentEventControllerImpl(
             new CreateAppointmentEventServiceMock(eventMock),
         ).handle(httpRequestBodyMock),
-        created(),
+        created(eventMock),
     );
 });

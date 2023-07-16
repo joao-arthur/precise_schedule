@@ -7,6 +7,7 @@ Deno.test("ok", () => {
         {
             status: 200,
             body: { id: 1 },
+            headers: undefined,
         },
     );
 });

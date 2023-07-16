@@ -10,7 +10,7 @@ export class CreateDateEventControllerImpl implements CreateDateEventController 
     constructor(private readonly createDateEventService: CreateDateEventService) {}
 
     public async handle(req: HTTPRequest<CreateDateEvent>): Promise<HTTPResponse> {
-        await this.createDateEventService.create(req.body);
-        return created();
+        const result = await this.createDateEventService.create(req.body);
+        return created(result);
     }
 }

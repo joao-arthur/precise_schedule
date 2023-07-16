@@ -5,5 +5,6 @@ Deno.test("internalServerError", () => {
     assertEquals(internalServerError(), {
         status: 500,
         body: { message: "An unexpected error occurred!" },
+        headers: undefined,
     });
 });

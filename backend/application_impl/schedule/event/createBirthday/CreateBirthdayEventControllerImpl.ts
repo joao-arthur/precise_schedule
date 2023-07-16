@@ -10,7 +10,7 @@ export class CreateBirthdayEventControllerImpl implements CreateBirthdayEventCon
     constructor(private readonly createBirthdayEventService: CreateBirthdayEventService) {}
 
     public async handle(req: HTTPRequest<CreateBirthdayEvent>): Promise<HTTPResponse> {
-        await this.createBirthdayEventService.create(req.body);
-        return created();
+        const result = await this.createBirthdayEventService.create(req.body);
+        return created(result);
     }
 }

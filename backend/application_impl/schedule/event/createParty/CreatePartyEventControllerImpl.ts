@@ -10,7 +10,7 @@ export class CreatePartyEventControllerImpl implements CreatePartyEventControlle
     constructor(private readonly createPartyEventService: CreatePartyEventService) {}
 
     public async handle(req: HTTPRequest<CreatePartyEvent>): Promise<HTTPResponse> {
-        await this.createPartyEventService.create(req.body);
-        return created();
+        const result = await this.createPartyEventService.create(req.body);
+        return created(result);
     }
 }
