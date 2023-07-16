@@ -5,28 +5,11 @@ import { initState } from "../../../app/initState.ts";
 
 await initState();
 
-Deno.test("Create meeting event", async () => {
-    assertEquals(
-        await createMeetingEvent(
-            {
-                name: "name",
-                day: "2023-06-24",
-                begin: "08:00",
-                end: "18:00",
-                frequency: "NEVER",
-                weekendRepeat: false,
-            },
-        ),
-        {
-            status: 201,
-            body: undefined,
-        },
-    );
-});
+Deno.test("Meeting", async (t) => {
+    let id: string;
 
-Deno.test("Update meeting event", async () => {
-    assertEquals(
-        await updateMeetingEvent(
+    await t.step("Create", async () => {
+        const res = await createMeetingEvent(
             {
                 name: "name",
                 day: "2023-06-24",
@@ -35,10 +18,31 @@ Deno.test("Update meeting event", async () => {
                 frequency: "NEVER",
                 weekendRepeat: false,
             },
-        ),
-        {
-            status: 204,
-            body: undefined,
-        },
-    );
+        );
+        assertEquals(res.status, 201);
+        assertEquals(res.body, undefined);
+        assertEquals(typeof res.headers.contentLocation, "string");
+        id = res.headers.contentLocation as string;
+    });
+
+    await t.step("Update", async () => {
+        assertEquals(
+            await updateMeetingEvent(
+                id,
+                {
+                    name: "name",
+                    day: "2023-06-24",
+                    begin: "08:00",
+                    end: "18:00",
+                    frequency: "NEVER",
+                    weekendRepeat: false,
+                },
+            ),
+            {
+                status: 204,
+                body: undefined,
+                headers: { contentLocation: undefined },
+            },
+        );
+    });
 });

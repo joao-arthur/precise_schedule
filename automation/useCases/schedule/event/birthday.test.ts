@@ -5,32 +5,36 @@ import { initState } from "../../../app/initState.ts";
 
 await initState();
 
-Deno.test("Create birthday event", async () => {
-    assertEquals(
-        await createBirthdayEvent(
-            {
-                name: "name",
-                day: "2023-06-24",
-            },
-        ),
-        {
-            status: 201,
-            body: undefined,
-        },
-    );
-});
+Deno.test("Birthday", async (t) => {
+    let id: string;
 
-Deno.test("Update birthday event", async () => {
-    assertEquals(
-        await updateBirthdayEvent(
+    await t.step("Create", async () => {
+        const res = await createBirthdayEvent(
             {
                 name: "name",
                 day: "2023-06-24",
             },
-        ),
-        {
-            status: 204,
-            body: undefined,
-        },
-    );
+        );
+        assertEquals(res.status, 201);
+        assertEquals(res.body, undefined);
+        assertEquals(typeof res.headers.contentLocation, "string");
+        id = res.headers.contentLocation as string;
+    });
+
+    await t.step("Update", async () => {
+        assertEquals(
+            await updateBirthdayEvent(
+                id,
+                {
+                    name: "name",
+                    day: "2023-06-24",
+                },
+            ),
+            {
+                status: 204,
+                body: undefined,
+                headers: { contentLocation: undefined },
+            },
+        );
+    });
 });

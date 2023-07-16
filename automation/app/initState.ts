@@ -10,7 +10,7 @@ export async function initState(): Promise<void> {
     }
     const res = await request.post<Session>("user", {
         username: nanoid(),
-        password: "0123456789",
+        password: "0a1B2#3456789",
         email: `${nanoid()}@gmail.com`,
     });
     State.getState().setToken(res.body.token);

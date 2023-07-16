@@ -22,12 +22,16 @@ function customFetch<T>({ resource, method, body }: Params): Promise<Res<T>> {
             body: JSON.stringify(body),
         },
     ).then(async (res) => {
+        const status = res.status;
+        const headers = {
+            contentLocation: res.headers.get("content-location") ?? undefined,
+        };
         if ([201, 204].includes(res.status)) {
             const body = await res.body?.cancel();
-            return { status: res.status, body };
+            return { status, body, headers };
         }
         const body = await res.json();
-        return { status: res.status, body };
+        return { status, body, headers };
     });
 }
 
