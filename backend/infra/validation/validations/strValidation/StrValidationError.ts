@@ -1,4 +1,4 @@
-export class IsStringError extends Error {
+export class StrError extends Error {
     constructor() {
         super("must be a string");
     }
