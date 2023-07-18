@@ -1,20 +1,20 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { bool } from "./bool.ts";
-import { BoolError } from "./BoolError.ts";
+import { boolValidation } from "./boolValidation.ts";
+import { BoolValidationError } from "./BoolValidationError.ts";
 
-Deno.test("bool valid", () => {
-    assertEquals(bool(true), undefined);
-    assertEquals(bool(false), undefined);
+Deno.test("boolValidation valid", () => {
+    assertEquals(boolValidation(true), undefined);
+    assertEquals(boolValidation(false), undefined);
 });
 
-Deno.test("bool null", () => {
-    assertEquals(bool(undefined), new BoolError());
-    assertEquals(bool(null), new BoolError());
+Deno.test("boolValidation null", () => {
+    assertEquals(boolValidation(undefined), new BoolValidationError());
+    assertEquals(boolValidation(null), new BoolValidationError());
 });
 
-Deno.test("bool invalid", () => {
-    assertEquals(bool(1), new BoolError());
-    assertEquals(bool(""), new BoolError());
-    assertEquals(bool([]), new BoolError());
-    assertEquals(bool(new Date()), new BoolError());
+Deno.test("boolValidation invalid", () => {
+    assertEquals(boolValidation(1), new BoolValidationError());
+    assertEquals(boolValidation(""), new BoolValidationError());
+    assertEquals(boolValidation([]), new BoolValidationError());
+    assertEquals(boolValidation(new Date()), new BoolValidationError());
 });

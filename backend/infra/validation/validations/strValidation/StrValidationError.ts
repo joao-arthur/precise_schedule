@@ -1,4 +1,4 @@
-export class StrError extends Error {
+export class StrValidationError extends Error {
     constructor() {
         super("must be a string");
     }

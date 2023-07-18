@@ -1,7 +1,8 @@
-import { EnumError } from "./EnumError.ts";
+import { EnumValidationError } from "./EnumValidationError.ts";
 
-export const isEnum = (values: readonly unknown[]) => (value: unknown): EnumError | undefined => {
-    if (!values.includes(value)) {
-        return new EnumError(values);
-    }
-};
+export const enumValidation =
+    (values: readonly unknown[]) => (value: unknown): EnumValidationError | undefined => {
+        if (!values.includes(value)) {
+            return new EnumValidationError(values);
+        }
+    };

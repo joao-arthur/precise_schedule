@@ -1,7 +1,7 @@
-import { StrError } from "./StrError.ts";
+import { StrValidationError } from "./StrValidationError.ts";
 
-export function str(value: unknown): StrError | undefined {
+export function strValidation(value: unknown): StrValidationError | undefined {
     if (typeof value !== "string") {
-        return new StrError();
+        return new StrValidationError();
     }
 }

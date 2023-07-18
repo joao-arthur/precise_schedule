@@ -1,7 +1,7 @@
-import { DtError } from "./DtError.ts";
+import { DtValidationError } from "./DtValidationError.ts";
 
-export function dt(value: unknown): DtError | undefined {
+export function dtValidation(value: unknown): DtValidationError | undefined {
     if (!(value instanceof Date)) {
-        return new DtError();
+        return new DtValidationError();
     }
 }

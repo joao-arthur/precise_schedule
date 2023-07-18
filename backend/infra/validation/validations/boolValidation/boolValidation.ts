@@ -1,7 +1,7 @@
-import { BoolError } from "./BoolError.ts";
+import { BoolValidationError } from "./BoolValidationError.ts";
 
-export function bool(value: unknown): BoolError | undefined {
+export function boolValidation(value: unknown): BoolValidationError | undefined {
     if (typeof value !== "boolean") {
-        return new BoolError();
+        return new BoolValidationError();
     }
 }

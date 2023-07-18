@@ -1,17 +1,17 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { EnumError } from "./EnumError.ts";
+import { EnumValidationError } from "./EnumValidationError.ts";
 
-Deno.test("EnumError", () => {
+Deno.test("EnumValidationError", () => {
     assertEquals(
-        new EnumError([1, 2, 3]).message,
+        new EnumValidationError([1, 2, 3]).message,
         `"a" must be one of: (1, 2, 3)`,
     );
     assertEquals(
-        new EnumError(["a", "b", "c"]).message,
+        new EnumValidationError(["a", "b", "c"]).message,
         `"b" must be one of: (a, b, c)`,
     );
     assertEquals(
-        new EnumError([true, false]).message,
+        new EnumValidationError([true, false]).message,
         `"c" must be one of: (true, false)`,
     );
 });
