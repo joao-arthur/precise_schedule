@@ -1,4 +1,4 @@
-import type { DtVal } from "@ps/domain/validation/V.ts";
+import type { DtVal } from "@ps/domain/validation/Validation.ts";
 
 import { DtValidationError } from "./DtValidationError.ts";
 

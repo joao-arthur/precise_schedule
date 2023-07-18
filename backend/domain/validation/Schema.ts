@@ -1,5 +1,5 @@
-import type { V } from "./V.ts";
+import type { Validation } from "./Validation.ts";
 
 export type Schema<Keys> = {
-    readonly [key in keyof Keys]: readonly V[];
+    readonly [key in keyof Keys]: readonly Validation[];
 };

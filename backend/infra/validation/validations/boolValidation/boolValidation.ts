@@ -1,4 +1,4 @@
-import type { BoolVal } from "@ps/domain/validation/V.ts";
+import type { BoolVal } from "@ps/domain/validation/Validation.ts";
 
 import { BoolValidationError } from "./BoolValidationError.ts";
 

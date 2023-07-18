@@ -12,7 +12,7 @@ export type MinUpperVal = { readonly v: "strMinUpper"; readonly min: number };
 export type MinSpecialVal = { readonly v: "strMinSpecial"; readonly min: number };
 export type TimeVal = { readonly v: "time" };
 
-export type V =
+export type Validation =
     | BoolVal
     | DtVal
     | DtMinVal

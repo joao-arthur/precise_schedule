@@ -1,4 +1,4 @@
-import type { EnumVal } from "@ps/domain/validation/V.ts";
+import type { EnumVal } from "@ps/domain/validation/Validation.ts";
 
 import { EnumValidationError } from "./EnumValidationError.ts";
 
