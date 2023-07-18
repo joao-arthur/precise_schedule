@@ -1,8 +1,9 @@
+import type { EnumVal } from "@ps/domain/validation/V.ts";
+
 import { EnumValidationError } from "./EnumValidationError.ts";
 
-export const enumValidation =
-    (values: readonly unknown[]) => (value: unknown): EnumValidationError | undefined => {
-        if (!values.includes(value)) {
-            return new EnumValidationError(values);
-        }
-    };
+export function enumValidation(val: EnumVal, value: unknown): EnumValidationError | undefined {
+    if (!val.values.includes(value)) {
+        return new EnumValidationError(val.values);
+    }
+}
