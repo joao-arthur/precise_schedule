@@ -1,5 +1,5 @@
 export class IsEnumError extends Error {
-    constructor(field: string, values: readonly unknown[]) {
-        super(`"${field}" must be one of: (${values.join(", ")})`);
+    constructor(values: readonly unknown[]) {
+        super(`must be one of: (${values.join(", ")})`);
     }
 }

@@ -1,5 +1,4 @@
 import { assertEquals, assertThrows } from "std/testing/asserts.ts";
-import { V } from "@ps/domain/validation/V.ts";
 import { ValidatorImpl } from "./ValidatorImpl.ts";
 import { ValidationError } from "../../domain/validation/ValidationError.ts";
 

@@ -1,68 +1,32 @@
 import type { Schema } from "@ps/domain/validation/Schema.ts";
 import type { UpdateUserModel } from "./UpdateUserModel.ts";
 
-import { V } from "@ps/domain/validation/V.ts";
-
-/*
 export const updateUserValidation: Schema<UpdateUserModel> = {
-    firstName: [
-        required,
-        isString,
-        //minLength(1),
-        //maxLength(100),
-    ],
-    lastName: [
-        required,
-        isString,
-        //minLength(1),
-        //maxLength(100),
-    ],
-    birthdate: [
-        required,
-        isDate,
-        //min(new Date(1970, 1, 1)),
-    ],
+    //firstName: [
+    //    { v: "str" },
+    //    { v: "strMinLen", min: 1 },
+    //    { v: "strMaxLen", max: 256 },
+    //],
+    //birthdate: [
+    //    { v: "dt" },
+    //    { v: "dtMin", min: '1970-01-01' },
+    //],
     email: [
-        required,
-        isString,
-        //minLength(3),
-        //maxLength(100),
-        //emailFormat,
-    ],
-    language: [
-        required,
-        isEnum(["pt", "en", "es", "de"]),
+        { v: "email" },
+        { v: "strMaxLen", max: 256 },
     ],
     username: [
-        required,
-        isString,
-        //minLength(1),
-        //maxLength(100),
+        { v: "str" },
+        { v: "strMinLen", min: 1 },
+        { v: "strMaxLen", max: 32 },
     ],
     password: [
-        required,
-        isString,
-        //minLength(8),
-        //maxLength(100),
-        //minNumber(1),
-        //minSpecial(1),
-        //minUppercase(1),
-        //minLowercase(1),
-    ],
-};
-*/
-
-export const updateUserValidation: Schema<UpdateUserModel> = {
-    email: [
-        V.required,
-        V.isString,
-    ],
-    username: [
-        V.required,
-        V.isString,
-    ],
-    password: [
-        V.required,
-        V.isString,
+        { v: "str" },
+        { v: "strMinLen", min: 8 },
+        { v: "strMaxLen", max: 32 },
+        { v: "strMinNum", min: 1 },
+        { v: "strMinUpper", min: 1 },
+        { v: "strMinLower", min: 1 },
+        { v: "strMinSpecial", min: 1 },
     ],
 };

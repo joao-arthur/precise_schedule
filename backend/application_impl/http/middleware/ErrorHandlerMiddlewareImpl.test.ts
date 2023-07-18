@@ -10,7 +10,7 @@ import { ErrorHandlerMiddlewareImpl } from "./ErrorHandlerMiddlewareImpl.ts";
 Deno.test("new ErrorHandlerMiddlewareImpl ValidationError", () => {
     assertEquals(
         new ErrorHandlerMiddlewareImpl().handle(new ValidationError({ ping: ["pong"] })),
-        badRequest({ ping: ["pong"] }),
+        badRequest({ validation: { ping: ["pong"] } }),
     );
 });
 

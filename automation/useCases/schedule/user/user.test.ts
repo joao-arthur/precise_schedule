@@ -51,9 +51,7 @@ Deno.test("Create user validation", async () => {
                         "must be > 1970-01-01",
                     ],
                     email: [
-                        "must be a string",
-                        "must be in the format of a email",
-                        "at least 3 characters",
+                        "must be a email",
                     ],
                     username: [
                         "must be a string",

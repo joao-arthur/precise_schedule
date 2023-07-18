@@ -12,7 +12,7 @@ import { internalServerError } from "@ps/application_impl/http/builder/500/inter
 export class ErrorHandlerMiddlewareImpl implements ErrorHandlerMiddleware {
     public handle(error: unknown): HTTPResponse {
         if (error instanceof ValidationError) {
-            return badRequest(error.result);
+            return badRequest({ validation: error.result });
         }
         if (error instanceof BusinessError) {
             return badRequest({ message: error.message });

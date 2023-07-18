@@ -70,7 +70,7 @@ Deno.test("Appointment validation", async () => {
                         "must be bigger than 'begin'",
                     ],
                     frequency: [
-                        'must be one the values: ("1_D", "2_D", "1_W", "1_M", "3_M", "6_M", "1_Y", "2_Y", "NEVER")',
+                        'must be one of: ("1_D", "2_D", "1_W", "1_M", "3_M", "6_M", "1_Y", "2_Y", "NEVER")',
                     ],
                     weekendRepeat: [
                         "must be a boolean",
