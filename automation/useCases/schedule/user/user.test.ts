@@ -34,3 +34,68 @@ Deno.test("User", async (t) => {
         assertEquals(typeof (res.body as any).token, "string");
     });
 });
+
+Deno.test("Create user validation", async () => {
+    assertEquals(
+        await createUserEndpoint({} as any),
+        {
+            status: 400,
+            body: {
+                validation: {
+                    firstName: [
+                        "must be a string",
+                        "at least 1 character",
+                    ],
+                    birthdate: [
+                        "must be a date in the format YYYY-MM-DD",
+                        "must be > 1970-01-01",
+                    ],
+                    email: [
+                        "must be a string",
+                        "must be in the format of a email",
+                        "at least 3 characters",
+                    ],
+                    username: [
+                        "must be a string",
+                        "at least 1 character",
+                    ],
+                    password: [
+                        "must be a string",
+                        "at least 8 characters",
+                        "at least 1 number",
+                        "at least 1 uppercase letter",
+                        "at least 1 lowercase letter",
+                        "at least 1 special character",
+                    ],
+                },
+            },
+            headers: { contentLocation: undefined },
+        },
+    );
+});
+
+Deno.test("Login validation", async () => {
+    assertEquals(
+        await loginEndpoint({} as any),
+        {
+            status: 400,
+            body: {
+                validation: {
+                    username: [
+                        "must be a string",
+                        "at least 1 character",
+                    ],
+                    password: [
+                        "must be a string",
+                        "at least 8 characters",
+                        "at least 1 number",
+                        "at least 1 uppercase letter",
+                        "at least 1 lowercase letter",
+                        "at least 1 special character",
+                    ],
+                },
+            },
+            headers: { contentLocation: undefined },
+        },
+    );
+});

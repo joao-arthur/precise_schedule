@@ -4,7 +4,10 @@ import type { Session } from "../../session/session.ts";
 import type { CreateUserModel } from "./user.create.model.ts";
 
 import { request } from "../../../infra/request.ts";
+import { ValidationError } from "../../general/validation.error.ts";
 
-export function createUserEndpoint(model: CreateUserModel): Promise<Res<Session | BusinessError>> {
+export function createUserEndpoint(
+    model: CreateUserModel,
+): Promise<Res<Session | BusinessError | ValidationError>> {
     return request.post("user", model);
 }
