@@ -8,11 +8,9 @@ export class CreateEventServiceImpl implements CreateEventService {
     constructor(
         private readonly repository: CreateEventRepository,
         private readonly factory: CreateEventFactory,
-        //private readonly validator: Validator,
     ) {}
 
     public async create(event: CreateEventModel): Promise<Event> {
-        // this.validator.validate(event, createEventValidation);
         const buildedEvent = this.factory.build(event);
         await this.repository.create(buildedEvent);
         return buildedEvent;

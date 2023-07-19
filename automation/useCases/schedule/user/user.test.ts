@@ -6,7 +6,7 @@ Deno.test("User", async (t) => {
     await t.step("Login unregistered user", async () => {
         assertEquals(
             await loginEndpoint(
-                { username: "paul", password: "0123456789" },
+                { username: "paul", password: "0a1B2c#4567" },
             ),
             {
                 status: 400,
@@ -19,7 +19,7 @@ Deno.test("User", async (t) => {
     await t.step("Register user", async () => {
         const res = await createUserEndpoint({
             username: "paul",
-            password: "0123456789",
+            password: "0a1B2c#4567",
             email: "paul@gmail.com",
         });
         assertEquals(res.status, 200);
@@ -28,7 +28,7 @@ Deno.test("User", async (t) => {
 
     await t.step("Login user", async () => {
         const res = await loginEndpoint(
-            { username: "paul", password: "0123456789" },
+            { username: "paul", password: "0a1B2c#4567" },
         );
         assertEquals(res.status, 200);
         assertEquals(typeof (res.body as any).token, "string");
@@ -52,14 +52,17 @@ Deno.test("Create user validation", async () => {
                     ],
                     email: [
                         "must be a email",
+                        "at maximum 256 characters",
                     ],
                     username: [
                         "must be a string",
                         "at least 1 character",
+                        "at maximum 32 characters",
                     ],
                     password: [
                         "must be a string",
                         "at least 8 characters",
+                        "at maximum 32 characters",
                         "at least 1 number",
                         "at least 1 uppercase letter",
                         "at least 1 lowercase letter",
@@ -82,10 +85,12 @@ Deno.test("Login validation", async () => {
                     username: [
                         "must be a string",
                         "at least 1 character",
+                        "at maximum 32 characters",
                     ],
                     password: [
                         "must be a string",
                         "at least 8 characters",
+                        "at maximum 32 characters",
                         "at least 1 number",
                         "at least 1 uppercase letter",
                         "at least 1 lowercase letter",

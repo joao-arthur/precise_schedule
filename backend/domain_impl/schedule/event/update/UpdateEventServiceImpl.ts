@@ -9,7 +9,6 @@ export class UpdateEventServiceImpl implements UpdateEventService {
     constructor(
         private readonly repository: UpdateEventRepository,
         private readonly factory: UpdateEventFactory,
-        //private readonly validator: Validator,
         private readonly findEventService: FindEventService,
     ) {}
 
@@ -17,7 +16,6 @@ export class UpdateEventServiceImpl implements UpdateEventService {
         id: Event["id"],
         event: UpdateEventModel,
     ): Promise<Event> {
-        // this.validator.validate(event, updateEventValidation);
         const existingEvent = await this.findEventService.findById(id);
         const buildedEvent = this.factory.build(event, existingEvent);
         await this.repository.update(buildedEvent);

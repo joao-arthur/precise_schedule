@@ -1,4 +1,5 @@
 import { assertEquals } from "std/testing/asserts.ts";
+import { ValidatorMock } from "@ps/domain_mock/validation/ValidatorMock.ts";
 import { eventMock } from "@ps/domain_mock/schedule/event/EventMock.ts";
 import { CreateEventServiceMock } from "@ps/domain_mock/schedule/event/create/CreateEventServiceMock.ts";
 import { createAppointmentEventMock } from "@ps/domain_mock/schedule/event/createAppointment/CreateAppointmentEventMock.ts";
@@ -8,6 +9,7 @@ import { CreateAppointmentEventServiceImpl } from "./CreateAppointmentEventServi
 Deno.test("CreateAppointmentEventServiceImpl", async () => {
     assertEquals(
         await new CreateAppointmentEventServiceImpl(
+            new ValidatorMock(),
             new CreateAppointmentEventFactoryMock(eventMock),
             new CreateEventServiceMock(eventMock),
         ).create(createAppointmentEventMock),

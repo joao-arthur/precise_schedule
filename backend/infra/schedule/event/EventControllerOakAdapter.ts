@@ -72,6 +72,7 @@ export class EventControllerOakAdapter {
                     new CreateEventFactoryImpl(this.idGenerator),
                 );
                 const service = new CreateAppointmentEventServiceImpl(
+                    this.validator,
                     new CreateAppointmentEventFactoryImpl(),
                     createEventService,
                 );
@@ -86,6 +87,7 @@ export class EventControllerOakAdapter {
                     new CreateEventFactoryImpl(this.idGenerator),
                 );
                 const service = new CreateBirthdayEventServiceImpl(
+                    this.validator,
                     new CreateBirthdayEventFactoryImpl(),
                     createEventService,
                 );
@@ -100,6 +102,7 @@ export class EventControllerOakAdapter {
                     new CreateEventFactoryImpl(this.idGenerator),
                 );
                 const service = new CreateDateEventServiceImpl(
+                    this.validator,
                     new CreateDateEventFactoryImpl(),
                     createEventService,
                 );
@@ -114,6 +117,7 @@ export class EventControllerOakAdapter {
                     new CreateEventFactoryImpl(this.idGenerator),
                 );
                 const service = new CreateMeetingEventServiceImpl(
+                    this.validator,
                     new CreateMeetingEventFactoryImpl(),
                     createEventService,
                 );
@@ -128,6 +132,7 @@ export class EventControllerOakAdapter {
                     new CreateEventFactoryImpl(this.idGenerator),
                 );
                 const service = new CreatePartyEventServiceImpl(
+                    this.validator,
                     new CreatePartyEventFactoryImpl(),
                     createEventService,
                 );
@@ -144,6 +149,7 @@ export class EventControllerOakAdapter {
                     new FindEventServiceImpl(this.repository),
                 );
                 const service = new UpdateAppointmentEventServiceImpl(
+                    this.validator,
                     new UpdateAppointmentEventFactoryImpl(),
                     updateEventService,
                 );
@@ -160,6 +166,7 @@ export class EventControllerOakAdapter {
                     new FindEventServiceImpl(this.repository),
                 );
                 const service = new UpdateBirthdayEventServiceImpl(
+                    this.validator,
                     new UpdateBirthdayEventFactoryImpl(),
                     updateEventService,
                 );
@@ -176,6 +183,7 @@ export class EventControllerOakAdapter {
                     new FindEventServiceImpl(this.repository),
                 );
                 const service = new UpdateDateEventServiceImpl(
+                    this.validator,
                     new UpdateDateEventFactoryImpl(),
                     updateEventService,
                 );
@@ -192,6 +200,7 @@ export class EventControllerOakAdapter {
                     new FindEventServiceImpl(this.repository),
                 );
                 const service = new UpdateMeetingEventServiceImpl(
+                    this.validator,
                     new UpdateMeetingEventFactoryImpl(),
                     updateEventService,
                 );
@@ -208,6 +217,7 @@ export class EventControllerOakAdapter {
                     new FindEventServiceImpl(this.repository),
                 );
                 const service = new UpdatePartyEventServiceImpl(
+                    this.validator,
                     new UpdatePartyEventFactoryImpl(),
                     updateEventService,
                 );
