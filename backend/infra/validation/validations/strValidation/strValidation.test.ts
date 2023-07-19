@@ -2,19 +2,22 @@ import { assertEquals } from "std/testing/asserts.ts";
 import { strValidation } from "./strValidation.ts";
 import { StrValidationError } from "./StrValidationError.ts";
 
+const v = { v: "str" } as const;
+
 Deno.test("strValidation valid", () => {
-    assertEquals(strValidation({ v: "str" }, ""), undefined);
-    assertEquals(strValidation({ v: "str" }, "lorem"), undefined);
+    assertEquals(strValidation(v, ""), undefined);
+    assertEquals(strValidation(v, "lorem"), undefined);
 });
 
 Deno.test("strValidation null", () => {
-    assertEquals(strValidation({ v: "str" }, undefined), new StrValidationError());
-    assertEquals(strValidation({ v: "str" }, null), new StrValidationError());
+    assertEquals(strValidation(v, undefined), new StrValidationError());
+    assertEquals(strValidation(v, null), new StrValidationError());
 });
 
 Deno.test("strValidation invalid", () => {
-    assertEquals(strValidation({ v: "str" }, 1), new StrValidationError());
-    assertEquals(strValidation({ v: "str" }, []), new StrValidationError());
-    assertEquals(strValidation({ v: "str" }, true), new StrValidationError());
-    assertEquals(strValidation({ v: "str" }, new Date()), new StrValidationError());
+    assertEquals(strValidation(v, 1), new StrValidationError());
+    assertEquals(strValidation(v, true), new StrValidationError());
+    assertEquals(strValidation(v, []), new StrValidationError());
+    assertEquals(strValidation(v, {}), new StrValidationError());
+    assertEquals(strValidation(v, new Date()), new StrValidationError());
 });

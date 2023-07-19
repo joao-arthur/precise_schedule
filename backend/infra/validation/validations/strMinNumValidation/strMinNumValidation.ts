@@ -1,0 +1,16 @@
+import type { StrMinNumVal } from "@ps/domain/validation/Validation.ts";
+
+import { StrMinNumValidationError } from "./StrMinNumValidationError.ts";
+
+export function strMinNumValidation(
+    val: StrMinNumVal,
+    value: unknown,
+): StrMinNumValidationError | undefined {
+    if (typeof value !== "string") {
+        return new StrMinNumValidationError(val.min);
+    }
+    const numLen = value.replaceAll(/[^\d]/g, "").length;
+    if (val.min > numLen) {
+        return new StrMinNumValidationError(val.min);
+    }
+}
