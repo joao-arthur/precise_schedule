@@ -2,7 +2,7 @@ import { assertEquals } from "std/testing/asserts.ts";
 import { enumValidation } from "./enumValidation.ts";
 import { EnumValidationError } from "./EnumValidationError.ts";
 
-const v = Deno.test("enumValidation valid", () => {
+Deno.test("enumValidation valid", () => {
     assertEquals(enumValidation({ v: "enum", values: [1, 2] }, 2), undefined);
     assertEquals(enumValidation({ v: "enum", values: ["a", "b"] }, "a"), undefined);
 });

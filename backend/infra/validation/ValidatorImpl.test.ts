@@ -1,20 +1,23 @@
-import { assertEquals, assertThrows } from "std/testing/asserts.ts";
+import { assertEquals } from "std/testing/asserts.ts";
 import { ValidatorImpl } from "./ValidatorImpl.ts";
 import { ValidationError } from "../../domain/validation/ValidationError.ts";
 
 Deno.test("ValidatorImpl", () => {
-    assertThrows(
-        () =>
-            new ValidatorImpl().validate(
-                { a: undefined, b: 1 },
-                { a: [V.required], b: [V.required] },
-            ),
-        ValidationError,
-    );
+    try {
+        new ValidatorImpl().validate(
+            { a: undefined, b: "1991-12-25" },
+            { a: [{ v: "str" }], b: [{ v: "dt" }] },
+        );
+    } catch (e) {
+        assertEquals(
+            e,
+            new ValidationError({ a: ["must be a string"] }),
+        );
+    }
     assertEquals(
         new ValidatorImpl().validate(
-            { a: 5, b: 10 },
-            { a: [V.required], b: [V.required] },
+            { dt: "1999-12-31", time: "23:59" },
+            { dt: [{ v: "dt" }], time: [{ v: "time" }] },
         ),
         undefined,
     );
