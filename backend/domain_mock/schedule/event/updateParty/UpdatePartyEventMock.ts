@@ -5,4 +5,5 @@ export const updatePartyEventMock: UpdatePartyEvent = {
     day: "2023-06-24",
     begin: "08:00",
     end: "18:00",
+    user: "user",
 };

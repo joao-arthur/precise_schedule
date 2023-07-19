@@ -7,4 +7,5 @@ export const createMeetingEventMock: CreateMeetingEvent = {
     end: "18:00",
     frequency: "NEVER",
     weekendRepeat: false,
+    user: "user",
 };

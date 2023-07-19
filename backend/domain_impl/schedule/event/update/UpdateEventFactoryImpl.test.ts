@@ -4,7 +4,6 @@ import { eventMock } from "@ps/domain_mock/schedule/event/EventMock.ts";
 import { UpdateEventFactoryImpl } from "./UpdateEventFactoryImpl.ts";
 
 Deno.test("UpdateEventFactoryImpl", () => {
-    const now = new Date();
     assertEquals(
         new UpdateEventFactoryImpl().build(
             updateEventModelMock,
@@ -13,7 +12,7 @@ Deno.test("UpdateEventFactoryImpl", () => {
         {
             id: eventMock.id,
             createdAt: eventMock.createdAt,
-            updatedAt: now,
+            updatedAt: new Date(),
             ...updateEventModelMock,
         },
     );

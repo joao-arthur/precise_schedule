@@ -11,4 +11,7 @@ export const createBirthdayValidation: Schema<CreateBirthdayEvent> = {
         { v: "dt" },
         { v: "dtMin", min: "1970-01-01" },
     ],
+    user: [
+        { v: "str" },
+    ],
 };

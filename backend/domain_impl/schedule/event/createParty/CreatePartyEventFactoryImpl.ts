@@ -12,6 +12,7 @@ export class CreatePartyEventFactoryImpl implements CreatePartyEventFactory {
             category: "PARTY",
             frequency: "NEVER",
             weekendRepeat: false,
+            user: event.user,
         };
     }
 }

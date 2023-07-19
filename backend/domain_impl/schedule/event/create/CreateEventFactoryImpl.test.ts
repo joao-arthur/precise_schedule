@@ -4,15 +4,14 @@ import { createEventModelMock } from "@ps/domain_mock/schedule/event/create/Crea
 import { CreateEventFactoryImpl } from "./CreateEventFactoryImpl.ts";
 
 Deno.test("CreateEventFactoryImpl", () => {
-    const now = new Date();
     assertEquals(
         new CreateEventFactoryImpl(new IdGeneratorMock("id")).build(
             createEventModelMock,
         ),
         {
             id: "id",
-            createdAt: now,
-            updatedAt: now,
+            createdAt: new Date(),
+            updatedAt: new Date(),
             ...createEventModelMock,
         },
     );

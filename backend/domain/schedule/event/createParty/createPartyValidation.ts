@@ -17,4 +17,7 @@ export const createPartyValidation: Schema<CreatePartyEvent> = {
     end: [
         { v: "time" },
     ],
+    user: [
+        { v: "str" },
+    ],
 };

@@ -25,6 +25,7 @@ export type Event = {
     readonly category: Category;
     readonly frequency: Frequency;
     readonly weekendRepeat: boolean;
+    readonly user: string;
     readonly createdAt: Date;
     readonly updatedAt: Date;
 };

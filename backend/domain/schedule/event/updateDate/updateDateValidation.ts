@@ -17,4 +17,7 @@ export const updateDateValidation: Schema<UpdateDateEvent> = {
     end: [
         { v: "time" },
     ],
+    user: [
+        { v: "str" },
+    ],
 };

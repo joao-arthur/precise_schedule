@@ -12,6 +12,7 @@ export class CreateMeetingEventFactoryImpl implements CreateMeetingEventFactory 
             category: "MEETING",
             frequency: event.frequency,
             weekendRepeat: event.weekendRepeat,
+            user: event.user,
         };
     }
 }

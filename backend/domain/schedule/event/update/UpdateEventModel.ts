@@ -8,4 +8,5 @@ export type UpdateEventModel = {
     readonly category: Event["category"];
     readonly frequency: Event["frequency"];
     readonly weekendRepeat: Event["weekendRepeat"];
+    readonly user: Event["user"];
 };

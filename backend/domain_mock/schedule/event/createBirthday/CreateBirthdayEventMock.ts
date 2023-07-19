@@ -3,4 +3,5 @@ import type { CreateBirthdayEvent } from "@ps/domain/schedule/event/createBirthd
 export const createBirthdayEventMock: CreateBirthdayEvent = {
     name: "name",
     day: "2023-06-24",
+    user: "user",
 };

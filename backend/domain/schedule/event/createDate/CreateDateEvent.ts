@@ -5,4 +5,5 @@ export type CreateDateEvent = {
     readonly day: Event["day"];
     readonly begin: Event["begin"];
     readonly end: Event["end"];
+    readonly user: Event["user"];
 };

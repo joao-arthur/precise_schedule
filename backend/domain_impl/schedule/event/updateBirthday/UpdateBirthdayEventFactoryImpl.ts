@@ -12,6 +12,7 @@ export class UpdateBirthdayEventFactoryImpl implements UpdateBirthdayEventFactor
             category: "BIRTHDAY",
             frequency: "1_Y",
             weekendRepeat: false,
+            user: event.user,
         };
     }
 }

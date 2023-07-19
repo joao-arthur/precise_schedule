@@ -23,4 +23,7 @@ export const updateAppointmentValidation: Schema<UpdateAppointmentEvent> = {
     weekendRepeat: [
         { v: "bool" },
     ],
+    user: [
+        { v: "str" },
+    ],
 };

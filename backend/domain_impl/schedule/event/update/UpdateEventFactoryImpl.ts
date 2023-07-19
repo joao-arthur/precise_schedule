@@ -3,10 +3,7 @@ import type { UpdateEventModel } from "@ps/domain/schedule/event/update/UpdateEv
 import type { UpdateEventFactory } from "@ps/domain/schedule/event/update/UpdateEventFactory.ts";
 
 export class UpdateEventFactoryImpl implements UpdateEventFactory {
-    public build(
-        event: UpdateEventModel,
-        existingEvent: Event,
-    ): Event {
+    public build(event: UpdateEventModel, existingEvent: Event): Event {
         return {
             id: existingEvent.id,
             name: event.name,
@@ -18,6 +15,7 @@ export class UpdateEventFactoryImpl implements UpdateEventFactory {
             weekendRepeat: event.weekendRepeat,
             createdAt: existingEvent.createdAt,
             updatedAt: new Date(),
+            user: event.user,
         };
     }
 }

@@ -9,6 +9,7 @@ export const eventMock: Event = {
     category: "APPOINTMENT",
     frequency: "NEVER",
     weekendRepeat: false,
+    user: "user",
     createdAt: new Date(),
     updatedAt: new Date(),
 };
