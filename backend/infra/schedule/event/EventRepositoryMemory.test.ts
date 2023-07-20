@@ -7,6 +7,7 @@ Deno.test("EventRepositoryMemory", async () => {
     assertEquals(await repository.findByUserAndId(eventMock.user, eventMock.id), undefined);
     await repository.create(eventMock);
     assertEquals(await repository.findByUserAndId(eventMock.user, eventMock.id), eventMock);
+    assertEquals(await repository.findByUser(eventMock.user), [eventMock]);
     await repository.update({ ...eventMock, name: "name2" });
     assertEquals(await repository.findByUserAndId(eventMock.user, eventMock.id), {
         ...eventMock,

@@ -8,6 +8,10 @@ import { EventNotFound } from "@ps/domain/schedule/event/find/EventNotFound.ts";
 export class FindEventServiceImpl implements FindEventService {
     constructor(private readonly repository: FindEventRepository) {}
 
+    public findByUser(userId: User["id"]): Promise<Event[]> {
+        return this.repository.findByUser(userId);
+    }
+
     public async findByUserAndId(userId: User["id"], id: Event["id"]): Promise<Event> {
         const maybeEvent = await this.repository.findByUserAndId(userId, id);
         if (!maybeEvent) {

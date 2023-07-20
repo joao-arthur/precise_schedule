@@ -19,6 +19,10 @@ export class EventRepositoryMemory implements EventRepository {
         return Promise.resolve();
     }
 
+    public findByUser(userId: User["id"]): Promise<Event[]> {
+        return Promise.resolve(this.events.filter((event) => event.user === userId));
+    }
+
     public findByUserAndId(
         userId: User["id"],
         id: Event["id"],

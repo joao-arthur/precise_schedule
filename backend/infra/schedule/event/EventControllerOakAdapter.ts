@@ -3,6 +3,8 @@ import type { IdGenerator } from "@ps/domain/generation/IdGenerator.ts";
 import type { Validator } from "@ps/domain/validation/Validator.ts";
 
 import { Router } from "oak/mod.ts";
+import { FindEventServiceImpl } from "@ps/domain_impl/schedule/event/find/FindEventServiceImpl.ts";
+import { DeleteEventServiceImpl } from "@ps/domain_impl/schedule/event/delete/DeleteEventServiceImpl.ts";
 import { CreateEventServiceImpl } from "@ps/domain_impl/schedule/event/create/CreateEventServiceImpl.ts";
 import { UpdateEventServiceImpl } from "@ps/domain_impl/schedule/event/update/UpdateEventServiceImpl.ts";
 import { CreateEventFactoryImpl } from "@ps/domain_impl/schedule/event/create/CreateEventFactoryImpl.ts";
@@ -27,9 +29,9 @@ import { UpdateMeetingEventFactoryImpl } from "@ps/domain_impl/schedule/event/up
 import { UpdateMeetingEventServiceImpl } from "@ps/domain_impl/schedule/event/updateMeeting/UpdateMeetingEventServiceImpl.ts";
 import { UpdatePartyEventFactoryImpl } from "@ps/domain_impl/schedule/event/updateParty/UpdatePartyEventFactoryImpl.ts";
 import { UpdatePartyEventServiceImpl } from "@ps/domain_impl/schedule/event/updateParty/UpdatePartyEventServiceImpl.ts";
-import { FindEventServiceImpl } from "@ps/domain_impl/schedule/event/find/FindEventServiceImpl.ts";
-
 import { FindEventControllerImpl } from "@ps/application_impl/schedule/event/find/FindEventControllerImpl.ts";
+import { FindAllEventControllerImpl } from "@ps/application_impl/schedule/event/findAll/FindAllEventControllerImpl.ts";
+import { DeleteEventControllerImpl } from "@ps/application_impl/schedule/event/delete/DeleteEventControllerImpl.ts";
 import { CreateAppointmentEventControllerImpl } from "@ps/application_impl/schedule/event/createAppointment/CreateAppointmentEventControllerImpl.ts";
 import { CreateBirthdayEventControllerImpl } from "@ps/application_impl/schedule/event/createBirthday/CreateBirthdayEventControllerImpl.ts";
 import { CreateDateEventControllerImpl } from "@ps/application_impl/schedule/event/createDate/CreateDateEventControllerImpl.ts";
@@ -56,16 +58,6 @@ export class EventControllerOakAdapter {
     // deno-lint-ignore no-explicit-any
     public initRoutes(router: Router<Record<string, any>>): void {
         router
-            //.get("/event", async (ctx) => {
-            //    const userId = await new DecodeSessionServiceJWTAdapter().decode({
-            //        token: ctx.request.headers.get("authorization")!,
-            //    });
-            //    const params = await makeParams(ctx);
-            //    const service = new FindAllEventsServiceImpl(this.repository);
-            //    const controller = new FindAllEventsControllerImpl(service);
-            //    const res = await controller.handle(userId, { params });
-            //    makeResult(res, ctx);
-            //})
             .get("/event/:id", async (ctx) => {
                 const userId = await new DecodeSessionServiceJWTAdapter().decode({
                     token: ctx.request.headers.get("authorization")!,
@@ -73,6 +65,28 @@ export class EventControllerOakAdapter {
                 const params = await makeParams(ctx);
                 const service = new FindEventServiceImpl(this.repository);
                 const controller = new FindEventControllerImpl(service);
+                const res = await controller.handle(userId, { params });
+                makeResult(res, ctx);
+            })
+            .get("/event", async (ctx) => {
+                const userId = await new DecodeSessionServiceJWTAdapter().decode({
+                    token: ctx.request.headers.get("authorization")!,
+                });
+                const service = new FindEventServiceImpl(this.repository);
+                const controller = new FindAllEventControllerImpl(service);
+                const res = await controller.handle(userId);
+                makeResult(res, ctx);
+            })
+            .delete("/event/:id", async (ctx) => {
+                const userId = await new DecodeSessionServiceJWTAdapter().decode({
+                    token: ctx.request.headers.get("authorization")!,
+                });
+                const params = await makeParams(ctx);
+                const service = new DeleteEventServiceImpl(
+                    this.repository,
+                    new FindEventServiceImpl(this.repository),
+                );
+                const controller = new DeleteEventControllerImpl(service);
                 const res = await controller.handle(userId, { params });
                 makeResult(res, ctx);
             })
@@ -266,8 +280,5 @@ export class EventControllerOakAdapter {
                 const res = await controller.handle(userId, { body, params });
                 makeResult(res, ctx);
             });
-        //.delete("/event/:id", async (context) => {
-        //    await eventControllerAdapter.getEvent(context);
-        //});
     }
 }
