@@ -9,6 +9,6 @@ Deno.test("FindAllEventControllerImpl", async () => {
         await new FindAllEventControllerImpl(
             new FindEventServiceMock(eventMock),
         ).handle(eventMock.user),
-        ok([eventMock] as any),
+        ok([eventMock]),
     );
 });

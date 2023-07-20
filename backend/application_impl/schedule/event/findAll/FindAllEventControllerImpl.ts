@@ -13,6 +13,6 @@ export class FindAllEventControllerImpl implements FindAllEventController {
     ): Promise<HTTPResponse> {
         const result = await this.findEventService.findByUser(userId);
         // fix type
-        return ok(result as any);
+        return ok(result);
     }
 }
