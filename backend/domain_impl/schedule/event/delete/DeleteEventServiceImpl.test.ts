@@ -10,6 +10,6 @@ Deno.test("DeleteEventServiceImpl", async () => {
             new DeleteEventRepositoryMock(),
             new FindEventServiceMock(eventMock),
         ).del(eventMock.user, eventMock.id),
-        eventMock,
+        undefined,
     );
 });
