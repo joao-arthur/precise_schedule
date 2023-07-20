@@ -15,8 +15,8 @@ import { UpdateUserControllerImpl } from "@ps/application_impl/schedule/user/upd
 import { FindUserControllerImpl } from "@ps/application_impl/schedule/user/find/FindUserControllerImpl.ts";
 import { LoginControllerImpl } from "@ps/application_impl/schedule/user/login/LoginControllerImpl.ts";
 import { CreateSessionServiceJWTAdapter } from "@ps/infra/session/create/CreateSessionServiceJWTAdapter.ts";
+import { DecodeSessionServiceJWTAdapter } from "@ps/infra/session/decode/DecodeSessionServiceJWTAdapter.ts";
 import { makeBody } from "../../http/makeBody.ts";
-import { makeParams } from "../../http/makeParams.ts";
 import { makeResult } from "../../http/makeResult.ts";
 
 export class UserControllerOakAdapter {
@@ -42,9 +42,11 @@ export class UserControllerOakAdapter {
                 const res = await controller.handle({ body });
                 makeResult(res, ctx);
             })
-            .put("/user/:id", async (ctx) => {
+            .put("/user", async (ctx) => {
+                const userId = await new DecodeSessionServiceJWTAdapter().decode({
+                    token: ctx.request.headers.get("authorization")!,
+                });
                 const body = await makeBody(ctx);
-                const params = await makeParams(ctx);
                 const service = new UpdateUserServiceImpl(
                     this.repository,
                     new UniqueInfoServiceImpl(this.repository),
@@ -53,14 +55,16 @@ export class UserControllerOakAdapter {
                     new FindUserServiceImpl(this.repository),
                 );
                 const controller = new UpdateUserControllerImpl(service);
-                const res = await controller.handle({ body, params });
+                const res = await controller.handle(userId, { body });
                 makeResult(res, ctx);
             })
-            .get("/user/:id", async (ctx) => {
-                const params = await makeParams(ctx);
+            .get("/user", async (ctx) => {
+                const userId = await new DecodeSessionServiceJWTAdapter().decode({
+                    token: ctx.request.headers.get("authorization")!,
+                });
                 const service = new FindUserServiceImpl(this.repository);
                 const controller = new FindUserControllerImpl(service);
-                const res = await controller.handle({ params });
+                const res = await controller.handle(userId);
                 makeResult(res, ctx);
             })
             .post("/user/login", async (ctx) => {
