@@ -1,4 +1,5 @@
 import type { Validator } from "@ps/domain/validation/Validator.ts";
+import type { User } from "@ps/domain/schedule/user/User.ts";
 import type { Event } from "@ps/domain/schedule/event/Event.ts";
 import type { CreateEventService } from "@ps/domain/schedule/event/create/CreateEventService.ts";
 import type { CreatePartyEvent } from "@ps/domain/schedule/event/createParty/CreatePartyEvent.ts";
@@ -14,9 +15,9 @@ export class CreatePartyEventServiceImpl implements CreatePartyEventService {
         private readonly service: CreateEventService,
     ) {}
 
-    public create(event: CreatePartyEvent): Promise<Event> {
+    public create(userId: User["id"], event: CreatePartyEvent): Promise<Event> {
         this.validator.validate(event, createPartyValidation);
         const buildedEvent = this.factory.build(event);
-        return this.service.create(buildedEvent);
+        return this.service.create(userId, buildedEvent);
     }
 }

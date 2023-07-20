@@ -12,7 +12,6 @@ export class CreateDateEventFactoryImpl implements CreateDateEventFactory {
             category: "DATE",
             frequency: "NEVER",
             weekendRepeat: false,
-            user: event.user,
         };
     }
 }

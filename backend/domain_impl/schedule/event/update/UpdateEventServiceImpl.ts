@@ -1,3 +1,4 @@
+import type { User } from "@ps/domain/schedule/user/User.ts";
 import type { Event } from "@ps/domain/schedule/event/Event.ts";
 import type { UpdateEventRepository } from "@ps/domain/schedule/event/update/UpdateEventRepository.ts";
 import type { UpdateEventFactory } from "@ps/domain/schedule/event/update/UpdateEventFactory.ts";
@@ -13,10 +14,11 @@ export class UpdateEventServiceImpl implements UpdateEventService {
     ) {}
 
     public async update(
+        userId: User["id"],
         id: Event["id"],
         event: UpdateEventModel,
     ): Promise<Event> {
-        const existingEvent = await this.findEventService.findById(id);
+        const existingEvent = await this.findEventService.findByUserAndId(userId, id);
         const buildedEvent = this.factory.build(event, existingEvent);
         await this.repository.update(buildedEvent);
         return buildedEvent;

@@ -13,9 +13,9 @@ export class UpdateEventFactoryImpl implements UpdateEventFactory {
             category: event.category,
             frequency: event.frequency,
             weekendRepeat: event.weekendRepeat,
+            user: existingEvent.user,
             createdAt: existingEvent.createdAt,
             updatedAt: new Date(),
-            user: event.user,
         };
     }
 }

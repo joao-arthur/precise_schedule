@@ -9,7 +9,7 @@ Deno.test("CreatePartyEventControllerImpl", async () => {
     assertEquals(
         await new CreatePartyEventControllerImpl(
             new CreatePartyEventServiceMock(eventMock),
-        ).handle(httpRequestBodyMock),
+        ).handle(eventMock.user, httpRequestBodyMock),
         created(eventMock),
     );
 });

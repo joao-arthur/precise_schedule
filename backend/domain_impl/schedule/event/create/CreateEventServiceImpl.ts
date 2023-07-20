@@ -1,3 +1,4 @@
+import type { User } from "@ps/domain/schedule/user/User.ts";
 import type { Event } from "@ps/domain/schedule/event/Event.ts";
 import type { CreateEventRepository } from "@ps/domain/schedule/event/create/CreateEventRepository.ts";
 import type { CreateEventFactory } from "@ps/domain/schedule/event/create/CreateEventFactory.ts";
@@ -10,8 +11,8 @@ export class CreateEventServiceImpl implements CreateEventService {
         private readonly factory: CreateEventFactory,
     ) {}
 
-    public async create(event: CreateEventModel): Promise<Event> {
-        const buildedEvent = this.factory.build(event);
+    public async create(userId: User["id"], event: CreateEventModel): Promise<Event> {
+        const buildedEvent = this.factory.build(userId, event);
         await this.repository.create(buildedEvent);
         return buildedEvent;
     }

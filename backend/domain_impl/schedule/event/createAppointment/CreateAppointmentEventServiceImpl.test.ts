@@ -12,7 +12,7 @@ Deno.test("CreateAppointmentEventServiceImpl", async () => {
             new ValidatorMock(),
             new CreateAppointmentEventFactoryMock(eventMock),
             new CreateEventServiceMock(eventMock),
-        ).create(createAppointmentEventMock),
+        ).create(eventMock.user, createAppointmentEventMock),
         eventMock,
     );
 });

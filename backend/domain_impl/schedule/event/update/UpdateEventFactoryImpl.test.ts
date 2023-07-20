@@ -11,6 +11,7 @@ Deno.test("UpdateEventFactoryImpl", () => {
         ),
         {
             id: eventMock.id,
+            user: eventMock.user,
             createdAt: eventMock.createdAt,
             updatedAt: new Date(),
             ...updateEventModelMock,

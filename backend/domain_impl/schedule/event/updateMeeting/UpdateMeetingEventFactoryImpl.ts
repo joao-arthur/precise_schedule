@@ -12,7 +12,6 @@ export class UpdateMeetingEventFactoryImpl implements UpdateMeetingEventFactory 
             category: "MEETING",
             frequency: event.frequency,
             weekendRepeat: event.weekendRepeat,
-            user: event.user,
         };
     }
 }

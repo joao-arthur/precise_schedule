@@ -8,5 +8,4 @@ export const createEventModelMock: CreateEventModel = {
     category: "APPOINTMENT",
     frequency: "NEVER",
     weekendRepeat: false,
-    user: "user",
 };

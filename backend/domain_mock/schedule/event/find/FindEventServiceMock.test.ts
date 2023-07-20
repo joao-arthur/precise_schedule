@@ -4,7 +4,7 @@ import { FindEventServiceMock } from "./FindEventServiceMock.ts";
 
 Deno.test("FindEventServiceMock", async () => {
     assertEquals(
-        await new FindEventServiceMock(eventMock).findById(),
+        await new FindEventServiceMock(eventMock).findByUserAndId(),
         eventMock,
     );
 });

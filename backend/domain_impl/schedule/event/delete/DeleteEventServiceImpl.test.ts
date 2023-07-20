@@ -9,7 +9,7 @@ Deno.test("DeleteEventServiceImpl", async () => {
         await new DeleteEventServiceImpl(
             new DeleteEventRepositoryMock(),
             new FindEventServiceMock(eventMock),
-        ).del(eventMock.id),
+        ).del(eventMock.user, eventMock.id),
         eventMock,
     );
 });

@@ -7,5 +7,4 @@ export type UpdateMeetingEvent = {
     readonly end: Event["end"];
     readonly frequency: Event["frequency"];
     readonly weekendRepeat: Event["weekendRepeat"];
-    readonly user: Event["user"];
 };

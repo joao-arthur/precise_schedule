@@ -11,7 +11,7 @@ Deno.test("CreateEventServiceImpl", async () => {
         await new CreateEventServiceImpl(
             new CreateEventRepositoryMock(),
             new CreateEventFactoryMock(eventMock),
-        ).create(createEventModelMock),
+        ).create(eventMock.user, createEventModelMock),
         eventMock,
     );
 });

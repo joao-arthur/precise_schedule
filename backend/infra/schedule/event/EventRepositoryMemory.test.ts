@@ -4,14 +4,14 @@ import { EventRepositoryMemory } from "./EventRepositoryMemory.ts";
 
 Deno.test("EventRepositoryMemory", async () => {
     const repository = new EventRepositoryMemory();
-    assertEquals(await repository.findById(eventMock.id), undefined);
+    assertEquals(await repository.findByUserAndId(eventMock.user, eventMock.id), undefined);
     await repository.create(eventMock);
-    assertEquals(await repository.findById(eventMock.id), eventMock);
+    assertEquals(await repository.findByUserAndId(eventMock.user, eventMock.id), eventMock);
     await repository.update({ ...eventMock, name: "name2" });
-    assertEquals(await repository.findById(eventMock.id), {
+    assertEquals(await repository.findByUserAndId(eventMock.user, eventMock.id), {
         ...eventMock,
         name: "name2",
     });
     await repository.del(eventMock.id);
-    assertEquals(await repository.findById(eventMock.id), undefined);
+    assertEquals(await repository.findByUserAndId(eventMock.user, eventMock.id), undefined);
 });

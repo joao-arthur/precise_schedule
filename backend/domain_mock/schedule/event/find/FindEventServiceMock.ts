@@ -4,7 +4,7 @@ import type { FindEventService } from "@ps/domain/schedule/event/find/FindEventS
 export class FindEventServiceMock implements FindEventService {
     constructor(private readonly event: Event) {}
 
-    public findById(): Promise<Event> {
+    public findByUserAndId(): Promise<Event> {
         return Promise.resolve(this.event);
     }
 }

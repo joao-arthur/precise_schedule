@@ -1,3 +1,4 @@
+import type { User } from "@ps/domain/schedule/user/User.ts";
 import type { UpdateAppointmentEvent } from "@ps/domain/schedule/event/updateAppointment/UpdateAppointmentEvent.ts";
 import type { UpdateAppointmentEventService } from "@ps/domain/schedule/event/updateAppointment/UpdateAppointmentEventService.ts";
 import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
@@ -10,8 +11,11 @@ import { noContent } from "@ps/application_impl/http/builder/200/noContent.ts";
 export class UpdateAppointmentEventControllerImpl implements UpdateAppointmentEventController {
     constructor(private readonly updateAppointmentEventService: UpdateAppointmentEventService) {}
 
-    public async handle(req: HTTPRequest<UpdateAppointmentEvent, IdParam>): Promise<HTTPResponse> {
-        await this.updateAppointmentEventService.update(req.params.id, req.body);
+    public async handle(
+        userId: User["id"],
+        req: HTTPRequest<UpdateAppointmentEvent, IdParam>,
+    ): Promise<HTTPResponse> {
+        await this.updateAppointmentEventService.update(userId, req.params.id, req.body);
         return noContent();
     }
 }

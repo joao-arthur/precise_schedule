@@ -17,7 +17,4 @@ export const createDateValidation: Schema<CreateDateEvent> = {
     end: [
         { v: "time" },
     ],
-    user: [
-        { v: "str" },
-    ],
 };

@@ -23,7 +23,4 @@ export const updateMeetingValidation: Schema<UpdateMeetingEvent> = {
     weekendRepeat: [
         { v: "bool" },
     ],
-    user: [
-        { v: "str" },
-    ],
 };

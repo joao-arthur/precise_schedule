@@ -9,13 +9,13 @@ Deno.test("FindEventServiceImpl", async () => {
         () =>
             new FindEventServiceImpl(
                 new FindEventRepositoryMock(undefined),
-            ).findById(eventMock.id),
+            ).findByUserAndId(eventMock.user, eventMock.id),
         EventNotFound,
     );
     assertEquals(
         await new FindEventServiceImpl(
             new FindEventRepositoryMock(eventMock),
-        ).findById(eventMock.id),
+        ).findByUserAndId(eventMock.user, eventMock.id),
         eventMock,
     );
 });

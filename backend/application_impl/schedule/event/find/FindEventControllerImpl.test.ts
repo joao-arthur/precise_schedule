@@ -9,7 +9,7 @@ Deno.test("FindEventControllerImpl", async () => {
     assertEquals(
         await new FindEventControllerImpl(
             new FindEventServiceMock(eventMock),
-        ).handle(httpRequestParamsMock),
+        ).handle(eventMock.user, httpRequestParamsMock),
         ok(eventMock),
     );
 });

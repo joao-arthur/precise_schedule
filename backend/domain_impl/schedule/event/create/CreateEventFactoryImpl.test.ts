@@ -6,10 +6,12 @@ import { CreateEventFactoryImpl } from "./CreateEventFactoryImpl.ts";
 Deno.test("CreateEventFactoryImpl", () => {
     assertEquals(
         new CreateEventFactoryImpl(new IdGeneratorMock("id")).build(
+            "user",
             createEventModelMock,
         ),
         {
             id: "id",
+            user: "user",
             createdAt: new Date(),
             updatedAt: new Date(),
             ...createEventModelMock,

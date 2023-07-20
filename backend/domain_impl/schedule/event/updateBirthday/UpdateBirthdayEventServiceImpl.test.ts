@@ -12,7 +12,7 @@ Deno.test("UpdateBirthdayEventServiceImpl", async () => {
             new ValidatorMock(),
             new UpdateBirthdayEventFactoryMock(eventMock),
             new UpdateEventServiceMock(eventMock),
-        ).update(eventMock.id, updateBirthdayEventMock),
+        ).update(eventMock.user, eventMock.id, updateBirthdayEventMock),
         eventMock,
     );
 });

@@ -7,5 +7,4 @@ export const createAppointmentEventMock: CreateAppointmentEvent = {
     end: "18:00",
     frequency: "NEVER",
     weekendRepeat: false,
-    user: "user",
 };

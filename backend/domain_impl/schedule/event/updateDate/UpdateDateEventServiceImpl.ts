@@ -1,4 +1,5 @@
 import type { Validator } from "@ps/domain/validation/Validator.ts";
+import type { User } from "@ps/domain/schedule/user/User.ts";
 import type { Event } from "@ps/domain/schedule/event/Event.ts";
 import type { UpdateEventService } from "@ps/domain/schedule/event/update/UpdateEventService.ts";
 import type { UpdateDateEvent } from "@ps/domain/schedule/event/updateDate/UpdateDateEvent.ts";
@@ -15,11 +16,12 @@ export class UpdateDateEventServiceImpl implements UpdateDateEventService {
     ) {}
 
     public update(
+        userId: User["id"],
         id: Event["id"],
         event: UpdateDateEvent,
     ): Promise<Event> {
         this.validator.validate(event, updateDateValidation);
         const buildedEvent = this.factory.build(event);
-        return this.service.update(id, buildedEvent);
+        return this.service.update(userId, id, buildedEvent);
     }
 }

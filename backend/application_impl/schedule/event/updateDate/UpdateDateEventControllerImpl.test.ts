@@ -9,7 +9,7 @@ Deno.test("UpdateDateEventControllerImpl", async () => {
     assertEquals(
         await new UpdateDateEventControllerImpl(
             new UpdateDateEventServiceMock(eventMock),
-        ).handle(httpRequestFullMock),
+        ).handle(eventMock.user, httpRequestFullMock),
         noContent(),
     );
 });

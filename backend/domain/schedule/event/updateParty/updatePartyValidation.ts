@@ -17,7 +17,4 @@ export const updatePartyValidation: Schema<UpdatePartyEvent> = {
     end: [
         { v: "time" },
     ],
-    user: [
-        { v: "str" },
-    ],
 };

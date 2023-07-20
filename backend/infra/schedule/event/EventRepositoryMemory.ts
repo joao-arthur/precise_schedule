@@ -1,3 +1,4 @@
+import type { User } from "@ps/domain/schedule/user/User.ts";
 import type { Event } from "@ps/domain/schedule/event/Event.ts";
 import type { EventRepository } from "@ps/domain/schedule/event/EventRepository.ts";
 
@@ -18,10 +19,13 @@ export class EventRepositoryMemory implements EventRepository {
         return Promise.resolve();
     }
 
-    public findById(
+    public findByUserAndId(
+        userId: User["id"],
         id: Event["id"],
     ): Promise<Event | undefined> {
-        return Promise.resolve(this.events.find((event) => event.id === id));
+        return Promise.resolve(
+            this.events.find((event) => event.id === id && event.user === userId),
+        );
     }
 
     public del(id: Event["id"]): Promise<void> {

@@ -23,7 +23,4 @@ export const createMeetingValidation: Schema<CreateMeetingEvent> = {
     weekendRepeat: [
         { v: "bool" },
     ],
-    user: [
-        { v: "str" },
-    ],
 };

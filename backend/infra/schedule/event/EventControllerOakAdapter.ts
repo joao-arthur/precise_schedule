@@ -28,6 +28,8 @@ import { UpdateMeetingEventServiceImpl } from "@ps/domain_impl/schedule/event/up
 import { UpdatePartyEventFactoryImpl } from "@ps/domain_impl/schedule/event/updateParty/UpdatePartyEventFactoryImpl.ts";
 import { UpdatePartyEventServiceImpl } from "@ps/domain_impl/schedule/event/updateParty/UpdatePartyEventServiceImpl.ts";
 import { FindEventServiceImpl } from "@ps/domain_impl/schedule/event/find/FindEventServiceImpl.ts";
+
+import { FindEventControllerImpl } from "@ps/application_impl/schedule/event/find/FindEventControllerImpl.ts";
 import { CreateAppointmentEventControllerImpl } from "@ps/application_impl/schedule/event/createAppointment/CreateAppointmentEventControllerImpl.ts";
 import { CreateBirthdayEventControllerImpl } from "@ps/application_impl/schedule/event/createBirthday/CreateBirthdayEventControllerImpl.ts";
 import { CreateDateEventControllerImpl } from "@ps/application_impl/schedule/event/createDate/CreateDateEventControllerImpl.ts";
@@ -38,9 +40,11 @@ import { UpdateBirthdayEventControllerImpl } from "@ps/application_impl/schedule
 import { UpdateDateEventControllerImpl } from "@ps/application_impl/schedule/event/updateDate/UpdateDateEventControllerImpl.ts";
 import { UpdateMeetingEventControllerImpl } from "@ps/application_impl/schedule/event/updateMeeting/UpdateMeetingEventControllerImpl.ts";
 import { UpdatePartyEventControllerImpl } from "@ps/application_impl/schedule/event/updateParty/UpdatePartyEventControllerImpl.ts";
+
 import { makeBody } from "../../http/makeBody.ts";
 import { makeParams } from "../../http/makeParams.ts";
 import { makeResult } from "../../http/makeResult.ts";
+import { DecodeSessionServiceJWTAdapter } from "@ps/infra/session/decode/DecodeSessionServiceJWTAdapter.ts";
 
 export class EventControllerOakAdapter {
     constructor(
@@ -52,20 +56,30 @@ export class EventControllerOakAdapter {
     // deno-lint-ignore no-explicit-any
     public initRoutes(router: Router<Record<string, any>>): void {
         router
-            /*.get("/event", async (ctx) => {
-                const findAllEventsService = new CreateEventServiceImpl(
-                    this.repository,
-                    new CreateEventFactoryImpl(this.idGenerator),
-                );
-                const service = new CreateAppointmentEventServiceImpl(
-                    new CreateAppointmentEventFactoryImpl(),
-                    findAllEventsService,
-                );
-                const controller = new FindAllEventsControllerImpl(service);
-                const res = await controller.handle();
+            //.get("/event", async (ctx) => {
+            //    const userId = await new DecodeSessionServiceJWTAdapter().decode({
+            //        token: ctx.request.headers.get("authorization")!,
+            //    });
+            //    const params = await makeParams(ctx);
+            //    const service = new FindAllEventsServiceImpl(this.repository);
+            //    const controller = new FindAllEventsControllerImpl(service);
+            //    const res = await controller.handle(userId, { params });
+            //    makeResult(res, ctx);
+            //})
+            .get("/event/:id", async (ctx) => {
+                const userId = await new DecodeSessionServiceJWTAdapter().decode({
+                    token: ctx.request.headers.get("authorization")!,
+                });
+                const params = await makeParams(ctx);
+                const service = new FindEventServiceImpl(this.repository);
+                const controller = new FindEventControllerImpl(service);
+                const res = await controller.handle(userId, { params });
                 makeResult(res, ctx);
-            })*/
+            })
             .post("/event/APPOINTMENT", async (ctx) => {
+                const userId = await new DecodeSessionServiceJWTAdapter().decode({
+                    token: ctx.request.headers.get("authorization")!,
+                });
                 const body = await makeBody(ctx);
                 const createEventService = new CreateEventServiceImpl(
                     this.repository,
@@ -77,10 +91,13 @@ export class EventControllerOakAdapter {
                     createEventService,
                 );
                 const controller = new CreateAppointmentEventControllerImpl(service);
-                const res = await controller.handle({ body });
+                const res = await controller.handle(userId, { body });
                 makeResult(res, ctx);
             })
             .post("/event/BIRTHDAY", async (ctx) => {
+                const userId = await new DecodeSessionServiceJWTAdapter().decode({
+                    token: ctx.request.headers.get("authorization")!,
+                });
                 const body = await makeBody(ctx);
                 const createEventService = new CreateEventServiceImpl(
                     this.repository,
@@ -92,10 +109,13 @@ export class EventControllerOakAdapter {
                     createEventService,
                 );
                 const controller = new CreateBirthdayEventControllerImpl(service);
-                const res = await controller.handle({ body });
+                const res = await controller.handle(userId, { body });
                 makeResult(res, ctx);
             })
             .post("/event/DATE", async (ctx) => {
+                const userId = await new DecodeSessionServiceJWTAdapter().decode({
+                    token: ctx.request.headers.get("authorization")!,
+                });
                 const body = await makeBody(ctx);
                 const createEventService = new CreateEventServiceImpl(
                     this.repository,
@@ -107,10 +127,13 @@ export class EventControllerOakAdapter {
                     createEventService,
                 );
                 const controller = new CreateDateEventControllerImpl(service);
-                const res = await controller.handle({ body });
+                const res = await controller.handle(userId, { body });
                 makeResult(res, ctx);
             })
             .post("/event/MEETING", async (ctx) => {
+                const userId = await new DecodeSessionServiceJWTAdapter().decode({
+                    token: ctx.request.headers.get("authorization")!,
+                });
                 const body = await makeBody(ctx);
                 const createEventService = new CreateEventServiceImpl(
                     this.repository,
@@ -122,10 +145,13 @@ export class EventControllerOakAdapter {
                     createEventService,
                 );
                 const controller = new CreateMeetingEventControllerImpl(service);
-                const res = await controller.handle({ body });
+                const res = await controller.handle(userId, { body });
                 makeResult(res, ctx);
             })
             .post("/event/PARTY", async (ctx) => {
+                const userId = await new DecodeSessionServiceJWTAdapter().decode({
+                    token: ctx.request.headers.get("authorization")!,
+                });
                 const body = await makeBody(ctx);
                 const createEventService = new CreateEventServiceImpl(
                     this.repository,
@@ -137,10 +163,13 @@ export class EventControllerOakAdapter {
                     createEventService,
                 );
                 const controller = new CreatePartyEventControllerImpl(service);
-                const res = await controller.handle({ body });
+                const res = await controller.handle(userId, { body });
                 makeResult(res, ctx);
             })
             .put("/event/APPOINTMENT/:id", async (ctx) => {
+                const userId = await new DecodeSessionServiceJWTAdapter().decode({
+                    token: ctx.request.headers.get("authorization")!,
+                });
                 const body = await makeBody(ctx);
                 const params = await makeParams(ctx);
                 const updateEventService = new UpdateEventServiceImpl(
@@ -154,10 +183,13 @@ export class EventControllerOakAdapter {
                     updateEventService,
                 );
                 const controller = new UpdateAppointmentEventControllerImpl(service);
-                const res = await controller.handle({ body, params });
+                const res = await controller.handle(userId, { body, params });
                 makeResult(res, ctx);
             })
             .put("/event/BIRTHDAY/:id", async (ctx) => {
+                const userId = await new DecodeSessionServiceJWTAdapter().decode({
+                    token: ctx.request.headers.get("authorization")!,
+                });
                 const body = await makeBody(ctx);
                 const params = await makeParams(ctx);
                 const updateEventService = new UpdateEventServiceImpl(
@@ -171,10 +203,13 @@ export class EventControllerOakAdapter {
                     updateEventService,
                 );
                 const controller = new UpdateBirthdayEventControllerImpl(service);
-                const res = await controller.handle({ body, params });
+                const res = await controller.handle(userId, { body, params });
                 makeResult(res, ctx);
             })
             .put("/event/DATE/:id", async (ctx) => {
+                const userId = await new DecodeSessionServiceJWTAdapter().decode({
+                    token: ctx.request.headers.get("authorization")!,
+                });
                 const body = await makeBody(ctx);
                 const params = await makeParams(ctx);
                 const updateEventService = new UpdateEventServiceImpl(
@@ -188,10 +223,13 @@ export class EventControllerOakAdapter {
                     updateEventService,
                 );
                 const controller = new UpdateDateEventControllerImpl(service);
-                const res = await controller.handle({ body, params });
+                const res = await controller.handle(userId, { body, params });
                 makeResult(res, ctx);
             })
             .put("/event/MEETING/:id", async (ctx) => {
+                const userId = await new DecodeSessionServiceJWTAdapter().decode({
+                    token: ctx.request.headers.get("authorization")!,
+                });
                 const body = await makeBody(ctx);
                 const params = await makeParams(ctx);
                 const updateEventService = new UpdateEventServiceImpl(
@@ -205,10 +243,13 @@ export class EventControllerOakAdapter {
                     updateEventService,
                 );
                 const controller = new UpdateMeetingEventControllerImpl(service);
-                const res = await controller.handle({ body, params });
+                const res = await controller.handle(userId, { body, params });
                 makeResult(res, ctx);
             })
             .put("/event/PARTY/:id", async (ctx) => {
+                const userId = await new DecodeSessionServiceJWTAdapter().decode({
+                    token: ctx.request.headers.get("authorization")!,
+                });
                 const body = await makeBody(ctx);
                 const params = await makeParams(ctx);
                 const updateEventService = new UpdateEventServiceImpl(
@@ -222,7 +263,7 @@ export class EventControllerOakAdapter {
                     updateEventService,
                 );
                 const controller = new UpdatePartyEventControllerImpl(service);
-                const res = await controller.handle({ body, params });
+                const res = await controller.handle(userId, { body, params });
                 makeResult(res, ctx);
             });
         //.delete("/event/:id", async (context) => {

@@ -1,3 +1,4 @@
+import type { User } from "@ps/domain/schedule/user/User.ts";
 import type { CreatePartyEvent } from "@ps/domain/schedule/event/createParty/CreatePartyEvent.ts";
 import type { CreatePartyEventService } from "@ps/domain/schedule/event/createParty/CreatePartyEventService.ts";
 import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
@@ -9,8 +10,11 @@ import { created } from "@ps/application_impl/http/builder/200/created.ts";
 export class CreatePartyEventControllerImpl implements CreatePartyEventController {
     constructor(private readonly createPartyEventService: CreatePartyEventService) {}
 
-    public async handle(req: HTTPRequest<CreatePartyEvent>): Promise<HTTPResponse> {
-        const result = await this.createPartyEventService.create(req.body);
+    public async handle(
+        userId: User["id"],
+        req: HTTPRequest<CreatePartyEvent>,
+    ): Promise<HTTPResponse> {
+        const result = await this.createPartyEventService.create(userId, req.body);
         return created(result);
     }
 }

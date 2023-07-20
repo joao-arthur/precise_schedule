@@ -24,10 +24,7 @@ export class UpdateUserServiceImpl implements UpdateUserService {
     ): Promise<User> {
         this.validator.validate(user, updateUserValidation);
         const existingUser = await this.findUserService.findById(id);
-        await this.uniqueInfoService.validateExisting(
-            user,
-            existingUser,
-        );
+        await this.uniqueInfoService.validateExisting(user, existingUser);
         const userToUpdate = this.factory.build(user, id);
         await this.repository.update(userToUpdate);
         return userToUpdate;

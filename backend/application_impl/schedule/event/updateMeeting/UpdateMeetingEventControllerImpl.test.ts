@@ -9,7 +9,7 @@ Deno.test("UpdateMeetingEventControllerImpl", async () => {
     assertEquals(
         await new UpdateMeetingEventControllerImpl(
             new UpdateMeetingEventServiceMock(eventMock),
-        ).handle(httpRequestFullMock),
+        ).handle(eventMock.user, httpRequestFullMock),
         noContent(),
     );
 });

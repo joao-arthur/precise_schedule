@@ -12,7 +12,6 @@ export class UpdateAppointmentEventFactoryImpl implements UpdateAppointmentEvent
             category: "APPOINTMENT",
             frequency: event.frequency,
             weekendRepeat: event.weekendRepeat,
-            user: event.user,
         };
     }
 }

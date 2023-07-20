@@ -13,7 +13,7 @@ Deno.test("UpdateEventServiceImpl", async () => {
             new UpdateEventRepositoryMock(),
             new UpdateEventFactoryMock(eventMock),
             new FindEventServiceMock(eventMock),
-        ).update(eventMock.id, updateEventModelMock),
+        ).update(eventMock.user, eventMock.id, updateEventModelMock),
         eventMock,
     );
 });

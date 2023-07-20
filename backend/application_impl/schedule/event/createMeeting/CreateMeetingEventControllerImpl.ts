@@ -1,3 +1,4 @@
+import type { User } from "@ps/domain/schedule/user/User.ts";
 import type { CreateMeetingEvent } from "@ps/domain/schedule/event/createMeeting/CreateMeetingEvent.ts";
 import type { CreateMeetingEventService } from "@ps/domain/schedule/event/createMeeting/CreateMeetingEventService.ts";
 import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
@@ -9,8 +10,11 @@ import { created } from "@ps/application_impl/http/builder/200/created.ts";
 export class CreateMeetingEventControllerImpl implements CreateMeetingEventController {
     constructor(private readonly createMeetingEventService: CreateMeetingEventService) {}
 
-    public async handle(req: HTTPRequest<CreateMeetingEvent>): Promise<HTTPResponse> {
-        const result = await this.createMeetingEventService.create(req.body);
+    public async handle(
+        userId: User["id"],
+        req: HTTPRequest<CreateMeetingEvent>,
+    ): Promise<HTTPResponse> {
+        const result = await this.createMeetingEventService.create(userId, req.body);
         return created(result);
     }
 }

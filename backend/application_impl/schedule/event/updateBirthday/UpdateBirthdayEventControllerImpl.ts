@@ -1,3 +1,4 @@
+import type { User } from "@ps/domain/schedule/user/User.ts";
 import type { UpdateBirthdayEvent } from "@ps/domain/schedule/event/updateBirthday/UpdateBirthdayEvent.ts";
 import type { UpdateBirthdayEventService } from "@ps/domain/schedule/event/updateBirthday/UpdateBirthdayEventService.ts";
 import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
@@ -10,8 +11,11 @@ import { noContent } from "@ps/application_impl/http/builder/200/noContent.ts";
 export class UpdateBirthdayEventControllerImpl implements UpdateBirthdayEventController {
     constructor(private readonly updateBirthdayEventService: UpdateBirthdayEventService) {}
 
-    public async handle(req: HTTPRequest<UpdateBirthdayEvent, IdParam>): Promise<HTTPResponse> {
-        await this.updateBirthdayEventService.update(req.params.id, req.body);
+    public async handle(
+        userId: User["id"],
+        req: HTTPRequest<UpdateBirthdayEvent, IdParam>,
+    ): Promise<HTTPResponse> {
+        await this.updateBirthdayEventService.update(userId, req.params.id, req.body);
         return noContent();
     }
 }

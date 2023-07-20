@@ -4,11 +4,11 @@ import { FindEventRepositoryMock } from "./FindEventRepositoryMock.ts";
 
 Deno.test("FindEventRepositoryMock", async () => {
     assertEquals(
-        await new FindEventRepositoryMock(undefined).findById(),
+        await new FindEventRepositoryMock(undefined).findByUserAndId(),
         undefined,
     );
     assertEquals(
-        await new FindEventRepositoryMock(eventMock).findById(),
+        await new FindEventRepositoryMock(eventMock).findByUserAndId(),
         eventMock,
     );
 });
