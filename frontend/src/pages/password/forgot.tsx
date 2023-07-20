@@ -9,6 +9,8 @@ import { InputField } from "@/components/atoms/InputField";
 import { useAnonPage } from "@/features/session/useAnonPage";
 import { PageContent } from "@/components/atoms/layout/PageContent";
 import { FormContainer } from "@/components/atoms/FormContainer";
+import { SubHeader } from "@/content/base/subHeader/SubHeader";
+import { ButtonIcon } from "@/components/atoms/ButtonIcon";
 
 export default function ForgotPassword() {
     useAnonPage();
@@ -19,31 +21,43 @@ export default function ForgotPassword() {
     }
 
     return (
-        <PageContent>
-            <FormContainer>
-                <Form
-                    title="Forgot your password"
-                    action="SEND INSTRUCTIONS"
-                    loading={false}
-                    onSubmit={handleSubmit(handle)}
-                >
-                    <InputField name="email" title="Email">
-                        <EmailInput
-                            {...register("email", { required: true })}
+        <div className="w-full">
+            <SubHeader
+                left={
+                    <Link to="/">
+                        <ButtonIcon
+                            name="chevron-left"
+                            size="medium"
                         />
-                    </InputField>
-                </Form>
-                <Box>
-                    <Text>
-                        Already in PreciseSchedule? <Link to="/signin">Sign in</Link>
-                    </Text>
-                </Box>
-                <Box>
-                    <Text>
-                        New to PreciseSchedule? <Link to="/signup">Create an account</Link>
-                    </Text>
-                </Box>
-            </FormContainer>
-        </PageContent>
+                    </Link>
+                }
+            />
+            <PageContent>
+                <FormContainer>
+                    <Form
+                        title="Forgot your password"
+                        action="SEND INSTRUCTIONS"
+                        loading={false}
+                        onSubmit={handleSubmit(handle)}
+                    >
+                        <InputField name="email" title="Email">
+                            <EmailInput
+                                {...register("email", { required: true })}
+                            />
+                        </InputField>
+                    </Form>
+                    <Box>
+                        <Text>
+                            Already in PreciseSchedule? <Link to="/signin">Sign in</Link>
+                        </Text>
+                    </Box>
+                    <Box>
+                        <Text>
+                            New to PreciseSchedule? <Link to="/signup">Create an account</Link>
+                        </Text>
+                    </Box>
+                </FormContainer>
+            </PageContent>
+        </div>
     );
 }

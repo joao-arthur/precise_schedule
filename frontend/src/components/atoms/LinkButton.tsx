@@ -12,7 +12,7 @@ export function LinkButton({ to, children }: props) {
         <BaseLink
             href={to}
             className={clss(
-                "border-none cursor-pointer py-1 px-2",
+                "border-none cursor-pointer py-1 px-2 w-20 text-center",
                 "text-white rounded",
                 "hover:bg-primary dark:hover:bg-primary-dark",
                 "transition-colors duration-500",

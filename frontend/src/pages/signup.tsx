@@ -15,6 +15,8 @@ import { Box } from "@/components/atoms/layout/Box";
 import { PageContent } from "@/components/atoms/layout/PageContent";
 import { Form } from "@/components/organisms/Form";
 import { FormContainer } from "@/components/atoms/FormContainer";
+import { SubHeader } from "@/content/base/subHeader/SubHeader";
+import { ButtonIcon } from "@/components/atoms/ButtonIcon";
 
 type CreateUserForm = CreateUser & PasswordMatch;
 
@@ -31,79 +33,91 @@ export default function SignUp() {
     }, [data]);
 
     return (
-        <PageContent>
-            <FormContainer>
-                <Form
-                    title="Create your account"
-                    action="SIGN UP"
-                    loading={isLoading}
-                    onSubmit={handleSubmit((data) => mutate(data))}
-                >
-                    <InputField name="firstName" title="First name">
-                        <TextInput
-                            {...register("firstName", {
-                                required: true,
-                                disabled: isLoading,
-                            })}
+        <div className="w-full">
+            <SubHeader
+                left={
+                    <Link to="/">
+                        <ButtonIcon
+                            name="chevron-left"
+                            size="medium"
                         />
-                    </InputField>
-                    <InputField name="birthdate" title="Birthdate">
-                        <DateInput
-                            {...register("birthdate", {
-                                required: true,
-                                disabled: isLoading,
-                            })}
-                        />
-                    </InputField>
-                    <InputField name="email" title="E-mail">
-                        <EmailInput
-                            {...register("email", {
-                                required: true,
-                                disabled: isLoading,
-                            })}
-                        />
-                    </InputField>
-                    <InputField name="username" title="Username">
-                        <TextInput
-                            {...register("username", {
-                                required: true,
-                                disabled: isLoading,
-                            })}
-                        />
-                    </InputField>
-                    <InputField
-                        name="password"
-                        title="Password"
-                        notice="At least 10 characters"
+                    </Link>
+                }
+            />
+            <PageContent>
+                <FormContainer>
+                    <Form
+                        title="Create your account"
+                        action="SIGN UP"
+                        loading={isLoading}
+                        onSubmit={handleSubmit((data) => mutate(data))}
                     >
-                        <PasswordInput
-                            {...register("password", {
-                                required: true,
-                                minLength: 10,
-                                disabled: isLoading,
-                            })}
-                        />
-                    </InputField>
-                    <InputField
-                        name="passwordMatch"
-                        title="Type password again"
-                        notice="At least 10 characters"
-                    >
-                        <PasswordInput
-                            {...register("passwordMatch", {
-                                required: true,
-                                minLength: 10,
-                                disabled: isLoading,
-                            })}
-                        />
-                    </InputField>
-                </Form>
-                <Box>
-                    <Text>
-                        Already in PreciseSchedule? <Link to="/signin">Sign in</Link>
-                    </Text>
-                </Box>
-            </FormContainer>
-        </PageContent>
+                        <InputField name="firstName" title="First name">
+                            <TextInput
+                                {...register("firstName", {
+                                    required: true,
+                                    disabled: isLoading,
+                                })}
+                            />
+                        </InputField>
+                        <InputField name="birthdate" title="Birthdate">
+                            <DateInput
+                                {...register("birthdate", {
+                                    required: true,
+                                    disabled: isLoading,
+                                })}
+                            />
+                        </InputField>
+                        <InputField name="email" title="E-mail">
+                            <EmailInput
+                                {...register("email", {
+                                    required: true,
+                                    disabled: isLoading,
+                                })}
+                            />
+                        </InputField>
+                        <InputField name="username" title="Username">
+                            <TextInput
+                                {...register("username", {
+                                    required: true,
+                                    disabled: isLoading,
+                                })}
+                            />
+                        </InputField>
+                        <InputField
+                            name="password"
+                            title="Password"
+                            notice="At least 10 characters"
+                        >
+                            <PasswordInput
+                                {...register("password", {
+                                    required: true,
+                                    minLength: 10,
+                                    disabled: isLoading,
+                                })}
+                            />
+                        </InputField>
+                        <InputField
+                            name="passwordMatch"
+                            title="Type password again"
+                            notice="At least 10 characters"
+                        >
+                            <PasswordInput
+                                {...register("passwordMatch", {
+                                    required: true,
+                                    minLength: 10,
+                                    disabled: isLoading,
+                                })}
+                            />
+                        </InputField>
+                    </Form>
+                    <Box>
+                        <Text>
+                            Already in PreciseSchedule? <Link to="/signin">Sign in</Link>
+                        </Text>
+                    </Box>
+                </FormContainer>
+            </PageContent>
+        </div>
     );
 }
