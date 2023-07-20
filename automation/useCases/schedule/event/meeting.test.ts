@@ -46,3 +46,39 @@ Deno.test("Meeting", async (t) => {
         );
     });
 });
+
+Deno.test("Meeting validation", async () => {
+    assertEquals(
+        await createMeetingEvent({} as any),
+        {
+            status: 400,
+            body: {
+                validation: {
+                    name: [
+                        "must be a string",
+                        "at least 1 character",
+                        "at maximum 32 characters",
+                    ],
+                    day: [
+                        "must be a date in the format YYYY-MM-DD",
+                        "must be greater than 1970-01-01",
+                    ],
+                    begin: [
+                        "must be a time in the format HH:mm",
+                    ],
+                    end: [
+                        "must be a time in the format HH:mm",
+                        "must be bigger than 'begin'",
+                    ],
+                    frequency: [
+                        "must be one of: (1_D, 2_D, 1_W, 1_M, 3_M, 6_M, 1_Y, 2_Y, NEVER)",
+                    ],
+                    weekendRepeat: [
+                        "must be a boolean",
+                    ],
+                },
+            },
+            headers: { contentLocation: undefined },
+        },
+    );
+});

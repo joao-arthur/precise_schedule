@@ -38,3 +38,26 @@ Deno.test("Birthday", async (t) => {
         );
     });
 });
+
+Deno.test("Birthday validation", async () => {
+    assertEquals(
+        await createBirthdayEvent({} as any),
+        {
+            status: 400,
+            body: {
+                validation: {
+                    name: [
+                        "must be a string",
+                        "at least 1 character",
+                        "at maximum 32 characters",
+                    ],
+                    day: [
+                        "must be a date in the format YYYY-MM-DD",
+                        "must be greater than 1970-01-01",
+                    ],
+                },
+            },
+            headers: { contentLocation: undefined },
+        },
+    );
+});
