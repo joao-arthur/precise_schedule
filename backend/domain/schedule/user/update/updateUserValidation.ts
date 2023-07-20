@@ -2,15 +2,15 @@ import type { Schema } from "@ps/domain/validation/Schema.ts";
 import type { UpdateUserModel } from "./UpdateUserModel.ts";
 
 export const updateUserValidation: Schema<UpdateUserModel> = {
-    //firstName: [
-    //    { v: "str" },
-    //    { v: "strMinLen", min: 1 },
-    //    { v: "strMaxLen", max: 256 },
-    //],
-    //birthdate: [
-    //    { v: "dt" },
-    //    { v: "dtMin", min: '1970-01-01' },
-    //],
+    firstName: [
+        { v: "str" },
+        { v: "strMinLen", min: 1 },
+        { v: "strMaxLen", max: 256 },
+    ],
+    birthdate: [
+        { v: "dt" },
+        { v: "dtMin", min: "1970-01-01" },
+    ],
     email: [
         { v: "email" },
         { v: "strMaxLen", max: 256 },

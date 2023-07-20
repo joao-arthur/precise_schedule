@@ -19,25 +19,27 @@ type Password = {
 
 export type User = {
     readonly id: string;
-    //readonly firstName: string;
-    //readonly birthdate: Date;
+    readonly firstName: string;
+    readonly birthdate: string;
     readonly email: string;
     readonly username: string;
     readonly password: string;
     //readonly status: Status;
     //readonly language: Language;
-    //readonly createdAt: Date;
-    //readonly updatedAt: Date;
+    readonly createdAt: Date;
+    readonly updatedAt: Date;
 };
 
 type DatabaseUser = {
     readonly id: string;
     readonly firstName: string;
-    readonly lastName: string;
     readonly birthdate: string;
     readonly email: string;
     readonly language: string;
-    readonly status: string;
+    //readonly status: string;
+    //readonly language: string;
     readonly username: string;
     readonly password: string;
+    readonly createdAt: string;
+    readonly updatedAt: string;
 };

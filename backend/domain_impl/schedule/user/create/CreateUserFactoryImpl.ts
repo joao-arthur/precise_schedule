@@ -10,8 +10,12 @@ export class CreateUserFactoryImpl implements CreateUserFactory {
         return {
             id: this.idGenerator.generate(),
             email: user.email,
+            firstName: user.firstName,
+            birthdate: user.birthdate,
             username: user.username,
             password: user.password,
+            createdAt: new Date(),
+            updatedAt: new Date(),
         };
     }
 }

@@ -19,6 +19,8 @@ Deno.test("User", async (t) => {
     await t.step("Register user", async () => {
         const res = await createUserEndpoint({
             username: "paul",
+            firstName: "paulus",
+            birthdate: "1980-10-11",
             password: "0a1B2c#4567",
             email: "paul@gmail.com",
         });
@@ -45,10 +47,11 @@ Deno.test("Create user validation", async () => {
                     firstName: [
                         "must be a string",
                         "at least 1 character",
+                        "at maximum 256 characters",
                     ],
                     birthdate: [
                         "must be a date in the format YYYY-MM-DD",
-                        "must be > 1970-01-01",
+                        "must be greater than 1970-01-01",
                     ],
                     email: [
                         "must be a email",

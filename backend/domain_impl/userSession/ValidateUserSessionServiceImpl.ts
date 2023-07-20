@@ -18,6 +18,5 @@ export class ValidateUserSessionServiceImpl implements ValidateUserSessionServic
         } catch {
             throw new InvalidSessionError();
         }
-        // if (user.status !== 'ACTIVE') throw new InvalidSessionError();
     }
 }

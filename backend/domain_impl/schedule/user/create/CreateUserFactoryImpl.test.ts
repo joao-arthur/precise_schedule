@@ -5,9 +5,12 @@ import { CreateUserFactoryImpl } from "./CreateUserFactoryImpl.ts";
 
 Deno.test("CreateUserFactoryImpl", () => {
     assertEquals(
-        new CreateUserFactoryImpl(new IdGeneratorMock("id")).build(
-            createUserModelMock,
-        ),
-        { id: "id", ...createUserModelMock },
+        new CreateUserFactoryImpl(new IdGeneratorMock("id")).build(createUserModelMock),
+        {
+            id: "id",
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            ...createUserModelMock,
+        },
     );
 });
