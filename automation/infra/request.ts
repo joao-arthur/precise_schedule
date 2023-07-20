@@ -4,8 +4,8 @@ import { State } from "../app/state.ts";
 
 type Params = {
     readonly resource: string;
-    readonly method: "GET" | "POST" | "PUT";
-    readonly body: Record<string, unknown>;
+    readonly method: "GET" | "POST" | "PUT" | "DELETE";
+    readonly body?: Record<string, unknown>;
 };
 
 function customFetch<T>({ resource, method, body }: Params): Promise<Res<T>> {
@@ -19,7 +19,7 @@ function customFetch<T>({ resource, method, body }: Params): Promise<Res<T>> {
                 Authorization ? { Authorization } : null,
             ),
             method,
-            body: JSON.stringify(body),
+            body: body ? JSON.stringify(body) : undefined,
         },
     ).then(async (res) => {
         const status = res.status;
@@ -35,8 +35,8 @@ function customFetch<T>({ resource, method, body }: Params): Promise<Res<T>> {
     });
 }
 
-export function getReq<T>(resource: string, body: Record<string, unknown>): Promise<Res<T>> {
-    return customFetch({ resource, method: "GET", body });
+export function getReq<T>(resource: string): Promise<Res<T>> {
+    return customFetch({ resource, method: "GET" });
 }
 
 export function postReq<T>(resource: string, body: Record<string, unknown>): Promise<Res<T>> {
@@ -47,8 +47,13 @@ export function putReq<T>(resource: string, body: Record<string, unknown>): Prom
     return customFetch({ resource, method: "PUT", body });
 }
 
+export function deleteReq<T>(resource: string): Promise<Res<T>> {
+    return customFetch({ resource, method: "DELETE" });
+}
+
 export const request = {
     get: getReq,
     post: postReq,
     put: putReq,
+    delete: deleteReq,
 };

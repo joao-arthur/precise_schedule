@@ -1,6 +1,7 @@
 import { assertEquals } from "std/testing/asserts.ts";
 import { createDateEvent } from "../../../domain/schedule/event/event.date.create.endpoint.ts";
 import { updateDateEvent } from "../../../domain/schedule/event/event.date.update.endpoint.ts";
+import { deleteEvent } from "../../../domain/schedule/event/event.delete.endpoint.ts";
 import { initState } from "../../../app/initState.ts";
 
 await initState();
@@ -34,6 +35,17 @@ Deno.test("Date", async (t) => {
                     end: "18:00",
                 },
             ),
+            {
+                status: 204,
+                body: undefined,
+                headers: { contentLocation: undefined },
+            },
+        );
+    });
+
+    await t.step("Delete", async () => {
+        assertEquals(
+            await deleteEvent(id),
             {
                 status: 204,
                 body: undefined,
