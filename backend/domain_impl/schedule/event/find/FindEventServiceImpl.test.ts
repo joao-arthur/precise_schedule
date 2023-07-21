@@ -4,7 +4,22 @@ import { FindEventRepositoryMock } from "@ps/domain_mock/schedule/event/find/Fin
 import { EventNotFound } from "@ps/domain/schedule/event/find/EventNotFound.ts";
 import { FindEventServiceImpl } from "./FindEventServiceImpl.ts";
 
-Deno.test("FindEventServiceImpl", async () => {
+Deno.test("FindEventServiceImpl.findByUser", async () => {
+    assertEquals(
+        await new FindEventServiceImpl(
+            new FindEventRepositoryMock(undefined),
+        ).findByUser(eventMock.user),
+        [],
+    );
+    assertEquals(
+        await new FindEventServiceImpl(
+            new FindEventRepositoryMock(eventMock),
+        ).findByUser(eventMock.user),
+        [eventMock],
+    );
+});
+
+Deno.test("FindEventServiceImpl.findByUserAndId", async () => {
     await assertRejects(
         () =>
             new FindEventServiceImpl(
