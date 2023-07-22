@@ -1,4 +1,4 @@
-import type { Validator } from "../../../../validation/service.ts";
+import type { ValidatorService } from "../../../../validation/validator/service.ts";
 import type { User } from "../../../user/model.ts";
 import type { Event } from "../../model.ts";
 import type { EventUpdateService } from "../../update/service.ts";
@@ -10,7 +10,7 @@ import { updateBirthdayValidation } from "./validation.ts";
 
 export class BirthdayUpdateServiceImpl implements BirthdayUpdateService {
     constructor(
-        private readonly validator: Validator,
+        private readonly validator: ValidatorService,
         private readonly factory: BirthdayUpdateFactory,
         private readonly service: EventUpdateService,
     ) {}

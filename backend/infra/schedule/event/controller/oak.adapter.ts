@@ -1,6 +1,6 @@
-import type { EventRepository } from "../../../../domain/schedule/event/repository.ts";
-import type { IdGenerator } from "@ps/domain/generation/idGenerator/service.ts";
-import type { Validator } from "@ps/domain/validation/Validator.ts";
+import type { EventRepository } from "@ps/domain/schedule/event/repository.ts";
+import type { IdGenerator } from "@ps/domain/generator/id/service.ts";
+import type { ValidatorService } from "@ps/domain/validation/validator/service.ts";
 
 import { Router } from "oak/mod.ts";
 import { EventFindServiceImpl } from "@ps/domain/schedule/event/find/service.impl.ts";
@@ -50,7 +50,7 @@ import { DecodeSessionServiceJWTAdapter } from "@ps/infra/session/decode/jwt.ada
 export class EventControllerOakAdapter {
     constructor(
         private readonly idGenerator: IdGenerator,
-        private readonly validator: Validator,
+        private readonly validator: ValidatorService,
         private readonly repository: EventRepository,
     ) {}
 

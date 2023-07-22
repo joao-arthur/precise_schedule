@@ -1,4 +1,4 @@
-import type { Validator } from "../../../validation/service.ts";
+import type { ValidatorService } from "../../../validation/validator/service.ts";
 import type { Session } from "../../../session/model.ts";
 import type { SessionCreateService } from "../../../session/create/service.ts";
 import type { UserUniqueInfoService } from "../uniqueInfo/service.ts";
@@ -15,7 +15,7 @@ export class UserCreateServiceImpl implements UserCreateService {
         private readonly uniqueInfoService: UserUniqueInfoService,
         private readonly factory: UserCreateFactory,
         private readonly SessionCreateService: SessionCreateService,
-        private readonly validator: Validator,
+        private readonly validator: ValidatorService,
     ) {}
 
     public async create(user: UserCreateModel): Promise<Session> {

@@ -1,4 +1,4 @@
-import type { Validator } from "../../../validation/service.ts";
+import type { ValidatorService } from "../../../validation/validator/service.ts";
 import type { User } from "../model.ts";
 import type { UserUniqueInfoService } from "../uniqueInfo/service.ts";
 import type { UserFindService } from "../find/service.ts";
@@ -14,7 +14,7 @@ export class UserUpdateServiceImpl implements UserUpdateService {
         private readonly repository: UserUpdateRepository,
         private readonly uniqueInfoService: UserUniqueInfoService,
         private readonly factory: UserUpdateFactory,
-        private readonly validator: Validator,
+        private readonly validator: ValidatorService,
         private readonly userFindService: UserFindService,
     ) {}
 

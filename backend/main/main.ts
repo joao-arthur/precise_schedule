@@ -1,16 +1,16 @@
 import { Application, Router } from "oak/mod.ts";
 import { oakCors } from "cors/mod.ts";
-import { UserControllerOakAdapter } from "../infra/schedule/user/UserControllerOakAdapter.ts";
-import { UserRepositoryMemory } from "@ps/infra/schedule/user/UserRepositoryMemory.ts";
-import { EventControllerOakAdapter } from "../infra/schedule/event/EventControllerOakAdapter.ts";
-import { EventRepositoryMemory } from "@ps/infra/schedule/event/EventRepositoryMemory.ts";
-import { IdGeneratorRandom } from "@ps/infra/generate/IdGeneratorRandom.ts";
-import { ValidatorImpl } from "@ps/infra/validation/Validator.impl.ts";
-import { SessionMiddlewareOakAdapter } from "@ps/infra/http/middleware/SessionMiddlewareOakAdapter.ts";
-import { ErrorHandlerMiddlewareOakAdapter } from "@ps/infra/http/middleware/ErrorHandlerMiddlewareOakAdapter.ts";
+import { IdGeneratorRandom } from "@ps/infra/generator/id/random.adapter.ts";
+import { ValidatorServiceImpl } from "@ps/infra/validation/validator/service.impl.ts";
+import { UserRepositoryMemory } from "@ps/infra/schedule/user/repository/memory.adapter.ts";
+import { EventRepositoryMemory } from "@ps/infra/schedule/event/repository/memory.adapter.ts";
+import { UserControllerOakAdapter } from "@ps/infra/schedule/user/controller/oak.adapter.ts";
+import { EventControllerOakAdapter } from "@ps/infra/schedule/event/controller/oak.adapter.ts";
+import { SessionMiddlewareOakAdapter } from "@ps/infra/http/middleware/session/oak.adapter.ts";
+import { ErrorHandlerMiddlewareOakAdapter } from "@ps/infra/http/middleware/errorHandler/oak.adapter.ts";
 
 const idGenerator = new IdGeneratorRandom();
-const validator = new ValidatorImpl();
+const validator = new ValidatorServiceImpl();
 
 const userRepository = new UserRepositoryMemory();
 const userControllerAdapter = new UserControllerOakAdapter(

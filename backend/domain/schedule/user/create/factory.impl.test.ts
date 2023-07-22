@@ -1,5 +1,5 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { IdGeneratorStub } from "../../../generation/idGenerator/service._stub.ts";
+import { IdGeneratorStub } from "../../../generator/id/service._stub.ts";
 import { userCreateModelStub } from "./model._stub.ts";
 import { UserCreateFactoryImpl } from "./factory.impl.ts";
 

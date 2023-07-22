@@ -1,6 +1,6 @@
-import type { UserRepository } from "../../../../domain/schedule/user/repository.ts";
-import type { IdGenerator } from "@ps/domain/generation/idGenerator/service.ts";
-import type { Validator } from "@ps/domain/validation/service.ts";
+import type { UserRepository } from "@ps/domain/schedule/user/repository.ts";
+import type { IdGenerator } from "@ps/domain/generator/id/service.ts";
+import type { ValidatorService } from "@ps/domain/validation/validator/service.ts";
 
 import { Router } from "oak/mod.ts";
 import { UserCreateServiceImpl } from "@ps/domain/schedule/user/create/service.impl.ts";
@@ -22,7 +22,7 @@ import { makeResult } from "../../../http/makeResult.ts";
 export class UserControllerOakAdapter {
     constructor(
         private readonly idGenerator: IdGenerator,
-        private readonly validator: Validator,
+        private readonly validator: ValidatorService,
         private readonly repository: UserRepository,
     ) {}
 

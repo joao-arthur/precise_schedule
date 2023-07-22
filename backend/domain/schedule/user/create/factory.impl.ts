@@ -1,4 +1,4 @@
-import type { IdGenerator } from "../../../generation/idGenerator/service.ts";
+import type { IdGenerator } from "../../../generator/id/service.ts";
 import type { User } from "../model.ts";
 import type { UserCreateFactory } from "./factory.ts";
 import type { UserCreateModel } from "./model.ts";
