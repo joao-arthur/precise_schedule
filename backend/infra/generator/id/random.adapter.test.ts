@@ -5,9 +5,9 @@ Deno.test("IdGeneratorRandom", () => {
     const idGenerator = new IdGeneratorRandom();
     assertEquals(
         new Set(
-            Array(10).fill(undefined).map(
-                idGenerator.generate,
-            ),
+            Array(10)
+                .fill(undefined)
+                .map(idGenerator.generate),
         ).size,
         10,
     );

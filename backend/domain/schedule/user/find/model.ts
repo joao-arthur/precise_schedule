@@ -5,5 +5,4 @@ export type UserFindModel = {
     readonly birthdate: User["birthdate"];
     readonly email: User["email"];
     readonly username: User["username"];
-    readonly password: User["password"];
 };

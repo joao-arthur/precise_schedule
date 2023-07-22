@@ -14,7 +14,7 @@ export class EventFindControllerImpl implements EventFindController {
         userId: User["id"],
         req: HTTPRequest<undefined, IdParam>,
     ): Promise<HTTPResponse> {
-        const result = await this.eventFindService.findByUserAndId(userId, req.params.id);
+        const result = await this.eventFindService.findByUserAndIdMapped(userId, req.params.id);
         return ok(result);
     }
 }

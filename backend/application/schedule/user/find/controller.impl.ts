@@ -9,7 +9,7 @@ export class UserFindControllerImpl implements UserFindController {
     constructor(private readonly userFindService: UserFindService) {}
 
     public async handle(userId: User["id"]): Promise<HTTPResponse> {
-        const result = await this.userFindService.findById(userId);
+        const result = await this.userFindService.findByIdMapped(userId);
         return ok(result);
     }
 }

@@ -3,6 +3,7 @@ import { assertEquals } from "std/testing/asserts.ts";
 import { userStub } from "../model._stub.ts";
 import { ValidatorStub } from "../../../validation/validator/service._stub.ts";
 import { UserUniqueInfoServiceStub } from "../uniqueInfo/service._stub.ts";
+import { userFindModelStub } from "../find/model._stub.ts";
 import { UserFindServiceStub } from "../find/service._stub.ts";
 import { userUpdateModelStub } from "./model._stub.ts";
 import { UserUpdateFactoryStub } from "./factory._stub.ts";
@@ -16,7 +17,7 @@ Deno.test("UserUpdateServiceImpl", async () => {
             new UserUniqueInfoServiceStub(),
             new UserUpdateFactoryStub(userStub),
             new ValidatorStub(),
-            new UserFindServiceStub(userStub),
+            new UserFindServiceStub(userStub, userFindModelStub),
         ).update(userStub.id, userUpdateModelStub),
         userStub,
     );

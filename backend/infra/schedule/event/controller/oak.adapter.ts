@@ -4,10 +4,11 @@ import type { ValidatorService } from "@ps/domain/validation/validator/service.t
 
 import { Router } from "oak/mod.ts";
 import { EventFindServiceImpl } from "@ps/domain/schedule/event/find/service.impl.ts";
+import { EventFindFactoryImpl } from "@ps/domain/schedule/event/find/factory.impl.ts";
 import { EventDeleteServiceImpl } from "@ps/domain/schedule/event/delete/service.impl.ts";
 import { EventCreateServiceImpl } from "@ps/domain/schedule/event/create/service.impl.ts";
-import { EventUpdateServiceImpl } from "@ps/domain/schedule/event/update/service.impl.ts";
 import { EventCreateFactoryImpl } from "@ps/domain/schedule/event/create/factory.impl.ts";
+import { EventUpdateServiceImpl } from "@ps/domain/schedule/event/update/service.impl.ts";
 import { EventUpdateFactoryImpl } from "@ps/domain/schedule/event/update/factory.impl.ts";
 import { AppointmentCreateFactoryImpl } from "@ps/domain/schedule/event/appointment/create/factory.impl.ts";
 import { AppointmentCreateServiceImpl } from "@ps/domain/schedule/event/appointment/create/service.impl.ts";
@@ -60,14 +61,20 @@ export class EventControllerOakAdapter {
             .get("/event/:id", async (ctx) => {
                 const userId = await makeUserId(ctx);
                 const params = await makeParams(ctx);
-                const service = new EventFindServiceImpl(this.repository);
+                const service = new EventFindServiceImpl(
+                    new EventFindFactoryImpl(),
+                    this.repository,
+                );
                 const controller = new EventFindControllerImpl(service);
                 const res = await controller.handle(userId, { params });
                 makeResult(res, ctx);
             })
             .get("/event", async (ctx) => {
                 const userId = await makeUserId(ctx);
-                const service = new EventFindServiceImpl(this.repository);
+                const service = new EventFindServiceImpl(
+                    new EventFindFactoryImpl(),
+                    this.repository,
+                );
                 const controller = new FindAllEventControllerImpl(service);
                 const res = await controller.handle(userId);
                 makeResult(res, ctx);
@@ -77,7 +84,7 @@ export class EventControllerOakAdapter {
                 const params = await makeParams(ctx);
                 const service = new EventDeleteServiceImpl(
                     this.repository,
-                    new EventFindServiceImpl(this.repository),
+                    new EventFindServiceImpl(new EventFindFactoryImpl(), this.repository),
                 );
                 const controller = new EventDeleteControllerImpl(service);
                 const res = await controller.handle(userId, { params });
@@ -170,7 +177,7 @@ export class EventControllerOakAdapter {
                 const eventUpdateService = new EventUpdateServiceImpl(
                     this.repository,
                     new EventUpdateFactoryImpl(),
-                    new EventFindServiceImpl(this.repository),
+                    new EventFindServiceImpl(new EventFindFactoryImpl(), this.repository),
                 );
                 const service = new AppointmentUpdateServiceImpl(
                     this.validator,
@@ -188,7 +195,7 @@ export class EventControllerOakAdapter {
                 const eventUpdateService = new EventUpdateServiceImpl(
                     this.repository,
                     new EventUpdateFactoryImpl(),
-                    new EventFindServiceImpl(this.repository),
+                    new EventFindServiceImpl(new EventFindFactoryImpl(), this.repository),
                 );
                 const service = new BirthdayUpdateServiceImpl(
                     this.validator,
@@ -206,7 +213,7 @@ export class EventControllerOakAdapter {
                 const eventUpdateService = new EventUpdateServiceImpl(
                     this.repository,
                     new EventUpdateFactoryImpl(),
-                    new EventFindServiceImpl(this.repository),
+                    new EventFindServiceImpl(new EventFindFactoryImpl(), this.repository),
                 );
                 const service = new DateUpdateServiceImpl(
                     this.validator,
@@ -224,7 +231,7 @@ export class EventControllerOakAdapter {
                 const eventUpdateService = new EventUpdateServiceImpl(
                     this.repository,
                     new EventUpdateFactoryImpl(),
-                    new EventFindServiceImpl(this.repository),
+                    new EventFindServiceImpl(new EventFindFactoryImpl(), this.repository),
                 );
                 const service = new MeetingUpdateServiceImpl(
                     this.validator,
@@ -242,7 +249,7 @@ export class EventControllerOakAdapter {
                 const eventUpdateService = new EventUpdateServiceImpl(
                     this.repository,
                     new EventUpdateFactoryImpl(),
-                    new EventFindServiceImpl(this.repository),
+                    new EventFindServiceImpl(new EventFindFactoryImpl(), this.repository),
                 );
                 const service = new PartyUpdateServiceImpl(
                     this.validator,

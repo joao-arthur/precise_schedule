@@ -11,7 +11,7 @@ export class FindAllEventControllerImpl implements FindAllEventController {
     public async handle(
         userId: User["id"],
     ): Promise<HTTPResponse> {
-        const result = await this.eventFindService.findByUser(userId);
+        const result = await this.eventFindService.findByUserMapped(userId);
         return ok(result);
     }
 }
