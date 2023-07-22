@@ -14,10 +14,10 @@ import { UserCreateControllerImpl } from "@ps/application/schedule/user/create/c
 import { UserUpdateControllerImpl } from "@ps/application/schedule/user/update/controller.impl.ts";
 import { UserFindControllerImpl } from "@ps/application/schedule/user/find/controller.impl.ts";
 import { UserLoginControllerImpl } from "@ps/application/schedule/user/login/controller.impl.ts";
-import { SessionCreateServiceJWTAdapter } from "@ps/infra/session/create/jwt.adapter.ts";
-import { DecodeSessionServiceJWTAdapter } from "@ps/infra/session/decode/jwt.adapter.ts";
+import { SessionCreateServiceJWTAdapter } from "../../../session/create/jwt.adapter.ts";
 import { makeBody } from "../../../http/makeBody.ts";
 import { makeResult } from "../../../http/makeResult.ts";
+import { makeUserId } from "../../../http/makeUserId.ts";
 
 export class UserControllerOakAdapter {
     constructor(
@@ -43,9 +43,7 @@ export class UserControllerOakAdapter {
                 makeResult(res, ctx);
             })
             .put("/user", async (ctx) => {
-                const userId = await new DecodeSessionServiceJWTAdapter().decode({
-                    token: ctx.request.headers.get("authorization")!,
-                });
+                const userId = await makeUserId(ctx);
                 const body = await makeBody(ctx);
                 const service = new UserUpdateServiceImpl(
                     this.repository,
@@ -59,9 +57,7 @@ export class UserControllerOakAdapter {
                 makeResult(res, ctx);
             })
             .get("/user", async (ctx) => {
-                const userId = await new DecodeSessionServiceJWTAdapter().decode({
-                    token: ctx.request.headers.get("authorization")!,
-                });
+                const userId = await makeUserId(ctx);
                 const service = new UserFindServiceImpl(this.repository);
                 const controller = new UserFindControllerImpl(service);
                 const res = await controller.handle(userId);
