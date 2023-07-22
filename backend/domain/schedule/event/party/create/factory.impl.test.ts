@@ -4,9 +4,7 @@ import { PartyCreateFactoryImpl } from "./factory.impl.ts";
 
 Deno.test("PartyCreateFactoryImpl", () => {
     assertEquals(
-        new PartyCreateFactoryImpl().build(
-            partyCreateModelStub,
-        ),
+        new PartyCreateFactoryImpl().build(partyCreateModelStub),
         {
             category: "PARTY",
             frequency: "NEVER",

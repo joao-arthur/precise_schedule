@@ -4,9 +4,7 @@ import { MeetingCreateFactoryImpl } from "./factory.impl.ts";
 
 Deno.test("MeetingCreateFactoryImpl", () => {
     assertEquals(
-        new MeetingCreateFactoryImpl().build(
-            meetingCreateModelStub,
-        ),
+        new MeetingCreateFactoryImpl().build(meetingCreateModelStub),
         {
             category: "MEETING",
             ...meetingCreateModelStub,

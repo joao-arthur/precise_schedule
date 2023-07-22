@@ -4,9 +4,7 @@ import { AppointmentCreateFactoryStub } from "./factory._stub.ts";
 
 Deno.test("AppointmentCreateFactoryStub", () => {
     assertEquals(
-        new AppointmentCreateFactoryStub(
-            createEventModelStub,
-        ).build(),
+        new AppointmentCreateFactoryStub(createEventModelStub).build(),
         createEventModelStub,
     );
 });

@@ -4,9 +4,7 @@ import { BirthdayUpdateFactoryStub } from "./factory._stub.ts";
 
 Deno.test("BirthdayUpdateFactoryStub", () => {
     assertEquals(
-        new BirthdayUpdateFactoryStub(
-            eventUpdateModelStub,
-        ).build(),
+        new BirthdayUpdateFactoryStub(eventUpdateModelStub).build(),
         eventUpdateModelStub,
     );
 });

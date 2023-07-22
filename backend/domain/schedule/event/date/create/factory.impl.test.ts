@@ -4,9 +4,7 @@ import { DateCreateFactoryImpl } from "./factory.impl.ts";
 
 Deno.test("DateCreateFactoryImpl", () => {
     assertEquals(
-        new DateCreateFactoryImpl().build(
-            dateCreateModelStub,
-        ),
+        new DateCreateFactoryImpl().build(dateCreateModelStub),
         {
             category: "DATE",
             frequency: "NEVER",
