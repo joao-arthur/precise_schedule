@@ -11,7 +11,7 @@ export class UserLoginServiceImpl implements UserLoginService {
     constructor(
         private readonly validator: ValidatorService,
         private readonly userFindService: UserFindService,
-        private readonly SessionCreateService: SessionCreateService,
+        private readonly sessionCreateService: SessionCreateService,
     ) {}
 
     public async userLogin(user: UserLoginModel): Promise<Session> {
@@ -20,6 +20,6 @@ export class UserLoginServiceImpl implements UserLoginService {
             user.username,
             user.password,
         );
-        return this.SessionCreateService.create(existingUser.id);
+        return this.sessionCreateService.create(existingUser.id);
     }
 }
