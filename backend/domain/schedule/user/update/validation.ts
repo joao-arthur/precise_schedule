@@ -1,7 +1,7 @@
-import type { Schema } from "@ps/domain/validation/Schema.ts";
-import type { UpdateUserModel } from "./UpdateUserModel.ts";
+import type { Schema } from "../../../validation/Schema.ts";
+import type { UserUpdateModel } from "./model.ts";
 
-export const updateUserValidation: Schema<UpdateUserModel> = {
+export const userUpdateValidation: Schema<UserUpdateModel> = {
     firstName: [
         { v: "str" },
         { v: "strMinLen", min: 1 },

@@ -5,7 +5,7 @@ import { UserRepositoryMemory } from "@ps/infra/schedule/user/UserRepositoryMemo
 import { EventControllerOakAdapter } from "../infra/schedule/event/EventControllerOakAdapter.ts";
 import { EventRepositoryMemory } from "@ps/infra/schedule/event/EventRepositoryMemory.ts";
 import { IdGeneratorRandom } from "@ps/infra/generate/IdGeneratorRandom.ts";
-import { ValidatorImpl } from "@ps/infra/validation/ValidatorImpl.ts";
+import { ValidatorImpl } from "@ps/infra/validation/Validator.impl.ts";
 import { SessionMiddlewareOakAdapter } from "@ps/infra/http/middleware/SessionMiddlewareOakAdapter.ts";
 import { ErrorHandlerMiddlewareOakAdapter } from "@ps/infra/http/middleware/ErrorHandlerMiddlewareOakAdapter.ts";
 

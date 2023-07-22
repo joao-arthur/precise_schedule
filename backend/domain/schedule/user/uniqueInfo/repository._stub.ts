@@ -1,6 +1,6 @@
-import type { UniqueInfoRepository } from "@ps/domain/schedule/user/uniqueInfo/UniqueInfoRepository.ts";
+import type { UserUniqueInfoRepository } from "./repository.ts";
 
-export class UniqueInfoRepositoryMock implements UniqueInfoRepository {
+export class UserUniqueInfoRepositoryStub implements UserUniqueInfoRepository {
     constructor(
         private readonly numUsername: number,
         private readonly numEmail: number,

@@ -1,10 +1,10 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { userMock } from "../UserMock.ts";
-import { CreateUserFactoryMock } from "./CreateUserFactoryMock.ts";
+import { userStub } from "../model._stub.ts";
+import { UserCreateFactoryStub } from "./factory._stub.ts";
 
-Deno.test("CreateUserFactoryMock", () => {
+Deno.test("UserCreateFactoryStub", () => {
     assertEquals(
-        new CreateUserFactoryMock(userMock).build(),
-        userMock,
+        new UserCreateFactoryStub(userStub).build(),
+        userStub,
     );
 });

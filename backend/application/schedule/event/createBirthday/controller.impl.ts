@@ -1,20 +1,20 @@
-import type { User } from "@ps/domain/schedule/user/User.ts";
-import type { CreateBirthdayEvent } from "@ps/domain/schedule/event/createBirthday/CreateBirthdayEvent.ts";
-import type { CreateBirthdayEventService } from "@ps/domain/schedule/event/createBirthday/CreateBirthdayEventService.ts";
-import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
-import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
-import type { CreateBirthdayEventController } from "@ps/application/schedule/event/createBirthday/CreateBirthdayEventController.ts";
+import type { User } from "@ps/domain/schedule/user/model.ts";
+import type { BirthdayCreateModel } from "@ps/domain/schedule/event/birthday/create/model.ts";
+import type { BirthdayCreateService } from "@ps/domain/schedule/event/birthday/create/service.ts";
+import type { HTTPRequest } from "../../../http/request/model.ts";
+import type { HTTPResponse } from "../../../http/response/model.ts";
+import type { BirthdayCreateController } from "./controller.ts";
 
-import { created } from "@ps/application_impl/http/builder/200/created.ts";
+import { created } from "../../../http/response/created/builder.ts";
 
-export class CreateBirthdayEventControllerImpl implements CreateBirthdayEventController {
-    constructor(private readonly createBirthdayEventService: CreateBirthdayEventService) {}
+export class BirthdayCreateControllerImpl implements BirthdayCreateController {
+    constructor(private readonly birthdayCreateService: BirthdayCreateService) {}
 
     public async handle(
         userId: User["id"],
-        req: HTTPRequest<CreateBirthdayEvent>,
+        req: HTTPRequest<BirthdayCreateModel>,
     ): Promise<HTTPResponse> {
-        const result = await this.createBirthdayEventService.create(userId, req.body);
+        const result = await this.birthdayCreateService.create(userId, req.body);
         return created(result);
     }
 }

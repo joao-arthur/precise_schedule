@@ -1,11 +1,11 @@
-import type { User } from "@ps/domain/schedule/user/User.ts";
-import type { CreateBirthdayEvent } from "@ps/domain/schedule/event/createBirthday/CreateBirthdayEvent.ts";
-import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
-import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
+import type { User } from "@ps/domain/schedule/user/model.ts";
+import type { BirthdayCreateModel } from "@ps/domain/schedule/event/birthday/create/model.ts";
+import type { HTTPRequest } from "../../../http/request/model.ts";
+import type { HTTPResponse } from "../../../http/response/model.ts";
 
-export type CreateBirthdayEventController = {
+export type BirthdayCreateController = {
     readonly handle: (
         userId: User["id"],
-        req: HTTPRequest<CreateBirthdayEvent>,
+        req: HTTPRequest<BirthdayCreateModel>,
     ) => Promise<HTTPResponse>;
 };

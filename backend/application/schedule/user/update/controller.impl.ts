@@ -1,20 +1,20 @@
-import type { User } from "@ps/domain/schedule/user/User.ts";
-import type { UpdateUserModel } from "@ps/domain/schedule/user/update/UpdateUserModel.ts";
-import type { UpdateUserService } from "@ps/domain/schedule/user/update/UpdateUserService.ts";
-import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
-import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
-import type { UpdateUserController } from "@ps/application/schedule/user/update/UpdateUserController.ts";
+import type { User } from "@ps/domain/schedule/user/model.ts";
+import type { UserUpdateModel } from "@ps/domain/schedule/user/update/model.ts";
+import type { UserUpdateService } from "@ps/domain/schedule/user/update/service.ts";
+import type { HTTPRequest } from "../../../http/request/model.ts";
+import type { HTTPResponse } from "../../../http/response/model.ts";
+import type { UserUpdateController } from "./controller.ts";
 
-import { noContent } from "@ps/application_impl/http/builder/200/noContent.ts";
+import { noContent } from "../../../http/response/noContent/builder.ts";
 
-export class UpdateUserControllerImpl implements UpdateUserController {
-    constructor(private readonly updateUserService: UpdateUserService) {}
+export class UserUpdateControllerImpl implements UserUpdateController {
+    constructor(private readonly userUpdateService: UserUpdateService) {}
 
     public async handle(
         userId: User["id"],
-        req: HTTPRequest<UpdateUserModel>,
+        req: HTTPRequest<UserUpdateModel>,
     ): Promise<HTTPResponse> {
-        await this.updateUserService.update(userId, req.body);
+        await this.userUpdateService.update(userId, req.body);
         return noContent();
     }
 }

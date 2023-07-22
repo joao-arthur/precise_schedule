@@ -1,20 +1,20 @@
-import type { User } from "@ps/domain/schedule/user/User.ts";
-import type { CreateAppointmentEvent } from "@ps/domain/schedule/event/createAppointment/CreateAppointmentEvent.ts";
-import type { CreateAppointmentEventService } from "@ps/domain/schedule/event/createAppointment/CreateAppointmentEventService.ts";
-import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
-import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
-import type { CreateAppointmentEventController } from "@ps/application/schedule/event/createAppointment/CreateAppointmentEventController.ts";
+import type { User } from "@ps/domain/schedule/user/model.ts";
+import type { AppointmentCreateModel } from "@ps/domain/schedule/event/appointment/create/model.ts";
+import type { AppointmentCreateService } from "@ps/domain/schedule/event/appointment/create/service.ts";
+import type { HTTPRequest } from "../../../http/request/model.ts";
+import type { HTTPResponse } from "../../../http/response/model.ts";
+import type { AppointmentCreateController } from "./controller.ts";
 
-import { created } from "@ps/application_impl/http/builder/200/created.ts";
+import { created } from "../../../http/response/created/builder.ts";
 
-export class CreateAppointmentEventControllerImpl implements CreateAppointmentEventController {
-    constructor(private readonly createAppointmentEventService: CreateAppointmentEventService) {}
+export class AppointmentCreateControllerImpl implements AppointmentCreateController {
+    constructor(private readonly appointmentCreateService: AppointmentCreateService) {}
 
     public async handle(
         userId: User["id"],
-        req: HTTPRequest<CreateAppointmentEvent>,
+        req: HTTPRequest<AppointmentCreateModel>,
     ): Promise<HTTPResponse> {
-        const result = await this.createAppointmentEventService.create(userId, req.body);
+        const result = await this.appointmentCreateService.create(userId, req.body);
         return created(result);
     }
 }

@@ -1,19 +1,19 @@
 import { assertEquals } from "std/testing/asserts.ts";
 
-import { eventMock } from "@ps/domain_mock/schedule/event/EventMock.ts";
-import { updateEventModelMock } from "@ps/domain_mock/schedule/event/update/UpdateEventModelMock.ts";
-import { UpdateEventRepositoryMock } from "@ps/domain_mock/schedule/event/update/UpdateEventRepositoryMock.ts";
-import { UpdateEventFactoryMock } from "@ps/domain_mock/schedule/event/update/UpdateEventFactoryMock.ts";
-import { FindEventServiceMock } from "@ps/domain_mock/schedule/event/find/FindEventServiceMock.ts";
-import { UpdateEventServiceImpl } from "./UpdateEventServiceImpl.ts";
+import { eventStub } from "../model._stub.ts";
+import { EventFindServiceStub } from "../find/service._stub.ts";
+import { eventUpdateModelStub } from "./model._stub.ts";
+import { EventUpdateServiceImpl } from "./service.impl.ts";
+import { EventUpdateFactoryStub } from "./factory._stub.ts";
+import { EventUpdateRepositoryStub } from "./repository._stub.ts";
 
-Deno.test("UpdateEventServiceImpl", async () => {
+Deno.test("EventUpdateServiceImpl", async () => {
     assertEquals(
-        await new UpdateEventServiceImpl(
-            new UpdateEventRepositoryMock(),
-            new UpdateEventFactoryMock(eventMock),
-            new FindEventServiceMock(eventMock),
-        ).update(eventMock.user, eventMock.id, updateEventModelMock),
-        eventMock,
+        await new EventUpdateServiceImpl(
+            new EventUpdateRepositoryStub(),
+            new EventUpdateFactoryStub(eventStub),
+            new EventFindServiceStub(eventStub),
+        ).update(eventStub.user, eventStub.id, eventUpdateModelStub),
+        eventStub,
     );
 });

@@ -1,24 +1,24 @@
-import type { Validator } from "@ps/domain/validation/Validator.ts";
-import type { User } from "@ps/domain/schedule/user/User.ts";
-import type { Event } from "@ps/domain/schedule/event/Event.ts";
-import type { UpdateEventService } from "@ps/domain/schedule/event/update/UpdateEventService.ts";
-import type { UpdateMeetingEvent } from "@ps/domain/schedule/event/updateMeeting/UpdateMeetingEvent.ts";
-import type { UpdateMeetingEventFactory } from "@ps/domain/schedule/event/updateMeeting/UpdateMeetingEventFactory.ts";
-import type { UpdateMeetingEventService } from "@ps/domain/schedule/event/updateMeeting/UpdateMeetingEventService.ts";
+import type { Validator } from "../../../../validation/service.ts";
+import type { User } from "../../../user/model.ts";
+import type { Event } from "../../model.ts";
+import type { EventUpdateService } from "../../update/service.ts";
+import type { MeetingUpdateModel } from "./model.ts";
+import type { MeetingUpdateFactory } from "./factory.ts";
+import type { MeetingUpdateService } from "./service.ts";
 
-import { updateMeetingValidation } from "@ps/domain/schedule/event/updateMeeting/updateMeetingValidation.ts";
+import { updateMeetingValidation } from "./validation.ts";
 
-export class UpdateMeetingEventServiceImpl implements UpdateMeetingEventService {
+export class MeetingUpdateServiceImpl implements MeetingUpdateService {
     constructor(
         private readonly validator: Validator,
-        private readonly factory: UpdateMeetingEventFactory,
-        private readonly service: UpdateEventService,
+        private readonly factory: MeetingUpdateFactory,
+        private readonly service: EventUpdateService,
     ) {}
 
     public update(
         userId: User["id"],
         id: Event["id"],
-        event: UpdateMeetingEvent,
+        event: MeetingUpdateModel,
     ): Promise<Event> {
         this.validator.validate(event, updateMeetingValidation);
         const buildedEvent = this.factory.build(event);

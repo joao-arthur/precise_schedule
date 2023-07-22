@@ -1,7 +1,7 @@
-import { User } from "../../user/User.ts";
-import type { Event } from "../Event.ts";
+import { User } from "../../user/model.ts";
+import type { Event } from "../model.ts";
 
-export type FindEventService = {
+export type EventFindService = {
     readonly findByUser: (userId: User["id"]) => Promise<Event[]>;
     readonly findByUserAndId: (userId: User["id"], id: Event["id"]) => Promise<Event>;
 };

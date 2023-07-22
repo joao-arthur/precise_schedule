@@ -1,11 +1,11 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { updateBirthdayEventMock } from "@ps/domain_mock/schedule/event/updateBirthday/UpdateBirthdayEventMock.ts";
-import { UpdateBirthdayEventFactoryImpl } from "./UpdateBirthdayEventFactoryImpl.ts";
+import { birthdayUpdateModelStub } from "./model._stub.ts";
+import { BirthdayUpdateFactoryImpl } from "./factory.impl.ts";
 
-Deno.test("UpdateBirthdayEventFactoryImpl", () => {
+Deno.test("BirthdayUpdateFactoryImpl", () => {
     assertEquals(
-        new UpdateBirthdayEventFactoryImpl().build(
-            updateBirthdayEventMock,
+        new BirthdayUpdateFactoryImpl().build(
+            birthdayUpdateModelStub,
         ),
         {
             begin: "00:00",
@@ -13,7 +13,7 @@ Deno.test("UpdateBirthdayEventFactoryImpl", () => {
             category: "BIRTHDAY",
             frequency: "1_Y",
             weekendRepeat: false,
-            ...updateBirthdayEventMock,
+            ...birthdayUpdateModelStub,
         },
     );
 });

@@ -1,16 +1,16 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { updateUserModelMock } from "@ps/domain_mock/schedule/user/update/UpdateUserModelMock.ts";
-import { UpdateUserFactoryImpl } from "./UpdateUserFactoryImpl.ts";
-import { userMock } from "@ps/domain_mock/schedule/user/UserMock.ts";
+import { userStub } from "../model._stub.ts";
+import { userUpdateModelStub } from "./model._stub.ts";
+import { UserUpdateFactoryImpl } from "./factory.impl.ts";
 
-Deno.test("UpdateUserFactoryImpl", () => {
+Deno.test("UserUpdateFactoryImpl", () => {
     assertEquals(
-        new UpdateUserFactoryImpl().build(updateUserModelMock, userMock),
+        new UserUpdateFactoryImpl().build(userUpdateModelStub, userStub),
         {
             id: "id",
-            createdAt: userMock.createdAt,
+            createdAt: userStub.createdAt,
             updatedAt: new Date(),
-            ...updateUserModelMock,
+            ...userUpdateModelStub,
         },
     );
 });

@@ -1,18 +1,18 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { ValidatorMock } from "@ps/domain_mock/validation/ValidatorMock.ts";
-import { eventMock } from "@ps/domain_mock/schedule/event/EventMock.ts";
-import { UpdateEventServiceMock } from "@ps/domain_mock/schedule/event/update/UpdateEventServiceMock.ts";
-import { updateDateEventMock } from "@ps/domain_mock/schedule/event/updateDate/UpdateDateEventMock.ts";
-import { UpdateDateEventFactoryMock } from "@ps/domain_mock/schedule/event/updateDate/UpdateDateEventFactoryMock.ts";
-import { UpdateDateEventServiceImpl } from "./UpdateDateEventServiceImpl.ts";
+import { ValidatorStub } from "../../../../validation/service._stub.ts";
+import { eventStub } from "../../model._stub.ts";
+import { EventUpdateServiceStub } from "../../update/service._stub.ts";
+import { dateUpdateModelStub } from "./model._stub.ts";
+import { DateUpdateFactoryStub } from "./factory._stub.ts";
+import { DateUpdateServiceImpl } from "./service.impl.ts";
 
-Deno.test("UpdateDateEventServiceImpl", async () => {
+Deno.test("DateUpdateServiceImpl", async () => {
     assertEquals(
-        await new UpdateDateEventServiceImpl(
-            new ValidatorMock(),
-            new UpdateDateEventFactoryMock(eventMock),
-            new UpdateEventServiceMock(eventMock),
-        ).update(eventMock.user, eventMock.id, updateDateEventMock),
-        eventMock,
+        await new DateUpdateServiceImpl(
+            new ValidatorStub(),
+            new DateUpdateFactoryStub(eventStub),
+            new EventUpdateServiceStub(eventStub),
+        ).update(eventStub.user, eventStub.id, dateUpdateModelStub),
+        eventStub,
     );
 });

@@ -1,5 +1,5 @@
-import type { UpdateEventRepository } from "@ps/domain/schedule/event/update/UpdateEventRepository.ts";
+import type { EventUpdateRepository } from "./repository.ts";
 
-export class UpdateEventRepositoryMock implements UpdateEventRepository {
+export class EventUpdateRepositoryStub implements EventUpdateRepository {
     public async update(): Promise<void> {}
 }

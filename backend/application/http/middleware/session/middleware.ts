@@ -1,6 +1,6 @@
-import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
-import type { Headers } from "@ps/application/http/Headers.ts";
+import type { HTTPRequest } from "../../../http/request/model.ts";
+import type { HTTPHeaders } from "../../../http/headers/model.ts";
 
 export type SessionMiddleware = {
-    readonly handle: (req: HTTPRequest<undefined, undefined, Headers>) => Promise<void>;
+    readonly handle: (req: HTTPRequest<undefined, undefined, HTTPHeaders>) => Promise<void>;
 };

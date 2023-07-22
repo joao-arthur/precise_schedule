@@ -1,17 +1,17 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { updatePartyEventMock } from "@ps/domain_mock/schedule/event/updateParty/UpdatePartyEventMock.ts";
-import { UpdatePartyEventFactoryImpl } from "./UpdatePartyEventFactoryImpl.ts";
+import { partyUpdateModelStub } from "./model._stub.ts";
+import { PartyUpdateFactoryImpl } from "./factory.impl.ts";
 
-Deno.test("UpdatePartyEventFactoryImpl", () => {
+Deno.test("PartyUpdateFactoryImpl", () => {
     assertEquals(
-        new UpdatePartyEventFactoryImpl().build(
-            updatePartyEventMock,
+        new PartyUpdateFactoryImpl().build(
+            partyUpdateModelStub,
         ),
         {
             category: "PARTY",
             frequency: "NEVER",
             weekendRepeat: false,
-            ...updatePartyEventMock,
+            ...partyUpdateModelStub,
         },
     );
 });

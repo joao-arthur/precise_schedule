@@ -1,6 +1,6 @@
-import type { UniqueInfoModel } from "@ps/domain/schedule/user/uniqueInfo/UniqueInfoModel.ts";
+import type { UserUniqueInfoModel } from "./model.ts";
 
-export const uniqueInfoModelMock: UniqueInfoModel = {
+export const uniqueInfoModelStub: UserUniqueInfoModel = {
     username: "username",
     email: "email",
 };

@@ -1,10 +1,10 @@
-import type { CreateEventRepository } from "./create/CreateEventRepository.ts";
-import type { UpdateEventRepository } from "./update/UpdateEventRepository.ts";
-import type { FindEventRepository } from "./find/FindEventRepository.ts";
-import type { DeleteEventRepository } from "./delete/DeleteEventRepository.ts";
+import type { EventCreateRepository } from "./create/repository.ts";
+import type { EventUpdateRepository } from "./update/repository.ts";
+import type { EventFindRepository } from "./find/repository.ts";
+import type { EventDeleteRepository } from "./delete/repository.ts";
 
 export type EventRepository =
-    & CreateEventRepository
-    & UpdateEventRepository
-    & FindEventRepository
-    & DeleteEventRepository;
+    & EventCreateRepository
+    & EventUpdateRepository
+    & EventFindRepository
+    & EventDeleteRepository;

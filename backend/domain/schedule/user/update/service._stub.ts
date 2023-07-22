@@ -1,7 +1,7 @@
-import type { User } from "@ps/domain/schedule/user/User.ts";
-import type { UpdateUserService } from "@ps/domain/schedule/user/update/UpdateUserService.ts";
+import type { User } from "../model.ts";
+import type { UserUpdateService } from "./service.ts";
 
-export class UpdateUserServiceMock implements UpdateUserService {
+export class UserUpdateServiceStub implements UserUpdateService {
     constructor(private readonly user: User) {}
 
     public update(): Promise<User> {

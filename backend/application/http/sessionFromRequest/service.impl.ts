@@ -1,10 +1,10 @@
-import type { Session } from "@ps/domain/session/Session.ts";
-import type { Headers } from "@ps/application/http/Headers.ts";
-import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
-import type { SessionFromRequestService } from "@ps/application/http/session/SessionFromRequestService.ts";
+import type { Session } from "@ps/domain/session/model.ts";
+import type { HTTPHeaders } from "../headers/model.ts";
+import type { HTTPRequest } from "../request/model.ts";
+import type { SessionFromRequestService } from "./service.ts";
 
 export class SessionFromRequestServiceImpl implements SessionFromRequestService {
-    public create(req: HTTPRequest<undefined, undefined, Headers>): Partial<Session> {
+    public create(req: HTTPRequest<undefined, undefined, HTTPHeaders>): Partial<Session> {
         return {
             token: req.headers.authorization?.replace("Bearer ", ""),
         };

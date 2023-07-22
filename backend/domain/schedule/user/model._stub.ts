@@ -1,6 +1,6 @@
-import type { User } from "@ps/domain/schedule/user/User.ts";
+import type { User } from "./model.ts";
 
-export const userMock: User = {
+export const userStub: User = {
     id: "id",
     email: "email",
     firstName: "john",

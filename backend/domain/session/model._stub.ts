@@ -1,9 +1,9 @@
-import type { Session } from "@ps/domain/session/Session.ts";
+import type { Session } from "./model.ts";
 
-export const sessionMock: Session = {
+export const sessionStub: Session = {
     token: "token",
 };
 
-export const maybeSessionMock: Partial<Session> = {
+export const maybeSessionStub: Partial<Session> = {
     token: undefined,
 };

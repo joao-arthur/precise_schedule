@@ -1,7 +1,7 @@
-import type { Schema } from "@ps/domain/validation/Schema.ts";
-import type { CreateAppointmentEvent } from "./CreateAppointmentEvent.ts";
+import type { Schema } from "../../../../validation/Schema.ts";
+import type { AppointmentCreateModel } from "./model.ts";
 
-export const createAppointmentValidation: Schema<CreateAppointmentEvent> = {
+export const createAppointmentValidation: Schema<AppointmentCreateModel> = {
     name: [
         { v: "str" },
         { v: "strMinLen", min: 1 },

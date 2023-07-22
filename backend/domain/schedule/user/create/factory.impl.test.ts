@@ -1,16 +1,16 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { IdGeneratorMock } from "@ps/domain_mock/generation/IdGeneratorMock.ts";
-import { createUserModelMock } from "@ps/domain_mock/schedule/user/create/CreateUserModelMock.ts";
-import { CreateUserFactoryImpl } from "./CreateUserFactoryImpl.ts";
+import { IdGeneratorStub } from "../../../generation/idGenerator/service._stub.ts";
+import { userCreateModelStub } from "./model._stub.ts";
+import { UserCreateFactoryImpl } from "./factory.impl.ts";
 
-Deno.test("CreateUserFactoryImpl", () => {
+Deno.test("UserCreateFactoryImpl", () => {
     assertEquals(
-        new CreateUserFactoryImpl(new IdGeneratorMock("id")).build(createUserModelMock),
+        new UserCreateFactoryImpl(new IdGeneratorStub("id")).build(userCreateModelStub),
         {
             id: "id",
             createdAt: new Date(),
             updatedAt: new Date(),
-            ...createUserModelMock,
+            ...userCreateModelStub,
         },
     );
 });

@@ -1,13 +1,13 @@
-import type { IdGenerator } from "@ps/domain/generation/IdGenerator.ts";
-import type { User } from "@ps/domain/schedule/user/User.ts";
-import type { Event } from "@ps/domain/schedule/event/Event.ts";
-import type { CreateEventModel } from "@ps/domain/schedule/event/create/CreateEventModel.ts";
-import type { CreateEventFactory } from "@ps/domain/schedule/event/create/CreateEventFactory.ts";
+import type { IdGenerator } from "../../../generation/idGenerator/service.ts";
+import type { User } from "../../user/model.ts";
+import type { Event } from "../model.ts";
+import type { EventCreateModel } from "./model.ts";
+import type { EventCreateFactory } from "./factory.ts";
 
-export class CreateEventFactoryImpl implements CreateEventFactory {
+export class EventCreateFactoryImpl implements EventCreateFactory {
     constructor(private readonly idGenerator: IdGenerator) {}
 
-    public build(userId: User["id"], event: CreateEventModel): Event {
+    public build(userId: User["id"], event: EventCreateModel): Event {
         return {
             id: this.idGenerator.generate(),
             name: event.name,

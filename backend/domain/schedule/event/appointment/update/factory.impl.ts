@@ -1,9 +1,9 @@
-import type { UpdateEventModel } from "@ps/domain/schedule/event/update/UpdateEventModel.ts";
-import type { UpdateAppointmentEvent } from "@ps/domain/schedule/event/updateAppointment/UpdateAppointmentEvent.ts";
-import type { UpdateAppointmentEventFactory } from "@ps/domain/schedule/event/updateAppointment/UpdateAppointmentEventFactory.ts";
+import type { EventUpdateModel } from "../../update/model.ts";
+import type { AppointmentUpdateModel } from "./model.ts";
+import type { AppointmentUpdateFactory } from "./factory.ts";
 
-export class UpdateAppointmentEventFactoryImpl implements UpdateAppointmentEventFactory {
-    public build(event: UpdateAppointmentEvent): UpdateEventModel {
+export class AppointmentUpdateFactoryImpl implements AppointmentUpdateFactory {
+    public build(event: AppointmentUpdateModel): EventUpdateModel {
         return {
             name: event.name,
             day: event.day,

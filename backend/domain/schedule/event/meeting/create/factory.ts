@@ -1,6 +1,6 @@
-import type { CreateEventModel } from "../create/CreateEventModel.ts";
-import type { CreateMeetingEvent } from "./CreateMeetingEvent.ts";
+import type { EventCreateModel } from "../../create/model.ts";
+import type { MeetingCreateModel } from "./model.ts";
 
-export type CreateMeetingEventFactory = {
-    readonly build: (event: CreateMeetingEvent) => CreateEventModel;
+export type MeetingCreateFactory = {
+    readonly build: (event: MeetingCreateModel) => EventCreateModel;
 };

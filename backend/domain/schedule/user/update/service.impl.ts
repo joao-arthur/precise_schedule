@@ -1,29 +1,29 @@
-import type { Validator } from "@ps/domain/validation/Validator.ts";
-import type { User } from "@ps/domain/schedule/user/User.ts";
-import type { UniqueInfoService } from "@ps/domain/schedule/user/uniqueInfo/UniqueInfoService.ts";
-import type { FindUserService } from "@ps/domain/schedule/user/find/FindUserService.ts";
-import type { UpdateUserFactory } from "@ps/domain/schedule/user/update/UpdateUserFactory.ts";
-import type { UpdateUserModel } from "@ps/domain/schedule/user/update/UpdateUserModel.ts";
-import type { UpdateUserRepository } from "@ps/domain/schedule/user/update/UpdateUserRepository.ts";
-import type { UpdateUserService } from "@ps/domain/schedule/user/update/UpdateUserService.ts";
+import type { Validator } from "../../../validation/service.ts";
+import type { User } from "../model.ts";
+import type { UserUniqueInfoService } from "../uniqueInfo/service.ts";
+import type { UserFindService } from "../find/service.ts";
+import type { UserUpdateModel } from "./model.ts";
+import type { UserUpdateService } from "./service.ts";
+import type { UserUpdateFactory } from "./factory.ts";
+import type { UserUpdateRepository } from "./repository.ts";
 
-import { updateUserValidation } from "@ps/domain/schedule/user/update/updateUserValidation.ts";
+import { userUpdateValidation } from "./validation.ts";
 
-export class UpdateUserServiceImpl implements UpdateUserService {
+export class UserUpdateServiceImpl implements UserUpdateService {
     constructor(
-        private readonly repository: UpdateUserRepository,
-        private readonly uniqueInfoService: UniqueInfoService,
-        private readonly factory: UpdateUserFactory,
+        private readonly repository: UserUpdateRepository,
+        private readonly uniqueInfoService: UserUniqueInfoService,
+        private readonly factory: UserUpdateFactory,
         private readonly validator: Validator,
-        private readonly findUserService: FindUserService,
+        private readonly userFindService: UserFindService,
     ) {}
 
     public async update(
         id: User["id"],
-        user: UpdateUserModel,
+        user: UserUpdateModel,
     ): Promise<User> {
-        this.validator.validate(user, updateUserValidation);
-        const existingUser = await this.findUserService.findById(id);
+        this.validator.validate(user, userUpdateValidation);
+        const existingUser = await this.userFindService.findById(id);
         await this.uniqueInfoService.validateExisting(user, existingUser);
         const userToUpdate = this.factory.build(user, existingUser);
         await this.repository.update(userToUpdate);

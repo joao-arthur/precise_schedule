@@ -1,7 +1,7 @@
-import type { Schema } from "@ps/domain/validation/Schema.ts";
-import type { CreateMeetingEvent } from "./CreateMeetingEvent.ts";
+import type { Schema } from "../../../../validation/Schema.ts";
+import type { MeetingCreateModel } from "./model.ts";
 
-export const createMeetingValidation: Schema<CreateMeetingEvent> = {
+export const createMeetingValidation: Schema<MeetingCreateModel> = {
     name: [
         { v: "str" },
         { v: "strMinLen", min: 1 },

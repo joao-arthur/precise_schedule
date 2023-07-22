@@ -1,13 +1,13 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { CreateSessionServiceMock } from "./CreateSessionServiceMock.ts";
-import { sessionMock } from "../SessionMock.ts";
+import { SessionCreateServiceStub } from "./service._stub.ts";
+import { sessionStub } from "../model._stub.ts";
 
-Deno.test("CreateSessionServiceMock", async () => {
-    const createSessionServiceMock = new CreateSessionServiceMock(
-        sessionMock,
+Deno.test("SessionCreateServiceStub", async () => {
+    const sessionCreateServiceStub = new SessionCreateServiceStub(
+        sessionStub,
     );
     assertEquals(
-        await createSessionServiceMock.create(),
-        sessionMock,
+        await sessionCreateServiceStub.create(),
+        sessionStub,
     );
 });

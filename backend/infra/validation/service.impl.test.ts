@@ -1,6 +1,6 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { ValidatorImpl } from "./ValidatorImpl.ts";
 import { ValidationError } from "../../domain/validation/ValidationError.ts";
+import { ValidatorImpl } from "./service.impl.ts";
 
 Deno.test("ValidatorImpl", () => {
     try {

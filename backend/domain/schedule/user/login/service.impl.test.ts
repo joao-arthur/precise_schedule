@@ -1,19 +1,19 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { ValidatorMock } from "@ps/domain_mock/validation/ValidatorMock.ts";
-import { userMock } from "@ps/domain_mock/schedule/user/UserMock.ts";
-import { sessionMock } from "@ps/domain_mock/session/SessionMock.ts";
-import { CreateSessionServiceMock } from "@ps/domain_mock/session/create/CreateSessionServiceMock.ts";
-import { FindUserServiceMock } from "@ps/domain_mock/schedule/user/find/FindUserServiceMock.ts";
-import { loginModelMock } from "@ps/domain_mock/schedule/user/login/LoginModelMock.ts";
-import { LoginServiceImpl } from "./LoginServiceImpl.ts";
+import { ValidatorStub } from "../../../validation/service._stub.ts";
+import { userStub } from "../model._stub.ts";
+import { sessionStub } from "../../../session/model._stub.ts";
+import { SessionCreateServiceStub } from "../../../session/create/service._stub.ts";
+import { UserFindServiceStub } from "../find/service._stub.ts";
+import { userLoginModelStub } from "./model._stub.ts";
+import { UserLoginServiceImpl } from "./service.impl.ts";
 
 Deno.test("validateUniqueUsername", async () => {
     assertEquals(
-        await new LoginServiceImpl(
-            new ValidatorMock(),
-            new FindUserServiceMock(userMock),
-            new CreateSessionServiceMock(sessionMock),
-        ).login(loginModelMock),
-        sessionMock,
+        await new UserLoginServiceImpl(
+            new ValidatorStub(),
+            new UserFindServiceStub(userStub),
+            new SessionCreateServiceStub(sessionStub),
+        ).userLogin(userLoginModelStub),
+        sessionStub,
     );
 });

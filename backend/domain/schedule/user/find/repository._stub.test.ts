@@ -1,24 +1,24 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { userMock } from "../UserMock.ts";
-import { FindUserRepositoryMock } from "./FindUserRepositoryMock.ts";
+import { userStub } from "../model._stub.ts";
+import { UserFindRepositoryStub } from "./repository._stub.ts";
 
-Deno.test("FindUserRepositoryMock", async () => {
+Deno.test("UserFindRepositoryStub", async () => {
     assertEquals(
-        await new FindUserRepositoryMock(undefined).findById(),
+        await new UserFindRepositoryStub(undefined).findById(),
         undefined,
     );
     assertEquals(
-        await new FindUserRepositoryMock(undefined)
+        await new UserFindRepositoryStub(undefined)
             .findByCredentials(),
         undefined,
     );
     assertEquals(
-        await new FindUserRepositoryMock(userMock).findById(),
-        userMock,
+        await new UserFindRepositoryStub(userStub).findById(),
+        userStub,
     );
     assertEquals(
-        await new FindUserRepositoryMock(userMock)
+        await new UserFindRepositoryStub(userStub)
             .findByCredentials(),
-        userMock,
+        userStub,
     );
 });

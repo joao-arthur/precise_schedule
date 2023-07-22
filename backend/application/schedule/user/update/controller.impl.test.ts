@@ -1,15 +1,15 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { UpdateUserControllerImpl } from "./UpdateUserControllerImpl.ts";
-import { UpdateUserServiceMock } from "@ps/domain_mock/schedule/user/update/UpdateUserServiceMock.ts";
-import { userMock } from "@ps/domain_mock/schedule/user/UserMock.ts";
-import { httpRequestBodyMock } from "@ps/application_mock/http/HTTPRequestMock.ts";
-import { noContent } from "@ps/application_impl/http/builder/200/noContent.ts";
+import { userStub } from "@ps/domain/schedule/user/model._stub.ts";
+import { UserUpdateServiceStub } from "@ps/domain/schedule/user/update/service._stub.ts";
+import { httpRequestBodyStub } from "../../../http/request/model._stub.ts";
+import { noContent } from "../../../http/response/noContent/builder.ts";
+import { UserUpdateControllerImpl } from "./controller.impl.ts";
 
-Deno.test("UpdateUserControllerImpl", async () => {
+Deno.test("UserUpdateControllerImpl", async () => {
     assertEquals(
-        await new UpdateUserControllerImpl(
-            new UpdateUserServiceMock(userMock),
-        ).handle(userMock.id, httpRequestBodyMock),
+        await new UserUpdateControllerImpl(
+            new UserUpdateServiceStub(userStub),
+        ).handle(userStub.id, httpRequestBodyStub),
         noContent(),
     );
 });

@@ -1,10 +1,10 @@
-import type { CreateEventModel } from "@ps/domain/schedule/event/create/CreateEventModel.ts";
-import type { CreateMeetingEventFactory } from "@ps/domain/schedule/event/createMeeting/CreateMeetingEventFactory.ts";
+import type { EventCreateModel } from "../../create/model.ts";
+import type { MeetingCreateFactory } from "./factory.ts";
 
-export class CreateMeetingEventFactoryMock implements CreateMeetingEventFactory {
-    constructor(private readonly event: CreateEventModel) {}
+export class MeetingCreateFactoryStub implements MeetingCreateFactory {
+    constructor(private readonly event: EventCreateModel) {}
 
-    public build(): CreateEventModel {
+    public build(): EventCreateModel {
         return this.event;
     }
 }

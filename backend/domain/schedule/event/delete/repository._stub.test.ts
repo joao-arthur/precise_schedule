@@ -1,9 +1,9 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { DeleteEventRepositoryMock } from "./DeleteEventRepositoryMock.ts";
+import { EventDeleteRepositoryStub } from "./repository._stub.ts";
 
-Deno.test("DeleteEventRepositoryMock", async () => {
+Deno.test("EventDeleteRepositoryStub", async () => {
     assertEquals(
-        await new DeleteEventRepositoryMock().del(),
+        await new EventDeleteRepositoryStub().del(),
         undefined,
     );
 });

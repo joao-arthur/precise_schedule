@@ -1,5 +1,5 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { SessionFromRequestServiceImpl } from "./SessionFromRequestServiceImpl.ts";
+import { SessionFromRequestServiceImpl } from "./service.impl.ts";
 
 Deno.test("SessionFromRequestServiceImpl", () => {
     assertEquals(

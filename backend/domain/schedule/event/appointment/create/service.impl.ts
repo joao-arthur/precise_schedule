@@ -1,21 +1,21 @@
-import type { Validator } from "@ps/domain/validation/Validator.ts";
-import type { User } from "@ps/domain/schedule/user/User.ts";
-import type { Event } from "@ps/domain/schedule/event/Event.ts";
-import type { CreateEventService } from "@ps/domain/schedule/event/create/CreateEventService.ts";
-import type { CreateAppointmentEvent } from "@ps/domain/schedule/event/createAppointment/CreateAppointmentEvent.ts";
-import type { CreateAppointmentEventFactory } from "@ps/domain/schedule/event/createAppointment/CreateAppointmentEventFactory.ts";
-import type { CreateAppointmentEventService } from "@ps/domain/schedule/event/createAppointment/CreateAppointmentEventService.ts";
+import type { Validator } from "../../../../validation/service.ts";
+import type { User } from "../../../user/model.ts";
+import type { Event } from "../../model.ts";
+import type { EventCreateService } from "../../create/service.ts";
+import type { AppointmentCreateModel } from "./model.ts";
+import type { AppointmentCreateFactory } from "./factory.ts";
+import type { AppointmentCreateService } from "./service.ts";
 
-import { createAppointmentValidation } from "@ps/domain/schedule/event/createAppointment/createAppointmentValidation.ts";
+import { createAppointmentValidation } from "./validation.ts";
 
-export class CreateAppointmentEventServiceImpl implements CreateAppointmentEventService {
+export class AppointmentCreateServiceImpl implements AppointmentCreateService {
     constructor(
         private readonly validator: Validator,
-        private readonly factory: CreateAppointmentEventFactory,
-        private readonly service: CreateEventService,
+        private readonly factory: AppointmentCreateFactory,
+        private readonly service: EventCreateService,
     ) {}
 
-    public create(userId: User["id"], event: CreateAppointmentEvent): Promise<Event> {
+    public create(userId: User["id"], event: AppointmentCreateModel): Promise<Event> {
         this.validator.validate(event, createAppointmentValidation);
         const buildedEvent = this.factory.build(event);
         return this.service.create(userId, buildedEvent);

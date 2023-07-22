@@ -1,9 +1,9 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { CreateUserRepositoryMock } from "./CreateUserRepositoryMock.ts";
+import { UserCreateRepositoryStub } from "./repository._stub.ts";
 
-Deno.test("CreateUserRepositoryMock", async () => {
+Deno.test("UserCreateRepositoryStub", async () => {
     assertEquals(
-        await new CreateUserRepositoryMock().create(),
+        await new UserCreateRepositoryStub().create(),
         undefined,
     );
 });

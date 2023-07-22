@@ -1,15 +1,15 @@
-import type { User } from "@ps/domain/schedule/user/User.ts";
-import type { FindUserService } from "@ps/domain/schedule/user/find/FindUserService.ts";
-import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
-import type { FindUserController } from "@ps/application/schedule/user/find/FindUserController.ts";
+import type { User } from "@ps/domain/schedule/user/model.ts";
+import type { UserFindService } from "@ps/domain/schedule/user/find/service.ts";
+import type { HTTPResponse } from "../../../http/response/model.ts";
+import type { UserFindController } from "./controller.ts";
 
-import { ok } from "@ps/application_impl/http/builder/200/ok.ts";
+import { ok } from "../../../http/response/ok/builder.ts";
 
-export class FindUserControllerImpl implements FindUserController {
-    constructor(private readonly findUserService: FindUserService) {}
+export class UserFindControllerImpl implements UserFindController {
+    constructor(private readonly userFindService: UserFindService) {}
 
     public async handle(userId: User["id"]): Promise<HTTPResponse> {
-        const result = await this.findUserService.findById(userId);
+        const result = await this.userFindService.findById(userId);
         return ok(result);
     }
 }

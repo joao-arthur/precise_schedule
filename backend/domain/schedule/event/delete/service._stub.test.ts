@@ -1,6 +1,6 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { DeleteEventServiceMock } from "./DeleteEventServiceMock.ts";
+import { EventDeleteServiceStub } from "./service._stub.ts";
 
-Deno.test("DeleteEventServiceMock", async () => {
-    assertEquals(await new DeleteEventServiceMock().del(), undefined);
+Deno.test("EventDeleteServiceStub", async () => {
+    assertEquals(await new EventDeleteServiceStub().del(), undefined);
 });

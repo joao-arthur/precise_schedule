@@ -1,10 +1,10 @@
-import type { CreateUserRepository } from "./create/CreateUserRepository.ts";
-import type { UpdateUserRepository } from "./update/UpdateUserRepository.ts";
-import type { FindUserRepository } from "./find/FindUserRepository.ts";
-import type { UniqueInfoRepository } from "./uniqueInfo/UniqueInfoRepository.ts";
+import type { UserCreateRepository } from "./create/repository.ts";
+import type { UserUpdateRepository } from "./update/repository.ts";
+import type { UserFindRepository } from "./find/repository.ts";
+import type { UserUniqueInfoRepository } from "./uniqueInfo/repository.ts";
 
 export type UserRepository =
-    & CreateUserRepository
-    & UpdateUserRepository
-    & FindUserRepository
-    & UniqueInfoRepository;
+    & UserCreateRepository
+    & UserUpdateRepository
+    & UserFindRepository
+    & UserUniqueInfoRepository;

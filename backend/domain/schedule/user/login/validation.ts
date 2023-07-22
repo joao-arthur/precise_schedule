@@ -1,7 +1,7 @@
-import type { Schema } from "@ps/domain/validation/Schema.ts";
-import type { LoginModel } from "./LoginModel.ts";
+import type { Schema } from "../../../validation/Schema.ts";
+import type { UserLoginModel } from "./model.ts";
 
-export const loginValidation: Schema<LoginModel> = {
+export const userLoginValidation: Schema<UserLoginModel> = {
     username: [
         { v: "str" },
         { v: "strMinLen", min: 1 },

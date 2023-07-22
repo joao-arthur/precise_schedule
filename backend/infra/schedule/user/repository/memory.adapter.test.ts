@@ -1,25 +1,25 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { userMock } from "@ps/domain_mock/schedule/user/UserMock.ts";
-import { UserRepositoryMemory } from "./UserRepositoryMemory.ts";
+import { userStub } from "@ps/domain/schedule/user/model._stub.ts";
+import { UserRepositoryMemory } from "./memory.adapter.ts";
 
 Deno.test("UserRepositoryMemory", async () => {
     const repository = new UserRepositoryMemory();
-    assertEquals(await repository.findById(userMock.id), undefined);
+    assertEquals(await repository.findById(userStub.id), undefined);
     assertEquals(
         await repository.findByCredentials(
-            userMock.username,
-            userMock.password,
+            userStub.username,
+            userStub.password,
         ),
         undefined,
     );
-    await repository.create(userMock);
-    assertEquals(await repository.findById(userMock.id), userMock);
+    await repository.create(userStub);
+    assertEquals(await repository.findById(userStub.id), userStub);
     assertEquals(
         await repository.findByCredentials(
-            userMock.username,
-            userMock.password,
+            userStub.username,
+            userStub.password,
         ),
-        userMock,
+        userStub,
     );
     assertEquals(
         await repository.findByCredentials("username2", "password2"),
@@ -28,13 +28,13 @@ Deno.test("UserRepositoryMemory", async () => {
     assertEquals(await repository.countUsername("username2"), 0);
     assertEquals(await repository.countEmail("email2"), 0);
     await repository.update({
-        ...userMock,
+        ...userStub,
         username: "username2",
         email: "email2",
     });
     assertEquals(
-        await repository.findByCredentials("username2", userMock.password),
-        { ...userMock, username: "username2", email: "email2" },
+        await repository.findByCredentials("username2", userStub.password),
+        { ...userStub, username: "username2", email: "email2" },
     );
     assertEquals(await repository.countUsername("username2"), 1);
     assertEquals(await repository.countEmail("email2"), 1);

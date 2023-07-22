@@ -1,7 +1,7 @@
-import type { Event } from "@ps/domain/schedule/event/Event.ts";
-import type { FindEventService } from "@ps/domain/schedule/event/find/FindEventService.ts";
+import type { Event } from "../model.ts";
+import type { EventFindService } from "./service.ts";
 
-export class FindEventServiceMock implements FindEventService {
+export class EventFindServiceStub implements EventFindService {
     constructor(private readonly event: Event) {}
 
     public findByUser(): Promise<Event[]> {

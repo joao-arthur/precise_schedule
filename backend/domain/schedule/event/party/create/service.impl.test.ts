@@ -1,18 +1,18 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { ValidatorMock } from "@ps/domain_mock/validation/ValidatorMock.ts";
-import { eventMock } from "@ps/domain_mock/schedule/event/EventMock.ts";
-import { CreateEventServiceMock } from "@ps/domain_mock/schedule/event/create/CreateEventServiceMock.ts";
-import { createPartyEventMock } from "@ps/domain_mock/schedule/event/createParty/CreatePartyEventMock.ts";
-import { CreatePartyEventFactoryMock } from "@ps/domain_mock/schedule/event/createParty/CreatePartyEventFactoryMock.ts";
-import { CreatePartyEventServiceImpl } from "./CreatePartyEventServiceImpl.ts";
+import { ValidatorStub } from "../../../../validation/service._stub.ts";
+import { eventStub } from "../../model._stub.ts";
+import { EventCreateServiceStub } from "../../create/service._stub.ts";
+import { partyCreateModelStub } from "./model._stub.ts";
+import { PartyCreateFactoryStub } from "./factory._stub.ts";
+import { PartyCreateServiceImpl } from "./service.impl.ts";
 
-Deno.test("CreatePartyEventServiceImpl", async () => {
+Deno.test("PartyCreateServiceImpl", async () => {
     assertEquals(
-        await new CreatePartyEventServiceImpl(
-            new ValidatorMock(),
-            new CreatePartyEventFactoryMock(eventMock),
-            new CreateEventServiceMock(eventMock),
-        ).create(eventMock.user, createPartyEventMock),
-        eventMock,
+        await new PartyCreateServiceImpl(
+            new ValidatorStub(),
+            new PartyCreateFactoryStub(eventStub),
+            new EventCreateServiceStub(eventStub),
+        ).create(eventStub.user, partyCreateModelStub),
+        eventStub,
     );
 });

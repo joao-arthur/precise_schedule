@@ -1,16 +1,16 @@
-import type { CreateUserModel } from "@ps/domain/schedule/user/create/CreateUserModel.ts";
-import type { CreateUserService } from "@ps/domain/schedule/user/create/CreateUserService.ts";
-import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
-import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
-import type { CreateUserController } from "@ps/application/schedule/user/create/CreateUserController.ts";
+import type { UserCreateModel } from "@ps/domain/schedule/user/create/model.ts";
+import type { UserCreateService } from "@ps/domain/schedule/user/create/service.ts";
+import type { HTTPRequest } from "../../../http/request/model.ts";
+import type { HTTPResponse } from "../../../http/response/model.ts";
+import type { UserCreateController } from "./controller.ts";
 
-import { ok } from "@ps/application_impl/http/builder/200/ok.ts";
+import { ok } from "../../../http/response/ok/builder.ts";
 
-export class CreateUserControllerImpl implements CreateUserController {
-    constructor(private readonly createUserService: CreateUserService) {}
+export class UserCreateControllerImpl implements UserCreateController {
+    constructor(private readonly userCreateService: UserCreateService) {}
 
-    public async handle(req: HTTPRequest<CreateUserModel>): Promise<HTTPResponse> {
-        const result = await this.createUserService.create(req.body);
+    public async handle(req: HTTPRequest<UserCreateModel>): Promise<HTTPResponse> {
+        const result = await this.userCreateService.create(req.body);
         return ok(result);
     }
 }

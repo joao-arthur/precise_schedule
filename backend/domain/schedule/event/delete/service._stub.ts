@@ -1,5 +1,5 @@
-import type { DeleteEventService } from "@ps/domain/schedule/event/delete/DeleteEventService.ts";
+import type { EventDeleteService } from "./service.ts";
 
-export class DeleteEventServiceMock implements DeleteEventService {
+export class EventDeleteServiceStub implements EventDeleteService {
     public async del(): Promise<void> {}
 }

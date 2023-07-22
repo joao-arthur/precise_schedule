@@ -1,14 +1,14 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { maybeSessionMock, sessionMock } from "@ps/domain_mock/session/SessionMock.ts";
-import { SessionFromRequestServiceMock } from "./SessionFromRequestServiceMock.ts";
+import { maybeSessionStub, sessionStub } from "@ps/domain/session/model._stub.ts";
+import { SessionFromRequestServiceStub } from "./service._stub.ts";
 
-Deno.test("SessionFromRequestServiceMock", () => {
+Deno.test("SessionFromRequestServiceStub", () => {
     assertEquals(
-        new SessionFromRequestServiceMock(sessionMock).create(),
-        sessionMock,
+        new SessionFromRequestServiceStub(sessionStub).create(),
+        sessionStub,
     );
     assertEquals(
-        new SessionFromRequestServiceMock(maybeSessionMock).create(),
-        maybeSessionMock,
+        new SessionFromRequestServiceStub(maybeSessionStub).create(),
+        maybeSessionStub,
     );
 });

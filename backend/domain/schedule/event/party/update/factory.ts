@@ -1,6 +1,6 @@
-import type { UpdateEventModel } from "../update/UpdateEventModel.ts";
-import type { UpdatePartyEvent } from "./UpdatePartyEvent.ts";
+import type { EventUpdateModel } from "../../update/model.ts";
+import type { PartyUpdateModel } from "./model.ts";
 
-export type UpdatePartyEventFactory = {
-    readonly build: (event: UpdatePartyEvent) => UpdateEventModel;
+export type PartyUpdateFactory = {
+    readonly build: (event: PartyUpdateModel) => EventUpdateModel;
 };

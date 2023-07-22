@@ -1,5 +1,5 @@
-import type { User } from "../User.ts";
+import type { User } from "../model.ts";
 
-export type CreateUserRepository = {
+export type UserCreateRepository = {
     readonly create: (user: User) => Promise<void>;
 };

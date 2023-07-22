@@ -1,20 +1,20 @@
-import type { User } from "@ps/domain/schedule/user/User.ts";
-import type { FindEventService } from "@ps/domain/schedule/event/find/FindEventService.ts";
-import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
-import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
-import type { IdParam } from "@ps/application/http/IdParam.ts";
-import type { FindEventController } from "@ps/application/schedule/event/find/FindEventController.ts";
+import type { User } from "@ps/domain/schedule/user/model.ts";
+import type { EventFindService } from "@ps/domain/schedule/event/find/service.ts";
+import type { HTTPRequest } from "../../../http/request/model.ts";
+import type { HTTPResponse } from "../../../http/response/model.ts";
+import type { IdParam } from "../../../http/IdParam.ts";
+import type { EventFindController } from "./controller.ts";
 
-import { ok } from "@ps/application_impl/http/builder/200/ok.ts";
+import { ok } from "../../../http/response/ok/builder.ts";
 
-export class FindEventControllerImpl implements FindEventController {
-    constructor(private readonly findEventService: FindEventService) {}
+export class EventFindControllerImpl implements EventFindController {
+    constructor(private readonly eventFindService: EventFindService) {}
 
     public async handle(
         userId: User["id"],
         req: HTTPRequest<undefined, IdParam>,
     ): Promise<HTTPResponse> {
-        const result = await this.findEventService.findByUserAndId(userId, req.params.id);
+        const result = await this.eventFindService.findByUserAndId(userId, req.params.id);
         return ok(result);
     }
 }

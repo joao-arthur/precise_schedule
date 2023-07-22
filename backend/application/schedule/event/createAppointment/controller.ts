@@ -1,11 +1,11 @@
-import type { User } from "@ps/domain/schedule/user/User.ts";
-import type { CreateAppointmentEvent } from "@ps/domain/schedule/event/createAppointment/CreateAppointmentEvent.ts";
-import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
-import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
+import type { User } from "@ps/domain/schedule/user/model.ts";
+import type { AppointmentCreateModel } from "@ps/domain/schedule/event/appointment/create/model.ts";
+import type { HTTPRequest } from "../../../http/request/model.ts";
+import type { HTTPResponse } from "../../../http/response/model.ts";
 
-export type CreateAppointmentEventController = {
+export type AppointmentCreateController = {
     readonly handle: (
         userId: User["id"],
-        req: HTTPRequest<CreateAppointmentEvent>,
+        req: HTTPRequest<AppointmentCreateModel>,
     ) => Promise<HTTPResponse>;
 };

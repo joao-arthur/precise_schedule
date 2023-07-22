@@ -1,24 +1,24 @@
-import type { Validator } from "@ps/domain/validation/Validator.ts";
-import type { User } from "@ps/domain/schedule/user/User.ts";
-import type { Event } from "@ps/domain/schedule/event/Event.ts";
-import type { UpdateEventService } from "@ps/domain/schedule/event/update/UpdateEventService.ts";
-import type { UpdateDateEvent } from "@ps/domain/schedule/event/updateDate/UpdateDateEvent.ts";
-import type { UpdateDateEventFactory } from "@ps/domain/schedule/event/updateDate/UpdateDateEventFactory.ts";
-import type { UpdateDateEventService } from "@ps/domain/schedule/event/updateDate/UpdateDateEventService.ts";
+import type { Validator } from "../../../../validation/service.ts";
+import type { User } from "../../../user/model.ts";
+import type { Event } from "../../model.ts";
+import type { EventUpdateService } from "../../update/service.ts";
+import type { DateUpdateModel } from "./model.ts";
+import type { DateUpdateFactory } from "./factory.ts";
+import type { DateUpdateService } from "./service.ts";
 
-import { updateDateValidation } from "@ps/domain/schedule/event/updateDate/updateDateValidation.ts";
+import { updateDateValidation } from "./validation.ts";
 
-export class UpdateDateEventServiceImpl implements UpdateDateEventService {
+export class DateUpdateServiceImpl implements DateUpdateService {
     constructor(
         private readonly validator: Validator,
-        private readonly factory: UpdateDateEventFactory,
-        private readonly service: UpdateEventService,
+        private readonly factory: DateUpdateFactory,
+        private readonly service: EventUpdateService,
     ) {}
 
     public update(
         userId: User["id"],
         id: Event["id"],
-        event: UpdateDateEvent,
+        event: DateUpdateModel,
     ): Promise<Event> {
         this.validator.validate(event, updateDateValidation);
         const buildedEvent = this.factory.build(event);

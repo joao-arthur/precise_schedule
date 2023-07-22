@@ -1,7 +1,7 @@
-import type { LoginModel } from "@ps/domain/schedule/user/login/LoginModel.ts";
-import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
-import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
+import type { UserLoginModel } from "@ps/domain/schedule/user/login/model.ts";
+import type { HTTPRequest } from "../../../http/request/model.ts";
+import type { HTTPResponse } from "../../../http/response/model.ts";
 
-export type LoginController = {
-    readonly handle: (req: HTTPRequest<LoginModel>) => Promise<HTTPResponse>;
+export type UserLoginController = {
+    readonly handle: (req: HTTPRequest<UserLoginModel>) => Promise<HTTPResponse>;
 };

@@ -1,20 +1,20 @@
-import type { User } from "@ps/domain/schedule/user/User.ts";
-import type { CreateMeetingEvent } from "@ps/domain/schedule/event/createMeeting/CreateMeetingEvent.ts";
-import type { CreateMeetingEventService } from "@ps/domain/schedule/event/createMeeting/CreateMeetingEventService.ts";
-import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
-import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
-import type { CreateMeetingEventController } from "@ps/application/schedule/event/createMeeting/CreateMeetingEventController.ts";
+import type { User } from "@ps/domain/schedule/user/model.ts";
+import type { MeetingCreateModel } from "@ps/domain/schedule/event/meeting/create/model.ts";
+import type { MeetingCreateService } from "@ps/domain/schedule/event/meeting/create/service.ts";
+import type { HTTPRequest } from "../../../http/request/model.ts";
+import type { HTTPResponse } from "../../../http/response/model.ts";
+import type { MeetingCreateController } from "./controller.ts";
 
-import { created } from "@ps/application_impl/http/builder/200/created.ts";
+import { created } from "../../../http/response/created/builder.ts";
 
-export class CreateMeetingEventControllerImpl implements CreateMeetingEventController {
-    constructor(private readonly createMeetingEventService: CreateMeetingEventService) {}
+export class MeetingCreateControllerImpl implements MeetingCreateController {
+    constructor(private readonly meetingCreateService: MeetingCreateService) {}
 
     public async handle(
         userId: User["id"],
-        req: HTTPRequest<CreateMeetingEvent>,
+        req: HTTPRequest<MeetingCreateModel>,
     ): Promise<HTTPResponse> {
-        const result = await this.createMeetingEventService.create(userId, req.body);
+        const result = await this.meetingCreateService.create(userId, req.body);
         return created(result);
     }
 }

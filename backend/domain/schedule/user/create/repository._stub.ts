@@ -1,5 +1,5 @@
-import type { CreateUserRepository } from "@ps/domain/schedule/user/create/CreateUserRepository.ts";
+import type { UserCreateRepository } from "./repository.ts";
 
-export class CreateUserRepositoryMock implements CreateUserRepository {
+export class UserCreateRepositoryStub implements UserCreateRepository {
     public async create(): Promise<void> {}
 }

@@ -1,4 +1,4 @@
-import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
+import type { HTTPResponse } from "../../response/model.ts";
 
 export function badRequest(body: Record<string, unknown>): HTTPResponse {
     return {

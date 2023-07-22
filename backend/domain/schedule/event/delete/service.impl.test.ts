@@ -1,15 +1,15 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { eventMock } from "@ps/domain_mock/schedule/event/EventMock.ts";
-import { DeleteEventRepositoryMock } from "@ps/domain_mock/schedule/event/delete/DeleteEventRepositoryMock.ts";
-import { FindEventServiceMock } from "@ps/domain_mock/schedule/event/find/FindEventServiceMock.ts";
-import { DeleteEventServiceImpl } from "./DeleteEventServiceImpl.ts";
+import { eventStub } from "../model._stub.ts";
+import { EventFindServiceStub } from "../find/service._stub.ts";
+import { EventDeleteServiceImpl } from "./service.impl.ts";
+import { EventDeleteRepositoryStub } from "./repository._stub.ts";
 
-Deno.test("DeleteEventServiceImpl", async () => {
+Deno.test("EventDeleteServiceImpl", async () => {
     assertEquals(
-        await new DeleteEventServiceImpl(
-            new DeleteEventRepositoryMock(),
-            new FindEventServiceMock(eventMock),
-        ).del(eventMock.user, eventMock.id),
+        await new EventDeleteServiceImpl(
+            new EventDeleteRepositoryStub(),
+            new EventFindServiceStub(eventStub),
+        ).del(eventStub.user, eventStub.id),
         undefined,
     );
 });

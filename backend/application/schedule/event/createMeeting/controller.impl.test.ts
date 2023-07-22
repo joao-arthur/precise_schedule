@@ -1,15 +1,15 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { eventMock } from "@ps/domain_mock/schedule/event/EventMock.ts";
-import { CreateMeetingEventServiceMock } from "@ps/domain_mock/schedule/event/createMeeting/CreateMeetingEventServiceMock.ts";
-import { created } from "@ps/application_impl/http/builder/200/created.ts";
-import { httpRequestBodyMock } from "@ps/application_mock/http/HTTPRequestMock.ts";
-import { CreateMeetingEventControllerImpl } from "./CreateMeetingEventControllerImpl.ts";
+import { eventStub } from "@ps/domain/schedule/event/model._stub.ts";
+import { MeetingCreateServiceStub } from "@ps/domain/schedule/event/meeting/create/service._stub.ts";
+import { created } from "../../../http/response/created/builder.ts";
+import { httpRequestBodyStub } from "../../../http/request/model._stub.ts";
+import { MeetingCreateControllerImpl } from "./controller.impl.ts";
 
-Deno.test("CreateMeetingEventControllerImpl", async () => {
+Deno.test("MeetingCreateControllerImpl", async () => {
     assertEquals(
-        await new CreateMeetingEventControllerImpl(
-            new CreateMeetingEventServiceMock(eventMock),
-        ).handle(eventMock.user, httpRequestBodyMock),
-        created(eventMock),
+        await new MeetingCreateControllerImpl(
+            new MeetingCreateServiceStub(eventStub),
+        ).handle(eventStub.user, httpRequestBodyStub),
+        created(eventStub),
     );
 });

@@ -1,21 +1,21 @@
-import type { Validator } from "@ps/domain/validation/Validator.ts";
-import type { User } from "@ps/domain/schedule/user/User.ts";
-import type { Event } from "@ps/domain/schedule/event/Event.ts";
-import type { CreateEventService } from "@ps/domain/schedule/event/create/CreateEventService.ts";
-import type { CreatePartyEvent } from "@ps/domain/schedule/event/createParty/CreatePartyEvent.ts";
-import type { CreatePartyEventFactory } from "@ps/domain/schedule/event/createParty/CreatePartyEventFactory.ts";
-import type { CreatePartyEventService } from "@ps/domain/schedule/event/createParty/CreatePartyEventService.ts";
+import type { Validator } from "../../../../validation/service.ts";
+import type { User } from "../../../user/model.ts";
+import type { Event } from "../../model.ts";
+import type { EventCreateService } from "../../create/service.ts";
+import type { PartyCreateModel } from "./model.ts";
+import type { PartyCreateFactory } from "./factory.ts";
+import type { PartyCreateService } from "./service.ts";
 
-import { createPartyValidation } from "@ps/domain/schedule/event/createParty/createPartyValidation.ts";
+import { createPartyValidation } from "./validation.ts";
 
-export class CreatePartyEventServiceImpl implements CreatePartyEventService {
+export class PartyCreateServiceImpl implements PartyCreateService {
     constructor(
         private readonly validator: Validator,
-        private readonly factory: CreatePartyEventFactory,
-        private readonly service: CreateEventService,
+        private readonly factory: PartyCreateFactory,
+        private readonly service: EventCreateService,
     ) {}
 
-    public create(userId: User["id"], event: CreatePartyEvent): Promise<Event> {
+    public create(userId: User["id"], event: PartyCreateModel): Promise<Event> {
         this.validator.validate(event, createPartyValidation);
         const buildedEvent = this.factory.build(event);
         return this.service.create(userId, buildedEvent);

@@ -1,7 +1,7 @@
-import type { Schema } from "@ps/domain/validation/Schema.ts";
-import type { UpdatePartyEvent } from "./UpdatePartyEvent.ts";
+import type { Schema } from "../../../../validation/Schema.ts";
+import type { PartyUpdateModel } from "./model.ts";
 
-export const updatePartyValidation: Schema<UpdatePartyEvent> = {
+export const updatePartyValidation: Schema<PartyUpdateModel> = {
     name: [
         { v: "str" },
         { v: "strMinLen", min: 1 },

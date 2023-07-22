@@ -1,7 +1,7 @@
-import type { User } from "../../user/User.ts";
-import type { Event } from "@ps/domain/schedule/event/Event.ts";
-import type { CreateBirthdayEvent } from "@ps/domain/schedule/event/createBirthday/CreateBirthdayEvent.ts";
+import type { User } from "../../../user/model.ts";
+import type { Event } from "../../model.ts";
+import type { BirthdayCreateModel } from "./model.ts";
 
-export type CreateBirthdayEventService = {
-    readonly create: (userId: User["id"], event: CreateBirthdayEvent) => Promise<Event>;
+export type BirthdayCreateService = {
+    readonly create: (userId: User["id"], event: BirthdayCreateModel) => Promise<Event>;
 };

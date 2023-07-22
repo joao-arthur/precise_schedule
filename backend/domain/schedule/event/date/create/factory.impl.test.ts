@@ -1,17 +1,17 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { createDateEventMock } from "@ps/domain_mock/schedule/event/createDate/CreateDateEventMock.ts";
-import { CreateDateEventFactoryImpl } from "./CreateDateEventFactoryImpl.ts";
+import { dateCreateModelStub } from "./model._stub.ts";
+import { DateCreateFactoryImpl } from "./factory.impl.ts";
 
-Deno.test("CreateDateEventFactoryImpl", () => {
+Deno.test("DateCreateFactoryImpl", () => {
     assertEquals(
-        new CreateDateEventFactoryImpl().build(
-            createDateEventMock,
+        new DateCreateFactoryImpl().build(
+            dateCreateModelStub,
         ),
         {
             category: "DATE",
             frequency: "NEVER",
             weekendRepeat: false,
-            ...createDateEventMock,
+            ...dateCreateModelStub,
         },
     );
 });

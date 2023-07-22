@@ -1,6 +1,6 @@
-import type { Event } from "../Event.ts";
+import type { Event } from "../../model.ts";
 
-export type CreateDateEvent = {
+export type DateCreateModel = {
     readonly name: Event["name"];
     readonly day: Event["day"];
     readonly begin: Event["begin"];

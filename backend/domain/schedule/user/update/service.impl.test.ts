@@ -1,23 +1,23 @@
 import { assertEquals } from "std/testing/asserts.ts";
 
-import { userMock } from "@ps/domain_mock/schedule/user/UserMock.ts";
-import { ValidatorMock } from "@ps/domain_mock/validation/ValidatorMock.ts";
-import { UniqueInfoServiceMock } from "@ps/domain_mock/schedule/user/uniqueInfo/UniqueInfoServiceMock.ts";
-import { FindUserServiceMock } from "@ps/domain_mock/schedule/user/find/FindUserServiceMock.ts";
-import { UpdateUserFactoryMock } from "@ps/domain_mock/schedule/user/update/UpdateUserFactoryMock.ts";
-import { updateUserModelMock } from "@ps/domain_mock/schedule/user/update/UpdateUserModelMock.ts";
-import { UpdateUserRepositoryMock } from "@ps/domain_mock/schedule/user/update/UpdateUserRepositoryMock.ts";
-import { UpdateUserServiceImpl } from "./UpdateUserServiceImpl.ts";
+import { userStub } from "../model._stub.ts";
+import { ValidatorStub } from "../../../validation/service._stub.ts";
+import { UserUniqueInfoServiceStub } from "../uniqueInfo/service._stub.ts";
+import { UserFindServiceStub } from "../find/service._stub.ts";
+import { userUpdateModelStub } from "./model._stub.ts";
+import { UserUpdateFactoryStub } from "./factory._stub.ts";
+import { UserUpdateRepositoryStub } from "./repository._stub.ts";
+import { UserUpdateServiceImpl } from "./service.impl.ts";
 
-Deno.test("UpdateUserServiceImpl", async () => {
+Deno.test("UserUpdateServiceImpl", async () => {
     assertEquals(
-        await new UpdateUserServiceImpl(
-            new UpdateUserRepositoryMock(),
-            new UniqueInfoServiceMock(),
-            new UpdateUserFactoryMock(userMock),
-            new ValidatorMock(),
-            new FindUserServiceMock(userMock),
-        ).update(userMock.id, updateUserModelMock),
-        userMock,
+        await new UserUpdateServiceImpl(
+            new UserUpdateRepositoryStub(),
+            new UserUniqueInfoServiceStub(),
+            new UserUpdateFactoryStub(userStub),
+            new ValidatorStub(),
+            new UserFindServiceStub(userStub),
+        ).update(userStub.id, userUpdateModelStub),
+        userStub,
     );
 });

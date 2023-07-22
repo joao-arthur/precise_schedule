@@ -1,5 +1,5 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { created } from "./created.ts";
+import { created } from "./builder.ts";
 
 Deno.test("created", () => {
     assertEquals(

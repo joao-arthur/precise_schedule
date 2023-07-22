@@ -1,21 +1,21 @@
-import type { User } from "@ps/domain/schedule/user/User.ts";
-import type { UpdateBirthdayEvent } from "@ps/domain/schedule/event/updateBirthday/UpdateBirthdayEvent.ts";
-import type { UpdateBirthdayEventService } from "@ps/domain/schedule/event/updateBirthday/UpdateBirthdayEventService.ts";
-import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
-import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
-import type { IdParam } from "@ps/application/http/IdParam.ts";
-import type { UpdateBirthdayEventController } from "@ps/application/schedule/event/updateBirthday/UpdateBirthdayEventController.ts";
+import type { User } from "@ps/domain/schedule/user/model.ts";
+import type { BirthdayUpdateModel } from "@ps/domain/schedule/event/birthday/update/model.ts";
+import type { BirthdayUpdateService } from "@ps/domain/schedule/event/birthday/update/service.ts";
+import type { HTTPRequest } from "../../../http/request/model.ts";
+import type { HTTPResponse } from "../../../http/response/model.ts";
+import type { IdParam } from "../../../http/IdParam.ts";
+import type { BirthdayUpdateController } from "./controller.ts";
 
-import { noContent } from "@ps/application_impl/http/builder/200/noContent.ts";
+import { noContent } from "../../../http/response/noContent/builder.ts";
 
-export class UpdateBirthdayEventControllerImpl implements UpdateBirthdayEventController {
-    constructor(private readonly updateBirthdayEventService: UpdateBirthdayEventService) {}
+export class BirthdayUpdateControllerImpl implements BirthdayUpdateController {
+    constructor(private readonly birthdayUpdateService: BirthdayUpdateService) {}
 
     public async handle(
         userId: User["id"],
-        req: HTTPRequest<UpdateBirthdayEvent, IdParam>,
+        req: HTTPRequest<BirthdayUpdateModel, IdParam>,
     ): Promise<HTTPResponse> {
-        await this.updateBirthdayEventService.update(userId, req.params.id, req.body);
+        await this.birthdayUpdateService.update(userId, req.params.id, req.body);
         return noContent();
     }
 }

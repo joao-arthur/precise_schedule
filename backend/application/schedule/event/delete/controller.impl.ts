@@ -1,20 +1,20 @@
-import type { User } from "@ps/domain/schedule/user/User.ts";
-import type { DeleteEventService } from "@ps/domain/schedule/event/delete/DeleteEventService.ts";
-import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
-import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
-import type { IdParam } from "@ps/application/http/IdParam.ts";
-import type { DeleteEventController } from "@ps/application/schedule/event/delete/DeleteEventController.ts";
+import type { User } from "@ps/domain/schedule/user/model.ts";
+import type { EventDeleteService } from "@ps/domain/schedule/event/delete/service.ts";
+import type { HTTPRequest } from "../../../http/request/model.ts";
+import type { HTTPResponse } from "../../../http/response/model.ts";
+import type { IdParam } from "../../../http/IdParam.ts";
+import type { EventDeleteController } from "./controller.ts";
 
-import { noContent } from "@ps/application_impl/http/builder/200/noContent.ts";
+import { noContent } from "../../../http/response/noContent/builder.ts";
 
-export class DeleteEventControllerImpl implements DeleteEventController {
-    constructor(private readonly deleteEventService: DeleteEventService) {}
+export class EventDeleteControllerImpl implements EventDeleteController {
+    constructor(private readonly eventDeleteService: EventDeleteService) {}
 
     public async handle(
         userId: User["id"],
         req: HTTPRequest<undefined, IdParam>,
     ): Promise<HTTPResponse> {
-        await this.deleteEventService.del(userId, req.params.id);
+        await this.eventDeleteService.del(userId, req.params.id);
         return noContent();
     }
 }

@@ -1,14 +1,14 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { userMock } from "../UserMock.ts";
-import { FindUserServiceMock } from "./FindUserServiceMock.ts";
+import { userStub } from "../model._stub.ts";
+import { UserFindServiceStub } from "./service._stub.ts";
 
-Deno.test("FindUserServiceMock", async () => {
+Deno.test("UserFindServiceStub", async () => {
     assertEquals(
-        await new FindUserServiceMock(userMock).findById(),
-        userMock,
+        await new UserFindServiceStub(userStub).findById(),
+        userStub,
     );
     assertEquals(
-        await new FindUserServiceMock(userMock).findByCredentials(),
-        userMock,
+        await new UserFindServiceStub(userStub).findByCredentials(),
+        userStub,
     );
 });

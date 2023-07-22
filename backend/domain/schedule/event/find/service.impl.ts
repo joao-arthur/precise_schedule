@@ -1,12 +1,12 @@
-import type { User } from "@ps/domain/schedule/user/User.ts";
-import type { Event } from "@ps/domain/schedule/event/Event.ts";
-import type { FindEventService } from "@ps/domain/schedule/event/find/FindEventService.ts";
-import type { FindEventRepository } from "@ps/domain/schedule/event/find/FindEventRepository.ts";
+import type { User } from "../../user/model.ts";
+import type { Event } from "../model.ts";
+import type { EventFindService } from "./service.ts";
+import type { EventFindRepository } from "./repository.ts";
 
-import { EventNotFound } from "@ps/domain/schedule/event/find/EventNotFound.ts";
+import { EventNotFound } from "./EventNotFound.ts";
 
-export class FindEventServiceImpl implements FindEventService {
-    constructor(private readonly repository: FindEventRepository) {}
+export class EventFindServiceImpl implements EventFindService {
+    constructor(private readonly repository: EventFindRepository) {}
 
     public findByUser(userId: User["id"]): Promise<Event[]> {
         return this.repository.findByUser(userId);

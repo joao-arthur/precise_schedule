@@ -1,18 +1,18 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { ValidatorMock } from "@ps/domain_mock/validation/ValidatorMock.ts";
-import { eventMock } from "@ps/domain_mock/schedule/event/EventMock.ts";
-import { UpdateEventServiceMock } from "@ps/domain_mock/schedule/event/update/UpdateEventServiceMock.ts";
-import { updatePartyEventMock } from "@ps/domain_mock/schedule/event/updateParty/UpdatePartyEventMock.ts";
-import { UpdatePartyEventFactoryMock } from "@ps/domain_mock/schedule/event/updateParty/UpdatePartyEventFactoryMock.ts";
-import { UpdatePartyEventServiceImpl } from "./UpdatePartyEventServiceImpl.ts";
+import { ValidatorStub } from "../../../../validation/service._stub.ts";
+import { eventStub } from "../../model._stub.ts";
+import { EventUpdateServiceStub } from "../../update/service._stub.ts";
+import { partyUpdateModelStub } from "./model._stub.ts";
+import { PartyUpdateFactoryStub } from "./factory._stub.ts";
+import { PartyUpdateServiceImpl } from "./service.impl.ts";
 
-Deno.test("UpdatePartyEventServiceImpl", async () => {
+Deno.test("PartyUpdateServiceImpl", async () => {
     assertEquals(
-        await new UpdatePartyEventServiceImpl(
-            new ValidatorMock(),
-            new UpdatePartyEventFactoryMock(eventMock),
-            new UpdateEventServiceMock(eventMock),
-        ).update(eventMock.user, eventMock.id, updatePartyEventMock),
-        eventMock,
+        await new PartyUpdateServiceImpl(
+            new ValidatorStub(),
+            new PartyUpdateFactoryStub(eventStub),
+            new EventUpdateServiceStub(eventStub),
+        ).update(eventStub.user, eventStub.id, partyUpdateModelStub),
+        eventStub,
     );
 });

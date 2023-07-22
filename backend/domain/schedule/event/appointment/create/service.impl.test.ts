@@ -1,18 +1,18 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { ValidatorMock } from "@ps/domain_mock/validation/ValidatorMock.ts";
-import { eventMock } from "@ps/domain_mock/schedule/event/EventMock.ts";
-import { CreateEventServiceMock } from "@ps/domain_mock/schedule/event/create/CreateEventServiceMock.ts";
-import { createAppointmentEventMock } from "@ps/domain_mock/schedule/event/createAppointment/CreateAppointmentEventMock.ts";
-import { CreateAppointmentEventFactoryMock } from "@ps/domain_mock/schedule/event/createAppointment/CreateAppointmentEventFactoryMock.ts";
-import { CreateAppointmentEventServiceImpl } from "./CreateAppointmentEventServiceImpl.ts";
+import { ValidatorStub } from "../../../../validation/service._stub.ts";
+import { eventStub } from "../../model._stub.ts";
+import { EventCreateServiceStub } from "../../create/service._stub.ts";
+import { appointmentCreateModelStub } from "./model._stub.ts";
+import { AppointmentCreateFactoryStub } from "./factory._stub.ts";
+import { AppointmentCreateServiceImpl } from "./service.impl.ts";
 
-Deno.test("CreateAppointmentEventServiceImpl", async () => {
+Deno.test("AppointmentCreateServiceImpl", async () => {
     assertEquals(
-        await new CreateAppointmentEventServiceImpl(
-            new ValidatorMock(),
-            new CreateAppointmentEventFactoryMock(eventMock),
-            new CreateEventServiceMock(eventMock),
-        ).create(eventMock.user, createAppointmentEventMock),
-        eventMock,
+        await new AppointmentCreateServiceImpl(
+            new ValidatorStub(),
+            new AppointmentCreateFactoryStub(eventStub),
+            new EventCreateServiceStub(eventStub),
+        ).create(eventStub.user, appointmentCreateModelStub),
+        eventStub,
     );
 });

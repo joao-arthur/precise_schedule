@@ -1,6 +1,6 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { ValidatorMock } from "./ValidatorMock.ts";
+import { ValidatorStub } from "./service._stub.ts";
 
-Deno.test("ValidatorMock", () => {
-    assertEquals(new ValidatorMock().validate(), undefined);
+Deno.test("ValidatorStub", () => {
+    assertEquals(new ValidatorStub().validate(), undefined);
 });

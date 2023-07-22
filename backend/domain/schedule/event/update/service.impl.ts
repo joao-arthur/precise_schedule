@@ -1,24 +1,24 @@
-import type { User } from "@ps/domain/schedule/user/User.ts";
-import type { Event } from "@ps/domain/schedule/event/Event.ts";
-import type { UpdateEventRepository } from "@ps/domain/schedule/event/update/UpdateEventRepository.ts";
-import type { UpdateEventFactory } from "@ps/domain/schedule/event/update/UpdateEventFactory.ts";
-import type { UpdateEventService } from "@ps/domain/schedule/event/update/UpdateEventService.ts";
-import type { UpdateEventModel } from "@ps/domain/schedule/event/update/UpdateEventModel.ts";
-import type { FindEventService } from "@ps/domain/schedule/event/find/FindEventService.ts";
+import type { User } from "../../user/model.ts";
+import type { Event } from "../model.ts";
+import type { EventFindService } from "../find/service.ts";
+import type { EventUpdateModel } from "./model.ts";
+import type { EventUpdateService } from "./service.ts";
+import type { EventUpdateFactory } from "./factory.ts";
+import type { EventUpdateRepository } from "./repository.ts";
 
-export class UpdateEventServiceImpl implements UpdateEventService {
+export class EventUpdateServiceImpl implements EventUpdateService {
     constructor(
-        private readonly repository: UpdateEventRepository,
-        private readonly factory: UpdateEventFactory,
-        private readonly findEventService: FindEventService,
+        private readonly repository: EventUpdateRepository,
+        private readonly factory: EventUpdateFactory,
+        private readonly eventFindService: EventFindService,
     ) {}
 
     public async update(
         userId: User["id"],
         id: Event["id"],
-        event: UpdateEventModel,
+        event: EventUpdateModel,
     ): Promise<Event> {
-        const existingEvent = await this.findEventService.findByUserAndId(userId, id);
+        const existingEvent = await this.eventFindService.findByUserAndId(userId, id);
         const buildedEvent = this.factory.build(event, existingEvent);
         await this.repository.update(buildedEvent);
         return buildedEvent;

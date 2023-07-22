@@ -1,12 +1,12 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { eventMock } from "../EventMock.ts";
-import { UpdateDateEventServiceMock } from "./UpdateDateEventServiceMock.ts";
+import { eventStub } from "../../model._stub.ts";
+import { DateUpdateServiceStub } from "./service._stub.ts";
 
-Deno.test("UpdateDateEventServiceMock", async () => {
+Deno.test("DateUpdateServiceStub", async () => {
     assertEquals(
-        await new UpdateDateEventServiceMock(
-            eventMock,
+        await new DateUpdateServiceStub(
+            eventStub,
         ).update(),
-        eventMock,
+        eventStub,
     );
 });

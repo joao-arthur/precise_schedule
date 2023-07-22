@@ -1,6 +1,6 @@
-import type { Event } from "../Event.ts";
+import type { Event } from "../../model.ts";
 
-export type CreateBirthdayEvent = {
+export type BirthdayCreateModel = {
     readonly name: Event["name"];
     readonly day: Event["day"];
 };

@@ -1,7 +1,7 @@
-import type { User } from "@ps/domain/schedule/user/User.ts";
-import type { FindUserRepository } from "@ps/domain/schedule/user/find/FindUserRepository.ts";
+import type { User } from "../model.ts";
+import type { UserFindRepository } from "./repository.ts";
 
-export class FindUserRepositoryMock implements FindUserRepository {
+export class UserFindRepositoryStub implements UserFindRepository {
     constructor(private readonly user: User | undefined) {}
 
     public findById(): Promise<User | undefined> {

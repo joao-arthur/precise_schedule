@@ -1,21 +1,21 @@
-import type { User } from "@ps/domain/schedule/user/User.ts";
-import type { UpdateDateEvent } from "@ps/domain/schedule/event/updateDate/UpdateDateEvent.ts";
-import type { UpdateDateEventService } from "@ps/domain/schedule/event/updateDate/UpdateDateEventService.ts";
-import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
-import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
-import type { IdParam } from "@ps/application/http/IdParam.ts";
-import type { UpdateDateEventController } from "@ps/application/schedule/event/updateDate/UpdateDateEventController.ts";
+import type { User } from "@ps/domain/schedule/user/model.ts";
+import type { DateUpdateModel } from "@ps/domain/schedule/event/date/update/model.ts";
+import type { DateUpdateService } from "@ps/domain/schedule/event/date/update/service.ts";
+import type { HTTPRequest } from "../../../http/request/model.ts";
+import type { HTTPResponse } from "../../../http/response/model.ts";
+import type { IdParam } from "../../../http/IdParam.ts";
+import type { DateUpdateController } from "./controller.ts";
 
-import { noContent } from "@ps/application_impl/http/builder/200/noContent.ts";
+import { noContent } from "../../../http/response/noContent/builder.ts";
 
-export class UpdateDateEventControllerImpl implements UpdateDateEventController {
-    constructor(private readonly updateDateEventService: UpdateDateEventService) {}
+export class DateUpdateControllerImpl implements DateUpdateController {
+    constructor(private readonly dateUpdateService: DateUpdateService) {}
 
     public async handle(
         userId: User["id"],
-        req: HTTPRequest<UpdateDateEvent, IdParam>,
+        req: HTTPRequest<DateUpdateModel, IdParam>,
     ): Promise<HTTPResponse> {
-        await this.updateDateEventService.update(userId, req.params.id, req.body);
+        await this.dateUpdateService.update(userId, req.params.id, req.body);
         return noContent();
     }
 }

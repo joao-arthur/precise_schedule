@@ -1,11 +1,11 @@
-import type { User } from "@ps/domain/schedule/user/User.ts";
-import type { UpdateUserModel } from "@ps/domain/schedule/user/update/UpdateUserModel.ts";
-import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
-import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
+import type { User } from "@ps/domain/schedule/user/model.ts";
+import type { UserUpdateModel } from "@ps/domain/schedule/user/update/model.ts";
+import type { HTTPRequest } from "../../../http/request/model.ts";
+import type { HTTPResponse } from "../../../http/response/model.ts";
 
-export type UpdateUserController = {
+export type UserUpdateController = {
     readonly handle: (
         userId: User["id"],
-        req: HTTPRequest<UpdateUserModel>,
+        req: HTTPRequest<UserUpdateModel>,
     ) => Promise<HTTPResponse>;
 };

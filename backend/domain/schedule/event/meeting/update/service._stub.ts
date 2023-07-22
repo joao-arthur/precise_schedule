@@ -1,7 +1,7 @@
-import type { Event } from "@ps/domain/schedule/event/Event.ts";
-import type { UpdateMeetingEventService } from "@ps/domain/schedule/event/updateMeeting/UpdateMeetingEventService.ts";
+import type { Event } from "../../model.ts";
+import type { MeetingUpdateService } from "./service.ts";
 
-export class UpdateMeetingEventServiceMock implements UpdateMeetingEventService {
+export class MeetingUpdateServiceStub implements MeetingUpdateService {
     constructor(private readonly event: Event) {}
 
     public update(): Promise<Event> {

@@ -1,5 +1,5 @@
-import type { CreateEventRepository } from "@ps/domain/schedule/event/create/CreateEventRepository.ts";
+import type { EventCreateRepository } from "./repository.ts";
 
-export class CreateEventRepositoryMock implements CreateEventRepository {
+export class EventCreateRepositoryStub implements EventCreateRepository {
     public async create(): Promise<void> {}
 }

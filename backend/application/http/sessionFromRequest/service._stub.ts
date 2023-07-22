@@ -1,7 +1,7 @@
-import type { Session } from "@ps/domain/session/Session.ts";
-import type { SessionFromRequestService } from "@ps/application/http/session/SessionFromRequestService.ts";
+import type { Session } from "@ps/domain/session/model.ts";
+import type { SessionFromRequestService } from "./service.ts";
 
-export class SessionFromRequestServiceMock implements SessionFromRequestService {
+export class SessionFromRequestServiceStub implements SessionFromRequestService {
     constructor(private readonly maybeSession: Partial<Session>) {}
 
     public create(): Partial<Session> {

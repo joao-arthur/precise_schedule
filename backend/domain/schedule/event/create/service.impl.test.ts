@@ -1,17 +1,17 @@
 import { assertEquals } from "std/testing/asserts.ts";
 
-import { eventMock } from "@ps/domain_mock/schedule/event/EventMock.ts";
-import { createEventModelMock } from "@ps/domain_mock/schedule/event/create/CreateEventModelMock.ts";
-import { CreateEventRepositoryMock } from "@ps/domain_mock/schedule/event/create/CreateEventRepositoryMock.ts";
-import { CreateEventFactoryMock } from "@ps/domain_mock/schedule/event/create/CreateEventFactoryMock.ts";
-import { CreateEventServiceImpl } from "./CreateEventServiceImpl.ts";
+import { eventStub } from "../model._stub.ts";
+import { createEventModelStub } from "./model._stub.ts";
+import { EventCreateRepositoryStub } from "./repository._stub.ts";
+import { EventCreateFactoryStub } from "./factory._stub.ts";
+import { EventCreateServiceImpl } from "./service.impl.ts";
 
-Deno.test("CreateEventServiceImpl", async () => {
+Deno.test("EventCreateServiceImpl", async () => {
     assertEquals(
-        await new CreateEventServiceImpl(
-            new CreateEventRepositoryMock(),
-            new CreateEventFactoryMock(eventMock),
-        ).create(eventMock.user, createEventModelMock),
-        eventMock,
+        await new EventCreateServiceImpl(
+            new EventCreateRepositoryStub(),
+            new EventCreateFactoryStub(eventStub),
+        ).create(eventStub.user, createEventModelStub),
+        eventStub,
     );
 });

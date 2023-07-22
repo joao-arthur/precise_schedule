@@ -1,37 +1,37 @@
 import { assertEquals, assertRejects } from "std/testing/asserts.ts";
-import { userMock } from "@ps/domain_mock/schedule/user/UserMock.ts";
-import { FindUserRepositoryMock } from "@ps/domain_mock/schedule/user/find/FindUserRepositoryMock.ts";
-import { UserNotFound } from "@ps/domain/schedule/user/find/UserNotFound.ts";
-import { FindUserServiceImpl } from "./FindUserServiceImpl.ts";
+import { userStub } from "../model._stub.ts";
+import { UserFindRepositoryStub } from "./repository._stub.ts";
+import { UserNotFound } from "./UserNotFound.ts";
+import { UserFindServiceImpl } from "./service.impl.ts";
 
-Deno.test("FindUserServiceImpl.findById", async () => {
+Deno.test("UserFindServiceImpl.findById", async () => {
     await assertRejects(
         () =>
-            new FindUserServiceImpl(
-                new FindUserRepositoryMock(undefined),
-            ).findById(userMock.id),
+            new UserFindServiceImpl(
+                new UserFindRepositoryStub(undefined),
+            ).findById(userStub.id),
         UserNotFound,
     );
     assertEquals(
-        await new FindUserServiceImpl(
-            new FindUserRepositoryMock(userMock),
-        ).findById(userMock.id),
-        userMock,
+        await new UserFindServiceImpl(
+            new UserFindRepositoryStub(userStub),
+        ).findById(userStub.id),
+        userStub,
     );
 });
 
-Deno.test("FindUserServiceImpl.findById", async () => {
+Deno.test("UserFindServiceImpl.findById", async () => {
     await assertRejects(
         () =>
-            new FindUserServiceImpl(
-                new FindUserRepositoryMock(undefined),
-            ).findByCredentials(userMock.username, userMock.password),
+            new UserFindServiceImpl(
+                new UserFindRepositoryStub(undefined),
+            ).findByCredentials(userStub.username, userStub.password),
         UserNotFound,
     );
     assertEquals(
-        await new FindUserServiceImpl(
-            new FindUserRepositoryMock(userMock),
-        ).findByCredentials(userMock.username, userMock.password),
-        userMock,
+        await new UserFindServiceImpl(
+            new UserFindRepositoryStub(userStub),
+        ).findByCredentials(userStub.username, userStub.password),
+        userStub,
     );
 });

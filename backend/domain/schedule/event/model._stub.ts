@@ -1,6 +1,6 @@
-import type { Event } from "@ps/domain/schedule/event/Event.ts";
+import type { Event } from "./model.ts";
 
-export const eventMock: Event = {
+export const eventStub: Event = {
     id: "id",
     name: "name",
     day: "2023-06-24",

@@ -1,22 +1,22 @@
 import { assertEquals, assertRejects } from "std/testing/asserts.ts";
 import { InvalidSessionError } from "@ps/domain/session/InvalidSessionError.ts";
-import { ValidateUserSessionServiceMock } from "@ps/domain_mock/userSession/ValidateUserSessionServiceMock.ts";
-import { maybeSessionMock, sessionMock } from "@ps/domain_mock/session/SessionMock.ts";
-import { SessionFromRequestServiceMock } from "@ps/application_mock/http/session/SessionFromRequestServiceMock.ts";
-import { httpRequestHeadersMock } from "@ps/application_mock/http/HTTPRequestMock.ts";
-import { SessionMiddlewareImpl } from "./SessionMiddlewareImpl.ts";
+import { ValidateUserSessionServiceStub } from "@ps/domain/userSession/service._stub.ts";
+import { maybeSessionStub, sessionStub } from "@ps/domain/session/model._stub.ts";
+import { SessionFromRequestServiceStub } from "../../sessionFromRequest/service._stub.ts";
+import { httpRequestHeadersStub } from "../../request/model._stub.ts";
+import { SessionMiddlewareImpl } from "./middleware.impl.ts";
 
 Deno.test("SessionMiddlewareImpl", async () => {
     assertEquals(
         await new SessionMiddlewareImpl(
-            new SessionFromRequestServiceMock(sessionMock),
-            new ValidateUserSessionServiceMock(),
-        ).handle(httpRequestHeadersMock),
+            new SessionFromRequestServiceStub(sessionStub),
+            new ValidateUserSessionServiceStub(),
+        ).handle(httpRequestHeadersStub),
         undefined,
     );
     await assertRejects(() =>
         new SessionMiddlewareImpl(
-            new SessionFromRequestServiceMock(maybeSessionMock),
-            new ValidateUserSessionServiceMock(),
-        ).handle(httpRequestHeadersMock), InvalidSessionError);
+            new SessionFromRequestServiceStub(maybeSessionStub),
+            new ValidateUserSessionServiceStub(),
+        ).handle(httpRequestHeadersStub), InvalidSessionError);
 });

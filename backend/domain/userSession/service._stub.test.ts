@@ -1,9 +1,9 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { ValidateUserSessionServiceMock } from "./ValidateUserSessionServiceMock.ts";
+import { ValidateUserSessionServiceStub } from "./service._stub.ts";
 
-Deno.test("ValidateUserSessionServiceMock", async () => {
+Deno.test("ValidateUserSessionServiceStub", async () => {
     assertEquals(
-        await new ValidateUserSessionServiceMock().validate(),
+        await new ValidateUserSessionServiceStub().validate(),
         undefined,
     );
 });

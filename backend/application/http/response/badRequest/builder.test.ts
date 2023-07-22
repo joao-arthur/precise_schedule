@@ -1,5 +1,5 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { badRequest } from "./badRequest.ts";
+import { badRequest } from "./builder.ts";
 
 Deno.test("badRequest", () => {
     assertEquals(

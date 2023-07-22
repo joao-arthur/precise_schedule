@@ -1,15 +1,15 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { eventMock } from "@ps/domain_mock/schedule/event/EventMock.ts";
-import { UpdateDateEventServiceMock } from "@ps/domain_mock/schedule/event/updateDate/UpdateDateEventServiceMock.ts";
-import { noContent } from "@ps/application_impl/http/builder/200/noContent.ts";
-import { httpRequestFullMock } from "@ps/application_mock/http/HTTPRequestMock.ts";
-import { UpdateDateEventControllerImpl } from "./UpdateDateEventControllerImpl.ts";
+import { eventStub } from "@ps/domain/schedule/event/model._stub.ts";
+import { DateUpdateServiceStub } from "@ps/domain/schedule/event/date/update/service._stub.ts";
+import { noContent } from "../../../http/response/noContent/builder.ts";
+import { httpRequestFullStub } from "../../../http/request/model._stub.ts";
+import { DateUpdateControllerImpl } from "./controller.impl.ts";
 
-Deno.test("UpdateDateEventControllerImpl", async () => {
+Deno.test("DateUpdateControllerImpl", async () => {
     assertEquals(
-        await new UpdateDateEventControllerImpl(
-            new UpdateDateEventServiceMock(eventMock),
-        ).handle(eventMock.user, httpRequestFullMock),
+        await new DateUpdateControllerImpl(
+            new DateUpdateServiceStub(eventStub),
+        ).handle(eventStub.user, httpRequestFullStub),
         noContent(),
     );
 });

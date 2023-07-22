@@ -1,6 +1,6 @@
-import type { User } from "@ps/domain/schedule/user/User.ts";
-import type { Event } from "../Event.ts";
+import type { User } from "../../user/model.ts";
+import type { Event } from "../model.ts";
 
-export type DeleteEventService = {
+export type EventDeleteService = {
     readonly del: (userId: User["id"], id: Event["id"]) => Promise<void>;
 };

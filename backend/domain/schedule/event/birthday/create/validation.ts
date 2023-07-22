@@ -1,7 +1,7 @@
-import type { Schema } from "@ps/domain/validation/Schema.ts";
-import type { CreateBirthdayEvent } from "./CreateBirthdayEvent.ts";
+import type { Schema } from "../../../../validation/Schema.ts";
+import type { BirthdayCreateModel } from "./model.ts";
 
-export const createBirthdayValidation: Schema<CreateBirthdayEvent> = {
+export const createBirthdayValidation: Schema<BirthdayCreateModel> = {
     name: [
         { v: "str" },
         { v: "strMinLen", min: 1 },

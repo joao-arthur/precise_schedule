@@ -1,7 +1,7 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { IdGeneratorMock } from "./IdGeneratorMock.ts";
+import { IdGeneratorStub } from "./service._stub.ts";
 
-Deno.test("IdGeneratorMock", () => {
-    assertEquals(new IdGeneratorMock("id").generate(), "id");
-    assertEquals(new IdGeneratorMock("123").generate(), "123");
+Deno.test("IdGeneratorStub", () => {
+    assertEquals(new IdGeneratorStub("id").generate(), "id");
+    assertEquals(new IdGeneratorStub("123").generate(), "123");
 });

@@ -1,9 +1,9 @@
-import type { CreateEventModel } from "@ps/domain/schedule/event/create/CreateEventModel.ts";
-import type { CreateDateEvent } from "@ps/domain/schedule/event/createDate/CreateDateEvent.ts";
-import type { CreateDateEventFactory } from "@ps/domain/schedule/event/createDate/CreateDateEventFactory.ts";
+import type { EventCreateModel } from "../../create/model.ts";
+import type { DateCreateModel } from "./model.ts";
+import type { DateCreateFactory } from "./factory.ts";
 
-export class CreateDateEventFactoryImpl implements CreateDateEventFactory {
-    public build(event: CreateDateEvent): CreateEventModel {
+export class DateCreateFactoryImpl implements DateCreateFactory {
+    public build(event: DateCreateModel): EventCreateModel {
         return {
             name: event.name,
             day: event.day,

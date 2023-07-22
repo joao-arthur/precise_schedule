@@ -1,36 +1,36 @@
 import { assertEquals, assertRejects } from "std/testing/asserts.ts";
-import { eventMock } from "@ps/domain_mock/schedule/event/EventMock.ts";
-import { FindEventRepositoryMock } from "@ps/domain_mock/schedule/event/find/FindEventRepositoryMock.ts";
-import { EventNotFound } from "@ps/domain/schedule/event/find/EventNotFound.ts";
-import { FindEventServiceImpl } from "./FindEventServiceImpl.ts";
+import { eventStub } from "../model._stub.ts";
+import { EventFindRepositoryStub } from "./repository._stub.ts";
+import { EventNotFound } from "./EventNotFound.ts";
+import { EventFindServiceImpl } from "./service.impl.ts";
 
-Deno.test("FindEventServiceImpl.findByUser", async () => {
+Deno.test("EventFindServiceImpl.findByUser", async () => {
     assertEquals(
-        await new FindEventServiceImpl(
-            new FindEventRepositoryMock(undefined),
-        ).findByUser(eventMock.user),
+        await new EventFindServiceImpl(
+            new EventFindRepositoryStub(undefined),
+        ).findByUser(eventStub.user),
         [],
     );
     assertEquals(
-        await new FindEventServiceImpl(
-            new FindEventRepositoryMock(eventMock),
-        ).findByUser(eventMock.user),
-        [eventMock],
+        await new EventFindServiceImpl(
+            new EventFindRepositoryStub(eventStub),
+        ).findByUser(eventStub.user),
+        [eventStub],
     );
 });
 
-Deno.test("FindEventServiceImpl.findByUserAndId", async () => {
+Deno.test("EventFindServiceImpl.findByUserAndId", async () => {
     await assertRejects(
         () =>
-            new FindEventServiceImpl(
-                new FindEventRepositoryMock(undefined),
-            ).findByUserAndId(eventMock.user, eventMock.id),
+            new EventFindServiceImpl(
+                new EventFindRepositoryStub(undefined),
+            ).findByUserAndId(eventStub.user, eventStub.id),
         EventNotFound,
     );
     assertEquals(
-        await new FindEventServiceImpl(
-            new FindEventRepositoryMock(eventMock),
-        ).findByUserAndId(eventMock.user, eventMock.id),
-        eventMock,
+        await new EventFindServiceImpl(
+            new EventFindRepositoryStub(eventStub),
+        ).findByUserAndId(eventStub.user, eventStub.id),
+        eventStub,
     );
 });

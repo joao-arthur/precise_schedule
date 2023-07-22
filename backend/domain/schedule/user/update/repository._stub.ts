@@ -1,5 +1,5 @@
-import type { UpdateUserRepository } from "@ps/domain/schedule/user/update/UpdateUserRepository.ts";
+import type { UserUpdateRepository } from "./repository.ts";
 
-export class UpdateUserRepositoryMock implements UpdateUserRepository {
+export class UserUpdateRepositoryStub implements UserUpdateRepository {
     public async update(): Promise<void> {}
 }

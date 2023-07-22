@@ -1,6 +1,6 @@
-import type { Event } from "../Event.ts";
+import type { Event } from "../model.ts";
 
-export type FindEventModel = {
+export type EventFindModel = {
     readonly id: Event["id"];
     readonly name: Event["name"];
     readonly day: Event["day"];

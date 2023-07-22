@@ -1,7 +1,7 @@
-import type { User } from "@ps/domain/schedule/user/User.ts";
-import type { UpdateUserFactory } from "@ps/domain/schedule/user/update/UpdateUserFactory.ts";
+import type { User } from "../model.ts";
+import type { UserUpdateFactory } from "./factory.ts";
 
-export class UpdateUserFactoryMock implements UpdateUserFactory {
+export class UserUpdateFactoryStub implements UserUpdateFactory {
     constructor(private readonly user: User) {}
 
     public build(): User {

@@ -1,6 +1,6 @@
-import type { UpdateMeetingEvent } from "@ps/domain/schedule/event/updateMeeting/UpdateMeetingEvent.ts";
+import type { MeetingUpdateModel } from "./model.ts";
 
-export const updateMeetingEventMock: UpdateMeetingEvent = {
+export const meetingUpdateModelStub: MeetingUpdateModel = {
     name: "name",
     day: "2023-06-24",
     begin: "08:00",

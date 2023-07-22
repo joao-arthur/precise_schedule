@@ -1,11 +1,11 @@
-import type { User } from "../../user/User.ts";
-import type { Event } from "@ps/domain/schedule/event/Event.ts";
-import type { UpdateBirthdayEvent } from "@ps/domain/schedule/event/updateBirthday/UpdateBirthdayEvent.ts";
+import type { User } from "../../../user/model.ts";
+import type { Event } from "../../model.ts";
+import type { BirthdayUpdateModel } from "./model.ts";
 
-export type UpdateBirthdayEventService = {
+export type BirthdayUpdateService = {
     readonly update: (
         userId: User["id"],
         id: Event["id"],
-        event: UpdateBirthdayEvent,
+        event: BirthdayUpdateModel,
     ) => Promise<Event>;
 };

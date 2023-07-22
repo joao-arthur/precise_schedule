@@ -1,24 +1,24 @@
-import type { Validator } from "@ps/domain/validation/Validator.ts";
-import type { User } from "@ps/domain/schedule/user/User.ts";
-import type { Event } from "@ps/domain/schedule/event/Event.ts";
-import type { UpdateEventService } from "@ps/domain/schedule/event/update/UpdateEventService.ts";
-import type { UpdateAppointmentEvent } from "@ps/domain/schedule/event/updateAppointment/UpdateAppointmentEvent.ts";
-import type { UpdateAppointmentEventFactory } from "@ps/domain/schedule/event/updateAppointment/UpdateAppointmentEventFactory.ts";
-import type { UpdateAppointmentEventService } from "@ps/domain/schedule/event/updateAppointment/UpdateAppointmentEventService.ts";
+import type { Validator } from "../../../../validation/service.ts";
+import type { User } from "../../../user/model.ts";
+import type { Event } from "../../model.ts";
+import type { EventUpdateService } from "../../update/service.ts";
+import type { AppointmentUpdateModel } from "./model.ts";
+import type { AppointmentUpdateFactory } from "./factory.ts";
+import type { AppointmentUpdateService } from "./service.ts";
 
-import { updateAppointmentValidation } from "@ps/domain/schedule/event/updateAppointment/updateAppointmentValidation.ts";
+import { updateAppointmentValidation } from "./validation.ts";
 
-export class UpdateAppointmentEventServiceImpl implements UpdateAppointmentEventService {
+export class AppointmentUpdateServiceImpl implements AppointmentUpdateService {
     constructor(
         private readonly validator: Validator,
-        private readonly factory: UpdateAppointmentEventFactory,
-        private readonly service: UpdateEventService,
+        private readonly factory: AppointmentUpdateFactory,
+        private readonly service: EventUpdateService,
     ) {}
 
     public update(
         userId: User["id"],
         id: Event["id"],
-        event: UpdateAppointmentEvent,
+        event: AppointmentUpdateModel,
     ): Promise<Event> {
         this.validator.validate(event, updateAppointmentValidation);
         const buildedEvent = this.factory.build(event);

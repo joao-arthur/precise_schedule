@@ -3,5 +3,5 @@
     "deno.lint": true,
     "editor.defaultFormatter": "denoland.vscode-deno",
     "editor.formatOnPaste": false,
-    "editor.formatOnSave": false
+    "editor.formatOnSave": true
 }

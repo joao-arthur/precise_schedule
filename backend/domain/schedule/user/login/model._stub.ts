@@ -1,6 +1,6 @@
-import type { LoginModel } from "@ps/domain/schedule/user/login/LoginModel.ts";
+import type { UserLoginModel } from "./model.ts";
 
-export const loginModelMock: LoginModel = {
+export const userLoginModelStub: UserLoginModel = {
     username: "username",
     password: "password",
 };

@@ -1,20 +1,20 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { updateEventModelMock } from "@ps/domain_mock/schedule/event/update/UpdateEventModelMock.ts";
-import { eventMock } from "@ps/domain_mock/schedule/event/EventMock.ts";
-import { UpdateEventFactoryImpl } from "./UpdateEventFactoryImpl.ts";
+import { eventStub } from "../model._stub.ts";
+import { eventUpdateModelStub } from "./model._stub.ts";
+import { EventUpdateFactoryImpl } from "./factory.impl.ts";
 
-Deno.test("UpdateEventFactoryImpl", () => {
+Deno.test("EventUpdateFactoryImpl", () => {
     assertEquals(
-        new UpdateEventFactoryImpl().build(
-            updateEventModelMock,
-            eventMock,
+        new EventUpdateFactoryImpl().build(
+            eventUpdateModelStub,
+            eventStub,
         ),
         {
-            id: eventMock.id,
-            user: eventMock.user,
-            createdAt: eventMock.createdAt,
+            id: eventStub.id,
+            user: eventStub.user,
+            createdAt: eventStub.createdAt,
             updatedAt: new Date(),
-            ...updateEventModelMock,
+            ...eventUpdateModelStub,
         },
     );
 });

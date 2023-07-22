@@ -1,15 +1,15 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { createAppointmentEventMock } from "@ps/domain_mock/schedule/event/createAppointment/CreateAppointmentEventMock.ts";
-import { CreateAppointmentEventFactoryImpl } from "./CreateAppointmentEventFactoryImpl.ts";
+import { appointmentCreateModelStub } from "./model._stub.ts";
+import { AppointmentCreateFactoryImpl } from "./factory.impl.ts";
 
-Deno.test("CreateAppointmentEventFactoryImpl", () => {
+Deno.test("AppointmentCreateFactoryImpl", () => {
     assertEquals(
-        new CreateAppointmentEventFactoryImpl().build(
-            createAppointmentEventMock,
+        new AppointmentCreateFactoryImpl().build(
+            appointmentCreateModelStub,
         ),
         {
             category: "APPOINTMENT",
-            ...createAppointmentEventMock,
+            ...appointmentCreateModelStub,
         },
     );
 });

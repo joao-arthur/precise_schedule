@@ -1,7 +1,7 @@
-import type { CreateUserModel } from "@ps/domain/schedule/user/create/CreateUserModel.ts";
-import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
-import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
+import type { UserCreateModel } from "@ps/domain/schedule/user/create/model.ts";
+import type { HTTPRequest } from "../../../http/request/model.ts";
+import type { HTTPResponse } from "../../../http/response/model.ts";
 
-export type CreateUserController = {
-    readonly handle: (req: HTTPRequest<CreateUserModel>) => Promise<HTTPResponse>;
+export type UserCreateController = {
+    readonly handle: (req: HTTPRequest<UserCreateModel>) => Promise<HTTPResponse>;
 };

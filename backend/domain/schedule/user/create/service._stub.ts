@@ -1,7 +1,7 @@
-import type { Session } from "@ps/domain/session/Session.ts";
-import type { CreateUserService } from "@ps/domain/schedule/user/create/CreateUserService.ts";
+import type { Session } from "../../../session/model.ts";
+import type { UserCreateService } from "./service.ts";
 
-export class CreateUserServiceMock implements CreateUserService {
+export class UserCreateServiceStub implements UserCreateService {
     constructor(private readonly session: Session) {}
 
     public create(): Promise<Session> {

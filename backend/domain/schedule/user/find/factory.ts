@@ -1,6 +1,6 @@
-import type { User } from "../../user/User.ts";
-import type { FindUserModel } from "./FindUserModel.ts";
+import type { User } from "../model.ts";
+import type { UserFindModel } from "./model.ts";
 
-export type FindUserFactory = {
-    readonly build: (user: User) => FindUserModel;
+export type UserFindFactory = {
+    readonly build: (user: User) => UserFindModel;
 };

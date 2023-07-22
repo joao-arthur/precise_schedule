@@ -1,6 +1,6 @@
-import type { User } from "../User.ts";
-import type { UpdateUserModel } from "./UpdateUserModel.ts";
+import type { User } from "../model.ts";
+import type { UserUpdateModel } from "./model.ts";
 
-export type UpdateUserService = {
-    readonly update: (id: User["id"], user: UpdateUserModel) => Promise<User>;
+export type UserUpdateService = {
+    readonly update: (id: User["id"], user: UserUpdateModel) => Promise<User>;
 };

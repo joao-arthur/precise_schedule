@@ -1,11 +1,11 @@
-import type { User } from "@ps/domain/schedule/user/User.ts";
-import type { CreatePartyEvent } from "@ps/domain/schedule/event/createParty/CreatePartyEvent.ts";
-import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
-import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
+import type { User } from "@ps/domain/schedule/user/model.ts";
+import type { PartyCreateModel } from "@ps/domain/schedule/event/party/create/model.ts";
+import type { HTTPRequest } from "../../../http/request/model.ts";
+import type { HTTPResponse } from "../../../http/response/model.ts";
 
-export type CreatePartyEventController = {
+export type PartyCreateController = {
     readonly handle: (
         userId: User["id"],
-        req: HTTPRequest<CreatePartyEvent>,
+        req: HTTPRequest<PartyCreateModel>,
     ) => Promise<HTTPResponse>;
 };

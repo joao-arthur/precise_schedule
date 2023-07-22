@@ -1,6 +1,6 @@
-import type { CreateBirthdayEvent } from "@ps/domain/schedule/event/createBirthday/CreateBirthdayEvent.ts";
+import type { BirthdayCreateModel } from "./model.ts";
 
-export const createBirthdayEventMock: CreateBirthdayEvent = {
+export const birthdayCreateModelStub: BirthdayCreateModel = {
     name: "name",
     day: "2023-06-24",
 };

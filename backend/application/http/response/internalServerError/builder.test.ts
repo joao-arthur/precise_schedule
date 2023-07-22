@@ -1,5 +1,5 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { internalServerError } from "./internalServerError.ts";
+import { internalServerError } from "./builder.ts";
 
 Deno.test("internalServerError", () => {
     assertEquals(internalServerError(), {

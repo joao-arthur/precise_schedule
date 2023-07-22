@@ -1,6 +1,6 @@
-import type { User } from "../User.ts";
+import type { User } from "../model.ts";
 
-export type LoginModel = {
+export type UserLoginModel = {
     readonly username: User["username"];
     readonly password: User["password"];
 };

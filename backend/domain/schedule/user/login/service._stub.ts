@@ -1,10 +1,10 @@
-import type { Session } from "@ps/domain/session/Session.ts";
-import type { LoginService } from "@ps/domain/schedule/user/login/LoginService.ts";
+import type { Session } from "../../../session/model.ts";
+import type { UserLoginService } from "./service.ts";
 
-export class LoginServiceMock implements LoginService {
+export class UserLoginServiceStub implements UserLoginService {
     constructor(private readonly session: Session) {}
 
-    public login(): Promise<Session> {
+    public userLogin(): Promise<Session> {
         return Promise.resolve(this.session);
     }
 }

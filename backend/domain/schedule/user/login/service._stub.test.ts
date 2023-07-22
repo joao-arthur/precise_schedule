@@ -1,10 +1,10 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { sessionMock } from "../../../session/SessionMock.ts";
-import { LoginServiceMock } from "./LoginServiceMock.ts";
+import { sessionStub } from "../../../session/model._stub.ts";
+import { UserLoginServiceStub } from "./service._stub.ts";
 
-Deno.test("LoginServiceMock", async () => {
+Deno.test("UserLoginServiceStub", async () => {
     assertEquals(
-        await new LoginServiceMock(sessionMock).login(),
-        sessionMock,
+        await new UserLoginServiceStub(sessionStub).userLogin(),
+        sessionStub,
     );
 });

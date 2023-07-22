@@ -1,5 +1,5 @@
-import { ValidateUserSessionService } from "@ps/domain/userSession/ValidateUserSessionService.ts";
+import { ValidateUserSessionService } from "./service.ts";
 
-export class ValidateUserSessionServiceMock implements ValidateUserSessionService {
+export class ValidateUserSessionServiceStub implements ValidateUserSessionService {
     public async validate(): Promise<void> {}
 }

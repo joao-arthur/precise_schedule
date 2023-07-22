@@ -1,14 +1,14 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { eventMock } from "../EventMock.ts";
-import { FindEventRepositoryMock } from "./FindEventRepositoryMock.ts";
+import { eventStub } from "../model._stub.ts";
+import { EventFindRepositoryStub } from "./repository._stub.ts";
 
-Deno.test("FindEventRepositoryMock", async () => {
+Deno.test("EventFindRepositoryStub", async () => {
     assertEquals(
-        await new FindEventRepositoryMock(undefined).findByUserAndId(),
+        await new EventFindRepositoryStub(undefined).findByUserAndId(),
         undefined,
     );
     assertEquals(
-        await new FindEventRepositoryMock(eventMock).findByUserAndId(),
-        eventMock,
+        await new EventFindRepositoryStub(eventStub).findByUserAndId(),
+        eventStub,
     );
 });

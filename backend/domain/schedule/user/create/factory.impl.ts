@@ -1,12 +1,12 @@
-import type { IdGenerator } from "@ps/domain/generation/IdGenerator.ts";
-import type { User } from "@ps/domain/schedule/user/User.ts";
-import type { CreateUserFactory } from "@ps/domain/schedule/user/create/CreateUserFactory.ts";
-import type { CreateUserModel } from "@ps/domain/schedule/user/create/CreateUserModel.ts";
+import type { IdGenerator } from "../../../generation/idGenerator/service.ts";
+import type { User } from "../model.ts";
+import type { UserCreateFactory } from "./factory.ts";
+import type { UserCreateModel } from "./model.ts";
 
-export class CreateUserFactoryImpl implements CreateUserFactory {
+export class UserCreateFactoryImpl implements UserCreateFactory {
     constructor(private readonly idGenerator: IdGenerator) {}
 
-    public build(user: CreateUserModel): User {
+    public build(user: UserCreateModel): User {
         return {
             id: this.idGenerator.generate(),
             email: user.email,

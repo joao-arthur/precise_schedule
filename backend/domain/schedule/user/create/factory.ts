@@ -1,6 +1,6 @@
-import type { User } from "../User.ts";
-import type { CreateUserModel } from "./CreateUserModel.ts";
+import type { User } from "../model.ts";
+import type { UserCreateModel } from "./model.ts";
 
-export type CreateUserFactory = {
-    readonly build: (user: CreateUserModel) => User;
+export type UserCreateFactory = {
+    readonly build: (user: UserCreateModel) => User;
 };

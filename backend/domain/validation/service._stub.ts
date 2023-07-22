@@ -1,5 +1,5 @@
-import type { Validator } from "@ps/domain/validation/Validator.ts";
+import type { Validator } from "./service.ts";
 
-export class ValidatorMock implements Validator {
+export class ValidatorStub implements Validator {
     public validate(): void {}
 }

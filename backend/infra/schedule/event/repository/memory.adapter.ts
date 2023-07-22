@@ -1,6 +1,6 @@
-import type { User } from "@ps/domain/schedule/user/User.ts";
-import type { Event } from "@ps/domain/schedule/event/Event.ts";
-import type { EventRepository } from "@ps/domain/schedule/event/EventRepository.ts";
+import type { User } from "@ps/domain/schedule/user/model.ts";
+import type { Event } from "@ps/domain/schedule/event/model.ts";
+import type { EventRepository } from "@ps/domain/schedule/event/repository.ts";
 
 export class EventRepositoryMemory implements EventRepository {
     private readonly events: Event[] = [];

@@ -1,13 +1,13 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { UniqueInfoServiceMock } from "./UniqueInfoServiceMock.ts";
+import { UserUniqueInfoServiceStub } from "./service._stub.ts";
 
-Deno.test("UniqueInfoServiceMock", async () => {
+Deno.test("UserUniqueInfoServiceStub", async () => {
     assertEquals(
-        await new UniqueInfoServiceMock().validateNew(),
+        await new UserUniqueInfoServiceStub().validateNew(),
         undefined,
     );
     assertEquals(
-        await new UniqueInfoServiceMock().validateExisting(),
+        await new UserUniqueInfoServiceStub().validateExisting(),
         undefined,
     );
 });

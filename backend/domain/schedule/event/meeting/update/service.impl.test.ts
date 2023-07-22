@@ -1,18 +1,18 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { ValidatorMock } from "@ps/domain_mock/validation/ValidatorMock.ts";
-import { eventMock } from "@ps/domain_mock/schedule/event/EventMock.ts";
-import { UpdateEventServiceMock } from "@ps/domain_mock/schedule/event/update/UpdateEventServiceMock.ts";
-import { updateMeetingEventMock } from "@ps/domain_mock/schedule/event/updateMeeting/UpdateMeetingEventMock.ts";
-import { UpdateMeetingEventFactoryMock } from "@ps/domain_mock/schedule/event/updateMeeting/UpdateMeetingEventFactoryMock.ts";
-import { UpdateMeetingEventServiceImpl } from "./UpdateMeetingEventServiceImpl.ts";
+import { ValidatorStub } from "../../../../validation/service._stub.ts";
+import { eventStub } from "../../model._stub.ts";
+import { EventUpdateServiceStub } from "../../update/service._stub.ts";
+import { meetingUpdateModelStub } from "./model._stub.ts";
+import { MeetingUpdateFactoryStub } from "./factory._stub.ts";
+import { MeetingUpdateServiceImpl } from "./service.impl.ts";
 
-Deno.test("UpdateMeetingEventServiceImpl", async () => {
+Deno.test("MeetingUpdateServiceImpl", async () => {
     assertEquals(
-        await new UpdateMeetingEventServiceImpl(
-            new ValidatorMock(),
-            new UpdateMeetingEventFactoryMock(eventMock),
-            new UpdateEventServiceMock(eventMock),
-        ).update(eventMock.user, eventMock.id, updateMeetingEventMock),
-        eventMock,
+        await new MeetingUpdateServiceImpl(
+            new ValidatorStub(),
+            new MeetingUpdateFactoryStub(eventStub),
+            new EventUpdateServiceStub(eventStub),
+        ).update(eventStub.user, eventStub.id, meetingUpdateModelStub),
+        eventStub,
     );
 });

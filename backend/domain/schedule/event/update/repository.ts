@@ -1,5 +1,5 @@
-import type { Event } from "../Event.ts";
+import type { Event } from "../model.ts";
 
-export type UpdateEventRepository = {
+export type EventUpdateRepository = {
     readonly update: (event: Event) => Promise<void>;
 };

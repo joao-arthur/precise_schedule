@@ -1,7 +1,7 @@
-import type { User } from "../User.ts";
-import type { UniqueInfoModel } from "./UniqueInfoModel.ts";
+import type { User } from "../model.ts";
+import type { UserUniqueInfoModel } from "./model.ts";
 
-export type UniqueInfoService = {
-    readonly validateNew: (user: UniqueInfoModel) => Promise<void>;
-    readonly validateExisting: (user: UniqueInfoModel, oldUser: User) => Promise<void>;
+export type UserUniqueInfoService = {
+    readonly validateNew: (user: UserUniqueInfoModel) => Promise<void>;
+    readonly validateExisting: (user: UserUniqueInfoModel, oldUser: User) => Promise<void>;
 };

@@ -1,18 +1,18 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { ValidatorMock } from "@ps/domain_mock/validation/ValidatorMock.ts";
-import { eventMock } from "@ps/domain_mock/schedule/event/EventMock.ts";
-import { UpdateEventServiceMock } from "@ps/domain_mock/schedule/event/update/UpdateEventServiceMock.ts";
-import { updateBirthdayEventMock } from "@ps/domain_mock/schedule/event/updateBirthday/UpdateBirthdayEventMock.ts";
-import { UpdateBirthdayEventFactoryMock } from "@ps/domain_mock/schedule/event/updateBirthday/UpdateBirthdayEventFactoryMock.ts";
-import { UpdateBirthdayEventServiceImpl } from "./UpdateBirthdayEventServiceImpl.ts";
+import { ValidatorStub } from "../../../../validation/service._stub.ts";
+import { eventStub } from "../../model._stub.ts";
+import { EventUpdateServiceStub } from "../../update/service._stub.ts";
+import { birthdayUpdateModelStub } from "./model._stub.ts";
+import { BirthdayUpdateFactoryStub } from "./factory._stub.ts";
+import { BirthdayUpdateServiceImpl } from "./service.impl.ts";
 
-Deno.test("UpdateBirthdayEventServiceImpl", async () => {
+Deno.test("BirthdayUpdateServiceImpl", async () => {
     assertEquals(
-        await new UpdateBirthdayEventServiceImpl(
-            new ValidatorMock(),
-            new UpdateBirthdayEventFactoryMock(eventMock),
-            new UpdateEventServiceMock(eventMock),
-        ).update(eventMock.user, eventMock.id, updateBirthdayEventMock),
-        eventMock,
+        await new BirthdayUpdateServiceImpl(
+            new ValidatorStub(),
+            new BirthdayUpdateFactoryStub(eventStub),
+            new EventUpdateServiceStub(eventStub),
+        ).update(eventStub.user, eventStub.id, birthdayUpdateModelStub),
+        eventStub,
     );
 });

@@ -1,20 +1,20 @@
-import type { User } from "@ps/domain/schedule/user/User.ts";
-import type { CreatePartyEvent } from "@ps/domain/schedule/event/createParty/CreatePartyEvent.ts";
-import type { CreatePartyEventService } from "@ps/domain/schedule/event/createParty/CreatePartyEventService.ts";
-import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
-import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
-import type { CreatePartyEventController } from "@ps/application/schedule/event/createParty/CreatePartyEventController.ts";
+import type { User } from "@ps/domain/schedule/user/model.ts";
+import type { PartyCreateModel } from "@ps/domain/schedule/event/party/create/model.ts";
+import type { PartyCreateService } from "@ps/domain/schedule/event/party/create/service.ts";
+import type { HTTPRequest } from "../../../http/request/model.ts";
+import type { HTTPResponse } from "../../../http/response/model.ts";
+import type { PartyCreateController } from "./controller.ts";
 
-import { created } from "@ps/application_impl/http/builder/200/created.ts";
+import { created } from "../../../http/response/created/builder.ts";
 
-export class CreatePartyEventControllerImpl implements CreatePartyEventController {
-    constructor(private readonly createPartyEventService: CreatePartyEventService) {}
+export class PartyCreateControllerImpl implements PartyCreateController {
+    constructor(private readonly partyCreateService: PartyCreateService) {}
 
     public async handle(
         userId: User["id"],
-        req: HTTPRequest<CreatePartyEvent>,
+        req: HTTPRequest<PartyCreateModel>,
     ): Promise<HTTPResponse> {
-        const result = await this.createPartyEventService.create(userId, req.body);
+        const result = await this.partyCreateService.create(userId, req.body);
         return created(result);
     }
 }

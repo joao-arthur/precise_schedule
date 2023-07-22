@@ -1,21 +1,21 @@
-import type { User } from "@ps/domain/schedule/user/User.ts";
-import type { UpdateMeetingEvent } from "@ps/domain/schedule/event/updateMeeting/UpdateMeetingEvent.ts";
-import type { UpdateMeetingEventService } from "@ps/domain/schedule/event/updateMeeting/UpdateMeetingEventService.ts";
-import type { HTTPRequest } from "@ps/application/http/HTTPRequest.ts";
-import type { HTTPResponse } from "@ps/application/http/HTTPResponse.ts";
-import type { IdParam } from "@ps/application/http/IdParam.ts";
-import type { UpdateMeetingEventController } from "@ps/application/schedule/event/updateMeeting/UpdateMeetingEventController.ts";
+import type { User } from "@ps/domain/schedule/user/model.ts";
+import type { MeetingUpdateModel } from "@ps/domain/schedule/event/meeting/update/model.ts";
+import type { MeetingUpdateService } from "@ps/domain/schedule/event/meeting/update/service.ts";
+import type { HTTPRequest } from "../../../http/request/model.ts";
+import type { HTTPResponse } from "../../../http/response/model.ts";
+import type { IdParam } from "../../../http/IdParam.ts";
+import type { MeetingUpdateController } from "./controller.ts";
 
-import { noContent } from "@ps/application_impl/http/builder/200/noContent.ts";
+import { noContent } from "../../../http/response/noContent/builder.ts";
 
-export class UpdateMeetingEventControllerImpl implements UpdateMeetingEventController {
-    constructor(private readonly updateMeetingEventService: UpdateMeetingEventService) {}
+export class MeetingUpdateControllerImpl implements MeetingUpdateController {
+    constructor(private readonly meetingUpdateService: MeetingUpdateService) {}
 
     public async handle(
         userId: User["id"],
-        req: HTTPRequest<UpdateMeetingEvent, IdParam>,
+        req: HTTPRequest<MeetingUpdateModel, IdParam>,
     ): Promise<HTTPResponse> {
-        await this.updateMeetingEventService.update(userId, req.params.id, req.body);
+        await this.meetingUpdateService.update(userId, req.params.id, req.body);
         return noContent();
     }
 }

@@ -1,15 +1,15 @@
-import type { User } from "@ps/domain/schedule/user/User.ts";
-import type { UniqueInfoModel } from "@ps/domain/schedule/user/uniqueInfo/UniqueInfoModel.ts";
-import type { UniqueInfoRepository } from "@ps/domain/schedule/user/uniqueInfo/UniqueInfoRepository.ts";
-import type { UniqueInfoService } from "@ps/domain/schedule/user/uniqueInfo/UniqueInfoService.ts";
+import type { User } from "../model.ts";
+import type { UserUniqueInfoModel } from "./model.ts";
+import type { UserUniqueInfoService } from "./service.ts";
+import type { UserUniqueInfoRepository } from "./repository.ts";
 
-import { EmailAlreadyRegistered } from "@ps/domain/schedule/user/uniqueInfo/EmailAlreadyRegistered.ts";
-import { UsernameAlreadyRegistered } from "@ps/domain/schedule/user/uniqueInfo/UsernameAlreadyRegistered.ts";
+import { EmailAlreadyRegistered } from "./EmailAlreadyRegistered.ts";
+import { UsernameAlreadyRegistered } from "./UsernameAlreadyRegistered.ts";
 
-export class UniqueInfoServiceImpl implements UniqueInfoService {
-    constructor(private readonly repository: UniqueInfoRepository) {}
+export class UserUniqueInfoServiceImpl implements UserUniqueInfoService {
+    constructor(private readonly repository: UserUniqueInfoRepository) {}
 
-    public async validateNew(user: UniqueInfoModel): Promise<void> {
+    public async validateNew(user: UserUniqueInfoModel): Promise<void> {
         const countUsername = await this.repository.countUsername(user.username);
         if (countUsername > 0) {
             throw new UsernameAlreadyRegistered();
@@ -21,7 +21,7 @@ export class UniqueInfoServiceImpl implements UniqueInfoService {
     }
 
     public async validateExisting(
-        user: UniqueInfoModel,
+        user: UserUniqueInfoModel,
         oldUser: User,
     ): Promise<void> {
         const countUsername = await this.repository.countUsername(user.username);

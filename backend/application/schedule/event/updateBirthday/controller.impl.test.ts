@@ -1,15 +1,15 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { eventMock } from "@ps/domain_mock/schedule/event/EventMock.ts";
-import { UpdateBirthdayEventServiceMock } from "@ps/domain_mock/schedule/event/updateBirthday/UpdateBirthdayEventServiceMock.ts";
-import { noContent } from "@ps/application_impl/http/builder/200/noContent.ts";
-import { httpRequestFullMock } from "@ps/application_mock/http/HTTPRequestMock.ts";
-import { UpdateBirthdayEventControllerImpl } from "./UpdateBirthdayEventControllerImpl.ts";
+import { eventStub } from "@ps/domain/schedule/event/model._stub.ts";
+import { BirthdayUpdateServiceStub } from "@ps/domain/schedule/event/birthday/update/service._stub.ts";
+import { noContent } from "../../../http/response/noContent/builder.ts";
+import { httpRequestFullStub } from "../../../http/request/model._stub.ts";
+import { BirthdayUpdateControllerImpl } from "./controller.impl.ts";
 
-Deno.test("UpdateBirthdayEventControllerImpl", async () => {
+Deno.test("BirthdayUpdateControllerImpl", async () => {
     assertEquals(
-        await new UpdateBirthdayEventControllerImpl(
-            new UpdateBirthdayEventServiceMock(eventMock),
-        ).handle(eventMock.user, httpRequestFullMock),
+        await new BirthdayUpdateControllerImpl(
+            new BirthdayUpdateServiceStub(eventStub),
+        ).handle(eventStub.user, httpRequestFullStub),
         noContent(),
     );
 });

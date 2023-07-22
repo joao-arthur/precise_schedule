@@ -1,6 +1,6 @@
-import type { Session } from "../../../session/Session.ts";
-import type { LoginModel } from "./LoginModel.ts";
+import type { Session } from "../../../session/model.ts";
+import type { UserLoginModel } from "./model.ts";
 
-export type LoginService = {
-    readonly login: (user: LoginModel) => Promise<Session>;
+export type UserLoginService = {
+    readonly userLogin: (user: UserLoginModel) => Promise<Session>;
 };

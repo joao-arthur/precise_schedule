@@ -1,5 +1,5 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { unauthorized } from "./unauthorized.ts";
+import { unauthorized } from "./builder.ts";
 
 Deno.test("unauthorized", () => {
     assertEquals(

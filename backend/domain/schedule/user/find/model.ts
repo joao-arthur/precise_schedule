@@ -1,6 +1,6 @@
-import type { User } from "../User.ts";
+import type { User } from "../model.ts";
 
-export type FindUserModel = {
+export type UserFindModel = {
     readonly firstName: User["firstName"];
     readonly birthdate: User["birthdate"];
     readonly email: User["email"];

@@ -1,15 +1,15 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { eventMock } from "@ps/domain_mock/schedule/event/EventMock.ts";
-import { CreatePartyEventServiceMock } from "@ps/domain_mock/schedule/event/createParty/CreatePartyEventServiceMock.ts";
-import { created } from "@ps/application_impl/http/builder/200/created.ts";
-import { httpRequestBodyMock } from "@ps/application_mock/http/HTTPRequestMock.ts";
-import { CreatePartyEventControllerImpl } from "./CreatePartyEventControllerImpl.ts";
+import { eventStub } from "@ps/domain/schedule/event/model._stub.ts";
+import { PartyCreateServiceStub } from "@ps/domain/schedule/event/party/create/service._stub.ts";
+import { created } from "../../../http/response/created/builder.ts";
+import { httpRequestBodyStub } from "../../../http/request/model._stub.ts";
+import { PartyCreateControllerImpl } from "./controller.impl.ts";
 
-Deno.test("CreatePartyEventControllerImpl", async () => {
+Deno.test("PartyCreateControllerImpl", async () => {
     assertEquals(
-        await new CreatePartyEventControllerImpl(
-            new CreatePartyEventServiceMock(eventMock),
-        ).handle(eventMock.user, httpRequestBodyMock),
-        created(eventMock),
+        await new PartyCreateControllerImpl(
+            new PartyCreateServiceStub(eventStub),
+        ).handle(eventStub.user, httpRequestBodyStub),
+        created(eventStub),
     );
 });

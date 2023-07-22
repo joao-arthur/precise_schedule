@@ -1,9 +1,9 @@
-import type { User } from "@ps/domain/schedule/user/User.ts";
-import type { UpdateUserModel } from "@ps/domain/schedule/user/update/UpdateUserModel.ts";
-import type { UpdateUserFactory } from "@ps/domain/schedule/user/update/UpdateUserFactory.ts";
+import type { User } from "../model.ts";
+import type { UserUpdateModel } from "./model.ts";
+import type { UserUpdateFactory } from "./factory.ts";
 
-export class UpdateUserFactoryImpl implements UpdateUserFactory {
-    public build(user: UpdateUserModel, existingUser: User): User {
+export class UserUpdateFactoryImpl implements UserUpdateFactory {
+    public build(user: UserUpdateModel, existingUser: User): User {
         return {
             id: existingUser.id,
             email: user.email,
