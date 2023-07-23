@@ -62,10 +62,6 @@ export type NewPassword = {
     readonly password: User["password"];
 };
 
-export type PasswordMatch = {
-    readonly passwordMatch: User["password"];
-};
-
 export type Settings = {
     readonly language: Language;
     readonly twoFactorAuth: boolean;

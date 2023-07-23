@@ -10,7 +10,7 @@ import {
     BiSolidParty,
     BiTrash,
 } from "react-icons/bi";
-import { RiCloseLine } from "react-icons/ri";
+import { RiCheckLine, RiCloseLine } from "react-icons/ri";
 import { BsPeopleFill } from "react-icons/bs";
 import { HiFilter, HiPlusSm } from "react-icons/hi";
 import { MdEdit } from "react-icons/md";
@@ -20,6 +20,7 @@ export type names =
     | "cog-wheel"
     | "door"
     | "x"
+    | "check"
     | "info"
     | "chart"
     | "pencil"
@@ -51,6 +52,8 @@ export function Icon({ name, className }: props) {
             return <BiDoorOpen {...props} />;
         case "x":
             return <RiCloseLine {...props} />;
+        case "check":
+            return <RiCheckLine {...props} />;
         case "info":
             return <BiInfoCircle {...props} />;
         case "chart":

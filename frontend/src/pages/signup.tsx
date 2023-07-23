@@ -1,13 +1,14 @@
-import type { CreateUser, PasswordMatch } from "@/features/user/user";
+import type { CreateUser } from "@/features/user/user";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useAnonPage } from "@/features/session/useAnonPage";
 import { useSessionManager } from "@/features/session/useSessionManager";
 import { useUserCreate } from "@/features/user/useUserAPI";
 import { Text } from "@/components/atoms/typography/Text";
+import { TextMedium } from "@/components/atoms/typography/TextMedium";
 import { Link } from "@/components/atoms/Link";
 import { TextInput } from "@/components/atoms/input/TextInput";
-import { InputField } from "@/components/atoms/InputField";
+import { InputWrapper } from "@/components/atoms/form/InputWrapper";
 import { EmailInput } from "@/components/atoms/input/EmailInput";
 import { DateInput } from "@/components/atoms/input/DateInput";
 import { PasswordInput } from "@/components/atoms/input/PasswordInput";
@@ -17,14 +18,16 @@ import { Form } from "@/components/organisms/Form";
 import { FormContainer } from "@/components/atoms/FormContainer";
 import { SubHeader } from "@/content/base/subHeader/SubHeader";
 import { ButtonIcon } from "@/components/atoms/ButtonIcon";
-
-type CreateUserForm = CreateUser & PasswordMatch;
+import { ErrorBadge } from "@/components/atoms/ErrorBadge";
+import { SuccessBadge } from "@/components/atoms/SuccessBadge";
 
 export default function SignUp() {
     useAnonPage();
-    const { register, handleSubmit } = useForm<CreateUserForm>();
+    const { register, handleSubmit, watch } = useForm<CreateUser>();
     const { log } = useSessionManager();
     const { mutate, isLoading, data } = useUserCreate();
+
+    const password = watch("password");
 
     useEffect(() => {
         if (data) {
@@ -47,47 +50,45 @@ export default function SignUp() {
             <PageContent>
                 <FormContainer>
                     <Form
-                        title="Create your account"
-                        action="SIGN UP"
+                        action="CREATE ACCOUNT"
                         loading={isLoading}
                         onSubmit={handleSubmit((data) => mutate(data))}
                     >
-                        <InputField name="firstName" title="First name">
+                        <InputWrapper name="firstName" title="First name">
                             <TextInput
                                 {...register("firstName", {
                                     required: true,
                                     disabled: isLoading,
                                 })}
                             />
-                        </InputField>
-                        <InputField name="birthdate" title="Birthdate">
+                        </InputWrapper>
+                        <InputWrapper name="birthdate" title="Birthdate">
                             <DateInput
                                 {...register("birthdate", {
                                     required: true,
                                     disabled: isLoading,
                                 })}
                             />
-                        </InputField>
-                        <InputField name="email" title="E-mail">
+                        </InputWrapper>
+                        <InputWrapper name="email" title="E-mail">
                             <EmailInput
                                 {...register("email", {
                                     required: true,
                                     disabled: isLoading,
                                 })}
                             />
-                        </InputField>
-                        <InputField name="username" title="Username">
+                        </InputWrapper>
+                        <InputWrapper name="username" title="Username">
                             <TextInput
                                 {...register("username", {
                                     required: true,
                                     disabled: isLoading,
                                 })}
                             />
-                        </InputField>
-                        <InputField
+                        </InputWrapper>
+                        <InputWrapper
                             name="password"
                             title="Password"
-                            notice="At least 10 characters"
                         >
                             <PasswordInput
                                 {...register("password", {
@@ -96,20 +97,31 @@ export default function SignUp() {
                                     disabled: isLoading,
                                 })}
                             />
-                        </InputField>
-                        <InputField
-                            name="passwordMatch"
-                            title="Type password again"
-                            notice="At least 10 characters"
-                        >
-                            <PasswordInput
-                                {...register("passwordMatch", {
-                                    required: true,
-                                    minLength: 10,
-                                    disabled: isLoading,
-                                })}
-                            />
-                        </InputField>
+                            <div className="py-2">
+                                <div className="flex gap-2 p-1 items-center">
+                                    {password && password.length >= 8
+                                        ? <SuccessBadge />
+                                        : <ErrorBadge />}
+                                    <TextMedium>At least 8 characters</TextMedium>
+                                </div>
+                                <div className="flex gap-2 p-1 items-center">
+                                    {password ? <SuccessBadge /> : <ErrorBadge />}
+                                    <TextMedium>At least 1 number</TextMedium>
+                                </div>
+                                <div className="flex gap-2 p-1 items-center">
+                                    {password ? <SuccessBadge /> : <ErrorBadge />}
+                                    <TextMedium>At least 1 uppercase letter</TextMedium>
+                                </div>
+                                <div className="flex gap-2 p-1 items-center">
+                                    {password ? <SuccessBadge /> : <ErrorBadge />}
+                                    <TextMedium>At least 1 lowercase letter</TextMedium>
+                                </div>
+                                <div className="flex gap-2 p-1 items-center">
+                                    {password ? <SuccessBadge /> : <ErrorBadge />}
+                                    <TextMedium>At least 1 special character</TextMedium>
+                                </div>
+                            </div>
+                        </InputWrapper>
                     </Form>
                     <Box>
                         <Text>

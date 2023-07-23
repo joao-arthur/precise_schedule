@@ -4,7 +4,7 @@ import { Link } from "@/components/atoms/Link";
 import { Form } from "@/components/organisms/Form";
 import { SubHeader } from "@/content/base/subHeader/SubHeader";
 import { SelectInput } from "@/components/atoms/input/SelectInput";
-import { InputField } from "@/components/atoms/InputField";
+import { InputWrapper } from "@/components/atoms/form/InputWrapper";
 import { useAuthPage } from "@/features/session/useAuthPage";
 import { PageContent } from "@/components/atoms/layout/PageContent";
 import { FormContainer } from "@/components/atoms/FormContainer";
@@ -34,12 +34,11 @@ export default function Settings() {
             <PageContent>
                 <FormContainer>
                     <Form
-                        title="Settings"
                         action="SAVE SETTINGS"
                         loading={false}
                         onSubmit={handleSubmit(handle)}
                     >
-                        <InputField name="language" title="Language">
+                        <InputWrapper name="language" title="Language">
                             <SelectInput
                                 options={[
                                     {
@@ -61,16 +60,16 @@ export default function Settings() {
                                 ]}
                                 {...register("language")}
                             />
-                        </InputField>
-                        <InputField
+                        </InputWrapper>
+                        <InputWrapper
                             name="twoFactorAuth"
                             title="Enable two factor authentication"
                         >
                             <ToggleInput
                                 {...register("twoFactorAuth")}
                             />
-                        </InputField>
-                        <InputField name="theme" title="Theme">
+                        </InputWrapper>
+                        <InputWrapper name="theme" title="Theme">
                             <SelectInput
                                 options={[
                                     { id: "light", label: "☀️ light" },
@@ -79,7 +78,7 @@ export default function Settings() {
                                 ]}
                                 {...register("theme")}
                             />
-                        </InputField>
+                        </InputWrapper>
                         <Link to="password/new">Change password</Link>
                         <br />
                         <Link to="#">Delete my account</Link>

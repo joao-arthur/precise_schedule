@@ -6,11 +6,10 @@ import { useUserLogin } from "@/features/user/useUserAPI";
 import { useSessionManager } from "@/features/session/useSessionManager";
 import { Text } from "@/components/atoms/typography/Text";
 import { Link } from "@/components/atoms/Link";
-import { InputField } from "@/components/atoms/InputField";
+import { InputWrapper } from "@/components/atoms/form/InputWrapper";
 import { TextInput } from "@/components/atoms/input/TextInput";
 import { PasswordInput } from "@/components/atoms/input/PasswordInput";
 import { Box } from "@/components/atoms/layout/Box";
-import { FilledBox } from "@/components/atoms/layout/FilledBox";
 import { PageContent } from "@/components/atoms/layout/PageContent";
 import { FormContainer } from "@/components/atoms/FormContainer";
 import { ButtonIcon } from "@/components/atoms/ButtonIcon";
@@ -44,20 +43,19 @@ export default function SignIn() {
             <PageContent>
                 <FormContainer>
                     <Form
-                        title="Access your account"
                         action="SIGN IN"
                         loading={isLoading}
                         onSubmit={handleSubmit((data) => mutate(data))}
                     >
-                        <InputField name="username" title="Username">
+                        <InputWrapper name="username" title="Username">
                             <TextInput
                                 {...register("username", {
                                     required: true,
                                     disabled: isLoading,
                                 })}
                             />
-                        </InputField>
-                        <InputField
+                        </InputWrapper>
+                        <InputWrapper
                             name="password"
                             title="Password"
                         >
@@ -68,18 +66,18 @@ export default function SignIn() {
                                     disabled: isLoading,
                                 })}
                             />
-                        </InputField>
+                        </InputWrapper>
                     </Form>
-                    <FilledBox>
+                    <Box>
                         <Text>
                             <Link to="/password/forgot">
                                 Forgot your password?
                             </Link>
                         </Text>
-                    </FilledBox>
+                    </Box>
                     <Box>
                         <Text>
-                            New to PreciseSchedule? <Link to="/signup">Create an account</Link>
+                            Don't have an account? <Link to="/signup">Create an account</Link>
                         </Text>
                     </Box>
                 </FormContainer>

@@ -5,7 +5,7 @@ import { Link } from "@/components/atoms/Link";
 import { Box } from "@/components/atoms/layout/Box";
 import { ForgotPassword } from "@/features/user/user";
 import { EmailInput } from "@/components/atoms/input/EmailInput";
-import { InputField } from "@/components/atoms/InputField";
+import { InputWrapper } from "@/components/atoms/form/InputWrapper";
 import { useAnonPage } from "@/features/session/useAnonPage";
 import { PageContent } from "@/components/atoms/layout/PageContent";
 import { FormContainer } from "@/components/atoms/FormContainer";
@@ -35,16 +35,15 @@ export default function ForgotPassword() {
             <PageContent>
                 <FormContainer>
                     <Form
-                        title="Forgot your password"
                         action="SEND INSTRUCTIONS"
                         loading={false}
                         onSubmit={handleSubmit(handle)}
                     >
-                        <InputField name="email" title="Email">
+                        <InputWrapper name="email" title="Email">
                             <EmailInput
                                 {...register("email", { required: true })}
                             />
-                        </InputField>
+                        </InputWrapper>
                     </Form>
                     <Box>
                         <Text>
@@ -53,7 +52,7 @@ export default function ForgotPassword() {
                     </Box>
                     <Box>
                         <Text>
-                            New to PreciseSchedule? <Link to="/signup">Create an account</Link>
+                            Don't have an account? <Link to="/signup">Create an account</Link>
                         </Text>
                     </Box>
                 </FormContainer>

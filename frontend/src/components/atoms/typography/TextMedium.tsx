@@ -5,13 +5,13 @@ type props = {
     readonly children: ReactNode;
 };
 
-export function TextSmall({ children }: props) {
+export function TextMedium({ children }: props) {
     return (
         <span
             className={clss(
                 "select-none",
                 "transition-colors duration-500",
-                "text-xs dark:text-pastel-gray",
+                "text-sm dark:text-pastel-gray",
             )}
         >
             {children}

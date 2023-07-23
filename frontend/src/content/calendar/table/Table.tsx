@@ -1,10 +1,11 @@
 import { useDevice } from "@/lib/device/useDevice";
 import { Content } from "./Content";
 import { Actions } from "./actions/Actions";
+import { useSession } from "@/features/session/useSession";
 
 export function Table() {
-    const device = useDevice();
-    const isMobile = device.isMobile();
+    const isMobile = useDevice().isMobile();
+    const logged = useSession().logged();
 
     return (
         <>
@@ -23,7 +24,7 @@ export function Table() {
                         <Content />
                     </div>
                 )}
-            <Actions />
+            {logged ? <Actions /> : null}
         </>
     );
 }

@@ -1,8 +1,8 @@
-import type { NewPassword, PasswordMatch } from "@/features/user/user";
+import type { NewPassword } from "@/features/user/user";
 import { useForm } from "react-hook-form";
 import { Form } from "@/components/organisms/Form";
 import { SubHeader } from "@/content/base/subHeader/SubHeader";
-import { InputField } from "@/components/atoms/InputField";
+import { InputWrapper } from "@/components/atoms/form/InputWrapper";
 import { PasswordInput } from "@/components/atoms/input/PasswordInput";
 import { useAuthPage } from "@/features/session/useAuthPage";
 import { PageContent } from "@/components/atoms/layout/PageContent";
@@ -10,15 +10,21 @@ import { FormContainer } from "@/components/atoms/FormContainer";
 import { Link } from "@/components/atoms/Link";
 import { ButtonIcon } from "@/components/atoms/ButtonIcon";
 
-type NewPasswordInfo = NewPassword & PasswordMatch;
-
 export default function NewPassword() {
     useAuthPage();
-    const { register, handleSubmit } = useForm<NewPasswordInfo>();
+    const { register, handleSubmit } = useForm<NewPassword>();
 
-    function handle(data: NewPasswordInfo) {
+    function handle(data: NewPassword) {
         console.log(data);
     }
+
+    const validations = [
+        "At least 8 characters",
+        "At least 1 number",
+        "At least 1 uppercase letter",
+        "At least 1 lowercase letter",
+        "At least 1 special character",
+    ];
 
     return (
         <div className="w-full">
@@ -35,15 +41,13 @@ export default function NewPassword() {
             <PageContent>
                 <FormContainer>
                     <Form
-                        title="new password"
                         action="CREATE NEW PASSWORD"
                         loading={false}
                         onSubmit={handleSubmit(handle)}
                     >
-                        <InputField
+                        <InputWrapper
                             name="password"
                             title="Password"
-                            notice="At least 10 characters"
                         >
                             <PasswordInput
                                 {...register("password", {
@@ -51,19 +55,10 @@ export default function NewPassword() {
                                     minLength: 10,
                                 })}
                             />
-                        </InputField>
-                        <InputField
-                            name="passwordMatch"
-                            title="Type password again"
-                            notice="At least 10 characters"
-                        >
-                            <PasswordInput
-                                {...register("passwordMatch", {
-                                    required: true,
-                                    minLength: 10,
-                                })}
-                            />
-                        </InputField>
+                            <div>
+                                {validations.join("\n")}
+                            </div>
+                        </InputWrapper>
                     </Form>
                 </FormContainer>
             </PageContent>

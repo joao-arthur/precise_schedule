@@ -2,7 +2,7 @@ import type { MeetingEvent } from "@/features/event/event";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { ModalForm } from "@/components/atoms/ModalForm";
-import { InputField } from "@/components/atoms/InputField";
+import { InputWrapper } from "@/components/atoms/form/InputWrapper";
 import { Group } from "@/components/atoms/layout/Group";
 import { TextInput } from "@/components/atoms/input/TextInput";
 import { SelectInput } from "@/components/atoms/input/SelectInput";
@@ -39,42 +39,42 @@ export default function MeetingEventRegister() {
             id="MeetingEventRegister"
             onSubmit={handleSubmit(submit)}
         >
-            <InputField name="name" title="Name">
+            <InputWrapper name="name" title="Name">
                 <TextInput
                     {...register("name", {
                         required: true,
                         disabled: isLoading,
                     })}
                 />
-            </InputField>
-            <InputField name="day" title="Day">
+            </InputWrapper>
+            <InputWrapper name="day" title="Day">
                 <DateInput
                     {...register("day", {
                         required: true,
                         disabled: isLoading,
                     })}
                 />
-            </InputField>
+            </InputWrapper>
             <Group>
-                <InputField name="begin" title="Begin">
+                <InputWrapper name="begin" title="Begin">
                     <TimeInput
                         {...register("begin", {
                             required: true,
                             disabled: isLoading,
                         })}
                     />
-                </InputField>
-                <InputField name="end" title="End">
+                </InputWrapper>
+                <InputWrapper name="end" title="End">
                     <TimeInput
                         {...register("end", {
                             required: true,
                             disabled: isLoading,
                         })}
                     />
-                </InputField>
+                </InputWrapper>
             </Group>
             <Group>
-                <InputField
+                <InputWrapper
                     name="frequency"
                     title="Frequency"
                 >
@@ -85,8 +85,8 @@ export default function MeetingEventRegister() {
                         })}
                         options={frequencyOptions}
                     />
-                </InputField>
-                <InputField
+                </InputWrapper>
+                <InputWrapper
                     name="weekendRepeat"
                     title="Repeats on weekend"
                 >
@@ -96,7 +96,7 @@ export default function MeetingEventRegister() {
                             disabled: !canRepeatWeekend || isLoading,
                         })}
                     />
-                </InputField>
+                </InputWrapper>
             </Group>
         </ModalForm>
     );

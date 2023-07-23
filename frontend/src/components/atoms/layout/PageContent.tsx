@@ -12,7 +12,7 @@ export function PageContent({ children }: props) {
     return (
         <div
             className={clss(
-                "flex flex-col my-0 mx-auto",
+                "flex flex-col my-0 mx-auto pt-5",
                 isMobile() ? "w-4/5" : "w-100",
             )}
         >
