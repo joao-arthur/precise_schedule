@@ -2,7 +2,7 @@ import { assertEquals } from "std/testing/asserts.ts";
 import { dtValidation } from "./dtValidation.ts";
 import { DtValidationError } from "./DtValidationError.ts";
 
-const v = { v: "dt" } as const;
+const v = { type: "dt" } as const;
 
 Deno.test("dtValidation valid", () => {
     assertEquals(dtValidation(v, "1917-11-07"), undefined);

@@ -2,7 +2,7 @@ import { assertEquals } from "std/testing/asserts.ts";
 import { timeValidation } from "./timeValidation.ts";
 import { TimeValidationError } from "./TimeValidationError.ts";
 
-const v = { v: "time" } as const;
+const v = { type: "time" } as const;
 
 Deno.test("timeValidation valid", () => {
     assertEquals(timeValidation(v, "10:00"), undefined);

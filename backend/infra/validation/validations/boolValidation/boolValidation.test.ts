@@ -2,7 +2,7 @@ import { assertEquals } from "std/testing/asserts.ts";
 import { boolValidation } from "./boolValidation.ts";
 import { BoolValidationError } from "./BoolValidationError.ts";
 
-const v = { v: "bool" } as const;
+const v = { type: "bool" } as const;
 
 Deno.test("boolValidation valid", () => {
     assertEquals(boolValidation(v, true), undefined);

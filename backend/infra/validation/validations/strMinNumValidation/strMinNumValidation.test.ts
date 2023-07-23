@@ -2,7 +2,7 @@ import { assertEquals } from "std/testing/asserts.ts";
 import { strMinNumValidation } from "./strMinNumValidation.ts";
 import { StrMinNumValidationError } from "./StrMinNumValidationError.ts";
 
-const v = { v: "strMinNum", min: 1 } as const;
+const v = { type: "strMinNum", min: 1 } as const;
 
 Deno.test("strMinNumValidation valid", () => {
     assertEquals(strMinNumValidation(v, "9"), undefined);

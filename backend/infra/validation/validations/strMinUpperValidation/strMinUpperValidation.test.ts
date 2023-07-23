@@ -2,7 +2,7 @@ import { assertEquals } from "std/testing/asserts.ts";
 import { strMinUpperValidation } from "./strMinUpperValidation.ts";
 import { StrMinUpperValidationError } from "./StrMinUpperValidationError.ts";
 
-const v = { v: "strMinUpper", min: 1 } as const;
+const v = { type: "strMinUpper", min: 1 } as const;
 
 Deno.test("strMinUpperValidation valid", () => {
     assertEquals(strMinUpperValidation(v, "Lorem ipsum"), undefined);

@@ -2,7 +2,7 @@ import { assertEquals } from "std/testing/asserts.ts";
 import { strMaxLenValidation } from "./strMaxLenValidation.ts";
 import { StrMaxLenValidationError } from "./StrMaxLenValidationError.ts";
 
-const v = { v: "strMaxLen", max: 1 } as const;
+const v = { type: "strMaxLen", max: 1 } as const;
 
 Deno.test("strMaxLenValidation valid", () => {
     assertEquals(strMaxLenValidation(v, ""), undefined);

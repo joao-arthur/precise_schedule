@@ -2,7 +2,7 @@ import { assertEquals } from "std/testing/asserts.ts";
 import { dtMinValidation } from "./dtMinValidation.ts";
 import { DtMinValidationError } from "./DtMinValidationError.ts";
 
-const v = { v: "dtMin", min: "1970-01-01" } as const;
+const v = { type: "dtMin", min: "1970-01-01" } as const;
 
 Deno.test("dtMinValidation valid", () => {
     assertEquals(dtMinValidation(v, "1970-01-01"), undefined);

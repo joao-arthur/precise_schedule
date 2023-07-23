@@ -2,7 +2,7 @@ import { assertEquals } from "std/testing/asserts.ts";
 import { emailValidation } from "./emailValidation.ts";
 import { EmailValidationError } from "./EmailValidationError.ts";
 
-const v = { v: "email" } as const;
+const v = { type: "email" } as const;
 
 Deno.test("emailValidation valid", () => {
     assertEquals(emailValidation(v, "a@b.c"), undefined);

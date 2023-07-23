@@ -2,7 +2,7 @@ import { assertEquals } from "std/testing/asserts.ts";
 import { strMinSpecialValidation } from "./strMinSpecialValidation.ts";
 import { StrMinSpecialValidationError } from "./StrMinSpecialValidationError.ts";
 
-const v = { v: "strMinSpecial", min: 1 } as const;
+const v = { type: "strMinSpecial", min: 1 } as const;
 
 Deno.test("strMinSpecialValidation valid", () => {
     assertEquals(strMinSpecialValidation(v, "!"), undefined);
@@ -10,7 +10,7 @@ Deno.test("strMinSpecialValidation valid", () => {
     assertEquals(strMinSpecialValidation(v, "nevermore!"), undefined);
     assertEquals(
         strMinSpecialValidation(
-            { v: "strMinSpecial", min: 30 },
+            { type: "strMinSpecial", min: 30 },
             "!@#$%¨&*()[]{}+-*<>,.;:'\"`~^?´",
         ),
         undefined,

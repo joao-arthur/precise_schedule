@@ -6,7 +6,7 @@ Deno.test("ValidatorServiceImpl", () => {
     try {
         new ValidatorServiceImpl().validate(
             { a: undefined, b: "1991-12-25" },
-            { a: [{ v: "str" }], b: [{ v: "dt" }] },
+            { a: [{ type: "str" }], b: [{ type: "dt" }] },
         );
     } catch (e) {
         assertEquals(
@@ -17,7 +17,7 @@ Deno.test("ValidatorServiceImpl", () => {
     assertEquals(
         new ValidatorServiceImpl().validate(
             { dt: "1999-12-31", time: "23:59" },
-            { dt: [{ v: "dt" }], time: [{ v: "time" }] },
+            { dt: [{ type: "dt" }], time: [{ type: "time" }] },
         ),
         undefined,
     );

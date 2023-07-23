@@ -1,16 +1,16 @@
-export type BoolVal = { readonly v: "bool" };
-export type DtVal = { readonly v: "dt" };
-export type DtMinVal = { readonly v: "dtMin"; readonly min: string };
-export type EmailVal = { readonly v: "email" };
-export type EnumVal = { readonly v: "enum"; readonly values: readonly unknown[] };
-export type StrVal = { readonly v: "str" };
-export type StrMaxLenVal = { readonly v: "strMaxLen"; readonly max: number };
-export type StrMinLenVal = { readonly v: "strMinLen"; readonly min: number };
-export type StrMinNumVal = { readonly v: "strMinNum"; readonly min: number };
-export type StrMinLowerVal = { readonly v: "strMinLower"; readonly min: number };
-export type StrMinUpperVal = { readonly v: "strMinUpper"; readonly min: number };
-export type StrMinSpecialVal = { readonly v: "strMinSpecial"; readonly min: number };
-export type TimeVal = { readonly v: "time" };
+export type BoolVal = { readonly type: "bool" };
+export type DtVal = { readonly type: "dt" };
+export type DtMinVal = { readonly type: "dtMin"; readonly min: string };
+export type EmailVal = { readonly type: "email" };
+export type EnumVal = { readonly type: "enum"; readonly values: readonly unknown[] };
+export type StrVal = { readonly type: "str" };
+export type StrMaxLenVal = { readonly type: "strMaxLen"; readonly max: number };
+export type StrMinLenVal = { readonly type: "strMinLen"; readonly min: number };
+export type StrMinNumVal = { readonly type: "strMinNum"; readonly min: number };
+export type StrMinLowerVal = { readonly type: "strMinLower"; readonly min: number };
+export type StrMinUpperVal = { readonly type: "strMinUpper"; readonly min: number };
+export type StrMinSpecialVal = { readonly type: "strMinSpecial"; readonly min: number };
+export type TimeVal = { readonly type: "time" };
 
 export type Validation =
     | BoolVal

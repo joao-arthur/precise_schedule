@@ -3,18 +3,18 @@ import type { DateCreateModel } from "./model.ts";
 
 export const createDateValidation: Schema<DateCreateModel> = {
     name: [
-        { v: "str" },
-        { v: "strMinLen", min: 1 },
-        { v: "strMaxLen", max: 32 },
+        { type: "str" },
+        { type: "strMinLen", min: 1 },
+        { type: "strMaxLen", max: 32 },
     ],
     day: [
-        { v: "dt" },
-        { v: "dtMin", min: "1970-01-01" },
+        { type: "dt" },
+        { type: "dtMin", min: "1970-01-01" },
     ],
     begin: [
-        { v: "time" },
+        { type: "time" },
     ],
     end: [
-        { v: "time" },
+        { type: "time" },
     ],
 };
