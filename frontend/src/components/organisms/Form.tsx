@@ -4,14 +4,14 @@ import { FilledBox } from "../atoms/layout/FilledBox";
 
 type props = {
     readonly action: string;
-    readonly loading?: boolean;
+    readonly disabled: boolean;
     readonly onSubmit: (e: FormEvent<HTMLFormElement>) => void;
     readonly children: ReactNode;
 };
 
 export function Form({
     action,
-    loading,
+    disabled,
     onSubmit,
     children,
 }: props) {
@@ -21,7 +21,7 @@ export function Form({
                 <form onSubmit={onSubmit}>
                     {children}
                     <div className="mt-3">
-                        <Button disabled={loading}>
+                        <Button disabled={disabled}>
                             {action}
                         </Button>
                     </div>

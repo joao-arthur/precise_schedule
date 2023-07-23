@@ -11,7 +11,7 @@ Deno.test("strMinSpecialValidation valid", () => {
     assertEquals(
         strMinSpecialValidation(
             { type: "strMinSpecial", min: 30 },
-            "!@#$%¨&*()[]{}+-*<>,.;:'\"`~^?´",
+            "!@#$%¨&*()[]{}",
         ),
         undefined,
     );

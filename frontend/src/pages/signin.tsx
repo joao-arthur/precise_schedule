@@ -44,7 +44,7 @@ export default function SignIn() {
                 <FormContainer>
                     <Form
                         action="SIGN IN"
-                        loading={isLoading}
+                        disabled={isLoading}
                         onSubmit={handleSubmit((data) => mutate(data))}
                     >
                         <InputWrapper name="username" title="Username">

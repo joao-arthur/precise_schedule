@@ -18,14 +18,6 @@ export default function NewPassword() {
         console.log(data);
     }
 
-    const validations = [
-        "At least 8 characters",
-        "At least 1 number",
-        "At least 1 uppercase letter",
-        "At least 1 lowercase letter",
-        "At least 1 special character",
-    ];
-
     return (
         <div className="w-full">
             <SubHeader
@@ -42,7 +34,7 @@ export default function NewPassword() {
                 <FormContainer>
                     <Form
                         action="CREATE NEW PASSWORD"
-                        loading={false}
+                        disabled={false}
                         onSubmit={handleSubmit(handle)}
                     >
                         <InputWrapper
@@ -55,9 +47,6 @@ export default function NewPassword() {
                                     minLength: 10,
                                 })}
                             />
-                            <div>
-                                {validations.join("\n")}
-                            </div>
                         </InputWrapper>
                     </Form>
                 </FormContainer>

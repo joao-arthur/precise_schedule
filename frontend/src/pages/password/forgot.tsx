@@ -36,7 +36,7 @@ export default function ForgotPassword() {
                 <FormContainer>
                     <Form
                         action="SEND INSTRUCTIONS"
-                        loading={false}
+                        disabled={false}
                         onSubmit={handleSubmit(handle)}
                     >
                         <InputWrapper name="email" title="Email">

@@ -10,7 +10,7 @@ export function strMinSpecialValidation(
         return new StrMinSpecialValidationError(val.min);
     }
     const numLen = value.replaceAll(
-        /[^(!|@|#|$|%|¨|&|*|(|\)|[|\]|{|}|+|\-|*|<|>|,|.|;|:|'|"|`|~|^|?|\´)]/g,
+        /[^(!|@|#|$|%|¨|&|*|(|\)|[|\]|{|})]/g,
         "",
     ).length;
     if (val.min > numLen) {

@@ -35,7 +35,7 @@ export default function Settings() {
                 <FormContainer>
                     <Form
                         action="SAVE SETTINGS"
-                        loading={false}
+                        disabled={false}
                         onSubmit={handleSubmit(handle)}
                     >
                         <InputWrapper name="language" title="Language">

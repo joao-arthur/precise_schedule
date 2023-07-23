@@ -21,6 +21,72 @@ import { ButtonIcon } from "@/components/atoms/ButtonIcon";
 import { ErrorBadge } from "@/components/atoms/ErrorBadge";
 import { SuccessBadge } from "@/components/atoms/SuccessBadge";
 
+function strMinLenValid(value: unknown) {
+    if (typeof value !== "string" || value.length < 8) {
+        return false;
+    }
+    return true;
+}
+
+function strMinLowerValid(value: unknown) {
+    if (typeof value !== "string") {
+        return false;
+    }
+    const lowerLen = value
+        .replaceAll(
+            /0|1|2|3|4|5|6|7|8|9| |\!|\@|\#|\$|\%|\¨|\&|\*|\(|\)|\[|\]|\{|\}|\+|\-|\*|\<|\>|\,|\.|\;|\:|\'|\"|\`|\~|\^|\?|\´/g,
+            "",
+        )
+        .split("")
+        .reduce((acc, c) => acc + Number(c.toLocaleLowerCase() === c), 0);
+    if (1 > lowerLen) {
+        return false;
+    }
+    return true;
+}
+
+function strMinNumValid(value: unknown) {
+    if (typeof value !== "string") {
+        return false;
+    }
+    const numLen = value.replaceAll(/[^\d]/g, "").length;
+    if (1 > numLen) {
+        return false;
+    }
+    return true;
+}
+
+function strMinSpecialValid(value: unknown) {
+    if (typeof value !== "string") {
+        return false;
+    }
+    const numLen = value.replaceAll(
+        /[^(!|@|#|$|%|¨|&|*|(|\)|[|\]|{|})]/g,
+        "",
+    ).length;
+    if (1 > numLen) {
+        return false;
+    }
+    return true;
+}
+
+function strMinUpperValid(value: unknown) {
+    if (typeof value !== "string") {
+        return false;
+    }
+    const upperLen = value
+        .replaceAll(
+            /0|1|2|3|4|5|6|7|8|9| |\!|\@|\#|\$|\%|\¨|\&|\*|\(|\)|\[|\]|\{|\}|\+|\-|\*|\<|\>|\,|\.|\;|\:|\'|\"|\`|\~|\^|\?|\´/g,
+            "",
+        )
+        .split("")
+        .reduce((acc, c) => acc + Number(c.toLocaleUpperCase() === c), 0);
+    if (1 > upperLen) {
+        return false;
+    }
+    return true;
+}
+
 export default function SignUp() {
     useAnonPage();
     const { register, handleSubmit, watch } = useForm<CreateUser>();
@@ -51,7 +117,7 @@ export default function SignUp() {
                 <FormContainer>
                     <Form
                         action="CREATE ACCOUNT"
-                        loading={isLoading}
+                        disabled={isLoading}
                         onSubmit={handleSubmit((data) => mutate(data))}
                     >
                         <InputWrapper name="firstName" title="First name">
@@ -95,30 +161,33 @@ export default function SignUp() {
                                     required: true,
                                     minLength: 10,
                                     disabled: isLoading,
+                                    validate: (value) =>
+                                        strMinLenValid(value) && strMinNumValid(value) &&
+                                        strMinUpperValid(value) && strMinLowerValid(value),
                                 })}
                             />
                             <div className="py-2">
                                 <div className="flex gap-2 p-1 items-center">
-                                    {password && password.length >= 8
-                                        ? <SuccessBadge />
-                                        : <ErrorBadge />}
+                                    {strMinLenValid(password) ? <SuccessBadge /> : <ErrorBadge />}
                                     <TextMedium>At least 8 characters</TextMedium>
                                 </div>
                                 <div className="flex gap-2 p-1 items-center">
-                                    {password ? <SuccessBadge /> : <ErrorBadge />}
+                                    {strMinNumValid(password) ? <SuccessBadge /> : <ErrorBadge />}
                                     <TextMedium>At least 1 number</TextMedium>
                                 </div>
                                 <div className="flex gap-2 p-1 items-center">
-                                    {password ? <SuccessBadge /> : <ErrorBadge />}
+                                    {strMinUpperValid(password) ? <SuccessBadge /> : <ErrorBadge />}
                                     <TextMedium>At least 1 uppercase letter</TextMedium>
                                 </div>
                                 <div className="flex gap-2 p-1 items-center">
-                                    {password ? <SuccessBadge /> : <ErrorBadge />}
+                                    {strMinLowerValid(password) ? <SuccessBadge /> : <ErrorBadge />}
                                     <TextMedium>At least 1 lowercase letter</TextMedium>
                                 </div>
                                 <div className="flex gap-2 p-1 items-center">
-                                    {password ? <SuccessBadge /> : <ErrorBadge />}
-                                    <TextMedium>At least 1 special character</TextMedium>
+                                    {strMinSpecialValid(password)
+                                        ? <SuccessBadge />
+                                        : <ErrorBadge />}
+                                    <TextMedium>At least 1 of !@#$%¨&*()[]{}</TextMedium>
                                 </div>
                             </div>
                         </InputWrapper>
