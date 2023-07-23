@@ -1,19 +1,19 @@
 import type { ValidatorProvider } from "@ps/domain/validation/validator/provider.ts";
 import type { Validation } from "@ps/domain/validation/model.ts";
 
-import { boolValidation } from "../validations/boolValidation/boolValidation.ts";
-import { dtValidation } from "../validations/dtValidation/dtValidation.ts";
-import { dtMinValidation } from "../validations/dtMinValidation/dtMinValidation.ts";
-import { emailValidation } from "../validations/emailValidation/emailValidation.ts";
-import { enumValidation } from "../validations/enumValidation/enumValidation.ts";
-import { strValidation } from "../validations/strValidation/strValidation.ts";
-import { strMaxLenValidation } from "../validations/strMaxLenValidation/strMaxLenValidation.ts";
-import { strMinLenValidation } from "../validations/strMinLenValidation/strMinLenValidation.ts";
-import { strMinNumValidation } from "../validations/strMinNumValidation/strMinNumValidation.ts";
-import { strMinLowerValidation } from "../validations/strMinLowerValidation/strMinLowerValidation.ts";
-import { strMinUpperValidation } from "../validations/strMinUpperValidation/strMinUpperValidation.ts";
-import { strMinSpecialValidation } from "../validations/strMinSpecialValidation/strMinSpecialValidation.ts";
-import { timeValidation } from "../validations/timeValidation/timeValidation.ts";
+import { boolValidation } from "../validations/bool/boolValidation.ts";
+import { dtValidation } from "../validations/dt/dtValidation.ts";
+import { dtMinValidation } from "../validations/dtMin/dtMinValidation.ts";
+import { emailValidation } from "../validations/email/emailValidation.ts";
+import { enumValidation } from "../validations/enum/enumValidation.ts";
+import { strValidation } from "../validations/str/strValidation.ts";
+import { strMaxLenValidation } from "../validations/strMaxLen/strMaxLenValidation.ts";
+import { strMinLenValidation } from "../validations/strMinLen/strMinLenValidation.ts";
+import { strMinNumValidation } from "../validations/strMinNum/strMinNumValidation.ts";
+import { strMinLowerValidation } from "../validations/strMinLower/strMinLowerValidation.ts";
+import { strMinUpperValidation } from "../validations/strMinUpper/strMinUpperValidation.ts";
+import { strMinSpecialValidation } from "../validations/strMinSpecial/strMinSpecialValidation.ts";
+import { timeValidation } from "../validations/time/timeValidation.ts";
 
 export class ValidatorProviderImpl implements ValidatorProvider {
     public execute(validation: Validation, value: unknown): Error | undefined {
