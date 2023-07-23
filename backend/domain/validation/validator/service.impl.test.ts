@@ -4,6 +4,15 @@ import { ValidatorProviderStub } from "@ps/domain/validation/validator/provider.
 import { ValidatorServiceImpl } from "./service.impl.ts";
 
 Deno.test("ValidatorServiceImpl", () => {
+    assertEquals(
+        new ValidatorServiceImpl(
+            new ValidatorProviderStub(undefined),
+        ).validate(
+            null,
+            { dt: [{ type: "dt" }], time: [{ type: "time" }] } as any,
+        ),
+        undefined,
+    );
     try {
         new ValidatorServiceImpl(
             new ValidatorProviderStub(new Error("invalid")),

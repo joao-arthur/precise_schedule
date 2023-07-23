@@ -61,7 +61,7 @@ Deno.test("Appointment", async (t) => {
 
 Deno.test("Appointment validation", async () => {
     assertEquals(
-        await createAppointmentEvent({} as any),
+        await createAppointmentEvent(null),
         {
             status: 400,
             body: {

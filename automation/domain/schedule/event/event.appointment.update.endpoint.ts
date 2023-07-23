@@ -7,7 +7,7 @@ import { ValidationError } from "../../general/validation.error.ts";
 
 export function updateAppointmentEvent(
     id: string,
-    model: UpdateAppointmentEvent,
+    model: UpdateAppointmentEvent | undefined | null,
 ): Promise<Res<void | BusinessError | ValidationError>> {
     return request.put(`event/APPOINTMENT/${id}`, model);
 }

@@ -6,7 +6,7 @@ import { request } from "../../../infra/request.ts";
 import { ValidationError } from "../../general/validation.error.ts";
 
 export function createMeetingEvent(
-    model: CreateMeetingEvent,
+    model: CreateMeetingEvent | undefined | null,
 ): Promise<Res<void | BusinessError | ValidationError>> {
     return request.post("event/MEETING", model);
 }

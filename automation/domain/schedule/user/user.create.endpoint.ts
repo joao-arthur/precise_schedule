@@ -7,7 +7,7 @@ import { request } from "../../../infra/request.ts";
 import { ValidationError } from "../../general/validation.error.ts";
 
 export function createUserEndpoint(
-    model: CreateUserModel,
+    model: CreateUserModel | undefined | null,
 ): Promise<Res<Session | BusinessError | ValidationError>> {
     return request.post("user", model);
 }

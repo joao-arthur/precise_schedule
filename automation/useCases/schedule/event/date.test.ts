@@ -57,7 +57,7 @@ Deno.test("Date", async (t) => {
 
 Deno.test("Date validation", async () => {
     assertEquals(
-        await createDateEvent({} as any),
+        await createDateEvent(null),
         {
             status: 400,
             body: {

@@ -57,7 +57,7 @@ Deno.test("Party", async (t) => {
 
 Deno.test("Party validation", async () => {
     assertEquals(
-        await createPartyEvent({} as any),
+        await createPartyEvent(null),
         {
             status: 400,
             body: {

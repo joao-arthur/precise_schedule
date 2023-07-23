@@ -7,7 +7,7 @@ import { request } from "../../../infra/request.ts";
 import { ValidationError } from "../../general/validation.error.ts";
 
 export function loginEndpoint(
-    model: LoginModel,
+    model: LoginModel | undefined | null,
 ): Promise<Res<Session | BusinessError | ValidationError>> {
     return request.post("user/login", model);
 }

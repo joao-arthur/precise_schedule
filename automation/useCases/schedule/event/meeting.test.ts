@@ -61,7 +61,7 @@ Deno.test("Meeting", async (t) => {
 
 Deno.test("Meeting validation", async () => {
     assertEquals(
-        await createMeetingEvent({} as any),
+        await createMeetingEvent(null),
         {
             status: 400,
             body: {

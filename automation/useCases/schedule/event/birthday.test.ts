@@ -53,7 +53,7 @@ Deno.test("Birthday", async (t) => {
 
 Deno.test("Birthday validation", async () => {
     assertEquals(
-        await createBirthdayEvent({} as any),
+        await createBirthdayEvent(null),
         {
             status: 400,
             body: {

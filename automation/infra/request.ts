@@ -5,7 +5,7 @@ import { State } from "../app/state.ts";
 type Params = {
     readonly resource: string;
     readonly method: "GET" | "POST" | "PUT" | "DELETE";
-    readonly body?: Record<string, unknown>;
+    readonly body?: Record<string, unknown> | undefined | null;
 };
 
 function customFetch<T>({ resource, method, body }: Params): Promise<Res<T>> {
@@ -39,11 +39,17 @@ export function getReq<T>(resource: string): Promise<Res<T>> {
     return customFetch({ resource, method: "GET" });
 }
 
-export function postReq<T>(resource: string, body: Record<string, unknown>): Promise<Res<T>> {
+export function postReq<T>(
+    resource: string,
+    body: Record<string, unknown> | undefined | null,
+): Promise<Res<T>> {
     return customFetch({ resource, method: "POST", body });
 }
 
-export function putReq<T>(resource: string, body: Record<string, unknown>): Promise<Res<T>> {
+export function putReq<T>(
+    resource: string,
+    body: Record<string, unknown> | undefined | null,
+): Promise<Res<T>> {
     return customFetch({ resource, method: "PUT", body });
 }
 

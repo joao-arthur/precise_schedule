@@ -10,7 +10,7 @@ export class ValidatorServiceImpl implements ValidatorService {
     constructor(private readonly provider: ValidatorProvider) {}
 
     public validate<Keys>(
-        validated: Keys,
+        validated: Keys | undefined | null,
         schema: Schema<Keys>,
     ): void {
         const entries = Object.entries<readonly Validation[]>(schema);
@@ -19,7 +19,7 @@ export class ValidatorServiceImpl implements ValidatorService {
                 key,
                 validations
                     .map((validation) =>
-                        this.provider.execute(validation, validated[key as keyof Keys])
+                        this.provider.execute(validation, validated?.[key as keyof Keys])
                     )
                     .filter(Boolean)
                     .map((err) => (err as Error).message),

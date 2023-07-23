@@ -39,7 +39,7 @@ Deno.test("User", async (t) => {
 
 Deno.test("Create user validation", async () => {
     assertEquals(
-        await createUserEndpoint({} as any),
+        await createUserEndpoint(null),
         {
             status: 400,
             body: {
@@ -80,7 +80,7 @@ Deno.test("Create user validation", async () => {
 
 Deno.test("Login validation", async () => {
     assertEquals(
-        await loginEndpoint({} as any),
+        await loginEndpoint(null),
         {
             status: 400,
             body: {
