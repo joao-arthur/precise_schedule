@@ -1,6 +1,6 @@
 import type { StrMaxLenVal } from "@ps/domain/validation/model.ts";
 
-import { StrMaxLenValidationError } from "./error.validation.strMaxLen.ts";
+import { StrMaxLenValidationError } from "./error.ts";
 
 export function strMaxLenValidation(
     val: StrMaxLenVal,

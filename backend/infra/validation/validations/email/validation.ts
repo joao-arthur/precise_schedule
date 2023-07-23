@@ -1,6 +1,6 @@
 import type { EmailVal } from "@ps/domain/validation/model.ts";
 
-import { EmailValidationError } from "./error.validation.email.ts";
+import { EmailValidationError } from "./error.ts";
 
 export function emailValidation(_: EmailVal, value: unknown): EmailValidationError | undefined {
     if (typeof value !== "string") {

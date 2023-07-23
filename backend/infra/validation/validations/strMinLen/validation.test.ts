@@ -1,6 +1,6 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { strMinLenValidation } from "./strMinLenValidation.ts";
-import { StrMinLenValidationError } from "./StrMinLenValidationError.ts";
+import { strMinLenValidation } from "./validation.ts";
+import { StrMinLenValidationError } from "./error.ts";
 
 const v = { type: "strMinLen", min: 1 } as const;
 

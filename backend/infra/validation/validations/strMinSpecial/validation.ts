@@ -1,6 +1,6 @@
 import type { StrMinSpecialVal } from "@ps/domain/validation/model.ts";
 
-import { StrMinSpecialValidationError } from "./StrMinSpecialValidationError.ts";
+import { StrMinSpecialValidationError } from "./error.ts";
 
 export function strMinSpecialValidation(
     val: StrMinSpecialVal,

@@ -1,6 +1,6 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { strValidation } from "./validation.str.ts";
-import { StrValidationError } from "./error.validation.str.ts";
+import { strValidation } from "./validation.ts";
+import { StrValidationError } from "./error.ts";
 
 const v = { type: "str" } as const;
 

@@ -1,6 +1,6 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { timeValidation } from "./timeValidation.ts";
-import { TimeValidationError } from "./TimeValidationError.ts";
+import { timeValidation } from "./validation.ts";
+import { TimeValidationError } from "./error.ts";
 
 const v = { type: "time" } as const;
 

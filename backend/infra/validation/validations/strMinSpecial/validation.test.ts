@@ -1,6 +1,6 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { strMinSpecialValidation } from "./strMinSpecialValidation.ts";
-import { StrMinSpecialValidationError } from "./StrMinSpecialValidationError.ts";
+import { strMinSpecialValidation } from "./validation.ts";
+import { StrMinSpecialValidationError } from "./error.ts";
 
 const v = { type: "strMinSpecial", min: 1 } as const;
 
