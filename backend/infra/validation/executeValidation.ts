@@ -1,4 +1,4 @@
-import type { Validation } from "@ps/domain/validation/Validation.ts";
+import type { Validation } from "@ps/domain/validation/model.ts";
 
 import { boolValidation } from "./validations/boolValidation/boolValidation.ts";
 import { dtValidation } from "./validations/dtValidation/dtValidation.ts";

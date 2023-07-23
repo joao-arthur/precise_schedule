@@ -1,4 +1,4 @@
-import type { StrMinNumVal } from "@ps/domain/validation/Validation.ts";
+import type { StrMinNumVal } from "@ps/domain/validation/model.ts";
 
 import { StrMinNumValidationError } from "./StrMinNumValidationError.ts";
 

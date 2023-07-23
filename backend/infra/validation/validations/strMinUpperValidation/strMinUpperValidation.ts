@@ -1,4 +1,4 @@
-import type { StrMinUpperVal } from "@ps/domain/validation/Validation.ts";
+import type { StrMinUpperVal } from "@ps/domain/validation/model.ts";
 
 import { StrMinUpperValidationError } from "./StrMinUpperValidationError.ts";
 

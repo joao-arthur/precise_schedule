@@ -1,4 +1,4 @@
-import type { TimeVal } from "@ps/domain/validation/Validation.ts";
+import type { TimeVal } from "@ps/domain/validation/model.ts";
 
 import { TimeValidationError } from "./TimeValidationError.ts";
 

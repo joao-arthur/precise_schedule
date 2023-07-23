@@ -1,4 +1,4 @@
-import type { StrMaxLenVal } from "@ps/domain/validation/Validation.ts";
+import type { StrMaxLenVal } from "@ps/domain/validation/model.ts";
 
 import { StrMaxLenValidationError } from "./StrMaxLenValidationError.ts";
 

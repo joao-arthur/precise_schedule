@@ -1,4 +1,4 @@
-import type { StrVal } from "@ps/domain/validation/Validation.ts";
+import type { StrVal } from "@ps/domain/validation/model.ts";
 
 import { StrValidationError } from "./StrValidationError.ts";
 

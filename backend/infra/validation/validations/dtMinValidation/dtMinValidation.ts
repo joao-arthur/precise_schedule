@@ -1,4 +1,4 @@
-import type { DtMinVal } from "@ps/domain/validation/Validation.ts";
+import type { DtMinVal } from "@ps/domain/validation/model.ts";
 
 import { DtMinValidationError } from "./DtMinValidationError.ts";
 

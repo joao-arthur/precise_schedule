@@ -1,4 +1,4 @@
-import type { EmailVal } from "@ps/domain/validation/Validation.ts";
+import type { EmailVal } from "@ps/domain/validation/model.ts";
 
 import { EmailValidationError } from "./EmailValidationError.ts";
 
