@@ -16,5 +16,6 @@ export const updateDateValidation: Schema<DateUpdateModel> = {
     ],
     end: [
         { type: "time" },
+        { type: "compareBigger", field: "begin" },
     ],
 };

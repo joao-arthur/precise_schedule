@@ -14,36 +14,47 @@ import { strMinLowerValidation } from "../validations/strMinLower/validation.ts"
 import { strMinUpperValidation } from "../validations/strMinUpper/validation.ts";
 import { strMinSpecialValidation } from "../validations/strMinSpecial/validation.ts";
 import { timeValidation } from "../validations/time/validation.ts";
+import { compareBiggerValidation } from "@ps/infra/validation/validations/compareBigger/validation.ts";
 
 export class ValidatorProviderImpl implements ValidatorProvider {
-    public execute(validation: Validation, value: unknown): Error | undefined {
+    public execute<Keys>(
+        validation: Validation,
+        validated: Keys | null | undefined,
+        key: keyof Keys,
+    ): Error | undefined {
         switch (validation.type) {
             case "bool":
-                return boolValidation(validation, value);
+                return boolValidation(validation, validated?.[key]);
             case "dt":
-                return dtValidation(validation, value);
+                return dtValidation(validation, validated?.[key]);
             case "dtMin":
-                return dtMinValidation(validation, value);
+                return dtMinValidation(validation, validated?.[key]);
             case "email":
-                return emailValidation(validation, value);
+                return emailValidation(validation, validated?.[key]);
             case "enum":
-                return enumValidation(validation, value);
+                return enumValidation(validation, validated?.[key]);
             case "str":
-                return strValidation(validation, value);
+                return strValidation(validation, validated?.[key]);
             case "strMaxLen":
-                return strMaxLenValidation(validation, value);
+                return strMaxLenValidation(validation, validated?.[key]);
             case "strMinLen":
-                return strMinLenValidation(validation, value);
+                return strMinLenValidation(validation, validated?.[key]);
             case "strMinNum":
-                return strMinNumValidation(validation, value);
+                return strMinNumValidation(validation, validated?.[key]);
             case "strMinLower":
-                return strMinLowerValidation(validation, value);
+                return strMinLowerValidation(validation, validated?.[key]);
             case "strMinUpper":
-                return strMinUpperValidation(validation, value);
+                return strMinUpperValidation(validation, validated?.[key]);
             case "strMinSpecial":
-                return strMinSpecialValidation(validation, value);
+                return strMinSpecialValidation(validation, validated?.[key]);
             case "time":
-                return timeValidation(validation, value);
+                return timeValidation(validation, validated?.[key]);
+            case "compareBigger":
+                return compareBiggerValidation(
+                    validation,
+                    validated?.[key],
+                    validated?.[validation.field as keyof Keys],
+                );
         }
     }
 }

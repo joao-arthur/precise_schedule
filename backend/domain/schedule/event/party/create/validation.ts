@@ -16,5 +16,6 @@ export const createPartyValidation: Schema<PartyCreateModel> = {
     ],
     end: [
         { type: "time" },
+        { type: "compareBigger", field: "begin" },
     ],
 };

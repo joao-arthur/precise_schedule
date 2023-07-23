@@ -11,6 +11,7 @@ export type StrMinLowerVal = { readonly type: "strMinLower"; readonly min: numbe
 export type StrMinUpperVal = { readonly type: "strMinUpper"; readonly min: number };
 export type StrMinSpecialVal = { readonly type: "strMinSpecial"; readonly min: number };
 export type TimeVal = { readonly type: "time" };
+export type CompareBiggerVal = { readonly type: "compareBigger"; readonly field: string };
 
 export type Validation =
     | BoolVal
@@ -25,4 +26,5 @@ export type Validation =
     | StrMinLowerVal
     | StrMinUpperVal
     | StrMinSpecialVal
-    | TimeVal;
+    | TimeVal
+    | CompareBiggerVal;

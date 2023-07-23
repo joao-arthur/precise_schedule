@@ -16,5 +16,6 @@ export const updatePartyValidation: Schema<PartyUpdateModel> = {
     ],
     end: [
         { type: "time" },
+        { type: "compareBigger", field: "begin" },
     ],
 };

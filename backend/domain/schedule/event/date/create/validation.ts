@@ -16,5 +16,6 @@ export const createDateValidation: Schema<DateCreateModel> = {
     ],
     end: [
         { type: "time" },
+        { type: "compareBigger", field: "begin" },
     ],
 };
