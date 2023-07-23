@@ -1,22 +1,27 @@
 import { assertEquals } from "std/testing/asserts.ts";
 import { ValidationError } from "@ps/domain/validation/ValidationError.ts";
+import { ValidatorProviderStub } from "@ps/domain/validation/validator/provider._stub.ts";
 import { ValidatorServiceImpl } from "./service.impl.ts";
 
 Deno.test("ValidatorServiceImpl", () => {
     try {
-        new ValidatorServiceImpl().validate(
-            { a: undefined, b: "1991-12-25" },
+        new ValidatorServiceImpl(
+            new ValidatorProviderStub(new Error("invalid")),
+        ).validate(
+            { a: undefined, b: undefined },
             { a: [{ type: "str" }], b: [{ type: "dt" }] },
         );
     } catch (e) {
         assertEquals(
             e,
-            new ValidationError({ a: ["must be a string"] }),
+            new ValidationError({ a: ["invalid"], b: ["invalid"] }),
         );
     }
     assertEquals(
-        new ValidatorServiceImpl().validate(
-            { dt: "1999-12-31", time: "23:59" },
+        new ValidatorServiceImpl(
+            new ValidatorProviderStub(undefined),
+        ).validate(
+            { dt: "1999-12-31", time: "00:00" },
             { dt: [{ type: "dt" }], time: [{ type: "time" }] },
         ),
         undefined,

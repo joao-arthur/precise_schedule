@@ -2,6 +2,7 @@ import { Application, Router } from "oak/mod.ts";
 import { oakCors } from "cors/mod.ts";
 import { IdGeneratorRandom } from "@ps/infra/generator/id/random.adapter.ts";
 import { ValidatorServiceImpl } from "@ps/infra/validation/validator/service.impl.ts";
+import { ValidatorProviderImpl } from "@ps/infra/validation/validator/provider.impl.ts";
 import { UserRepositoryMemory } from "@ps/infra/schedule/user/repository/memory.adapter.ts";
 import { EventRepositoryMemory } from "@ps/infra/schedule/event/repository/memory.adapter.ts";
 import { UserControllerOakAdapter } from "@ps/infra/schedule/user/controller/oak.adapter.ts";
@@ -10,7 +11,7 @@ import { SessionMiddlewareOakAdapter } from "@ps/infra/http/middleware/session/o
 import { ErrorHandlerMiddlewareOakAdapter } from "@ps/infra/http/middleware/errorHandler/oak.adapter.ts";
 
 const idGenerator = new IdGeneratorRandom();
-const validator = new ValidatorServiceImpl();
+const validator = new ValidatorServiceImpl(new ValidatorProviderImpl());
 
 const userRepository = new UserRepositoryMemory();
 const userControllerAdapter = new UserControllerOakAdapter(
