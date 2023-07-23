@@ -1,6 +1,6 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { dtMinValidation } from "./dtMinValidation.ts";
-import { DtMinValidationError } from "./DtMinValidationError.ts";
+import { dtMinValidation } from "./validation.dtMin.ts";
+import { DtMinValidationError } from "./error.validation.dtMin.ts";
 
 const v = { type: "dtMin", min: "1970-01-01" } as const;
 

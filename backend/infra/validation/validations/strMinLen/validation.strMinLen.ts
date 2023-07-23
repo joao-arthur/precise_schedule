@@ -6,10 +6,7 @@ export function strMinLenValidation(
     val: StrMinLenVal,
     value: unknown,
 ): StrMinLenValidationError | undefined {
-    if (
-        typeof value !== "string" ||
-        value.length < val.min
-    ) {
+    if (typeof value !== "string" || value.length < val.min) {
         return new StrMinLenValidationError(val.min);
     }
 }

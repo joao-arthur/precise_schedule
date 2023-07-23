@@ -1,6 +1,6 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { emailValidation } from "./emailValidation.ts";
-import { EmailValidationError } from "./EmailValidationError.ts";
+import { emailValidation } from "./validation.email.ts";
+import { EmailValidationError } from "./error.validation.email.ts";
 
 const v = { type: "email" } as const;
 

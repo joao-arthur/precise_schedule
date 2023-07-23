@@ -1,6 +1,6 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { boolValidation } from "./boolValidation.ts";
-import { BoolValidationError } from "./BoolValidationError.ts";
+import { boolValidation } from "./validation.bool.ts";
+import { BoolValidationError } from "./error.validation.bool.ts";
 
 const v = { type: "bool" } as const;
 

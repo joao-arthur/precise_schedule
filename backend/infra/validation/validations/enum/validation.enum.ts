@@ -1,6 +1,6 @@
 import type { EnumVal } from "@ps/domain/validation/model.ts";
 
-import { EnumValidationError } from "./EnumValidationError.ts";
+import { EnumValidationError } from "./error.validation.enum.ts";
 
 export function enumValidation(val: EnumVal, value: unknown): EnumValidationError | undefined {
     if (!val.values.includes(value)) {

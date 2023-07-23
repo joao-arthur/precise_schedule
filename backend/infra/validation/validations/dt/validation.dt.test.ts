@@ -1,6 +1,6 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { dtValidation } from "./dtValidation.ts";
-import { DtValidationError } from "./DtValidationError.ts";
+import { dtValidation } from "./validation.dt.ts";
+import { DtValidationError } from "./error.validation.dt.ts";
 
 const v = { type: "dt" } as const;
 

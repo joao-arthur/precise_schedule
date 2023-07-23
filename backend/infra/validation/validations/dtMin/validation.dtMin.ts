@@ -1,6 +1,6 @@
 import type { DtMinVal } from "@ps/domain/validation/model.ts";
 
-import { DtMinValidationError } from "./DtMinValidationError.ts";
+import { DtMinValidationError } from "./error.validation.dtMin.ts";
 
 export function dtMinValidation(val: DtMinVal, value: unknown): DtMinValidationError | undefined {
     if (

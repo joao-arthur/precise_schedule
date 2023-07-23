@@ -1,6 +1,6 @@
 import { assertEquals } from "std/testing/asserts.ts";
-import { strMaxLenValidation } from "./strMaxLenValidation.ts";
-import { StrMaxLenValidationError } from "./StrMaxLenValidationError.ts";
+import { strMaxLenValidation } from "./validation.strMaxLen.ts";
+import { StrMaxLenValidationError } from "./error.validation.strMaxLen.ts";
 
 const v = { type: "strMaxLen", max: 1 } as const;
 
