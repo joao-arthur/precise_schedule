@@ -1,4 +1,4 @@
-import type { Schema } from "@ps/domain/validation/Schema.ts";
+import type { Schema } from "@ps/domain/validation/schema.ts";
 import type { ValidatorService } from "@ps/domain/validation/validator/service.ts";
 import type { ValidatorProvider } from "@ps/domain/validation/validator/provider.ts";
 import type { Validation } from "@ps/domain/validation/model.ts";

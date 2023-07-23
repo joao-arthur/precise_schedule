@@ -1,4 +1,4 @@
-import type { Schema } from "../../../../validation/Schema.ts";
+import type { Schema } from "../../../../validation/schema.ts";
 import type { MeetingCreateModel } from "./model.ts";
 
 export const createMeetingValidation: Schema<MeetingCreateModel> = {

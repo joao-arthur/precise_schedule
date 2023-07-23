@@ -1,4 +1,4 @@
-import type { Schema } from "../../../validation/Schema.ts";
+import type { Schema } from "../../../validation/schema.ts";
 import type { UserLoginModel } from "./model.ts";
 
 export const userLoginValidation: Schema<UserLoginModel> = {
