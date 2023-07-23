@@ -4,8 +4,8 @@ import { assertEquals, assertRejects } from "std/testing/asserts.ts";
 import { userStub } from "../model._stub.ts";
 import { UserUniqueInfoRepositoryStub } from "./repository._stub.ts";
 import { uniqueInfoModelStub } from "./model._stub.ts";
-import { UsernameAlreadyRegistered } from "./UsernameAlreadyRegistered.ts";
-import { EmailAlreadyRegistered } from "./EmailAlreadyRegistered.ts";
+import { EmailAlreadyRegistered } from "./error.emailAlreadyRegistered.ts";
+import { UsernameAlreadyRegistered } from "./error.usernameAlreadyRegistered.ts";
 import { UserUniqueInfoServiceImpl } from "./service.impl.ts";
 
 const equals: User = {

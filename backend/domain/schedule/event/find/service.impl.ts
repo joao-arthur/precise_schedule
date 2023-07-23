@@ -5,7 +5,7 @@ import type { EventFindFactory } from "./factory.ts";
 import type { EventFindRepository } from "./repository.ts";
 import type { EventFindModel } from "./model.ts";
 
-import { EventNotFound } from "./EventNotFound.ts";
+import { EventNotFound } from "./error.eventNotFound.ts";
 
 export class EventFindServiceImpl implements EventFindService {
     constructor(

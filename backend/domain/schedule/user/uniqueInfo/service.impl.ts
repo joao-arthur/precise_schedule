@@ -3,8 +3,8 @@ import type { UserUniqueInfoModel } from "./model.ts";
 import type { UserUniqueInfoService } from "./service.ts";
 import type { UserUniqueInfoRepository } from "./repository.ts";
 
-import { EmailAlreadyRegistered } from "./EmailAlreadyRegistered.ts";
-import { UsernameAlreadyRegistered } from "./UsernameAlreadyRegistered.ts";
+import { EmailAlreadyRegistered } from "./error.emailAlreadyRegistered.ts";
+import { UsernameAlreadyRegistered } from "./error.usernameAlreadyRegistered.ts";
 
 export class UserUniqueInfoServiceImpl implements UserUniqueInfoService {
     constructor(private readonly repository: UserUniqueInfoRepository) {}

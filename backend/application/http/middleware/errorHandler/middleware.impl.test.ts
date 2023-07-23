@@ -1,7 +1,7 @@
 import { assertEquals } from "std/testing/asserts.ts";
 import { ValidationError } from "@ps/domain/validation/ValidationError.ts";
-import { BusinessError } from "@ps/domain/general/BusinessError.ts";
-import { InvalidSessionError } from "@ps/domain/session/InvalidSessionError.ts";
+import { BusinessError } from "@ps/domain/general/business/error.ts";
+import { InvalidSessionError } from "@ps/domain/session/invalid/error.ts";
 import { badRequest } from "../../response/badRequest/builder.ts";
 import { unauthorized } from "../../response/unauthorized/builder.ts";
 import { internalServerError } from "../../response/internalServerError/builder.ts";

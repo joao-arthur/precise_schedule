@@ -1,4 +1,4 @@
-import { BusinessError } from "../../../general/BusinessError.ts";
+import { BusinessError } from "../../../general/business/error.ts";
 
 export class UserNotFound extends BusinessError {
     constructor() {

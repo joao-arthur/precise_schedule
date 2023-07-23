@@ -3,7 +3,7 @@ import { userStub } from "../model._stub.ts";
 import { userFindModelStub } from "./model._stub.ts";
 import { UserFindFactoryStub } from "./factory._stub.ts";
 import { UserFindRepositoryStub } from "./repository._stub.ts";
-import { UserNotFound } from "./UserNotFound.ts";
+import { UserNotFound } from "./error.userNotFound.ts";
 import { UserFindServiceImpl } from "./service.impl.ts";
 
 Deno.test("UserFindServiceImpl.findById", async () => {

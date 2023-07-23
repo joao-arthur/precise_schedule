@@ -4,7 +4,7 @@ import type { UserFindService } from "./service.ts";
 import type { UserFindFactory } from "./factory.ts";
 import type { UserFindRepository } from "./repository.ts";
 
-import { UserNotFound } from "./UserNotFound.ts";
+import { UserNotFound } from "./error.userNotFound.ts";
 
 export class UserFindServiceImpl implements UserFindService {
     constructor(

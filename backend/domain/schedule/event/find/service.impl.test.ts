@@ -1,7 +1,7 @@
 import { assertEquals, assertRejects } from "std/testing/asserts.ts";
 import { eventStub } from "../model._stub.ts";
 import { EventFindRepositoryStub } from "./repository._stub.ts";
-import { EventNotFound } from "./EventNotFound.ts";
+import { EventNotFound } from "./error.eventNotFound.ts";
 import { eventFindModelStub } from "./model._stub.ts";
 import { EventFindServiceImpl } from "./service.impl.ts";
 import { EventFindFactoryStub } from "./factory._stub.ts";

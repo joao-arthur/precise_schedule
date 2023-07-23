@@ -4,7 +4,7 @@ import type { DecodeSessionService } from "@ps/domain/session/decode/service.ts"
 
 import { verify } from "djwt/mod.ts";
 import { SessionPayload } from "../SessionPayload.ts";
-import { InvalidSessionError } from "@ps/domain/session/InvalidSessionError.ts";
+import { InvalidSessionError } from "@ps/domain/session/invalid/error.ts";
 import { key } from "../key.ts";
 
 export class DecodeSessionServiceJWTAdapter implements DecodeSessionService {
