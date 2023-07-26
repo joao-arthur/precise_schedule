@@ -1,0 +1,33 @@
+{
+    "name": "precise_schedule_engine",
+    "description": "precise schedule engine",
+    "author": "joao-arthur",
+    "version": "1.0.0",
+    "private": true,
+    "type": "module",
+    "engines": {
+        "node": ">=18.7.0"
+    },
+    "exports": {
+        ".": {
+            "import": "./dist/mod.js",
+            "types": "./dist/mod.d.js"
+        }
+    },
+    "main": "./dist/mod.js",
+    "scripts": {
+        "test": "vitest run",
+        "test:cov": "vitest run --coverage",
+        "build": "tsc"
+    },
+    "dependencies": {
+        "@js-temporal/polyfill": "0.4.4",
+        "funis": "1.1.1"
+    },
+    "devDependencies": {
+        "@vitest/coverage-c8": "0.33.0",
+        "c8": "8.0.0",
+        "typescript": "5.1.6",
+        "vitest": "0.33.0"
+    }
+}
