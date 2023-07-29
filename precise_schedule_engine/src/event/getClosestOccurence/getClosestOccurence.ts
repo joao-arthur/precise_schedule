@@ -2,22 +2,24 @@ import type { Event } from "../model.js";
 
 import { Temporal } from "@js-temporal/polyfill";
 
-export function getClosestOccurence(event: Event, date: string): string | undefined {
-    const eventDate = Temporal.PlainDate.from(event.day);
-    const plainDate = Temporal.PlainDate.from(date);
-    const daysDiff = eventDate.until(plainDate).days;
+export function getClosestOccurence(evt: Event, date: string): string | undefined {
+    const evtAsPlainDate = Temporal.PlainDate.from(evt.d);
+    const dateAsPlainDate = Temporal.PlainDate.from(date);
+    const daysDiff = evtAsPlainDate.until(dateAsPlainDate).days;
     if (daysDiff < 0) {
         return undefined;
     }
-    switch (event.frequency) {
+    switch (evt.freq) {
         case "1_D":
-            return plainDate.subtract({ days: 1 }).toString();
+            return dateAsPlainDate.subtract({ days: 1 }).toString();
         case "2_D":
-            return plainDate.subtract({ days: daysDiff % 2 === 0 ? 2 : daysDiff % 2 }).toString();
+            return dateAsPlainDate
+                .subtract({ days: daysDiff % 2 === 0 ? 2 : daysDiff % 2 })
+                .toString();
         case "1_W":
-            //plainDate.subtract(daysDiff % 7 === 0 ? { weeks: 1 } : { days: daysDiff % 7 });
-            //eventDate.add({ weeks: Math.trunc((eventDate.until(plainDate).days - 1) / 7) });
-            return plainDate
+            //dateAsPlainDate.subtract(daysDiff % 7 === 0 ? { weeks: 1 } : { days: daysDiff % 7 });
+            //evtAsPlainDate.add({ weeks: Math.trunc((evtAsPlainDate.until(dateAsPlainDate).days - 1) / 7) });
+            return dateAsPlainDate
                 .subtract(daysDiff % 7 === 0 ? { weeks: 1 } : { days: daysDiff % 7 })
                 .toString();
         case "1_M":
@@ -27,8 +29,8 @@ export function getClosestOccurence(event: Event, date: string): string | undefi
         case "6_M":
             return undefined;
         case "1_Y":
-            return eventDate
-                .add({ years: Math.trunc((eventDate.until(plainDate).days - 1) / 365) })
+            return evtAsPlainDate
+                .add({ years: Math.trunc((evtAsPlainDate.until(dateAsPlainDate).days - 1) / 365) })
                 .toString();
         case "2_Y":
             return undefined;

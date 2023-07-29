@@ -4,8 +4,8 @@ import { Temporal } from "@js-temporal/polyfill";
 import { getNextOccurence } from "../getNextOccurence/getNextOccurence.js";
 import { getClosestOccurence } from "../getClosestOccurence/getClosestOccurence.js";
 
-export function getRepetitions(event: Event, begin: string, end: string): string[] {
-    const base = getClosestOccurence(event, begin);
+export function getRepetitions(evt: Event, begin: string, end: string): string[] {
+    const base = getClosestOccurence(evt, begin);
 
     if (!base) {
         return [];
@@ -14,7 +14,7 @@ export function getRepetitions(event: Event, begin: string, end: string): string
     let current = base;
     let res = [];
     while (true) {
-        const maybeMonthEvent = getNextOccurence({ ...event, day: current });
+        const maybeMonthEvent = getNextOccurence({ ...evt, d: current });
         if (!maybeMonthEvent) {
             return [];
         }

@@ -10,7 +10,6 @@ export type Frequency =
     | "NEVER";
 
 export type Event = {
-    readonly id: string;
-    readonly day: string;
-    readonly frequency: Frequency;
+    readonly d: string;
+    readonly freq: Frequency;
 };
