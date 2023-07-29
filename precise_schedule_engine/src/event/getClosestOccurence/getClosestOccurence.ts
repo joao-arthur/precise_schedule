@@ -1,6 +1,6 @@
-import { Temporal } from "@js-temporal/polyfill";
-
 import type { Event } from "../model.js";
+
+import { Temporal } from "@js-temporal/polyfill";
 
 export function getClosestOccurence(event: Event, date: string): string | undefined {
     const eventDate = Temporal.PlainDate.from(event.day);

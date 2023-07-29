@@ -1,6 +1,6 @@
-import { Temporal } from "@js-temporal/polyfill";
-
 import type { Event } from "../model.js";
+
+import { Temporal } from "@js-temporal/polyfill";
 
 export function getNextOccurence(event: Event): string | undefined {
     const eventDate = Temporal.PlainDate.from(event.day);
