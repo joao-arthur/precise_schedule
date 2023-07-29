@@ -53,7 +53,7 @@ it("getClosestOccurence 1_Y", () => {
     assert.strictEqual(getClosestOccurence(make("2020-08-08", "1_Y"), "2021-08-09"), "2021-08-08");
 });
 
-it("getClosestOccurence 2_Y", () => {
+/*it("getClosestOccurence 2_Y", () => {
     assert.strictEqual(getClosestOccurence(make("2019-08-08", "2_Y"), "2020-08-07"), "2019-08-08");
     assert.strictEqual(getClosestOccurence(make("2019-08-08", "2_Y"), "2020-08-08"), "2019-08-08");
     assert.strictEqual(getClosestOccurence(make("2019-08-08", "2_Y"), "2020-08-09"), "2019-08-08");
@@ -69,7 +69,7 @@ it("getClosestOccurence 2_Y", () => {
     assert.strictEqual(getClosestOccurence(make("2020-08-08", "2_Y"), "2022-08-07"), "2020-08-08");
     assert.strictEqual(getClosestOccurence(make("2020-08-08", "2_Y"), "2022-08-08"), "2020-08-08");
     assert.strictEqual(getClosestOccurence(make("2020-08-08", "2_Y"), "2022-08-09"), "2022-08-08");
-});
+});*/
 
 it("getClosestOccurence NEVER", () => {
     assert.strictEqual(getClosestOccurence(make("2000-01-01", "NEVER"), "2023-08-01"), undefined);

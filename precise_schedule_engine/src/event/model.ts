@@ -11,10 +11,6 @@ export type Frequency =
 
 export type Event = {
     readonly id: string;
-    readonly name: string;
     readonly day: string;
-    readonly begin: string;
-    readonly end: string;
     readonly frequency: Frequency;
-    readonly weekendRepeat: boolean;
 };

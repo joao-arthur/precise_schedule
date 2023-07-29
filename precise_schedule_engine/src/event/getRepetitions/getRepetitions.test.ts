@@ -6,12 +6,8 @@ import { getRepetitions } from "./getRepetitions.js";
 function make(day: string, frequency: Frequency): Event {
     return {
         id: "1",
-        name: "nome",
         day,
-        begin: "00:00",
-        end: "23:59",
         frequency,
-        weekendRepeat: false,
     };
 }
 
