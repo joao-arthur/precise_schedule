@@ -18,7 +18,7 @@ export function getRepetitions(event: Event, begin: string, end: string): string
         if (!maybeMonthEvent) {
             return [];
         }
-        if (Temporal.PlainDate.from(maybeMonthEvent).since(end).days > 0) {
+        if (Temporal.PlainDate.compare(maybeMonthEvent, end) === 1) {
             break;
         }
         res.push(maybeMonthEvent);
