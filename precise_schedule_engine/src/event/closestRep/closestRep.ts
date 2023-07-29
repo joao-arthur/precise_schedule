@@ -1,8 +1,8 @@
-import type { Event } from "../model.js";
+import type { Event } from "../event.js";
 
 import { Temporal } from "@js-temporal/polyfill";
 
-export function getClosestOccurence(evt: Event, date: string): string | undefined {
+export function closestRep(evt: Event, date: string): string | undefined {
     const evtAsPlainDate = Temporal.PlainDate.from(evt.d);
     const dateAsPlainDate = Temporal.PlainDate.from(date);
     const daysDiff = evtAsPlainDate.until(dateAsPlainDate).days;

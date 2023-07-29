@@ -1,11 +1,11 @@
-import { Event } from "../model.js";
+import { Event } from "../event.js";
 
 import { Temporal } from "@js-temporal/polyfill";
-import { getNextOccurence } from "../getNextOccurence/getNextOccurence.js";
-import { getClosestOccurence } from "../getClosestOccurence/getClosestOccurence.js";
+import { rep } from "../rep/rep.js";
+import { closestRep } from "../closestRep/closestRep.js";
 
-export function getRepetitions(evt: Event, begin: string, end: string): string[] {
-    const base = getClosestOccurence(evt, begin);
+export function repInPeriod(evt: Event, begin: string, end: string): string[] {
+    const base = closestRep(evt, begin);
 
     if (!base) {
         return [];
@@ -14,7 +14,7 @@ export function getRepetitions(evt: Event, begin: string, end: string): string[]
     let current = base;
     let res = [];
     while (true) {
-        const maybeMonthEvent = getNextOccurence({ ...evt, d: current });
+        const maybeMonthEvent = rep({ ...evt, d: current });
         if (!maybeMonthEvent) {
             return [];
         }

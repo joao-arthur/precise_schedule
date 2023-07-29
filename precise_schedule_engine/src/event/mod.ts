@@ -1,3 +1,3 @@
-export type { Event } from "./model.js";
+export type { Event } from "./event.js";
 
 export { eventFns } from "./eventFns.js";

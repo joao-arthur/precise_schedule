@@ -1,8 +1,8 @@
-import type { Event } from "../model.js";
+import type { Event } from "../event.js";
 
 import { Temporal } from "@js-temporal/polyfill";
 
-export function getRepetition(evt: Event): string | undefined {
+export function rep(evt: Event): string | undefined {
     const evtAsPlainDate = Temporal.PlainDate.from(evt.d);
     switch (evt.freq) {
         case "1_D":
