@@ -1,6 +1,6 @@
 import type { Event, Frequency } from "../model.js";
 
-import { assert, expect, it } from "vitest";
+import { assert, it } from "vitest";
 import { getRepetitions } from "./getRepetitions.js";
 
 function make(day: string, frequency: Frequency): Event {
@@ -16,7 +16,8 @@ function make(day: string, frequency: Frequency): Event {
 }
 
 it("getRepetitions 1_D", () => {
-    expect(getRepetitions(make("2023-07-01", "1_D"), "2023-08-01", "2023-08-31")).toEqual(
+    assert.deepEqual(
+        getRepetitions(make("2023-07-01", "1_D"), "2023-08-01", "2023-08-31"),
         [
             "2023-08-01",
             "2023-08-02",
@@ -52,3 +53,69 @@ it("getRepetitions 1_D", () => {
         ],
     );
 });
+
+it("getRepetitions 2_D", () => {
+    assert.deepEqual(
+        getRepetitions(make("2023-07-01", "2_D"), "2023-08-01", "2023-08-31"),
+        [
+            "2023-08-02",
+            "2023-08-04",
+            "2023-08-06",
+            "2023-08-08",
+            "2023-08-10",
+            "2023-08-12",
+            "2023-08-14",
+            "2023-08-16",
+            "2023-08-18",
+            "2023-08-20",
+            "2023-08-22",
+            "2023-08-24",
+            "2023-08-26",
+            "2023-08-28",
+            "2023-08-30",
+        ],
+    );
+});
+
+it("getRepetitions 1_W", () => {
+    assert.deepEqual(
+        getRepetitions(make("2023-07-01", "1_W"), "2023-08-01", "2023-08-31"),
+        [
+            "2023-08-05",
+            "2023-08-12",
+            "2023-08-19",
+            "2023-08-26",
+        ],
+    );
+});
+
+it("getRepetitions 1_W", () => {
+    assert.deepEqual(
+        getRepetitions(make("2023-07-01", "1_W"), "2023-08-01", "2023-08-31"),
+        [
+            "2023-08-05",
+            "2023-08-12",
+            "2023-08-19",
+            "2023-08-26",
+        ],
+    );
+});
+
+/*it("getRepetitions 1_M", () => {
+    assert.deepEqual(
+        getRepetitions(make("2023-06-10", "1_M"), "2023-08-01", "2023-08-31"),
+        ["2023-08-10"],
+    );
+    assert.deepEqual(
+        getRepetitions(make("2020-01-28", "1_M"), "2020-02-01", "2020-02-29"),
+        ["2023-02-28"],
+    );
+    assert.deepEqual(
+        getRepetitions(make("2020-01-29", "1_M"), "2020-02-01", "2020-02-29"),
+        ["2023-02-28"],
+    );
+    assert.deepEqual(
+        getRepetitions(make("2020-01-30", "1_M"), "2020-02-01", "2020-02-29"),
+        ["2023-02-28"],
+    );
+});*/

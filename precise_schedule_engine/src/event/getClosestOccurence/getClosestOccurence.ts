@@ -20,7 +20,6 @@ export function getClosestOccurence(event: Event, date: string): string | undefi
             return plainDate
                 .subtract(daysDiff % 7 === 0 ? { weeks: 1 } : { days: daysDiff % 7 })
                 .toString();
-
         case "1_M":
             return undefined;
         case "3_M":

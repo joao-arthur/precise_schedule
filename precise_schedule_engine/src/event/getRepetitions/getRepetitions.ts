@@ -13,10 +13,13 @@ export function getRepetitions(event: Event, begin: string, end: string): string
 
     let current = base;
     let res = [];
-    while (Temporal.PlainDate.from(current).since(end).days < 0) {
+    while (true) {
         const maybeMonthEvent = getNextOccurence({ ...event, day: current });
         if (!maybeMonthEvent) {
             return [];
+        }
+        if (Temporal.PlainDate.from(maybeMonthEvent).since(end).days > 0) {
+            break;
         }
         res.push(maybeMonthEvent);
         current = maybeMonthEvent;
