@@ -2,7 +2,7 @@ import type { Event } from "../model.js";
 
 import { Temporal } from "@js-temporal/polyfill";
 
-export function getNextOccurence(evt: Event): string | undefined {
+export function getRepetition(evt: Event): string | undefined {
     const evtAsPlainDate = Temporal.PlainDate.from(evt.d);
     switch (evt.freq) {
         case "1_D":
