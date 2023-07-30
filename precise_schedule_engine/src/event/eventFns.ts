@@ -1,5 +1,5 @@
-import { getMonthEvents } from "./getMonthEvents/getMonthsEvents.js";
+import { monthEvents } from "./monthEvents/monthEvents.js";
 
 export const eventFns = {
-    getMonthEvents,
+    monthEvents,
 };
