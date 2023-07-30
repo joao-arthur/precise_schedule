@@ -1,28 +1,20 @@
 import { Event } from "../event.js";
 
 import { Temporal } from "@js-temporal/polyfill";
-import { rep } from "../rep/rep.js";
 import { closestRep } from "../closestRep/closestRep.js";
+import { repIter } from "../repIter/repIter.js";
 
 export function repInPeriod(evt: Event, begin: string, end: string): string[] {
+    let res: string[] = [];
     const base = closestRep(evt, begin);
-
     if (!base) {
-        return [];
+        return res;
     }
-
-    let current = base;
-    let res = [];
-    while (true) {
-        const maybeMonthEvent = rep({ ...evt, d: current });
-        if (!maybeMonthEvent) {
-            return [];
-        }
-        if (Temporal.PlainDate.compare(maybeMonthEvent, end) === 1) {
-            break;
-        }
-        res.push(maybeMonthEvent);
-        current = maybeMonthEvent;
+    const itt = repIter({ d: base, freq: evt.freq });
+    let current = itt.next().value;
+    while (Temporal.PlainDate.compare(current, end) < 1) {
+        res.push(current);
+        current = itt.next().value;
     }
     return res;
 }
