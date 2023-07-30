@@ -2,7 +2,7 @@ import type { Event } from "../event.js";
 
 import { rep } from "../rep/rep.js";
 
-export function repIter(evt: Event): IterableIterator<string | undefined> {
+export function repLazy(evt: Event): IterableIterator<string | undefined> {
     let i = 0;
 
     return {

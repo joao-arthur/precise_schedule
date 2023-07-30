@@ -2,7 +2,7 @@ import { Event } from "../event.js";
 
 import { Temporal } from "@js-temporal/polyfill";
 import { closestRep } from "../closestRep/closestRep.js";
-import { repIter } from "../repIter/repIter.js";
+import { repLazy } from "../repLazy/repLazy.js";
 
 export function repInPeriod(evt: Event, begin: string, end: string): string[] {
     let res: string[] = [];
@@ -10,7 +10,7 @@ export function repInPeriod(evt: Event, begin: string, end: string): string[] {
     if (!base) {
         return res;
     }
-    const itt = repIter({ d: base, freq: evt.freq });
+    const itt = repLazy({ d: base, freq: evt.freq });
     let current = itt.next().value;
     while (Temporal.PlainDate.compare(current, end) < 1) {
         res.push(current);
