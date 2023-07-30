@@ -6,7 +6,15 @@ import { repLazy } from "../repLazy/repLazy.js";
 
 export function repInPeriod(evt: Event, begin: string, end: string): string[] {
     let res: string[] = [];
-    const base = closestRep(evt, begin);
+    if (Temporal.PlainDate.compare(evt.d, end) === 1) {
+        return res;
+    }
+    let base: string | undefined;
+    if (Temporal.PlainDate.compare(evt.d, begin) === 1) {
+        base = evt.d;
+    } else {
+        base = closestRep(evt, begin);
+    }
     if (!base) {
         return res;
     }
