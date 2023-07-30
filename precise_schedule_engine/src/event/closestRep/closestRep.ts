@@ -13,23 +13,23 @@ export function closestRep(evt: Event, date: string): string | undefined {
     const m = evtDt.until(dateDt, { largestUnit: "months" }).months;
     const y = evtDt.until(dateDt, { largestUnit: "years" }).years;
     switch (evt.freq) {
-        case "1_D":
+        case "1D":
             return evtDt.add({ days: d }).toString();
-        case "2_D":
+        case "2D":
             return evtDt.add({ days: d - (d % 2) }).toString();
-        case "1_W":
+        case "1W":
             return evtDt.add({ weeks: w }).toString();
-        case "1_M":
+        case "1M":
             return evtDt.add({ months: m }).toString();
-        case "3_M":
+        case "3M":
             return evtDt.add({ months: m - (m % 3) }).toString();
-        case "6_M":
+        case "6M":
             return evtDt.add({ months: m - (m % 6) }).toString();
-        case "1_Y":
+        case "1Y":
             return evtDt.add({ years: y }).toString();
-        case "2_Y":
+        case "2Y":
             return evtDt.add({ years: y - (y % 2) }).toString();
-        case "NEVER":
+        case undefined:
             return undefined;
     }
 }

@@ -5,23 +5,23 @@ import { Temporal } from "@js-temporal/polyfill";
 export function rep(evt: Event, i = 1): string | undefined {
     const evtAsPlainDate = Temporal.PlainDate.from(evt.d);
     switch (evt.freq) {
-        case "1_D":
+        case "1D":
             return evtAsPlainDate.add({ days: 1 * i }).toString();
-        case "2_D":
+        case "2D":
             return evtAsPlainDate.add({ days: 2 * i }).toString();
-        case "1_W":
+        case "1W":
             return evtAsPlainDate.add({ days: 7 * i }).toString();
-        case "1_M":
+        case "1M":
             return evtAsPlainDate.add({ months: 1 * i }).toString();
-        case "3_M":
+        case "3M":
             return evtAsPlainDate.add({ months: 3 * i }).toString();
-        case "6_M":
+        case "6M":
             return evtAsPlainDate.add({ months: 6 * i }).toString();
-        case "1_Y":
+        case "1Y":
             return evtAsPlainDate.add({ years: 1 * i }).toString();
-        case "2_Y":
+        case "2Y":
             return evtAsPlainDate.add({ years: 2 * i }).toString();
-        case "NEVER":
+        case undefined:
             return undefined;
     }
 }

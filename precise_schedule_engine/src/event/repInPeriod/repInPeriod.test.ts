@@ -1,9 +1,9 @@
 import { assert, it } from "vitest";
 import { repInPeriod } from "./repInPeriod.js";
 
-it("repInPeriod 1_D", () => {
+it("repInPeriod 1D", () => {
     assert.deepEqual(
-        repInPeriod({ d: "2023-07-01", freq: "1_D" }, "2023-08-01", "2023-08-31"),
+        repInPeriod({ d: "2023-07-01", freq: "1D" }, "2023-08-01", "2023-08-31"),
         [
             "2023-08-01",
             "2023-08-02",
@@ -40,9 +40,9 @@ it("repInPeriod 1_D", () => {
     );
 });
 
-it("repInPeriod 2_D", () => {
+it("repInPeriod 2D", () => {
     assert.deepEqual(
-        repInPeriod({ d: "2023-07-01", freq: "2_D" }, "2023-08-01", "2023-08-31"),
+        repInPeriod({ d: "2023-07-01", freq: "2D" }, "2023-08-01", "2023-08-31"),
         [
             "2023-08-02",
             "2023-08-04",
@@ -63,9 +63,9 @@ it("repInPeriod 2_D", () => {
     );
 });
 
-it("repInPeriod 1_W", () => {
+it("repInPeriod 1W", () => {
     assert.deepEqual(
-        repInPeriod({ d: "2023-07-01", freq: "1_W" }, "2023-08-01", "2023-08-31"),
+        repInPeriod({ d: "2023-07-01", freq: "1W" }, "2023-08-01", "2023-08-31"),
         [
             "2023-08-05",
             "2023-08-12",
@@ -75,9 +75,9 @@ it("repInPeriod 1_W", () => {
     );
 });
 
-it("repInPeriod 1_W", () => {
+it("repInPeriod 1W", () => {
     assert.deepEqual(
-        repInPeriod({ d: "2023-07-01", freq: "1_W" }, "2023-08-01", "2023-08-31"),
+        repInPeriod({ d: "2023-07-01", freq: "1W" }, "2023-08-01", "2023-08-31"),
         [
             "2023-08-05",
             "2023-08-12",
@@ -87,21 +87,21 @@ it("repInPeriod 1_W", () => {
     );
 });
 
-/*it("repInPeriod 1_M", () => {
+/*it("repInPeriod 1M", () => {
     assert.deepEqual(
-        repInPeriod({d: "2023-06-10", freq: "1_M"}, "2023-08-01", "2023-08-31"),
+        repInPeriod({d: "2023-06-10", freq: "1M"}, "2023-08-01", "2023-08-31"),
         ["2023-08-10"],
     );
     assert.deepEqual(
-        repInPeriod({d: "2020-01-28", freq: "1_M"}, "2020-02-01", "2020-02-29"),
+        repInPeriod({d: "2020-01-28", freq: "1M"}, "2020-02-01", "2020-02-29"),
         ["2023-02-28"],
     );
     assert.deepEqual(
-        repInPeriod({d: "2020-01-29", freq: "1_M"}, "2020-02-01", "2020-02-29"),
+        repInPeriod({d: "2020-01-29", freq: "1M"}, "2020-02-01", "2020-02-29"),
         ["2023-02-28"],
     );
     assert.deepEqual(
-        repInPeriod({d: "2020-01-30", freq: "1_M"}, "2020-02-01", "2020-02-29"),
+        repInPeriod({d: "2020-01-30", freq: "1M"}, "2020-02-01", "2020-02-29"),
         ["2023-02-28"],
     );
 });*/
