@@ -7,7 +7,7 @@ Deno.test("PartyCreateFactoryImpl", () => {
         new PartyCreateFactoryImpl().build(partyCreateModelStub),
         {
             category: "PARTY",
-            frequency: "NEVER",
+            frequency: undefined,
             weekendRepeat: false,
             ...partyCreateModelStub,
         },

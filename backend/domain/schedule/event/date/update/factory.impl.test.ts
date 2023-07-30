@@ -7,7 +7,7 @@ Deno.test("DateUpdateFactoryImpl", () => {
         new DateUpdateFactoryImpl().build(dateUpdateModelStub),
         {
             category: "DATE",
-            frequency: "NEVER",
+            frequency: undefined,
             weekendRepeat: false,
             ...dateUpdateModelStub,
         },

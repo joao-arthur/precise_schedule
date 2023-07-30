@@ -10,7 +10,7 @@ export class PartyCreateFactoryImpl implements PartyCreateFactory {
             begin: event.begin,
             end: event.end,
             category: "PARTY",
-            frequency: "NEVER",
+            frequency: undefined,
             weekendRepeat: false,
         };
     }

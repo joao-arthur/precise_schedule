@@ -10,7 +10,7 @@ export class DateUpdateFactoryImpl implements DateUpdateFactory {
             begin: event.begin,
             end: event.end,
             category: "DATE",
-            frequency: "NEVER",
+            frequency: undefined,
             weekendRepeat: false,
         };
     }

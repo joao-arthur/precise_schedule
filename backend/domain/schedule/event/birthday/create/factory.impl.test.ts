@@ -9,7 +9,7 @@ Deno.test("BirthdayCreateFactoryImpl", () => {
             begin: "00:00",
             end: "23:59",
             category: "BIRTHDAY",
-            frequency: "1_Y",
+            frequency: "1Y",
             weekendRepeat: false,
             ...birthdayCreateModelStub,
         },

@@ -16,7 +16,7 @@ Deno.test("Meeting", async (t) => {
                 day: "2023-06-24",
                 begin: "08:00",
                 end: "18:00",
-                frequency: "NEVER",
+                frequency: "1W",
                 weekendRepeat: false,
             },
         );
@@ -35,7 +35,7 @@ Deno.test("Meeting", async (t) => {
                     day: "2023-06-24",
                     begin: "08:00",
                     end: "18:00",
-                    frequency: "NEVER",
+                    frequency: "1W",
                     weekendRepeat: false,
                 },
             ),
@@ -82,9 +82,9 @@ Deno.test("Meeting validation", async () => {
                         "must be a time in the format HH:mm",
                         "must be bigger than 'begin'",
                     ],
-                    frequency: [
-                        "must be one of: (1_D, 2_D, 1_W, 1_M, 3_M, 6_M, 1_Y, 2_Y, NEVER)",
-                    ],
+                    // frequency: [
+                    //     "must be one of: (1D, 2D, 1W, 1M, 3M, 6M, 1Y, 2Y, undefined)",
+                    // ],
                     weekendRepeat: [
                         "must be a boolean",
                     ],

@@ -7,7 +7,7 @@ export const eventStub: Event = {
     begin: "08:00",
     end: "18:00",
     category: "APPOINTMENT",
-    frequency: "NEVER",
+    frequency: undefined,
     weekendRepeat: false,
     user: "user",
     createdAt: new Date(),

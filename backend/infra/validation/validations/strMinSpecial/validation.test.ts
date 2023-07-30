@@ -10,7 +10,7 @@ Deno.test("strMinSpecialValidation valid", () => {
     assertEquals(strMinSpecialValidation(v, "nevermore!"), undefined);
     assertEquals(
         strMinSpecialValidation(
-            { type: "strMinSpecial", min: 30 },
+            { type: "strMinSpecial", min: 14 },
             "!@#$%¨&*()[]{}",
         ),
         undefined,

@@ -18,7 +18,7 @@ export default function AppointmentEventRegister() {
 
     const watchFrequency = watch("frequency");
     const canRepeatWeekend = watchFrequency
-        ? ["1_D", "2_D"].includes(
+        ? ["1D", "2D"].includes(
             watchFrequency,
         )
         : true;

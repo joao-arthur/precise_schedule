@@ -19,7 +19,7 @@ export const createAppointmentValidation: Schema<AppointmentCreateModel> = {
         { type: "compareBigger", field: "begin" },
     ],
     frequency: [
-        { type: "enum", values: ["1_D", "2_D", "1_W", "1_M", "3_M", "6_M", "1_Y", "2_Y", "NEVER"] },
+        { type: "enum", values: ["1D", "2D", "1W", "1M", "3M", "6M", "1Y", "2Y", undefined] },
     ],
     weekendRepeat: [
         { type: "bool" },
