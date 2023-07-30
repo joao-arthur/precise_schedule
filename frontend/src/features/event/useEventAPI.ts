@@ -139,7 +139,7 @@ export function useUpdateParty() {
     );
 }
 
-export function useFindEvent() {
+export function useFindEvents() {
     const request = useAppRequest();
     return useMutation(
         "event/find",

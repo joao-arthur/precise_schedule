@@ -12,7 +12,6 @@ type CalendarState = {
 };
 
 export const useCalendar = create<CalendarState>((set) => ({
-    events: [],
     year: new Date().getFullYear(),
     month: new Date().getMonth(),
     selectedDate: "",

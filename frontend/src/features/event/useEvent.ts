@@ -9,4 +9,5 @@ type EventsState = {
 export const useEvent = create<EventsState>((set) => ({
     events: [],
     setEvents: (events: readonly Event[]) => set({ events }),
+    //getMonthEvents: (month: number) => {},
 }));
