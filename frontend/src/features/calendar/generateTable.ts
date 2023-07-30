@@ -1,4 +1,4 @@
-import { CalendarDisplay } from "./calendarDisplay";
+import type { CalendarDisplay } from "./calendarDisplay";
 
 const WEEK_DAYS = 7;
 const ROWS = 6;

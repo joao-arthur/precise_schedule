@@ -64,6 +64,5 @@ export type NewPassword = {
 
 export type Settings = {
     readonly language: Language;
-    readonly twoFactorAuth: boolean;
     readonly theme: "light" | "dark" | "auto";
 };

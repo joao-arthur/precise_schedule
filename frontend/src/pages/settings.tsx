@@ -9,7 +9,6 @@ import { useAuthPage } from "@/features/session/useAuthPage";
 import { PageContent } from "@/components/atoms/layout/PageContent";
 import { FormContainer } from "@/components/atoms/FormContainer";
 import { ButtonIcon } from "@/components/atoms/ButtonIcon";
-import { ToggleInput } from "@/components/atoms/input/ToggleInput";
 
 export default function Settings() {
     useAuthPage();
@@ -61,14 +60,6 @@ export default function Settings() {
                                 {...register("language")}
                             />
                         </InputWrapper>
-                        <InputWrapper
-                            name="twoFactorAuth"
-                            title="Enable two factor authentication"
-                        >
-                            <ToggleInput
-                                {...register("twoFactorAuth")}
-                            />
-                        </InputWrapper>
                         <InputWrapper name="theme" title="Theme">
                             <SelectInput
                                 options={[
@@ -79,8 +70,6 @@ export default function Settings() {
                                 {...register("theme")}
                             />
                         </InputWrapper>
-                        <Link to="password/new">Change password</Link>
-                        <br />
                         <Link to="#">Delete my account</Link>
                         <br />
                         <Link to="#">

@@ -11,23 +11,3 @@ this project to practice programming.
 
 The **backend** is written with the biggest care, applying DDD and an layered architecture. The
 **frontend** is written using a minimal amount of abstraction.
-
-## Requirements
-
-- User
-  - Register
-  - Login
-  - Event notification by browser
-- Calendar
-  - Scroll months
-  - Total events on each day cell
-- Events
-  - Register
-  - Edit
-  - Read
-  - Delete
-- Charts
-  - Read
-- UI
-  - ✅ Dark mode
-  - ✅ Responsiveness
