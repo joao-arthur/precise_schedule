@@ -12,6 +12,7 @@ export function repInPeriod(evt: Event, begin: string, end: string): string[] {
     let base: string | undefined;
     if (Temporal.PlainDate.compare(evt.d, begin) === 1) {
         base = evt.d;
+        res.push(base);
     } else {
         base = closestRep(evt, begin);
     }
