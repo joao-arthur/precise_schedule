@@ -70,13 +70,6 @@ export default function SignIn() {
                     </Form>
                     <Box>
                         <Text>
-                            <Link to="/password/forgot">
-                                Forgot your password?
-                            </Link>
-                        </Text>
-                    </Box>
-                    <Box>
-                        <Text>
                             Don't have an account? <Link to="/signup">Create an account</Link>
                         </Text>
                     </Box>

@@ -159,7 +159,7 @@ export default function SignUp() {
                             <PasswordInput
                                 {...register("password", {
                                     required: true,
-                                    minLength: 10,
+                                    minLength: 8,
                                     disabled: isLoading,
                                     validate: (value) =>
                                         strMinLenValid(value) && strMinNumValid(value) &&
