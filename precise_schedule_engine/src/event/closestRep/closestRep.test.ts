@@ -88,7 +88,7 @@ it("closestRep undefined", () => {
     assert.strictEqual(closestRep({ d: "2000-01-01", freq: undefined }, "2023-08-01"), undefined);
 });
 
-it("closestRep undefined", () => {
+it("closestRep before date", () => {
     assert.strictEqual(closestRep({ d: "2000-01-01", freq: "1D" }, "1999-12-31"), undefined);
     assert.strictEqual(closestRep({ d: "2000-01-01", freq: "1D" }, "2000-01-01"), undefined);
     //
