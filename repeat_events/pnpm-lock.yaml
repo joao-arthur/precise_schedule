@@ -8,9 +8,6 @@ dependencies:
   '@js-temporal/polyfill':
     specifier: 0.4.4
     version: 0.4.4
-  funis:
-    specifier: 1.1.1
-    version: 1.1.1
 
 devDependencies:
   '@vitest/coverage-v8':
@@ -496,11 +493,6 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
-
-  /funis@1.1.1:
-    resolution: {integrity: sha512-rB/5P+sE9mMDooQwp4+sD6VsQUBKELFgdG5G+rfD2LHLFyVjJORo686NX+RrSYEU3Y68PGcpLW0H3X1mOVJZoA==}
-    engines: {node: '>=18.7.0'}
-    dev: false
 
   /get-func-name@2.0.0:
     resolution: {integrity: sha512-Hm0ixYtaSZ/V7C8FJrtZIuBBI+iSgL+1Aq82zSu8VQNB4S3Gk8e7Qs3VwBDJAhmRZcFqkl3tQu36g/Foh5I5ig==}

@@ -1,3 +1,3 @@
-export type { Event } from "./event.js";
+export type { Event, Frequency } from "./event.js";
 
-export { eventFns } from "./eventFns.js";
+export { repInPeriod } from "./repInPeriod/repInPeriod.js";
