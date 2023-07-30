@@ -1,6 +1,6 @@
 {
-    "name": "precise_schedule_engine",
-    "description": "precise schedule engine",
+    "name": "engine",
+    "description": "lib to handle some operations of the frontend",
     "author": "joao-arthur",
     "version": "1.0.0",
     "private": true,
