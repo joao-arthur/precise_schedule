@@ -22,7 +22,8 @@
     },
     "dependencies": {
         "@js-temporal/polyfill": "0.4.4",
-        "funis": "1.1.1"
+        "funis": "1.1.1",
+        "repeat_events": "link:../repeat_events"
     },
     "devDependencies": {
         "@vitest/coverage-v8": "0.33.0",
