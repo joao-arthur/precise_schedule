@@ -13,7 +13,7 @@ import { Box } from "@/components/atoms/layout/Box";
 import { PageContent } from "@/components/atoms/layout/PageContent";
 import { FormContainer } from "@/components/atoms/FormContainer";
 import { ButtonIcon } from "@/components/atoms/ButtonIcon";
-import { Form } from "@/components/organisms/Form";
+import { Form } from "@/components/molecules/Form";
 import { SubHeader } from "@/content/base/subHeader/SubHeader";
 
 export default function SignIn() {

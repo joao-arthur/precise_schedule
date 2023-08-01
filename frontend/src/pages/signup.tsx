@@ -14,12 +14,12 @@ import { DateInput } from "@/components/atoms/input/DateInput";
 import { PasswordInput } from "@/components/atoms/input/PasswordInput";
 import { Box } from "@/components/atoms/layout/Box";
 import { PageContent } from "@/components/atoms/layout/PageContent";
-import { Form } from "@/components/organisms/Form";
 import { FormContainer } from "@/components/atoms/FormContainer";
-import { SubHeader } from "@/content/base/subHeader/SubHeader";
 import { ButtonIcon } from "@/components/atoms/ButtonIcon";
 import { ErrorBadge } from "@/components/atoms/ErrorBadge";
 import { SuccessBadge } from "@/components/atoms/SuccessBadge";
+import { Form } from "@/components/molecules/Form";
+import { SubHeader } from "@/content/base/subHeader/SubHeader";
 
 function strMinLenValid(value: unknown) {
     if (typeof value !== "string" || value.length < 8) {

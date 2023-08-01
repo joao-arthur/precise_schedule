@@ -1,14 +1,14 @@
 import type { Settings } from "@/features/user/user";
 import { useForm } from "react-hook-form";
 import { Link } from "@/components/atoms/Link";
-import { Form } from "@/components/organisms/Form";
-import { SubHeader } from "@/content/base/subHeader/SubHeader";
 import { SelectInput } from "@/components/atoms/input/SelectInput";
 import { InputWrapper } from "@/components/atoms/form/InputWrapper";
-import { useAuthPage } from "@/features/session/useAuthPage";
 import { PageContent } from "@/components/atoms/layout/PageContent";
 import { FormContainer } from "@/components/atoms/FormContainer";
 import { ButtonIcon } from "@/components/atoms/ButtonIcon";
+import { Form } from "@/components/molecules/Form";
+import { SubHeader } from "@/content/base/subHeader/SubHeader";
+import { useAuthPage } from "@/features/session/useAuthPage";
 
 export default function Settings() {
     useAuthPage();
