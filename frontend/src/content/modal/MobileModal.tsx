@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 import clss from "classnames";
-import { If } from "@/components/atoms/layout/If";
 import { Button } from "@/components/atoms/button/Button";
 import { Text } from "@/components/atoms/typography/Text";
 
@@ -48,11 +47,9 @@ export function MobileModal({
                         "border-t border-gray-300 dark:border-gray-500",
                     )}
                 >
-                    <If condition={!!onConfirm}>
-                        <Button onClick={onConfirm} form={formId}>
-                            CONFIRM
-                        </Button>
-                    </If>
+                    <Button onClick={onConfirm} form={formId}>
+                        CONFIRM
+                    </Button>
                     <Button onClick={onCancel} secondary>
                         CANCEL
                     </Button>

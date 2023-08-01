@@ -1,7 +1,7 @@
 import { Action } from "./Action";
 import { useState } from "react";
 import { Modal } from "@/content/modal/Modal";
-import PartyEventRegister from "@/content/event/PartyEventRegister";
+import { PartyEventRegister } from "@/content/event/PartyEventRegister";
 
 export function PartyAction() {
     const [open, setOpen] = useState(false);

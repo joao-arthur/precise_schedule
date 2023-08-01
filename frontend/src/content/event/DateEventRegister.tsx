@@ -8,7 +8,7 @@ import { DateInput } from "@/components/atoms/input/DateInput";
 import { TimeInput } from "@/components/atoms/input/TimeInput";
 import { useCreateDate } from "@/features/event/useEventAPI";
 
-export default function DateEventRegister() {
+export function DateEventRegister() {
     const { register, handleSubmit } = useForm<DateEvent>();
     const { mutate, isLoading } = useCreateDate();
 

@@ -12,7 +12,7 @@ import { ToggleInput } from "@/components/atoms/input/ToggleInput";
 import { frequencyOptions } from "./frequencyOptions";
 import { useCreateMeeting } from "@/features/event/useEventAPI";
 
-export default function MeetingEventRegister() {
+export function MeetingEventRegister() {
     const { register, handleSubmit, watch, setValue } = useForm<MeetingEvent>();
     const { mutate, isLoading } = useCreateMeeting();
 

@@ -6,7 +6,7 @@ import { TextInput } from "@/components/atoms/input/TextInput";
 import { DateInput } from "@/components/atoms/input/DateInput";
 import { useCreateBirthday } from "@/features/event/useEventAPI";
 
-export default function BirthdayEventRegister() {
+export function BirthdayEventRegister() {
     const { register, handleSubmit } = useForm<BirthdayEvent>();
     const { mutate, isLoading } = useCreateBirthday();
 

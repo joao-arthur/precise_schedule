@@ -8,7 +8,7 @@ import { DateInput } from "@/components/atoms/input/DateInput";
 import { TimeInput } from "@/components/atoms/input/TimeInput";
 import { useCreateParty } from "@/features/event/useEventAPI";
 
-export default function PartyEventRegister() {
+export function PartyEventRegister() {
     const { register, handleSubmit } = useForm<PartyEvent>();
     const { mutate, isLoading } = useCreateParty();
 

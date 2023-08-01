@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 import clss from "classnames";
-import { If } from "@/components/atoms/layout/If";
 import { Button } from "@/components/atoms/button/Button";
 import { Text } from "@/components/atoms/typography/Text";
 
@@ -51,11 +50,9 @@ export function DesktopModal({
                     <Button onClick={onCancel} secondary>
                         CANCEL
                     </Button>
-                    <If condition={!!onConfirm}>
-                        <Button onClick={onConfirm} form={formId}>
-                            CONFIRM
-                        </Button>
-                    </If>
+                    <Button onClick={onConfirm} form={formId}>
+                        CONFIRM
+                    </Button>
                 </div>
             </div>
         </div>

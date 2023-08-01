@@ -1,7 +1,7 @@
 import { Action } from "./Action";
 import { useState } from "react";
 import { Modal } from "@/content/modal/Modal";
-import MeetingEventRegister from "@/content/event/MeetingEventRegister";
+import { MeetingEventRegister } from "@/content/event/MeetingEventRegister";
 
 export function MeetingAction() {
     const [open, setOpen] = useState(false);
