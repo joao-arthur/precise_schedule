@@ -1,10 +1,23 @@
-import { Action } from "./Action";
-import { useState } from "react";
+import type { PartyEvent } from "@/features/event/event";
+import { useEffect, useState } from "react";
+import { useCreateParty } from "@/features/event/useEventAPI";
 import { Modal } from "@/content/modal/Modal";
 import { PartyEventRegister } from "@/content/event/PartyEventRegister";
+import { Action } from "./Action";
 
 export function PartyAction() {
     const [open, setOpen] = useState(false);
+    const { mutate, isLoading, isSuccess } = useCreateParty();
+
+    function submit(data: PartyEvent) {
+        mutate(data);
+    }
+
+    useEffect(() => {
+        if (isSuccess) {
+            setOpen(false);
+        }
+    }, [isSuccess]);
 
     return (
         <>
@@ -22,11 +35,8 @@ export function PartyAction() {
                 onCancel={() => {
                     setOpen(false);
                 }}
-                onConfirm={() => {
-                    window.setTimeout(() => setOpen(false), 0);
-                }}
             >
-                <PartyEventRegister />
+                <PartyEventRegister onSubmit={submit} isLoading={isLoading} />
             </Modal>
         </>
     );

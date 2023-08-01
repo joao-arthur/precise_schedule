@@ -1,10 +1,23 @@
-import { Action } from "./Action";
-import { useState } from "react";
+import type { DateEvent } from "@/features/event/event";
+import { useEffect, useState } from "react";
+import { useCreateDate } from "@/features/event/useEventAPI";
 import { Modal } from "@/content/modal/Modal";
 import { DateEventRegister } from "@/content/event/DateEventRegister";
+import { Action } from "./Action";
 
 export function DateAction() {
     const [open, setOpen] = useState(false);
+    const { mutate, isLoading, isSuccess } = useCreateDate();
+
+    function submit(data: DateEvent) {
+        mutate(data);
+    }
+
+    useEffect(() => {
+        if (isSuccess) {
+            setOpen(false);
+        }
+    }, [isSuccess]);
 
     return (
         <>
@@ -22,11 +35,8 @@ export function DateAction() {
                 onCancel={() => {
                     setOpen(false);
                 }}
-                onConfirm={() => {
-                    window.setTimeout(() => setOpen(false), 0);
-                }}
             >
-                <DateEventRegister />
+                <DateEventRegister onSubmit={submit} isLoading={isLoading} />
             </Modal>
         </>
     );

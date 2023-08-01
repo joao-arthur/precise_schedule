@@ -10,23 +10,17 @@ import { DateInput } from "@/components/atoms/input/DateInput";
 import { TimeInput } from "@/components/atoms/input/TimeInput";
 import { ToggleInput } from "@/components/atoms/input/ToggleInput";
 import { frequencyOptions } from "./frequencyOptions";
-import { useCreateMeeting } from "@/features/event/useEventAPI";
 
-export function MeetingEventRegister() {
+type props = {
+    readonly onSubmit: (form: MeetingEvent) => void;
+    readonly isLoading: boolean;
+};
+
+export function MeetingEventRegister({ onSubmit, isLoading }: props) {
     const { register, handleSubmit, watch, setValue } = useForm<MeetingEvent>();
-    const { mutate, isLoading } = useCreateMeeting();
 
     const watchFrequency = watch("frequency");
-    const canRepeatWeekend = watchFrequency
-        ? ["1D", "2D"].includes(
-            watchFrequency,
-        )
-        : true;
-
-    function submit(data: MeetingEvent) {
-        const event = buildMeetingEvent(data);
-        mutate(event);
-    }
+    const canRepeatWeekend = watchFrequency ? ["1D", "2D"].includes(watchFrequency) : true;
 
     useEffect(() => {
         if (!canRepeatWeekend) {
@@ -37,7 +31,7 @@ export function MeetingEventRegister() {
     return (
         <ModalForm
             id="MeetingEventRegister"
-            onSubmit={handleSubmit(submit)}
+            onSubmit={handleSubmit(onSubmit)}
         >
             <InputWrapper name="name" title="Name">
                 <TextInput

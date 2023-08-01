@@ -6,20 +6,19 @@ import { Group } from "@/components/atoms/layout/Group";
 import { TextInput } from "@/components/atoms/input/TextInput";
 import { DateInput } from "@/components/atoms/input/DateInput";
 import { TimeInput } from "@/components/atoms/input/TimeInput";
-import { useCreateDate } from "@/features/event/useEventAPI";
 
-export function DateEventRegister() {
+type props = {
+    readonly onSubmit: (form: DateEvent) => void;
+    readonly isLoading: boolean;
+};
+
+export function DateEventRegister({ onSubmit, isLoading }: props) {
     const { register, handleSubmit } = useForm<DateEvent>();
-    const { mutate, isLoading } = useCreateDate();
-
-    function submit(data: DateEvent) {
-        mutate(data);
-    }
 
     return (
         <ModalForm
             id="DateEventRegister"
-            onSubmit={handleSubmit(submit)}
+            onSubmit={handleSubmit(onSubmit)}
         >
             <InputWrapper name="name" title="Name">
                 <TextInput

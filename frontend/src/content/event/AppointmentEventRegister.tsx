@@ -10,22 +10,17 @@ import { DateInput } from "@/components/atoms/input/DateInput";
 import { TimeInput } from "@/components/atoms/input/TimeInput";
 import { ToggleInput } from "@/components/atoms/input/ToggleInput";
 import { frequencyOptions } from "./frequencyOptions";
-import { useCreateAppointment } from "@/features/event/useEventAPI";
 
-export default function AppointmentEventRegister() {
+type props = {
+    readonly onSubmit: (form: AppointmentEvent) => void;
+    readonly isLoading: boolean;
+};
+
+export function AppointmentEventRegister({ onSubmit, isLoading }: props) {
     const { register, handleSubmit, watch, setValue } = useForm<AppointmentEvent>();
-    const { mutate, isLoading } = useCreateAppointment();
 
     const watchFrequency = watch("frequency");
-    const canRepeatWeekend = watchFrequency
-        ? ["1D", "2D"].includes(
-            watchFrequency,
-        )
-        : true;
-
-    function submit(data: AppointmentEvent) {
-        mutate(data);
-    }
+    const canRepeatWeekend = watchFrequency ? ["1D", "2D"].includes(watchFrequency) : true;
 
     useEffect(() => {
         if (!canRepeatWeekend) {
@@ -36,7 +31,7 @@ export default function AppointmentEventRegister() {
     return (
         <ModalForm
             id="AppointmentEventRegister"
-            onSubmit={handleSubmit(submit)}
+            onSubmit={handleSubmit(onSubmit)}
         >
             <InputWrapper name="name" title="Name">
                 <TextInput

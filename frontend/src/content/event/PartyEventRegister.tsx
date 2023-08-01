@@ -6,20 +6,19 @@ import { Group } from "@/components/atoms/layout/Group";
 import { TextInput } from "@/components/atoms/input/TextInput";
 import { DateInput } from "@/components/atoms/input/DateInput";
 import { TimeInput } from "@/components/atoms/input/TimeInput";
-import { useCreateParty } from "@/features/event/useEventAPI";
 
-export function PartyEventRegister() {
+type props = {
+    readonly onSubmit: (form: PartyEvent) => void;
+    readonly isLoading: boolean;
+};
+
+export function PartyEventRegister({ onSubmit, isLoading }: props) {
     const { register, handleSubmit } = useForm<PartyEvent>();
-    const { mutate, isLoading } = useCreateParty();
-
-    function submit(data: PartyEvent) {
-        mutate(data);
-    }
 
     return (
         <ModalForm
             id="PartyEventRegister"
-            onSubmit={handleSubmit(submit)}
+            onSubmit={handleSubmit(onSubmit)}
         >
             <InputWrapper name="name" title="Name">
                 <TextInput

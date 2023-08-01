@@ -1,10 +1,23 @@
-import { Action } from "./Action";
-import { useState } from "react";
+import type { MeetingEvent } from "@/features/event/event";
+import { useEffect, useState } from "react";
+import { useCreateMeeting } from "@/features/event/useEventAPI";
 import { Modal } from "@/content/modal/Modal";
 import { MeetingEventRegister } from "@/content/event/MeetingEventRegister";
+import { Action } from "./Action";
 
 export function MeetingAction() {
     const [open, setOpen] = useState(false);
+    const { mutate, isLoading, isSuccess } = useCreateMeeting();
+
+    function submit(data: MeetingEvent) {
+        mutate(data);
+    }
+
+    useEffect(() => {
+        if (isSuccess) {
+            setOpen(false);
+        }
+    }, [isSuccess]);
 
     return (
         <>
@@ -22,11 +35,8 @@ export function MeetingAction() {
                 onCancel={() => {
                     setOpen(false);
                 }}
-                onConfirm={() => {
-                    window.setTimeout(() => setOpen(false), 0);
-                }}
             >
-                <MeetingEventRegister />
+                <MeetingEventRegister onSubmit={submit} isLoading={isLoading} />
             </Modal>
         </>
     );

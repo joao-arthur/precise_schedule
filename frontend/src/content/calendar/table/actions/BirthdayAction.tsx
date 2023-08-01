@@ -1,10 +1,23 @@
-import { Action } from "./Action";
-import { useState } from "react";
+import type { BirthdayEvent } from "@/features/event/event";
+import { useEffect, useState } from "react";
+import { useCreateBirthday } from "@/features/event/useEventAPI";
 import { Modal } from "@/content/modal/Modal";
 import { BirthdayEventRegister } from "@/content/event/BirthdayEventRegister";
+import { Action } from "./Action";
 
 export function BirthdayAction() {
     const [open, setOpen] = useState(false);
+    const { mutate, isLoading, isSuccess } = useCreateBirthday();
+
+    function submit(data: BirthdayEvent) {
+        mutate(data);
+    }
+
+    useEffect(() => {
+        if (isSuccess) {
+            setOpen(false);
+        }
+    }, [isSuccess]);
 
     return (
         <>
@@ -22,11 +35,8 @@ export function BirthdayAction() {
                 onCancel={() => {
                     setOpen(false);
                 }}
-                onConfirm={() => {
-                    window.setTimeout(() => setOpen(false), 0);
-                }}
             >
-                <BirthdayEventRegister />
+                <BirthdayEventRegister onSubmit={submit} isLoading={isLoading} />
             </Modal>
         </>
     );
