@@ -1,6 +1,6 @@
 {
-    "name": "engine",
-    "description": "lib to handle some operations of the frontend",
+    "name": "frontend_core",
+    "description": "lib to handle core operations of the frontend",
     "author": "joao-arthur",
     "version": "1.0.0",
     "private": true,
