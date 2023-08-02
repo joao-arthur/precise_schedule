@@ -8,4 +8,4 @@ export const calendarFns = {
     isDateIn,
     toPeriod,
     toTable,
-};
+} as const;
