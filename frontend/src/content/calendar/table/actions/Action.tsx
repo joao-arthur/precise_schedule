@@ -1,7 +1,7 @@
 import { names } from "@/components/atoms/Icon";
 import { FloatingButton } from "@/components/atoms/button/FloatingButton";
 import { Tooltip } from "@/components/atoms/Tooltip";
-import { Text } from "@/components/atoms/typography/Text";
+import { Text } from "@/components/atoms/Text";
 
 type props = {
     readonly title: string;

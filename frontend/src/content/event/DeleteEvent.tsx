@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { Modal } from "@/components/modal/Modal";
-import { Text } from "@/components/atoms/typography/Text";
+import { Text } from "@/components/atoms/Text";
 import { eventType } from "../../eventType";
 import { useEventAPI } from "../../eventAPI";
 

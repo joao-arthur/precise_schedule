@@ -1,6 +1,6 @@
 import clss from "classnames";
 import { Icon, names } from "@/components/atoms/Icon";
-import { Text } from "@/components/atoms/typography/Text";
+import { Text } from "@/components/atoms/Text";
 
 type props = {
     readonly name: string;

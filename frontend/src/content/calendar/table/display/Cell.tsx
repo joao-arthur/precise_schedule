@@ -4,7 +4,7 @@ import { calendarFns } from "frontend_core";
 import { useCalendar } from "@/features/calendar/useCalendar";
 import { DisabledText } from "@/components/atoms/typography/DisabledText";
 import { Event } from "@/features/event/event";
-import { Text } from "@/components/atoms/typography/Text";
+import { Text } from "@/components/atoms/Text";
 
 type props = {
     readonly calendar: Calendar;

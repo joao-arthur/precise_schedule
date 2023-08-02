@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ButtonIcon } from "@/components/atoms/ButtonIcon";
-import { Text } from "@/components/atoms/typography/Text";
+import { Text } from "@/components/atoms/Text";
 //import { InfoEvent } from "../../EventRegister/InfoEvent";
 //import { EditEvent } from "../../EventRegister/EditEvent";
 import { Event } from "@/features/event/event";

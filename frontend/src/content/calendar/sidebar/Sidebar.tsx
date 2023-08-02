@@ -5,7 +5,7 @@ import clss from "classnames";
 import { useDevice } from "@/lib/device/useDevice";
 import { useCalendar } from "@/features/calendar/useCalendar";
 import { ButtonIcon } from "@/components/atoms/ButtonIcon";
-import { Text } from "@/components/atoms/typography/Text";
+import { Text } from "@/components/atoms/Text";
 import { If } from "@/components/atoms/layout/If";
 import { Events } from "./Events";
 

@@ -1,4 +1,4 @@
-import { Text } from "@/components/atoms/typography/Text";
+import { Text } from "@/components/atoms/Text";
 import { useDevice } from "@/lib/device/useDevice";
 
 const daysOfWeek = [

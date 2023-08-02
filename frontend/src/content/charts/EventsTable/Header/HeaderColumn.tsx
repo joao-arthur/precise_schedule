@@ -1,5 +1,5 @@
 import { ButtonIcon } from "@/components/atoms/ButtonIcon";
-import { Text } from "@/components/atoms/typography/Text";
+import { Text } from "@/components/atoms/Text";
 
 type props = {
     readonly title: string;

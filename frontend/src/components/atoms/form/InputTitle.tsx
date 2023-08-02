@@ -1,4 +1,4 @@
-import { Text } from "../typography/Text";
+import { Text } from "./Text";
 
 type props = {
     readonly name: string;

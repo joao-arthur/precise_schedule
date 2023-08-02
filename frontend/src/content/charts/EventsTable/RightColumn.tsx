@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Text } from "@/components/atoms/typography/Text";
+import { Text } from "@/components/atoms/Text";
 
 type props = {
     readonly children: ReactNode;

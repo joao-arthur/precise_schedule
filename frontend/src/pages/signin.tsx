@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { useAnonPage } from "@/features/session/useAnonPage";
 import { useUserLogin } from "@/features/user/useUserAPI";
 import { useSessionManager } from "@/features/session/useSessionManager";
-import { Text } from "@/components/atoms/typography/Text";
+import { Text } from "@/components/atoms/Text";
 import { Link } from "@/components/atoms/Link";
 import { InputWrapper } from "@/components/atoms/form/InputWrapper";
 import { TextInput } from "@/components/atoms/input/TextInput";
