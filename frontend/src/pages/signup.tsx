@@ -5,7 +5,7 @@ import { useAnonPage } from "@/features/session/useAnonPage";
 import { useSessionManager } from "@/features/session/useSessionManager";
 import { useUserCreate } from "@/features/user/useUserAPI";
 import { Text } from "@/components/atoms/typography/Text";
-import { TextMedium } from "@/components/atoms/typography/TextMedium";
+import { Text2 } from "@/components/atoms/typography/Text2";
 import { Link } from "@/components/atoms/Link";
 import { TextInput } from "@/components/atoms/input/TextInput";
 import { InputWrapper } from "@/components/atoms/form/InputWrapper";
@@ -169,25 +169,25 @@ export default function SignUp() {
                             <div className="py-2">
                                 <div className="flex gap-2 p-1 items-center">
                                     {strMinLenValid(password) ? <SuccessBadge /> : <ErrorBadge />}
-                                    <TextMedium>At least 8 characters</TextMedium>
+                                    <Text2 size="sm">At least 8 characters</Text2>
                                 </div>
                                 <div className="flex gap-2 p-1 items-center">
                                     {strMinNumValid(password) ? <SuccessBadge /> : <ErrorBadge />}
-                                    <TextMedium>At least 1 number</TextMedium>
+                                    <Text2 size="sm">At least 1 number</Text2>
                                 </div>
                                 <div className="flex gap-2 p-1 items-center">
                                     {strMinUpperValid(password) ? <SuccessBadge /> : <ErrorBadge />}
-                                    <TextMedium>At least 1 uppercase letter</TextMedium>
+                                    <Text2 size="sm">At least 1 uppercase letter</Text2>
                                 </div>
                                 <div className="flex gap-2 p-1 items-center">
                                     {strMinLowerValid(password) ? <SuccessBadge /> : <ErrorBadge />}
-                                    <TextMedium>At least 1 lowercase letter</TextMedium>
+                                    <Text2 size="sm">At least 1 lowercase letter</Text2>
                                 </div>
                                 <div className="flex gap-2 p-1 items-center">
                                     {strMinSpecialValid(password)
                                         ? <SuccessBadge />
                                         : <ErrorBadge />}
-                                    <TextMedium>At least 1 of !@#$%¨&*()[]{}</TextMedium>
+                                    <Text2 size="sm">At least 1 of !@#$%¨&*()[]{}</Text2>
                                 </div>
                             </div>
                         </InputWrapper>

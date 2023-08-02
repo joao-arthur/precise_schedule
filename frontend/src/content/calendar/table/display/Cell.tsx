@@ -2,10 +2,9 @@ import type { Calendar } from "frontend_core";
 import clss from "classnames";
 import { calendarFns } from "frontend_core";
 import { useCalendar } from "@/features/calendar/useCalendar";
-import { TextBig } from "@/components/atoms/typography/TextBig";
-import { TextSmall } from "@/components/atoms/typography/TextSmall";
 import { DisabledText } from "@/components/atoms/typography/DisabledText";
 import { Event } from "@/features/event/event";
+import { Text2 } from "@/components/atoms/typography/Text2";
 
 type props = {
     readonly calendar: Calendar;
@@ -30,21 +29,19 @@ export function Cell({ calendar, date, events }: props) {
                 ? (
                     <>
                         <div className="text-center">
-                            <TextBig>
+                            <Text2 size="xl">
                                 {date}
-                            </TextBig>
+                            </Text2>
                         </div>
-                        {events.map((evt) => <TextSmall key={evt}>{evt}</TextSmall>)}
+                        {events.map((evt) => <Text2 size="xs" key={evt}>{evt}</Text2>)}
                     </>
                 )
                 : (
-                    <DisabledText
-                        className={clss(
-                            "text-xl text-center",
-                        )}
-                    >
-                        {date}
-                    </DisabledText>
+                    <div className="text-center">
+                        <Text2 size="xl" disabled>
+                            {date}
+                        </Text2>
+                    </div>
                 )}
         </div>
     );

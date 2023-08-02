@@ -34,7 +34,7 @@ export function MobileModal({
                         "shadow-sm shadow-gray-500",
                     )}
                 >
-                    <Text className="select-none m-0 text-white">
+                    <Text className="m-0 text-white">
                         {title}
                     </Text>
                 </div>

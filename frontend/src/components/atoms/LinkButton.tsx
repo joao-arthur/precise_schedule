@@ -1,5 +1,5 @@
-import clss from "classnames";
 import type { ReactNode } from "react";
+import clss from "classnames";
 import BaseLink from "next/link";
 
 type props = {
