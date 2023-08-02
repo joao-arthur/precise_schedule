@@ -1,6 +1,7 @@
 import { names } from "@/components/atoms/Icon";
 import { FloatingButton } from "@/components/atoms/button/FloatingButton";
-import { FilledText } from "@/components/atoms/typography/FilledText";
+import { Tooltip } from "@/components/atoms/Tooltip";
+import { Text } from "@/components/atoms/typography/Text";
 
 type props = {
     readonly title: string;
@@ -11,7 +12,9 @@ type props = {
 export function Action({ title, icon, onClick }: props) {
     return (
         <div className="flex items-center gap-5">
-            <FilledText>{title}</FilledText>
+            <Tooltip>
+                <Text>{title}</Text>
+            </Tooltip>
             <FloatingButton
                 className="w-14 h-14"
                 icon={icon}

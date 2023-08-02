@@ -7,20 +7,18 @@ type props = {
     readonly onClick?: () => void;
 };
 
-export function FilledText({ onClick, className, children }: props) {
+export function Tooltip({ onClick, children }: props) {
     return (
-        <span
+        <div
             className={clss(
-                "px-2 p-1 select-none rounded-md",
                 "bg-white dark:bg-dark-light",
-                "dark:text-pastel-gray",
-                "shadow-sm shadow-gray-500",
                 "transition-all duration-500",
-                className,
+                "px-2 p-1 rounded-md",
+                "shadow-sm shadow-gray-500",
             )}
             onClick={onClick}
         >
             {children}
-        </span>
+        </div>
     );
 }
