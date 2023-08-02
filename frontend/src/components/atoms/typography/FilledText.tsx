@@ -7,9 +7,7 @@ type props = {
     readonly onClick?: () => void;
 };
 
-export function FilledText(
-    { onClick, className, children }: props,
-) {
+export function FilledText({ onClick, className, children }: props) {
     return (
         <span
             className={clss(

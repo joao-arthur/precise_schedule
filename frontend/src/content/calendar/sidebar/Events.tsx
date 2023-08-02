@@ -1,14 +1,13 @@
 import clss from "classnames";
-//import { useGetDayEvents } from "../../../Fns/getDayEvents";
 import { Event } from "@/features/event/event";
 import { useDevice } from "@/lib/device/useDevice";
 import { EventItem } from "./EventItem";
 
 type props = {
-    readonly day: Date;
+    readonly date: string;
 };
 
-export function Events({ day }: props) {
+export function Events({ date }: props) {
     const device = useDevice();
     const isMobile = device.isMobile();
 

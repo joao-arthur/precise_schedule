@@ -1,11 +1,11 @@
 import type { Calendar } from "frontend_core";
 import clss from "classnames";
+import { calendarFns } from "frontend_core";
 import { useCalendar } from "@/features/calendar/useCalendar";
-import { Text } from "@/components/atoms/typography/Text";
+import { TextBig } from "@/components/atoms/typography/TextBig";
 import { TextSmall } from "@/components/atoms/typography/TextSmall";
 import { DisabledText } from "@/components/atoms/typography/DisabledText";
 import { Event } from "@/features/event/event";
-import { calendarFns } from "frontend_core";
 
 type props = {
     readonly calendar: Calendar;
@@ -16,32 +16,36 @@ type props = {
 export function Cell({ calendar, date, events }: props) {
     const { toggleSelectedDate } = useCalendar();
 
-    return calendarFns.isDateIn(calendar, date)
-        ? (
-            <div
-                className={clss(
-                    "flex flex-col flex-1 rounded cursor-pointer",
-                    "hover:bg-primary-lighter active:bg-primary-light",
-                    "dark:hover:bg-primary-darker dark:active:bg-primary-dark",
+    return (
+        <div
+            className={clss(
+                "flex flex-col flex-1 rounded cursor-pointer",
+                "hover:bg-primary-lighter active:bg-primary-light",
+                "dark:hover:bg-primary-darker dark:active:bg-primary-dark",
+                "overflow-hidden",
+            )}
+            onClick={() => toggleSelectedDate(date)}
+        >
+            {calendarFns.isDateIn(calendar, date)
+                ? (
+                    <>
+                        <div className="text-center">
+                            <TextBig>
+                                {date}
+                            </TextBig>
+                        </div>
+                        {events.map((evt) => <TextSmall key={evt}>{evt}</TextSmall>)}
+                    </>
+                )
+                : (
+                    <DisabledText
+                        className={clss(
+                            "text-xl text-center",
+                        )}
+                    >
+                        {date}
+                    </DisabledText>
                 )}
-                onClick={() => toggleSelectedDate(date)}
-            >
-                <Text className="select-none text-xl text-center">
-                    {date}
-                </Text>
-                {events.map((evt) => <TextSmall key={evt}>{evt}</TextSmall>)}
-            </div>
-        )
-        : (
-            <DisabledText
-                onClick={() => toggleSelectedDate(date)}
-                className={clss(
-                    "flex flex-1 rounded cursor-pointer justify-center items-start select-none text-xl",
-                    "hover:bg-primary-lighter active:bg-primary-light",
-                    "dark:hover:bg-primary-darker dark:active:bg-primary-dark",
-                )}
-            >
-                {date}
-            </DisabledText>
-        );
+        </div>
+    );
 }

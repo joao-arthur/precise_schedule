@@ -28,11 +28,8 @@ const sidebarMachine = createMachine({
 
 export function Sidebar() {
     const isMobile = useDevice().isMobile();
-
     const { selectedDate, removeSelectedDate } = useCalendar();
-
     const [displayDay, setDisplayDay] = useState(selectedDate);
-    const displayDayDate = new Date(displayDay);
     const timeoutId = useRef(-1);
     const [state, send] = useMachine(sidebarMachine);
 
@@ -97,8 +94,7 @@ export function Sidebar() {
                             )}
                         >
                             <Text className="text-center my-auto text-3xl">
-                                {displayDayDate
-                                    .toLocaleDateString()}
+                                {displayDay}
                             </Text>
                             <ButtonIcon
                                 name="x"
@@ -106,7 +102,7 @@ export function Sidebar() {
                                 onClick={() => removeSelectedDate()}
                             />
                         </div>
-                        <Events day={displayDayDate} />
+                        <Events date={displayDay} />
                     </div>
                 </If>
             </div>

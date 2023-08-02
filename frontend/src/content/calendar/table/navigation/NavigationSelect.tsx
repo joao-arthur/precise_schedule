@@ -8,9 +8,7 @@ type props = {
     readonly onChange: (newValue: string) => void;
 };
 
-export function NavigationSelect(
-    { name, options, value, onChange }: props,
-) {
+export function NavigationSelect({ name, options, value, onChange }: props) {
     return (
         <select
             name={name}

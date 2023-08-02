@@ -11,7 +11,8 @@ export function TextSmall({ children }: props) {
             className={clss(
                 "select-none",
                 "transition-colors duration-500",
-                "text-xs dark:text-pastel-gray",
+                "dark:text-pastel-gray",
+                "text-xs",
             )}
         >
             {children}

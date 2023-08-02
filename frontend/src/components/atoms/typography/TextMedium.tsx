@@ -11,7 +11,8 @@ export function TextMedium({ children }: props) {
             className={clss(
                 "select-none",
                 "transition-colors duration-500",
-                "text-sm dark:text-pastel-gray",
+                "dark:text-pastel-gray",
+                "text-sm",
             )}
         >
             {children}
