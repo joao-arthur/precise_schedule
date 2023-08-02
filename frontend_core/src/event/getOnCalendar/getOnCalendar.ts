@@ -1,7 +1,7 @@
 import type { Event } from "../event.js";
 import type { Calendar } from "../../calendar/mod.js";
 
-import { repInPeriod } from "repeat_events";
+import { repInPeriod } from "lib_repeat_events";
 import { calendarFns } from "../../calendar/mod.js";
 
 export function getOnCalendar(events: Event[], cal: Calendar): Map<string, string[]> {

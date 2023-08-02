@@ -11,9 +11,9 @@ dependencies:
   funis:
     specifier: 1.1.1
     version: 1.1.1
-  repeat_events:
-    specifier: link:../repeat_events
-    version: link:../repeat_events
+  lib_repeat_events:
+    specifier: link:../lib_repeat_events
+    version: link:../lib_repeat_events
 
 devDependencies:
   '@vitest/coverage-v8':
