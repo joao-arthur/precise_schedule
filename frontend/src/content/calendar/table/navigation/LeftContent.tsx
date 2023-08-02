@@ -1,7 +1,7 @@
 import clss from "classnames";
+import { calendarFns } from "frontend_core";
 import { useCalendar } from "@/features/calendar/useCalendar";
 import { useSession } from "@/features/session/useSession";
-import { isCurrentDate } from "@/features/calendar/isCurrentDate";
 import { ButtonIcon } from "@/components/atoms/ButtonIcon";
 import { Link } from "@/components/atoms/Link";
 import { If } from "@/components/atoms/layout/If";
@@ -17,7 +17,7 @@ export function LeftContent() {
                     <ButtonIcon name="chart" size="medium" />
                 </Link>
             </If>
-            <If condition={!isCurrentDate({ year, month })}>
+            <If condition={!calendarFns.isCurrent({ year, month })}>
                 <button
                     className={clss(
                         "h-10 px-1 rounded",

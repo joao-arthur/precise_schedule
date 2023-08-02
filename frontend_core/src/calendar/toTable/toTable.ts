@@ -9,7 +9,7 @@ export function toTable({ year, month }: Calendar): CalendarTable {
     const firstDay = Temporal.PlainDate.from({ year, month, day: 1 });
     return Array(rows)
         .fill(Array(weekDays).fill(undefined))
-        .map((week: number[], weekIndex) =>
+        .map((week: readonly number[], weekIndex) =>
             week.map((_, dayIndex) => {
                 const cellIndex = weekIndex * weekDays + dayIndex;
                 const dayInMonthIndex = cellIndex - firstDay.dayOfWeek;

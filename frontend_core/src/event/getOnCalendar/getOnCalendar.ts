@@ -1,11 +1,12 @@
-import type { Event } from "../event.js";
 import type { Calendar } from "../../calendar/mod.js";
+import type { Event } from "../event.js";
+import type { EventCalendar } from "../eventCalendar.js";
 
 import { repInPeriod } from "lib_repeat_events";
 import { calendarFns } from "../../calendar/mod.js";
 
-export function getOnCalendar(events: Event[], cal: Calendar): Map<string, string[]> {
-    const eventsMap = new Map<string, string[]>();
+export function getOnCalendar(events: readonly Event[], cal: Calendar): EventCalendar {
+    const eventsMap = new Map<string, readonly string[]>();
 
     events.forEach((evt) => {
         const evtReps = repInPeriod(

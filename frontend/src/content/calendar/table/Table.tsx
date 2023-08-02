@@ -2,6 +2,7 @@ import { useDevice } from "@/lib/device/useDevice";
 import { Content } from "./Content";
 import { Actions } from "./actions/Actions";
 import { useSession } from "@/features/session/useSession";
+import { If } from "@/components/atoms/layout/If";
 
 export function Table() {
     const isMobile = useDevice().isMobile();
@@ -24,7 +25,9 @@ export function Table() {
                         <Content />
                     </div>
                 )}
-            {logged ? <Actions /> : null}
+            <If condition={logged}>
+                <Actions />
+            </If>
         </>
     );
 }

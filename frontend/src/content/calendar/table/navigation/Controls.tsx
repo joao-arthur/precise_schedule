@@ -53,8 +53,8 @@ export function Controls() {
                 type="select"
                 options={months}
                 name="month"
-                value={months[month]}
-                onChange={(newMonth) => setMonth(months.indexOf(newMonth))}
+                value={months[month - 1]}
+                onChange={(newMonth) => setMonth(months.indexOf(newMonth) + 1)}
             />
             <NavigationSelect
                 type="select"

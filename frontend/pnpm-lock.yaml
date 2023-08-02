@@ -7,7 +7,7 @@ specifiers:
   '@xstate/react': ^3.2.2
   autoprefixer: ^10.4.14
   classnames: ^2.3.2
-  engine: link:../engine
+  frontend_core: link:../frontend_core
   funis: ^1.1.1
   next: ^13.4.7
   postcss: ^8.4.24
@@ -18,7 +18,6 @@ specifiers:
   react-icons: ^4.10.1
   react-query: ^3.39.3
   recharts: ^2.7.2
-  repeat_events: link:../repeat_events
   tailwindcss: ^3.3.2
   typescript: ^5.1.6
   usehooks-ts: ^2.9.1
@@ -29,7 +28,7 @@ specifiers:
 dependencies:
   '@xstate/react': 3.2.2_pw3jtckrkofreyhdypv366cqwu
   classnames: 2.3.2
-  engine: link:../engine
+  frontend_core: link:../frontend_core
   funis: 1.1.1
   next: 13.4.7_biqbaboplfbrettd7655fr4n2y
   react: 18.2.0
@@ -39,7 +38,6 @@ dependencies:
   react-icons: 4.10.1_react@18.2.0
   react-query: 3.39.3_biqbaboplfbrettd7655fr4n2y
   recharts: 2.7.2_biqbaboplfbrettd7655fr4n2y
-  repeat_events: link:../repeat_events
   usehooks-ts: 2.9.1_biqbaboplfbrettd7655fr4n2y
   xstate: 4.38.0
   zustand: 4.3.8_react@18.2.0

@@ -1,23 +1,22 @@
+import type { Calendar } from "frontend_core";
 import clss from "classnames";
 import { useCalendar } from "@/features/calendar/useCalendar";
 import { Text } from "@/components/atoms/typography/Text";
 import { TextSmall } from "@/components/atoms/typography/TextSmall";
 import { DisabledText } from "@/components/atoms/typography/DisabledText";
 import { Event } from "@/features/event/event";
+import { calendarFns } from "frontend_core";
 
 type props = {
-    readonly year: number;
-    readonly month: number;
-    readonly day: number;
-    readonly events: readonly Event[];
+    readonly calendar: Calendar;
+    readonly date: string;
+    readonly events: readonly Event["id"][];
 };
 
-export function Cell({ year, month, day, events }: props) {
+export function Cell({ calendar, date, events }: props) {
     const { toggleSelectedDate } = useCalendar();
-    const date = new Date(year, month, day);
-    const isInMonth = date.getMonth() === month;
 
-    return isInMonth
+    return calendarFns.isDateIn(calendar, date)
         ? (
             <div
                 className={clss(
@@ -25,26 +24,24 @@ export function Cell({ year, month, day, events }: props) {
                     "hover:bg-primary-lighter active:bg-primary-light",
                     "dark:hover:bg-primary-darker dark:active:bg-primary-dark",
                 )}
+                onClick={() => toggleSelectedDate(date)}
             >
-                <Text
-                    className="select-none text-xl text-center"
-                    onClick={() => toggleSelectedDate(date.toISOString())}
-                >
-                    {date.getDate()}
+                <Text className="select-none text-xl text-center">
+                    {date}
                 </Text>
-                {events.map((evt) => <TextSmall key={evt.id}>{evt.name}</TextSmall>)}
+                {events.map((evt) => <TextSmall key={evt}>{evt}</TextSmall>)}
             </div>
         )
         : (
             <DisabledText
-                onClick={() => toggleSelectedDate(date.toISOString())}
+                onClick={() => toggleSelectedDate(date)}
                 className={clss(
                     "flex flex-1 rounded cursor-pointer justify-center items-start select-none text-xl",
                     "hover:bg-primary-lighter active:bg-primary-light",
                     "dark:hover:bg-primary-darker dark:active:bg-primary-dark",
                 )}
             >
-                {date.getDate()}
+                {date}
             </DisabledText>
         );
 }

@@ -13,7 +13,7 @@ type CalendarState = {
 
 export const useCalendar = create<CalendarState>((set) => ({
     year: new Date().getFullYear(),
-    month: new Date().getMonth(),
+    month: new Date().getMonth() + 1,
     selectedDate: "",
     toggleSelectedDate: (selectedDate: string) =>
         set((state) => ({
@@ -25,6 +25,6 @@ export const useCalendar = create<CalendarState>((set) => ({
     setCurrentMonth: () =>
         set({
             year: new Date().getFullYear(),
-            month: new Date().getMonth(),
+            month: new Date().getMonth() + 1,
         }),
 }));
