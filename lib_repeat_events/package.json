@@ -1,5 +1,5 @@
 {
-    "name": "repeat_events",
+    "name": "lib_repeat_events",
     "description": "lib that calculates recurring events over a period",
     "author": "joao-arthur",
     "version": "1.0.0",
