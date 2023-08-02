@@ -1,12 +1,8 @@
 import { assert, it } from "vitest";
 import { toTable } from "./toTable.js";
 
-function mk(d: number): string {
-    return `2023-08-${d}`;
-}
-
 it("toTable", () => {
-    assert.deepStrictEqual(
+    assert.deepEqual(
         toTable({ year: 2023, month: 8 }),
         [
             [
