@@ -29,14 +29,12 @@ export function MobileModal({
             >
                 <div
                     className={clss(
-                        "py-5 px-7 text-2xl",
+                        "py-5 px-7",
                         "bg-primary",
                         "shadow-sm shadow-gray-500",
                     )}
                 >
-                    <Text className="m-0 text-white">
-                        {title}
-                    </Text>
+                    <Text size="2xl" color="white">{title}</Text>
                 </div>
                 <div className="flex-1 overflow-auto p-3">
                     {children}

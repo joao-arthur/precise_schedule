@@ -4,7 +4,7 @@ import { calendarFns } from "frontend_core";
 import { useCalendar } from "@/features/calendar/useCalendar";
 import { DisabledText } from "@/components/atoms/typography/DisabledText";
 import { Event } from "@/features/event/event";
-import { Text2 } from "@/components/atoms/typography/Text2";
+import { Text } from "@/components/atoms/typography/Text";
 
 type props = {
     readonly calendar: Calendar;
@@ -29,18 +29,18 @@ export function Cell({ calendar, date, events }: props) {
                 ? (
                     <>
                         <div className="text-center">
-                            <Text2 size="xl">
+                            <Text size="xl">
                                 {date}
-                            </Text2>
+                            </Text>
                         </div>
-                        {events.map((evt) => <Text2 size="xs" key={evt}>{evt}</Text2>)}
+                        {events.map((evt) => <Text size="xs" key={evt}>{evt}</Text>)}
                     </>
                 )
                 : (
                     <div className="text-center">
-                        <Text2 size="xl" disabled>
+                        <Text size="xl" disabled>
                             {date}
-                        </Text2>
+                        </Text>
                     </div>
                 )}
         </div>

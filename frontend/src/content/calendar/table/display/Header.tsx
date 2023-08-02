@@ -25,16 +25,18 @@ export function Header() {
     const device = useDevice();
     const isMobile = device.isMobile();
 
-    const days = isMobile ? daysOfWeekAbbrev : daysOfWeek;
+    const weekDays = isMobile ? daysOfWeekAbbrev : daysOfWeek;
 
     return (
         <div className="flex flex-0">
-            {days.map((day) => (
-                <Text className="flex-1 overflow-hidden" key={day}>
-                    <div className="select-none text-center font-bold m-auto">
-                        {day}
-                    </div>
-                </Text>
+            {weekDays.map((weekDay) => (
+                <div className="flex-1 overflow-hidden" key={weekDay}>
+                    <Text key={weekDay}>
+                        <div className="select-none text-center font-bold m-auto">
+                            {weekDay}
+                        </div>
+                    </Text>
+                </div>
             ))}
         </div>
     );

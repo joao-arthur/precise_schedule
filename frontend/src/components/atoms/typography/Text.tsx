@@ -3,20 +3,40 @@ import clss from "classnames";
 
 type props = {
     readonly children: ReactNode;
-    readonly className?: string;
-    readonly onClick?: () => void;
+    readonly disabled?: boolean;
+    readonly size?:
+        | "xs"
+        | "sm"
+        | "lg"
+        | "xl"
+        | "2xl"
+        | "3xl";
+    readonly color?: "white";
 };
 
-export function Text({ onClick, className, children }: props) {
+export function Text({ children, disabled, size, color }: props) {
     return (
         <span
             className={clss(
                 "select-none",
                 "transition-colors duration-500",
-                "text-dark dark:text-pastel-gray",
-                className,
+                clss(
+                    disabled
+                        ? "text-gray-500 dark:text-gray-500"
+                        : "text-dark dark:text-pastel-gray",
+                    {
+                        "text-xs": size === "xs",
+                        "text-sm": size === "sm",
+                        "text-lg": size === "lg",
+                        "text-xl": size === "xl",
+                        "text-2xl": size === "2xl",
+                        "text-3xl": size === "3xl",
+                    },
+                    {
+                        "text-white": color === "white",
+                    },
+                ),
             )}
-            onClick={onClick}
         >
             {children}
         </span>

@@ -17,7 +17,7 @@ export function EventItem({ event }: props) {
 
     return (
         <div className="flex justify-between items-center p-3">
-            <Text className="text-lg text-ellipsis whitespace-nowrap overflow-hidden">
+            <Text size="lg" className="text-ellipsis whitespace-nowrap overflow-hidden">
                 {event.name}
             </Text>
             <div className="flex gap-2">

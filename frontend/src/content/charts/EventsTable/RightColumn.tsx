@@ -7,8 +7,8 @@ type props = {
 
 export function RightColumn({ children }: props) {
     return (
-        <th className="border border-gray-300 dark:border-gray-500 px-1 font-normal text-sm transition-colors duration-500">
-            <Text>{children}</Text>
+        <th className="border border-gray-300 dark:border-gray-500 px-1 font-normal transition-colors duration-500">
+            <Text size="sm">{children}</Text>
         </th>
     );
 }

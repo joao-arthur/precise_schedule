@@ -93,9 +93,11 @@ export function Sidebar() {
                                 "transition-colors duration-500",
                             )}
                         >
-                            <Text className="text-center my-auto text-3xl">
-                                {displayDay}
-                            </Text>
+                            <div className="text-center">
+                                <Text size="3xl">
+                                    {displayDay}
+                                </Text>
+                            </div>
                             <ButtonIcon
                                 name="x"
                                 size="big"
