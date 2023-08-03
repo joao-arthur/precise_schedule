@@ -8,7 +8,7 @@ specifiers:
   autoprefixer: ^10.4.14
   classnames: ^2.3.2
   frontend_core: link:../frontend_core
-  funis: ^1.1.1
+  funis: 1.2.0
   next: ^13.4.7
   postcss: ^8.4.24
   react: ^18.2.0
@@ -29,7 +29,7 @@ dependencies:
   '@xstate/react': 3.2.2_pw3jtckrkofreyhdypv366cqwu
   classnames: 2.3.2
   frontend_core: link:../frontend_core
-  funis: 1.1.1
+  funis: 1.2.0
   next: 13.4.7_biqbaboplfbrettd7655fr4n2y
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
@@ -945,8 +945,8 @@ packages:
     resolution: {integrity: sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==}
     dev: true
 
-  /funis/1.1.1:
-    resolution: {integrity: sha512-rB/5P+sE9mMDooQwp4+sD6VsQUBKELFgdG5G+rfD2LHLFyVjJORo686NX+RrSYEU3Y68PGcpLW0H3X1mOVJZoA==}
+  /funis/1.2.0:
+    resolution: {integrity: sha512-aGsKbEay5zkcVfUWzvpJanqCohkVSEG5cNaSzQUrODAEtaWZStOsl3h9vUMZUw2z8b3agQu/l4ueGLaIX2pFsw==}
     engines: {node: '>=18.7.0'}
     dev: false
 
