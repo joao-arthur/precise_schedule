@@ -22,7 +22,7 @@
     },
     "dependencies": {
         "@js-temporal/polyfill": "0.4.4",
-        "funis": "1.1.1",
+        "funis": "1.2.0",
         "lib_repeat_events": "link:../lib_repeat_events"
     },
     "devDependencies": {
