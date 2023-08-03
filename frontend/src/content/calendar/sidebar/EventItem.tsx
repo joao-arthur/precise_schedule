@@ -7,7 +7,7 @@ import { Event } from "@/features/event/event";
 //import { DeleteEvent } from "../../EventRegister/DeleteEvent";
 
 type props = {
-    readonly event: Event;
+    readonly event: string;
 };
 
 export function EventItem({ event }: props) {
@@ -17,8 +17,8 @@ export function EventItem({ event }: props) {
 
     return (
         <div className="flex justify-between items-center p-3">
-            <Text size="lg" className="text-ellipsis whitespace-nowrap overflow-hidden">
-                {event.name}
+            <Text size="lg">
+                {event}
             </Text>
             <div className="flex gap-2">
                 <ButtonIcon

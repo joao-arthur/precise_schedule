@@ -20,6 +20,7 @@ export function Text({ children, disabled, size, color }: props) {
             className={clss(
                 "select-none",
                 "transition-colors duration-500",
+                "text-ellipsis whitespace-nowrap overflow-hidden",
                 clss(
                     disabled
                         ? "text-gray-500 dark:text-gray-500"

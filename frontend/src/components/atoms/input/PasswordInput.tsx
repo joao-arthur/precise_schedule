@@ -1,5 +1,5 @@
-import clss from "classnames";
 import type { ChangeEventHandler, FocusEventHandler, ForwardedRef } from "react";
+import clss from "classnames";
 import { forwardRef } from "react";
 
 type forwardedProps = {

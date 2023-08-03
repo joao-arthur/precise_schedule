@@ -14,13 +14,13 @@ export function Body() {
 
     useEffect(() => {
         if (events.length) {
-            setEventCalendar(eventFns.getOnCalendar(events, { year, month }));
+            setEventCalendar(eventFns.getOnCalendar(events, calendar));
         }
     }, [events, year, month]);
 
     return (
         <>
-            {calendarFns.toTable({ year, month }).map((week, weekIndex) => (
+            {calendarFns.toTable(calendar).map((week, weekIndex) => (
                 <div className="flex flex-1" key={weekIndex}>
                     {week.map((date) => (
                         <Cell

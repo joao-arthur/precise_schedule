@@ -1,7 +1,10 @@
 import clss from "classnames";
-import { Event } from "@/features/event/event";
 import { useDevice } from "@/lib/device/useDevice";
 import { EventItem } from "./EventItem";
+import { useEffect, useState } from "react";
+import { EventCalendar, eventFns } from "frontend_core";
+import { useEvent } from "@/features/event/useEvent";
+import { useCalendar } from "@/features/calendar/useCalendar";
 
 type props = {
     readonly date: string;
@@ -11,7 +14,16 @@ export function Events({ date }: props) {
     const device = useDevice();
     const isMobile = device.isMobile();
 
-    const dayEvents: Event[] = []; // useGetDayEvents(day);
+    const [eventCalendar, setEventCalendar] = useState<EventCalendar>(new Map());
+    const { year, month } = useCalendar();
+    const calendar = { year, month };
+    const { events } = useEvent();
+
+    useEffect(() => {
+        if (events.length) {
+            setEventCalendar(eventFns.getOnCalendar(events, calendar));
+        }
+    }, [events, year, month]);
 
     return (
         <div
@@ -19,7 +31,12 @@ export function Events({ date }: props) {
                 "w-screen": isMobile,
             })}
         >
-            {dayEvents.map((event) => <EventItem event={event} key={event.id} />)}
+            {(eventCalendar.get(date) || []).map((event) => (
+                <EventItem
+                    event={event}
+                    key={event}
+                />
+            ))}
         </div>
     );
 }

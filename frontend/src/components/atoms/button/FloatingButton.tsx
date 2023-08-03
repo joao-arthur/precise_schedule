@@ -1,5 +1,5 @@
 import clss from "classnames";
-import { Icon, names } from "@/components/atoms/Icon";
+import { Icon, names } from "../Icon";
 
 type props = {
     readonly className: string;
