@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FloatingButton } from "@/components/atoms/extraButton/FloatingButton";
+import { RoundButton } from "@/components/atoms/extraButton/RoundButton";
 import { If } from "@/components/atoms/layout/If";
 import { Icon } from "@/components/atoms/Icon";
 import { AppointmentAction } from "./AppointmentAction";
@@ -24,7 +24,7 @@ export function Actions() {
                     </div>
                 </If>
                 <div className="flex w-full justify-end">
-                    <FloatingButton
+                    <RoundButton
                         onClick={() => {
                             setOpen(!open);
                         }}
@@ -33,7 +33,7 @@ export function Actions() {
                             name="plus"
                             className="fill-white p-3 w-20 h-20"
                         />
-                    </FloatingButton>
+                    </RoundButton>
                 </div>
             </div>
         </div>

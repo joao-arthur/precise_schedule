@@ -6,7 +6,7 @@ type props = {
     readonly children: ReactNode;
 };
 
-export function FloatingButton({ onClick, children }: props) {
+export function RoundButton({ onClick, children }: props) {
     return (
         <button
             onClick={onClick}

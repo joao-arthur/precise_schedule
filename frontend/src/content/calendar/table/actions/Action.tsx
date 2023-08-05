@@ -1,5 +1,5 @@
 import { Icon, type IconName } from "@/components/atoms/Icon";
-import { FloatingButton } from "@/components/atoms/extraButton/FloatingButton";
+import { RoundButton } from "@/components/atoms/extraButton/RoundButton";
 import { Tooltip } from "@/components/atoms/Tooltip";
 import { Text } from "@/components/atoms/Text";
 
@@ -15,14 +15,14 @@ export function Action({ title, icon, onClick }: props) {
             <Tooltip>
                 <Text>{title}</Text>
             </Tooltip>
-            <FloatingButton
+            <RoundButton
                 onClick={onClick}
             >
                 <Icon
                     name={icon}
                     className="fill-white p-3 w-14 h-14"
                 />
-            </FloatingButton>
+            </RoundButton>
         </div>
     );
 }
