@@ -31,7 +31,8 @@ export function Actions() {
                     >
                         <Icon
                             name="plus"
-                            className="fill-white p-3 w-20 h-20"
+                            fill="white"
+                            className="p-3 w-20 h-20"
                         />
                     </RoundButton>
                 </div>

@@ -14,6 +14,7 @@ import { RiCheckLine, RiCloseLine } from "react-icons/ri";
 import { BsPeopleFill } from "react-icons/bs";
 import { HiFilter, HiPlusSm } from "react-icons/hi";
 import { MdEdit } from "react-icons/md";
+import cl from "classnames";
 
 export type IconName =
     | "user"
@@ -38,10 +39,23 @@ export type IconName =
 type props = {
     readonly name: IconName;
     readonly className: string;
+    readonly fill?: "white" | "gray-500" | "red-500" | "green-700" | "primary";
 };
 
-export function Icon({ name, className }: props) {
-    const props = { className };
+export function Icon({ name, className, fill }: props) {
+    const composedClassName = cl(
+        "transition-colors duration-500",
+        {
+            "fill-white": fill === "white",
+            "fill-gray-500": fill === "gray-500",
+            "fill-red-500": fill === "red-500",
+            "fill-green-700": fill === "green-700",
+            "fill-primary": fill === "primary",
+        },
+        className,
+    );
+
+    const props = { className: composedClassName };
 
     switch (name) {
         case "user":

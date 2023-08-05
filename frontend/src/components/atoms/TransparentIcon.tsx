@@ -10,7 +10,7 @@ type props = {
 export function TransparentIcon({ onClick, name, className }: props) {
     return (
         <button onClick={onClick}>
-            <Icon name={name} className={className} />
+            <Icon fill="white" name={name} className={className} />
         </button>
     );
 }

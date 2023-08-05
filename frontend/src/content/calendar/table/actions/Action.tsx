@@ -20,7 +20,8 @@ export function Action({ title, icon, onClick }: props) {
             >
                 <Icon
                     name={icon}
-                    className="fill-white p-3 w-14 h-14"
+                    fill="white"
+                    className="p-3 w-14 h-14"
                 />
             </RoundButton>
         </div>

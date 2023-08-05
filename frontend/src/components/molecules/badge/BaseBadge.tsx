@@ -1,28 +1,21 @@
-import type { IconName } from "../../atoms/Icon";
+import type { ReactNode } from "react";
 import cl from "classnames";
-import { Icon } from "../../atoms/Icon";
 
 type props = {
     readonly className: string;
-    readonly iconName: IconName;
-    readonly iconClassName: string;
+    readonly children: ReactNode;
 };
 
-export function BaseBadge({
-    className,
-    iconName,
-    iconClassName,
-}: props) {
+export function BaseBadge({ className, children }: props) {
     return (
         <div
             className={cl(
-                "rounded-full border-2",
+                "rounded-full p-0.5",
                 "transition-colors duration-500",
-                "dark:bg-dark-light",
                 className,
             )}
         >
-            <Icon name={iconName} className={iconClassName} />
+            {children}
         </div>
     );
 }

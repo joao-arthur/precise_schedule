@@ -14,8 +14,9 @@ export function ButtonIcon({ name, onClick, size }: props) {
         <TransparentButton onClick={onClick}>
             <Icon
                 name={name}
+                fill="gray-500"
                 className={cl(
-                    "fill-gray-500 box-content",
+                    "box-content",
                     {
                         "w-6 h-6 p-2": size === "medium",
                         "w-9 h-9 p-3": size === "big",
