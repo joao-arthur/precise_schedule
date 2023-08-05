@@ -1,11 +1,11 @@
-import { names } from "@/components/atoms/Icon";
+import type { IconName } from "@/components/atoms/Icon";
 import { FloatingButton } from "@/components/atoms/extraButton/FloatingButton";
 import { Tooltip } from "@/components/atoms/Tooltip";
 import { Text } from "@/components/atoms/Text";
 
 type props = {
     readonly title: string;
-    readonly icon: names;
+    readonly icon: IconName;
     readonly onClick: () => void;
 };
 

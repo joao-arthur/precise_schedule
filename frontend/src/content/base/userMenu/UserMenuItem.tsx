@@ -1,10 +1,11 @@
+import type { IconName } from "@/components/atoms/Icon";
 import cl from "classnames";
-import { Icon, names } from "@/components/atoms/Icon";
+import { Icon } from "@/components/atoms/Icon";
 import { Text } from "@/components/atoms/Text";
 
 type props = {
     readonly name: string;
-    readonly icon: names;
+    readonly icon: IconName;
 };
 
 export function UserMenuItem({ name, icon }: props) {

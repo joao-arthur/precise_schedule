@@ -15,7 +15,7 @@ import { BsPeopleFill } from "react-icons/bs";
 import { HiFilter, HiPlusSm } from "react-icons/hi";
 import { MdEdit } from "react-icons/md";
 
-export type names =
+export type IconName =
     | "user"
     | "cog-wheel"
     | "door"
@@ -36,7 +36,7 @@ export type names =
     | "party";
 
 type props = {
-    readonly name: names;
+    readonly name: IconName;
     readonly className: string;
 };
 

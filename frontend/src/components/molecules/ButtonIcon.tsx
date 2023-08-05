@@ -1,9 +1,10 @@
+import type { IconName } from "../atoms/Icon";
 import cl from "classnames";
-import { Icon, names } from "../atoms/Icon";
+import { Icon } from "../atoms/Icon";
 import { TransparentButton } from "../atoms/extraButton/TransparentButton";
 
 type props = {
-    readonly name: names;
+    readonly name: IconName;
     readonly onClick?: () => void;
     readonly size: "medium" | "big";
 };

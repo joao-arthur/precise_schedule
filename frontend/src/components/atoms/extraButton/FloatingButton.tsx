@@ -1,9 +1,10 @@
+import type { IconName } from "../Icon";
 import cl from "classnames";
-import { Icon, names } from "../Icon";
+import { Icon } from "../Icon";
 
 type props = {
     readonly className: string;
-    readonly icon: names;
+    readonly icon: IconName;
     readonly onClick?: () => void;
 };
 

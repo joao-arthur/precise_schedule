@@ -1,7 +1,8 @@
-import { Icon, names } from "./Icon";
+import type { IconName } from "@/components/atoms/Icon";
+import { Icon } from "./Icon";
 
 type props = {
-    readonly name: names;
+    readonly name: IconName;
     readonly className: string;
     readonly onClick: () => void;
 };
