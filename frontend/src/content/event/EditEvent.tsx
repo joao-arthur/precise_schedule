@@ -2,7 +2,6 @@ import type { Event } from "@/features/event/event";
 import { useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { useDeleteEvent } from "@/features/event/useEventAPI";
-import { Text } from "@/components/atoms/Text";
 import { Modal } from "@/components/molecules/Modal";
 
 type props = {
@@ -10,7 +9,7 @@ type props = {
     readonly onCancel: () => void;
 };
 
-export function DeleteEvent({ event, onCancel }: props) {
+export function EditEvent({ event, onCancel }: props) {
     const { isSuccess, mutate } = useDeleteEvent();
     const queryClient = useQueryClient();
 
@@ -24,13 +23,11 @@ export function DeleteEvent({ event, onCancel }: props) {
     return (
         <Modal
             visible
-            title={`DELETE "${event.name.toLocaleUpperCase()}"`}
+            title={`EDIT "${event.name.toLocaleUpperCase()}"`}
             onCancel={onCancel}
             onConfirm={() => mutate(event.id)}
         >
-            <div className="py-5">
-                <Text>This action can't be undone, are you sure?</Text>
-            </div>
+            <div>A ring ding ding ding d-ding baa aramba baa baa barooumba</div>
         </Modal>
     );
 }

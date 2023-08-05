@@ -1,8 +1,11 @@
 import { useState } from "react";
+import { useEvent } from "@/features/event/useEvent";
 import { ButtonIcon } from "@/components/atoms/ButtonIcon";
 import { Text } from "@/components/atoms/Text";
-import { useEvent } from "@/features/event/useEvent";
-import { Modal } from "@/components/molecules/Modal";
+import { If } from "@/components/atoms/layout/If";
+import { InfoEvent } from "@/content/event/InfoEvent";
+import { EditEvent } from "@/content/event/EditEvent";
+import { DeleteEvent } from "@/content/event/DeleteEvent";
 
 type props = {
     readonly evt: string;
@@ -26,49 +29,34 @@ export function EventItem({ evt }: props) {
                     size="medium"
                     onClick={() => setIsInfoVisible(true)}
                 />
-                <Modal
-                    title={event.name.toLocaleUpperCase()}
-                    visible={isInfoVisible}
-                    onCancel={() => {
-                        setIsInfoVisible(false);
-                    }}
-                >
-                    <div>
-                        <h1>atumalaka</h1>
-                    </div>
-                </Modal>
+                <If condition={isInfoVisible}>
+                    <InfoEvent
+                        event={event}
+                        onCancel={() => setIsInfoVisible(false)}
+                    />
+                </If>
                 <ButtonIcon
                     name="pencil"
                     size="medium"
                     onClick={() => setIsEditVisible(true)}
                 />
-                {
-                    /*isEditVisible
-                    ? (
-                        <EditEvent
-                            visible={isEditVisible}
-                            hide={() => setIsEditVisible(false)}
-                            event={event}
-                        />
-                    )
-                    : null*/
-                }
+                <If condition={isEditVisible}>
+                    <EditEvent
+                        event={event}
+                        onCancel={() => setIsEditVisible(false)}
+                    />
+                </If>
                 <ButtonIcon
                     name="trash"
                     size="medium"
                     onClick={() => setIsDeleteVisible(true)}
                 />
-                {
-                    /*isDeleteVisible
-                    ? (
-                        <DeleteEvent
-                            visible={isDeleteVisible}
-                            hide={() => setIsDeleteVisible(false)}
-                            event={event}
-                        />
-                    )
-                    : null*/
-                }
+                <If condition={isDeleteVisible}>
+                    <DeleteEvent
+                        event={event}
+                        onCancel={() => setIsDeleteVisible(false)}
+                    />
+                </If>
             </div>
         </div>
     );
