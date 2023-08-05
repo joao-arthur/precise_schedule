@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { dateFns } from "frontend_core";
 
 type CalendarState = {
     readonly year: number;
@@ -12,8 +13,8 @@ type CalendarState = {
 };
 
 export const useCalendar = create<CalendarState>((set) => ({
-    year: new Date().getFullYear(),
-    month: new Date().getMonth() + 1,
+    year: dateFns.currentYear(),
+    month: dateFns.currentMonth(),
     selectedDate: undefined,
     toggleSelectedDate: (selectedDate: string) =>
         set((state) => ({
@@ -24,7 +25,7 @@ export const useCalendar = create<CalendarState>((set) => ({
     setMonth: (month: number) => set({ month }),
     setCurrentMonth: () =>
         set({
-            year: new Date().getFullYear(),
-            month: new Date().getMonth() + 1,
+            year: dateFns.currentYear(),
+            month: dateFns.currentMonth(),
         }),
 }));
