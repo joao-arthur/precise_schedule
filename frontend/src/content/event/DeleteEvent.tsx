@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { useDeleteEvent } from "@/features/event/useEventAPI";
 import { Text } from "@/components/atoms/Text";
-import { Modal } from "../modal/Modal";
+import { Modal } from "@/components/molecules/Modal";
 
 type props = {
     readonly event: Event;

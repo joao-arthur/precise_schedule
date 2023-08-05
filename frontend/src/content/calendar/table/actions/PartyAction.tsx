@@ -38,6 +38,7 @@ export function PartyAction() {
                 onCancel={() => {
                     setOpen(false);
                 }}
+                confirmLabel="SAVE"
             >
                 <PartyEventRegister onSubmit={submit} isLoading={isLoading} />
             </Modal>

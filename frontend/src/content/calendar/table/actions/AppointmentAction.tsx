@@ -38,6 +38,7 @@ export function AppointmentAction() {
                 onCancel={() => {
                     setOpen(false);
                 }}
+                confirmLabel="SAVE"
             >
                 <AppointmentEventRegister onSubmit={submit} isLoading={isLoading} />
             </Modal>

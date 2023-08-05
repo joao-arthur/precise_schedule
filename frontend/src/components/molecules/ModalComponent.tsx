@@ -10,6 +10,7 @@ export type modalProps = {
     readonly formId?: string;
     readonly onCancel: () => void;
     readonly onConfirm?: () => void;
+    readonly confirmLabel?: string;
 };
 
 export function ModalComponent({
@@ -18,6 +19,7 @@ export function ModalComponent({
     formId,
     onCancel,
     onConfirm,
+    confirmLabel,
 }: modalProps) {
     const device = useDevice();
     const isMobile = device.isMobile();
@@ -54,7 +56,7 @@ export function ModalComponent({
                         CANCEL
                     </Button>
                     <Button onClick={onConfirm} form={formId}>
-                        CONFIRM
+                        {confirmLabel || "CONFIRM"}
                     </Button>
                 </div>
             </div>

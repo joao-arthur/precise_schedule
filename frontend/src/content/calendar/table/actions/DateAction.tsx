@@ -38,6 +38,7 @@ export function DateAction() {
                 onCancel={() => {
                     setOpen(false);
                 }}
+                confirmLabel="SAVE"
             >
                 <DateEventRegister onSubmit={submit} isLoading={isLoading} />
             </Modal>

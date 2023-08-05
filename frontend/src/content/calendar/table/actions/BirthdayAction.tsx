@@ -38,6 +38,7 @@ export function BirthdayAction() {
                 onCancel={() => {
                     setOpen(false);
                 }}
+                confirmLabel="SAVE"
             >
                 <BirthdayEventRegister onSubmit={submit} isLoading={isLoading} />
             </Modal>

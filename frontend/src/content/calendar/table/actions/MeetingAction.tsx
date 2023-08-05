@@ -38,6 +38,7 @@ export function MeetingAction() {
                 onCancel={() => {
                     setOpen(false);
                 }}
+                confirmLabel="SAVE"
             >
                 <MeetingEventRegister onSubmit={submit} isLoading={isLoading} />
             </Modal>
