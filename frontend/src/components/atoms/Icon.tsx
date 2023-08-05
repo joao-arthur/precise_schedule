@@ -21,7 +21,7 @@ export type IconName =
     | "cog-wheel"
     | "door"
     | "x"
-    | "check"
+    | "v"
     | "info"
     | "chart"
     | "pencil"
@@ -29,7 +29,7 @@ export type IconName =
     | "filter"
     | "three-dots"
     | "trash"
-    | "plus"
+    | "+"
     | "chevron-left"
     | "chevron-right"
     | "birthday"
@@ -38,19 +38,24 @@ export type IconName =
 
 type props = {
     readonly name: IconName;
-    readonly className: string;
-    readonly fill?: "white" | "gray-500" | "red-500" | "green-700" | "primary";
+    readonly className?: string;
+    readonly fill?: "white" | "gray" | "primary";
+    readonly size?: 6 | 9 | 14 | 20;
 };
 
-export function Icon({ name, className, fill }: props) {
+export function Icon({ name, className, fill, size }: props) {
     const composedClassName = cl(
         "transition-colors duration-500",
         {
             "fill-white": fill === "white",
-            "fill-gray-500": fill === "gray-500",
-            "fill-red-500": fill === "red-500",
-            "fill-green-700": fill === "green-700",
+            "fill-gray-500": fill === "gray",
             "fill-primary": fill === "primary",
+        },
+        {
+            "w-6 h-6": size === 6,
+            "w-9 h-9": size === 9,
+            "w-14 h-14": size === 14,
+            "w-20 h-20": size === 20,
         },
         className,
     );
@@ -66,7 +71,7 @@ export function Icon({ name, className, fill }: props) {
             return <BiDoorOpen {...props} />;
         case "x":
             return <RiCloseLine {...props} />;
-        case "check":
+        case "v":
             return <RiCheckLine {...props} />;
         case "info":
             return <BiInfoCircle {...props} />;
@@ -86,7 +91,7 @@ export function Icon({ name, className, fill }: props) {
             return <BiChevronLeft {...props} />;
         case "chevron-right":
             return <BiChevronRight {...props} />;
-        case "plus":
+        case "+":
             return <HiPlusSm {...props} />;
         case "birthday":
             return <FaBirthdayCake {...props} />;

@@ -15,14 +15,14 @@ export function Action({ title, icon, onClick }: props) {
             <Tooltip>
                 <Text>{title}</Text>
             </Tooltip>
-            <RoundButton
-                onClick={onClick}
-            >
-                <Icon
-                    name={icon}
-                    fill="white"
-                    className="p-3 w-14 h-14"
-                />
+            <RoundButton onClick={onClick}>
+                <div className="p-2">
+                    <Icon
+                        name={icon}
+                        fill="white"
+                        size={9}
+                    />
+                </div>
             </RoundButton>
         </div>
     );

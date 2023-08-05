@@ -27,17 +27,13 @@ export function AppointmentAction() {
             <Action
                 title="APPOINTMENT"
                 icon="pencil"
-                onClick={() => {
-                    setOpen(!open);
-                }}
+                onClick={() => setOpen(!open)}
             />
             <Modal
                 title="NEW APPOINTMENT"
                 visible={open}
                 formId="AppointmentEventRegister"
-                onCancel={() => {
-                    setOpen(false);
-                }}
+                onCancel={() => setOpen(false)}
                 confirmLabel="SAVE"
             >
                 <AppointmentEventRegister onSubmit={submit} isLoading={isLoading} />

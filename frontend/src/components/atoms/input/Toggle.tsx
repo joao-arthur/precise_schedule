@@ -17,9 +17,7 @@ export function Toggle({
 }: props) {
     return (
         <div
-            onClick={() => {
-                onChange(!value);
-            }}
+            onClick={() => onChange(!value)}
             className={cl(
                 "cursor-pointer select-none",
                 "border w-16 h-8 rounded-2xl ",

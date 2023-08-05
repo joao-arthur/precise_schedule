@@ -21,7 +21,7 @@ export function UserMenu({ closeMenu }: props) {
     return (
         <nav
             className={cl(
-                "flex absolute top-10 right-1 border border-gray-500 rounded z-10",
+                "flex absolute top-10 right-1 border border-gray-500 rounded z-20",
                 "bg-white dark:bg-dark-light",
                 "transition-colors duration-500",
             )}

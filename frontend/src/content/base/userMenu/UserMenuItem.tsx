@@ -20,7 +20,7 @@ export function UserMenuItem({ name, icon }: props) {
             <Icon
                 name={icon}
                 fill="primary"
-                className="w-5 h-5"
+                size={6}
             />
             <Text>{name}</Text>
         </li>

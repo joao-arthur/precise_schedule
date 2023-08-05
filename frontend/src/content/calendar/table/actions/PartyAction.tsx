@@ -27,17 +27,13 @@ export function PartyAction() {
             <Action
                 title="PARTY"
                 icon="party"
-                onClick={() => {
-                    setOpen(!open);
-                }}
+                onClick={() => setOpen(!open)}
             />
             <Modal
                 title="NEW PARTY"
                 visible={open}
                 formId="PartyEventRegister"
-                onCancel={() => {
-                    setOpen(false);
-                }}
+                onCancel={() => setOpen(false)}
                 confirmLabel="SAVE"
             >
                 <PartyEventRegister onSubmit={submit} isLoading={isLoading} />

@@ -27,17 +27,13 @@ export function DateAction() {
             <Action
                 title="DATE"
                 icon="people"
-                onClick={() => {
-                    setOpen(!open);
-                }}
+                onClick={() => setOpen(!open)}
             />
             <Modal
                 title="NEW DATE"
                 visible={open}
                 formId="DateEventRegister"
-                onCancel={() => {
-                    setOpen(false);
-                }}
+                onCancel={() => setOpen(false)}
                 confirmLabel="SAVE"
             >
                 <DateEventRegister onSubmit={submit} isLoading={isLoading} />

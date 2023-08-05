@@ -27,17 +27,13 @@ export function MeetingAction() {
             <Action
                 title="MEETING"
                 icon="door"
-                onClick={() => {
-                    setOpen(!open);
-                }}
+                onClick={() => setOpen(!open)}
             />
             <Modal
                 title="NEW MEETING"
                 visible={open}
                 formId="MeetingEventRegister"
-                onCancel={() => {
-                    setOpen(false);
-                }}
+                onCancel={() => setOpen(false)}
                 confirmLabel="SAVE"
             >
                 <MeetingEventRegister onSubmit={submit} isLoading={isLoading} />

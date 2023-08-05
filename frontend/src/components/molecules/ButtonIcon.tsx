@@ -1,5 +1,4 @@
 import type { IconName } from "../atoms/Icon";
-import { cl } from "@/lib/cl";
 import { Icon } from "../atoms/Icon";
 import { TransparentButton } from "../atoms/extraButton/TransparentButton";
 
@@ -12,17 +11,9 @@ type props = {
 export function ButtonIcon({ name, onClick, size }: props) {
     return (
         <TransparentButton onClick={onClick}>
-            <Icon
-                name={name}
-                fill="gray-500"
-                className={cl(
-                    "box-content",
-                    {
-                        "w-6 h-6 p-2": size === "medium",
-                        "w-9 h-9 p-3": size === "big",
-                    },
-                )}
-            />
+            <div className="box-content p-2">
+                <Icon name={name} fill="gray" size={size === "medium" ? 6 : 9} />
+            </div>
         </TransparentButton>
     );
 }

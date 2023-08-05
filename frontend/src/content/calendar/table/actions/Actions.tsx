@@ -24,16 +24,8 @@ export function Actions() {
                     </div>
                 </If>
                 <div className="flex w-full justify-end">
-                    <RoundButton
-                        onClick={() => {
-                            setOpen(!open);
-                        }}
-                    >
-                        <Icon
-                            name="plus"
-                            fill="white"
-                            className="p-3 w-20 h-20"
-                        />
+                    <RoundButton onClick={() => setOpen(!open)}>
+                        <Icon name="+" fill="white" size={20} />
                     </RoundButton>
                 </div>
             </div>

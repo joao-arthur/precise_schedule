@@ -6,13 +6,15 @@ export function SuccessBadge() {
     return (
         <BaseBadge
             className={cl(
-                "border-green-200 dark:border-green-500",
-                "bg-green-200 dark:bg-green-500",
+                "border-green-300 dark:border-green-600",
+                "bg-green-300 dark:bg-green-600",
+                "fill-green-600 dark:fill-white",
             )}
         >
             <Icon
-                name="check"
-                className="fill-green-600 dark:fill-white w-5 h-5"
+                name="v"
+                size={6}
+                className="fill-green-600 dark:fill-white"
             />
         </BaseBadge>
     );

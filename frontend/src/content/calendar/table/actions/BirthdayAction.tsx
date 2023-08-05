@@ -27,17 +27,13 @@ export function BirthdayAction() {
             <Action
                 title="BIRTHDAY"
                 icon="birthday"
-                onClick={() => {
-                    setOpen(!open);
-                }}
+                onClick={() => setOpen(!open)}
             />
             <Modal
                 title="NEW BIRTHDAY"
                 visible={open}
                 formId="BirthdayEventRegister"
-                onCancel={() => {
-                    setOpen(false);
-                }}
+                onCancel={() => setOpen(false)}
                 confirmLabel="SAVE"
             >
                 <BirthdayEventRegister onSubmit={submit} isLoading={isLoading} />
