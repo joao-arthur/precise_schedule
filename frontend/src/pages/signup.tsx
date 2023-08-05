@@ -17,7 +17,7 @@ import { FormContainer } from "@/components/atoms/FormContainer";
 import { ButtonIcon } from "@/components/molecules/ButtonIcon";
 import { Form } from "@/components/molecules/Form";
 import { SubHeader } from "@/content/base/subHeader/SubHeader";
-import { StatusBadge } from "@/components/molecules/badge/StatusBadge";
+import { Badge } from "@/components/molecules/badge/Badge";
 
 function strMinLenValid(value: unknown) {
     if (typeof value !== "string" || value.length < 8) {
@@ -165,23 +165,23 @@ export default function SignUp() {
                                 })}
                             />
                             <div className="flex flex-col py-2 gap-2">
-                                <StatusBadge
+                                <Badge
                                     valid={strMinLenValid(password)}
                                     label="At least 8 characters"
                                 />
-                                <StatusBadge
+                                <Badge
                                     valid={strMinNumValid(password)}
                                     label="At least 1 number"
                                 />
-                                <StatusBadge
+                                <Badge
                                     valid={strMinUpperValid(password)}
                                     label="At least 1 uppercase letter"
                                 />
-                                <StatusBadge
+                                <Badge
                                     valid={strMinLowerValid(password)}
                                     label="At least 1 lowercase letter"
                                 />
-                                <StatusBadge
+                                <Badge
                                     valid={strMinSpecialValid(password)}
                                     label="At least 1 of !@#$%¨&*()[]{}"
                                 />

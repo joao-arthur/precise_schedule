@@ -1,28 +1,17 @@
-import type { IconName } from "../../atoms/Icon";
-import cl from "classnames";
-import { Icon } from "../../atoms/Icon";
+import { Text } from "../../atoms/Text";
+import { ErrorBadge } from "../badge/ErrorBadge";
+import { SuccessBadge } from "../badge/SuccessBadge";
 
 type props = {
-    readonly className: string;
-    readonly iconName: IconName;
-    readonly iconClassName: string;
+    readonly valid: boolean;
+    readonly label: string;
 };
 
-export function Badge({
-    className,
-    iconName,
-    iconClassName,
-}: props) {
+export function Badge({ valid, label }: props) {
     return (
-        <div
-            className={cl(
-                "rounded-full border-2",
-                "transition-colors duration-500",
-                "dark:bg-dark-light",
-                className,
-            )}
-        >
-            <Icon name={iconName} className={iconClassName} />
+        <div className="flex items-center gap-2">
+            {valid ? <SuccessBadge /> : <ErrorBadge />}
+            <Text size="sm">{label}</Text>
         </div>
     );
 }
