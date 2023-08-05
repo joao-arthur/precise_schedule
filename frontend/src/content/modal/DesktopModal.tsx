@@ -19,7 +19,7 @@ export function DesktopModal({
     onConfirm,
 }: modalProps) {
     return (
-        <div className="fixed w-full h-full bg-block z-10">
+        <div className="fixed w-full h-full bg-block">
             <div
                 className={clss(
                     "flex flex-col absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2",
@@ -29,12 +29,12 @@ export function DesktopModal({
             >
                 <div
                     className={clss(
-                        "py-5 px-7",
+                        "py-5 px-7 break-all",
                         "bg-primary",
                         "shadow-sm shadow-gray-500",
                     )}
                 >
-                    <Text size="2xl" color="white">{title}</Text>
+                    <Text size="2xl" color="white" selectable>{title}</Text>
                 </div>
                 <div className="flex-1 overflow-auto p-3">
                     {children}

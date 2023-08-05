@@ -3,7 +3,8 @@ import clss from "classnames";
 
 type props = {
     readonly children: ReactNode;
-    readonly disabled?: boolean;
+    readonly disabled?: true;
+    readonly selectable?: true;
     readonly size?:
         | "xs"
         | "sm"
@@ -14,29 +15,25 @@ type props = {
     readonly color?: "white";
 };
 
-export function Text({ children, disabled, size, color }: props) {
+export function Text({ children, disabled, selectable, size, color }: props) {
     return (
         <span
             className={clss(
-                "select-none",
                 "transition-colors duration-500",
                 "text-ellipsis whitespace-nowrap overflow-hidden",
-                clss(
-                    disabled
-                        ? "text-gray-500 dark:text-gray-500"
-                        : "text-dark dark:text-pastel-gray",
-                    {
-                        "text-xs": size === "xs",
-                        "text-sm": size === "sm",
-                        "text-lg": size === "lg",
-                        "text-xl": size === "xl",
-                        "text-2xl": size === "2xl",
-                        "text-3xl": size === "3xl",
-                    },
-                    {
-                        "text-white": color === "white",
-                    },
-                ),
+                disabled ? "text-gray-500 dark:text-gray-500" : "text-dark dark:text-pastel-gray",
+                selectable ? "" : "select-none",
+                {
+                    "text-xs": size === "xs",
+                    "text-sm": size === "sm",
+                    "text-lg": size === "lg",
+                    "text-xl": size === "xl",
+                    "text-2xl": size === "2xl",
+                    "text-3xl": size === "3xl",
+                },
+                {
+                    "text-white": color === "white",
+                },
             )}
         >
             {children}

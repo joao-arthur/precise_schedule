@@ -12,7 +12,7 @@ export default function App(
 ) {
     return (
         <QueryClientProvider client={queryClient}>
-            <div id="modal" />
+            <div id="modal" className="z-20 absolute" />
             <Toaster />
             {/*<ReactQueryDevtools initialIsOpen={false} />*/}
             <Page>
