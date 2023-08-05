@@ -62,7 +62,7 @@ export default function SignIn() {
                             <PasswordInput
                                 {...register("password", {
                                     required: true,
-                                    minLength: 10,
+                                    minLength: 8,
                                     disabled: isLoading,
                                 })}
                             />

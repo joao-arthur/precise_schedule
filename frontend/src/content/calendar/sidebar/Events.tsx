@@ -17,12 +17,7 @@ export function Events({ date }: props) {
                 "w-screen": isMobile,
             })}
         >
-            {getDateEvents(date).map((evt) => (
-                <EventItem
-                    key={evt}
-                    evt={evt}
-                />
-            ))}
+            {getDateEvents(date).map((evt) => <EventItem key={evt} evt={evt} />)}
         </div>
     );
 }

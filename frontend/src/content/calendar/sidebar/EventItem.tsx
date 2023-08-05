@@ -1,11 +1,8 @@
 import { useState } from "react";
 import { ButtonIcon } from "@/components/atoms/ButtonIcon";
 import { Text } from "@/components/atoms/Text";
-//import { InfoEvent } from "../../EventRegister/InfoEvent";
-//import { EditEvent } from "../../EventRegister/EditEvent";
-import { Event } from "@/features/event/event";
 import { useEvent } from "@/features/event/useEvent";
-//import { DeleteEvent } from "../../EventRegister/DeleteEvent";
+import { Modal } from "@/content/modal/Modal";
 
 type props = {
     readonly evt: string;
@@ -16,11 +13,12 @@ export function EventItem({ evt }: props) {
     const [isEditVisible, setIsEditVisible] = useState(false);
     const [isDeleteVisible, setIsDeleteVisible] = useState(false);
     const { eventsMap } = useEvent();
+    const event = eventsMap.get(evt)!;
 
     return (
         <div className="flex justify-between items-center p-3">
             <Text size="lg">
-                {eventsMap.get(evt)?.name}
+                {event.name}
             </Text>
             <div className="flex gap-2">
                 <ButtonIcon
@@ -28,13 +26,17 @@ export function EventItem({ evt }: props) {
                     size="medium"
                     onClick={() => setIsInfoVisible(true)}
                 />
-                {
-                    /*<InfoEvent
+                <Modal
+                    title={event.name.toLocaleUpperCase()}
                     visible={isInfoVisible}
-                    hide={() => setIsInfoVisible(false)}
-                    event={event}
-    />*/
-                }
+                    onCancel={() => {
+                        setIsInfoVisible(false);
+                    }}
+                >
+                    <div>
+                        <h1>atumalaka</h1>
+                    </div>
+                </Modal>
                 <ButtonIcon
                     name="pencil"
                     size="medium"

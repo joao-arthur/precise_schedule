@@ -6,7 +6,7 @@ import { Text } from "@/components/atoms/Text";
 export type modalProps = {
     readonly children: ReactNode;
     readonly title: string;
-    readonly formId: string;
+    readonly formId?: string;
     readonly onCancel: () => void;
     readonly onConfirm?: () => void;
 };
