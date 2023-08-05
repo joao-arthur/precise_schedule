@@ -21,8 +21,7 @@ export function ModalComponent({
     onConfirm,
     confirmLabel,
 }: modalProps) {
-    const device = useDevice();
-    const isMobile = device.isMobile();
+    const isMobile = useDevice().isMobile();
 
     return (
         <div className="fixed w-full h-full bg-block">
@@ -52,7 +51,7 @@ export function ModalComponent({
                         "flex border-t border-gray-300 dark:border-gray-500",
                     )}
                 >
-                    <Button onClick={onCancel} secondary>
+                    <Button onClick={onCancel} type="SECONDARY">
                         CANCEL
                     </Button>
                     <Button onClick={onConfirm} form={formId}>

@@ -21,7 +21,7 @@ export function Form({
                 <form onSubmit={onSubmit}>
                     {children}
                     <div className="mt-3">
-                        <Button disabled={disabled}>
+                        <Button type={disabled ? "DISABLED" : "PRIMARY"}>
                             {action}
                         </Button>
                     </div>

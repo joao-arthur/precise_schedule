@@ -1,5 +1,6 @@
 import clss from "classnames";
 import { Icon, names } from "./Icon";
+import { TransparentButton } from "./button/TransparentButton";
 
 type props = {
     readonly name: names;
@@ -9,28 +10,17 @@ type props = {
 
 export function ButtonIcon({ name, onClick, size }: props) {
     return (
-        <button
-            onClick={onClick}
-            className={clss(
-                "flex items-center justify-center rounded border border-transparent",
-                "hover:border-gray-300 active:border-gray-300 hover:bg-gray-100 active:bg-gray-200",
-                "dark:hover:border-gray-500 dark:active:border-gray-500 dark:hover:bg-dark-light dark:active:bg-dark",
-                {
-                    "w-10 h-10": size === "medium",
-                    "w-14 h-14": size === "big",
-                },
-            )}
-        >
+        <TransparentButton onClick={onClick}>
             <Icon
                 name={name}
                 className={clss(
-                    "fill-gray-500",
+                    "fill-gray-500 box-content",
                     {
-                        "w-6 h-6": size === "medium",
-                        "w-9 h-9": size === "big",
+                        "w-6 h-6 p-2": size === "medium",
+                        "w-9 h-9 p-3": size === "big",
                     },
                 )}
             />
-        </button>
+        </TransparentButton>
     );
 }

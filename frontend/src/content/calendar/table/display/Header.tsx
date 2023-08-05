@@ -22,8 +22,7 @@ const daysOfWeekAbbrev = [
 ];
 
 export function Header() {
-    const device = useDevice();
-    const isMobile = device.isMobile();
+    const isMobile = useDevice().isMobile();
 
     const weekDays = isMobile ? daysOfWeekAbbrev : daysOfWeek;
 

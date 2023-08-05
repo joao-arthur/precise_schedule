@@ -101,7 +101,7 @@ export default function SignUp() {
     }, [data]);
 
     return (
-        <div className="w-full mb-10">
+        <div className="w-full">
             <SubHeader
                 left={
                     <Link to="/">

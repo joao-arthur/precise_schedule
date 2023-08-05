@@ -4,40 +4,30 @@ import { SecondaryButton } from "./SecondaryButton";
 import { PrimaryButton } from "./PrimaryButton";
 
 type props = {
-    readonly children: ReactNode;
+    readonly type?: "PRIMARY" | "SECONDARY" | "DISABLED";
     readonly onClick?: () => void;
-    readonly disabled?: boolean;
-    readonly secondary?: boolean;
-    readonly className?: string;
+    readonly children: ReactNode;
     readonly title?: string;
     readonly form?: string;
 };
 
 export function Button({
+    type = "PRIMARY",
+    onClick,
     children,
     title,
-    onClick,
-    disabled,
-    secondary,
     form,
 }: props) {
-    if (disabled) {
-        return (
-            <DisabledButton title={title}>
-                {children}
-            </DisabledButton>
-        );
+    switch (type) {
+        case "PRIMARY":
+            return (
+                <PrimaryButton title={title} onClick={onClick} form={form}>
+                    {children}
+                </PrimaryButton>
+            );
+        case "SECONDARY":
+            return <SecondaryButton title={title} onClick={onClick}>{children}</SecondaryButton>;
+        case "DISABLED":
+            return <DisabledButton title={title}>{children}</DisabledButton>;
     }
-    if (secondary) {
-        return (
-            <SecondaryButton title={title} onClick={onClick}>
-                {children}
-            </SecondaryButton>
-        );
-    }
-    return (
-        <PrimaryButton title={title} onClick={onClick} form={form}>
-            {children}
-        </PrimaryButton>
-    );
 }

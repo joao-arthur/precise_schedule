@@ -7,13 +7,13 @@ type props = {
 };
 
 export function PageContent({ children }: props) {
-    const { isMobile } = useDevice();
+    const isMobile = useDevice().isMobile();
 
     return (
         <div
             className={clss(
                 "flex flex-col my-0 mx-auto pt-5",
-                isMobile() ? "w-4/5" : "w-100",
+                isMobile ? "w-4/5" : "w-100",
             )}
         >
             {children}

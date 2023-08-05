@@ -34,8 +34,7 @@ const monthsOfYearAbbrev = [
 ];
 
 export function Controls() {
-    const device = useDevice();
-    const isMobile = device.isMobile();
+    const isMobile = useDevice().isMobile();
 
     const {
         year,

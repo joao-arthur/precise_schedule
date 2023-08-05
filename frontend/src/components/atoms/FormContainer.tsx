@@ -6,7 +6,7 @@ type props = {
 
 export function FormContainer({ children }: props) {
     return (
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 mb-10">
             {children}
         </div>
     );
