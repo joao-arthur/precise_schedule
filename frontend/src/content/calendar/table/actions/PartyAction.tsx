@@ -1,5 +1,6 @@
 import type { PartyEvent } from "@/features/event/event";
 import { useEffect, useState } from "react";
+import { useQueryClient } from "react-query";
 import { useCreateParty } from "@/features/event/useEventAPI";
 import { Modal } from "@/content/modal/Modal";
 import { PartyEventRegister } from "@/content/event/PartyEventRegister";
@@ -8,6 +9,7 @@ import { Action } from "./Action";
 export function PartyAction() {
     const [open, setOpen] = useState(false);
     const { mutate, isLoading, isSuccess } = useCreateParty();
+    const queryClient = useQueryClient();
 
     function submit(data: PartyEvent) {
         mutate(data);
@@ -16,6 +18,7 @@ export function PartyAction() {
     useEffect(() => {
         if (isSuccess) {
             setOpen(false);
+            queryClient.invalidateQueries("event/find");
         }
     }, [isSuccess]);
 

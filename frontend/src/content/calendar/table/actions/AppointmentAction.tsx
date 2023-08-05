@@ -1,5 +1,6 @@
 import type { AppointmentEvent } from "@/features/event/event";
 import { useEffect, useState } from "react";
+import { useQueryClient } from "react-query";
 import { useCreateAppointment } from "@/features/event/useEventAPI";
 import { Modal } from "@/content/modal/Modal";
 import { AppointmentEventRegister } from "@/content/event/AppointmentEventRegister";
@@ -8,6 +9,7 @@ import { Action } from "./Action";
 export function AppointmentAction() {
     const [open, setOpen] = useState(false);
     const { mutate, isLoading, isSuccess } = useCreateAppointment();
+    const queryClient = useQueryClient();
 
     function submit(data: AppointmentEvent) {
         mutate(data);
@@ -16,6 +18,7 @@ export function AppointmentAction() {
     useEffect(() => {
         if (isSuccess) {
             setOpen(false);
+            queryClient.invalidateQueries("event/find");
         }
     }, [isSuccess]);
 

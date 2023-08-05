@@ -1,21 +1,18 @@
+import type { Event } from "@/features/event/event";
 import { useEffect } from "react";
 import { useQueryClient } from "react-query";
-import { Modal } from "@/components/modal/Modal";
+import { useDeleteEvent } from "@/features/event/useEventAPI";
 import { Text } from "@/components/atoms/Text";
-import { eventType } from "../../eventType";
-import { useEventAPI } from "../../eventAPI";
+import { Modal } from "../modal/Modal";
 
 type props = {
-    readonly event: eventType;
+    readonly event: Event;
     readonly visible: boolean;
     readonly hide: () => void;
 };
 
-export function DeleteEvent(
-    { event, visible, hide }: props,
-) {
-    const { useDeleteEvent } = useEventAPI();
-    const { isSuccess, mutate } = useDeleteEvent(event);
+export function DeleteEvent({ event, visible, hide }: props) {
+    const { isSuccess, mutate } = useDeleteEvent();
     const queryClient = useQueryClient();
 
     useEffect(() => {
@@ -28,9 +25,9 @@ export function DeleteEvent(
     return (
         <Modal
             visible={visible}
-            title={`delete "${event.name}"`}
+            title={`DELETE "${event.name.toLocaleUpperCase()}"`}
             onCancel={hide}
-            onConfirm={mutate}
+            onConfirm={() => mutate(event.id)}
         >
             <Text>This action can't be undone, are you sure?</Text>
         </Modal>

@@ -6,7 +6,7 @@ import { AnonimousActions } from "./AnonimousActions";
 import { UserActions } from "./UserActions";
 
 export function Header() {
-    const { logged } = useSession();
+    const logged = useSession().logged();
     const [theme, setTheme] = useTheme();
 
     return (
@@ -22,7 +22,7 @@ export function Header() {
                 onChange={setTheme}
                 display={{ on: "🌑", off: "☀️" }}
             />
-            {logged() ? <UserActions /> : <AnonimousActions />}
+            {logged ? <UserActions /> : <AnonimousActions />}
         </header>
     );
 }

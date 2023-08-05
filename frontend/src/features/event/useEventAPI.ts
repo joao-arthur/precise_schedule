@@ -6,7 +6,7 @@ import type {
     MeetingEvent,
     PartyEvent,
 } from "./event";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { useAppRequest } from "@/lib/request/useAppRequest";
 
 export function useCreateAppointment() {
@@ -16,7 +16,6 @@ export function useCreateAppointment() {
         (event: AppointmentEvent) =>
             request.post("event/APPOINTMENT", event, {
                 loading: `Registering "${event.name}"...`,
-                //error: `"${event.name}" could not be registered!`,
                 success: `"${event.name}" registered!`,
             }),
     );
@@ -29,7 +28,6 @@ export function useCreateBirthday() {
         (event: BirthdayEvent) =>
             request.post("event/BIRTHDAY", event, {
                 loading: `Registering "${event.name}"...`,
-                //error: `"${event.name}" could not be registered!`,
                 success: `"${event.name}" registered!`,
             }),
     );
@@ -42,7 +40,6 @@ export function useCreateDate() {
         (event: DateEvent) =>
             request.post("event/DATE", event, {
                 loading: `Registering "${event.name}"...`,
-                //error: `"${event.name}" could not be registered!`,
                 success: `"${event.name}" registered!`,
             }),
     );
@@ -55,7 +52,6 @@ export function useCreateMeeting() {
         (event: MeetingEvent) =>
             request.post("event/MEETING", event, {
                 loading: `Registering "${event.name}"...`,
-                //error: `"${event.name}" could not be registered!`,
                 success: `"${event.name}" registered!`,
             }),
     );
@@ -68,7 +64,6 @@ export function useCreateParty() {
         (event: PartyEvent) =>
             request.post("event/PARTY", event, {
                 loading: `Registering "${event.name}"...`,
-                //error: `"${event.name}" could not be registered!`,
                 success: `"${event.name}" registered!`,
             }),
     );
@@ -81,7 +76,6 @@ export function useUpdateAppointment() {
         (event: AppointmentEvent) =>
             request.post("event/APPOINTMENT", event, {
                 loading: `Saving "${event.name}"...`,
-                //error: `"${event.name}" could not be edited!`,
                 success: `"${event.name}" edited!`,
             }),
     );
@@ -94,7 +88,6 @@ export function useUpdateBirthday() {
         (event: BirthdayEvent) =>
             request.post("event/BIRTHDAY", event, {
                 loading: `Saving "${event.name}"...`,
-                //error: `"${event.name}" could not be edited!`,
                 success: `"${event.name}" edited!`,
             }),
     );
@@ -107,7 +100,6 @@ export function useUpdateDate() {
         (event: DateEvent) =>
             request.post("event/DATE", event, {
                 loading: `Saving "${event.name}"...`,
-                //error: `"${event.name}" could not be edited!`,
                 success: `"${event.name}" edited!`,
             }),
     );
@@ -120,7 +112,6 @@ export function useUpdateMeeting() {
         (event: MeetingEvent) =>
             request.post("event/MEETING", event, {
                 loading: `Saving "${event.name}"...`,
-                //error: `"${event.name}" could not be edited!`,
                 success: `"${event.name}" edited!`,
             }),
     );
@@ -133,7 +124,6 @@ export function useUpdateParty() {
         (event: PartyEvent) =>
             request.post("event/PARTY", event, {
                 loading: `Saving "${event.name}"...`,
-                //error: `"${event.name}" could not be edited!`,
                 success: `"${event.name}" edited!`,
             }),
     );
@@ -141,20 +131,19 @@ export function useUpdateParty() {
 
 export function useFindEvents() {
     const request = useAppRequest();
-    return useMutation(
+    return useQuery(
         "event/find",
         () => request.get<readonly Event[]>("event"),
     );
 }
 
-export function useRemoveEvent() {
+export function useDeleteEvent() {
     const request = useAppRequest();
     return useMutation(
-        "event/remove",
+        "event/delete",
         (id: Event["id"]) =>
             request.delete(`event/${id}`, {
                 loading: `Deleting event...`,
-                //error: `The event could not be deleted!`,
                 success: `Event deleted!`,
             }),
     );

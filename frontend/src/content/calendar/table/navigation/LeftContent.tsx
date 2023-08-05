@@ -7,12 +7,12 @@ import { Link } from "@/components/atoms/Link";
 import { If } from "@/components/atoms/layout/If";
 
 export function LeftContent() {
-    const { logged } = useSession();
+    const logged = useSession().logged();
     const { year, month, setCurrentMonth } = useCalendar();
 
     return (
         <>
-            <If condition={logged()}>
+            <If condition={logged}>
                 <Link to="/charts">
                     <ButtonIcon name="chart" size="medium" />
                 </Link>
@@ -29,7 +29,7 @@ export function LeftContent() {
                     )}
                     onClick={() => setCurrentMonth()}
                 >
-                    Today
+                    Now
                 </button>
             </If>
         </>

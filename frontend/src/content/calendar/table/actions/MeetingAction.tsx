@@ -1,5 +1,6 @@
 import type { MeetingEvent } from "@/features/event/event";
 import { useEffect, useState } from "react";
+import { useQueryClient } from "react-query";
 import { useCreateMeeting } from "@/features/event/useEventAPI";
 import { Modal } from "@/content/modal/Modal";
 import { MeetingEventRegister } from "@/content/event/MeetingEventRegister";
@@ -8,6 +9,7 @@ import { Action } from "./Action";
 export function MeetingAction() {
     const [open, setOpen] = useState(false);
     const { mutate, isLoading, isSuccess } = useCreateMeeting();
+    const queryClient = useQueryClient();
 
     function submit(data: MeetingEvent) {
         mutate(data);
@@ -16,6 +18,7 @@ export function MeetingAction() {
     useEffect(() => {
         if (isSuccess) {
             setOpen(false);
+            queryClient.invalidateQueries("event/find");
         }
     }, [isSuccess]);
 

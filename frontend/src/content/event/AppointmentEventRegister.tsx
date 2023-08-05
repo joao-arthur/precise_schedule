@@ -86,7 +86,6 @@ export function AppointmentEventRegister({ onSubmit, isLoading }: props) {
                 >
                     <ToggleInput
                         {...register("weekendRepeat", {
-                            required: true,
                             disabled: !canRepeatWeekend || isLoading,
                         })}
                     />

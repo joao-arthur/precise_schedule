@@ -1,5 +1,6 @@
 import type { BirthdayEvent } from "@/features/event/event";
 import { useEffect, useState } from "react";
+import { useQueryClient } from "react-query";
 import { useCreateBirthday } from "@/features/event/useEventAPI";
 import { Modal } from "@/content/modal/Modal";
 import { BirthdayEventRegister } from "@/content/event/BirthdayEventRegister";
@@ -8,6 +9,7 @@ import { Action } from "./Action";
 export function BirthdayAction() {
     const [open, setOpen] = useState(false);
     const { mutate, isLoading, isSuccess } = useCreateBirthday();
+    const queryClient = useQueryClient();
 
     function submit(data: BirthdayEvent) {
         mutate(data);
@@ -16,6 +18,7 @@ export function BirthdayAction() {
     useEffect(() => {
         if (isSuccess) {
             setOpen(false);
+            queryClient.invalidateQueries("event/find");
         }
     }, [isSuccess]);
 

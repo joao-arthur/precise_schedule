@@ -1,32 +1,16 @@
-import { useEffect } from "react";
 import { Table } from "@/content/calendar/table/Table";
 import { Sidebar } from "@/content/calendar/sidebar/Sidebar";
-import { useFindEvents } from "@/features/event/useEventAPI";
 import { useSession } from "@/features/session/useSession";
-import { useEvent } from "@/features/event/useEvent";
+import { LoadEvents } from "@/content/calendar/LoadEvents";
 
 export default function Calendar() {
-    const { logged } = useSession();
-    const isLogged = logged();
-    const { mutate, data } = useFindEvents();
-    const { setEvents } = useEvent();
-
-    useEffect(() => {
-        if (isLogged) {
-            mutate();
-        }
-    }, [isLogged]);
-
-    useEffect(() => {
-        if (data) {
-            setEvents(data);
-        }
-    }, [data]);
+    const logged = useSession().logged();
 
     return (
         <>
             <Table />
             <Sidebar />
+            {logged ? <LoadEvents /> : null}
         </>
     );
 }

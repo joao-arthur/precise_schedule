@@ -2,7 +2,6 @@ import { toast as hotToast } from "react-hot-toast";
 
 export type Messages = {
     readonly loading: string;
-    //readonly error: string;
     readonly success: string;
 };
 

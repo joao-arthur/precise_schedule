@@ -9,9 +9,7 @@ type SessionManager = {
 };
 
 export function useSessionManager(): SessionManager {
-    const { getItem, setItem, removeItem } = useLocalStorage<
-        Session["token"]
-    >("token");
+    const { getItem, setItem, removeItem } = useLocalStorage<Session["token"]>("token");
     const sessionStore = useSession();
 
     function init() {
