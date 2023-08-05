@@ -2,7 +2,7 @@ import cl from "classnames";
 import { calendarFns } from "frontend_core";
 import { useCalendar } from "@/features/calendar/useCalendar";
 import { useSession } from "@/features/session/useSession";
-import { ButtonIcon } from "@/components/atoms/ButtonIcon";
+import { ButtonIcon } from "@/components/molecules/ButtonIcon";
 import { Link } from "@/components/atoms/Link";
 import { If } from "@/components/atoms/layout/If";
 

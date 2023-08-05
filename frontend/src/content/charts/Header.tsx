@@ -1,6 +1,6 @@
 import { SubHeader } from "../base/subHeader/SubHeader";
 import { Link } from "@/components/atoms/Link";
-import { ButtonIcon } from "@/components/atoms/ButtonIcon";
+import { ButtonIcon } from "@/components/molecules/ButtonIcon";
 
 export function Header() {
     return (

@@ -14,7 +14,7 @@ import { PasswordInput } from "@/components/atoms/input/PasswordInput";
 import { Box } from "@/components/atoms/layout/Box";
 import { PageContent } from "@/components/atoms/layout/PageContent";
 import { FormContainer } from "@/components/atoms/FormContainer";
-import { ButtonIcon } from "@/components/atoms/ButtonIcon";
+import { ButtonIcon } from "@/components/molecules/ButtonIcon";
 import { ErrorBadge } from "@/components/atoms/ErrorBadge";
 import { SuccessBadge } from "@/components/atoms/SuccessBadge";
 import { Form } from "@/components/molecules/Form";

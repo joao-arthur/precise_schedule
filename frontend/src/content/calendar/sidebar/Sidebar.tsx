@@ -5,7 +5,7 @@ import cl from "classnames";
 import { dateFns } from "frontend_core";
 import { useDevice } from "@/lib/device/useDevice";
 import { useCalendar } from "@/features/calendar/useCalendar";
-import { ButtonIcon } from "@/components/atoms/ButtonIcon";
+import { ButtonIcon } from "@/components/molecules/ButtonIcon";
 import { Text } from "@/components/atoms/Text";
 import { Events } from "./Events";
 

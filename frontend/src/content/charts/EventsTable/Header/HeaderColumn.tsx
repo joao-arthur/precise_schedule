@@ -1,4 +1,4 @@
-import { ButtonIcon } from "@/components/atoms/ButtonIcon";
+import { ButtonIcon } from "@/components/molecules/ButtonIcon";
 import { Text } from "@/components/atoms/Text";
 
 type props = {

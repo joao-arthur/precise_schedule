@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import cl from "classnames";
 
 type props = {
-    readonly onClick: () => void;
+    readonly onClick?: () => void;
     readonly children: ReactNode;
 };
 

@@ -5,7 +5,7 @@ import { SelectInput } from "@/components/atoms/input/SelectInput";
 import { InputWrapper } from "@/components/atoms/form/InputWrapper";
 import { PageContent } from "@/components/atoms/layout/PageContent";
 import { FormContainer } from "@/components/atoms/FormContainer";
-import { ButtonIcon } from "@/components/atoms/ButtonIcon";
+import { ButtonIcon } from "@/components/molecules/ButtonIcon";
 import { Form } from "@/components/molecules/Form";
 import { SubHeader } from "@/content/base/subHeader/SubHeader";
 import { useAuthPage } from "@/features/session/useAuthPage";
