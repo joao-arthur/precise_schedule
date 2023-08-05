@@ -41,15 +41,15 @@ export function MobileModal({
                 </div>
                 <div
                     className={clss(
-                        "flex p-5 flex-col gap-3",
+                        "flex flex-col-reverse p-4 gap-4",
                         "border-t border-gray-300 dark:border-gray-500",
                     )}
                 >
-                    <Button onClick={onConfirm} form={formId}>
-                        CONFIRM
-                    </Button>
                     <Button onClick={onCancel} secondary>
                         CANCEL
+                    </Button>
+                    <Button onClick={onConfirm} form={formId}>
+                        CONFIRM
                     </Button>
                 </div>
             </div>
