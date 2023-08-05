@@ -11,12 +11,10 @@ import { InputWrapper } from "@/components/atoms/form/InputWrapper";
 import { EmailInput } from "@/components/atoms/input/EmailInput";
 import { DateInput } from "@/components/atoms/input/DateInput";
 import { PasswordInput } from "@/components/atoms/input/PasswordInput";
-import { Box } from "@/components/atoms/layout/Box";
+import { BorderedBox } from "@/components/atoms/layout/BorderedBox";
 import { PageContent } from "@/components/atoms/layout/PageContent";
 import { FormContainer } from "@/components/atoms/FormContainer";
 import { ButtonIcon } from "@/components/molecules/ButtonIcon";
-import { ErrorBadge } from "@/components/atoms/badge/ErrorBadge";
-import { SuccessBadge } from "@/components/atoms/badge/SuccessBadge";
 import { Form } from "@/components/molecules/Form";
 import { SubHeader } from "@/content/base/subHeader/SubHeader";
 import { StatusBadge } from "@/components/molecules/StatusBadge";
@@ -190,11 +188,11 @@ export default function SignUp() {
                             </div>
                         </InputWrapper>
                     </Form>
-                    <Box>
+                    <BorderedBox>
                         <Text>
                             Already in PreciseSchedule? <Link to="/signin">Sign in</Link>
                         </Text>
-                    </Box>
+                    </BorderedBox>
                 </FormContainer>
             </PageContent>
         </div>

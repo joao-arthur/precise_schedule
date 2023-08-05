@@ -9,7 +9,7 @@ import { Link } from "@/components/atoms/Link";
 import { InputWrapper } from "@/components/atoms/form/InputWrapper";
 import { TextInput } from "@/components/atoms/input/TextInput";
 import { PasswordInput } from "@/components/atoms/input/PasswordInput";
-import { Box } from "@/components/atoms/layout/Box";
+import { BorderedBox } from "@/components/atoms/layout/BorderedBox";
 import { PageContent } from "@/components/atoms/layout/PageContent";
 import { FormContainer } from "@/components/atoms/FormContainer";
 import { ButtonIcon } from "@/components/molecules/ButtonIcon";
@@ -68,11 +68,11 @@ export default function SignIn() {
                             />
                         </InputWrapper>
                     </Form>
-                    <Box>
+                    <BorderedBox>
                         <Text>
                             Don't have an account? <Link to="/signup">Create an account</Link>
                         </Text>
-                    </Box>
+                    </BorderedBox>
                 </FormContainer>
             </PageContent>
         </div>

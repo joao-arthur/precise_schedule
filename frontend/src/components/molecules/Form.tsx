@@ -1,6 +1,6 @@
 import type { FormEvent, ReactNode } from "react";
 import { Button } from "../atoms/button/Button";
-import { FilledBox } from "../atoms/layout/FilledBox";
+import { BorderedBox } from "../atoms/layout/BorderedBox";
 
 type props = {
     readonly action: string;
@@ -16,8 +16,8 @@ export function Form({
     children,
 }: props) {
     return (
-        <div className="flex flex-col">
-            <FilledBox>
+        <BorderedBox filled>
+            <div className="flex flex-col">
                 <form onSubmit={onSubmit}>
                     {children}
                     <div className="mt-3">
@@ -26,7 +26,7 @@ export function Form({
                         </Button>
                     </div>
                 </form>
-            </FilledBox>
-        </div>
+            </div>
+        </BorderedBox>
     );
 }
