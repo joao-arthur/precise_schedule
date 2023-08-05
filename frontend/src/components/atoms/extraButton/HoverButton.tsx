@@ -1,16 +1,13 @@
 import type { ReactNode } from "react";
 import cl from "classnames";
-import BaseLink from "next/link";
 
 type props = {
-    readonly to: string;
     readonly children: ReactNode;
 };
 
-export function LinkButton({ to, children }: props) {
+export function HoverButton({ children }: props) {
     return (
-        <BaseLink
-            href={to}
+        <button
             className={cl(
                 "border-none cursor-pointer py-1 px-2 w-20 text-center",
                 "text-white rounded",
@@ -19,6 +16,6 @@ export function LinkButton({ to, children }: props) {
             )}
         >
             {children}
-        </BaseLink>
+        </button>
     );
 }

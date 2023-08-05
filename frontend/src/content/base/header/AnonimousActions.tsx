@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
-import { LinkButton } from "@/components/atoms/extraButton/LinkButton";
+import { HoverButton } from "@/components/atoms/extraButton/HoverButton";
 import { If } from "@/components/atoms/layout/If";
+import { Link } from "@/components/atoms/Link";
 
 export function AnonimousActions() {
     const { pathname } = useRouter();
@@ -8,14 +9,18 @@ export function AnonimousActions() {
     return (
         <div>
             <If condition={pathname !== "/signin"}>
-                <LinkButton to="/signin">
-                    SIGN IN
-                </LinkButton>
+                <Link to="/signin">
+                    <HoverButton>
+                        SIGN IN
+                    </HoverButton>
+                </Link>
             </If>
             <If condition={pathname !== "/signup"}>
-                <LinkButton to="/signup">
-                    SIGN UP
-                </LinkButton>
+                <Link to="/signup">
+                    <HoverButton>
+                        SIGN UP
+                    </HoverButton>
+                </Link>
             </If>
         </div>
     );
