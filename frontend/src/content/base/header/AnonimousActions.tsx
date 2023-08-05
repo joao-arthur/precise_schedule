@@ -6,7 +6,7 @@ export function AnonimousActions() {
     const { pathname } = useRouter();
 
     return (
-        <>
+        <div>
             <If condition={pathname !== "/signin"}>
                 <LinkButton to="/signin">
                     SIGN IN
@@ -17,6 +17,6 @@ export function AnonimousActions() {
                     SIGN UP
                 </LinkButton>
             </If>
-        </>
+        </div>
     );
 }

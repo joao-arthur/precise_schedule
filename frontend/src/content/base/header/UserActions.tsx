@@ -6,6 +6,7 @@ import { If } from "@/components/atoms/layout/If";
 export function UserActions() {
     const [userMenuOpen, setUserMenuOpen] = useState(false);
     const closeMenu = useCallback(() => setUserMenuOpen(false), []);
+
     return (
         <>
             <TransparentIcon
