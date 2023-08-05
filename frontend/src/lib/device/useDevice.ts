@@ -1,6 +1,6 @@
 import { useCallback } from "react";
-import { device } from "./device";
 import { useWindowSize } from "usehooks-ts";
+import { device } from "./device";
 
 export function useDevice() {
     const dimensions = useWindowSize();

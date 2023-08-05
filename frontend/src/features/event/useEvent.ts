@@ -1,4 +1,4 @@
-import { Event } from "@/features/event/event";
+import type { Event } from "./event";
 import { map } from "funis";
 import { create } from "zustand";
 
