@@ -2,7 +2,7 @@ import type { DateEvent } from "@/features/event/event";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useCreateDate } from "@/features/event/useEventAPI";
-import { Modal } from "@/content/modal/Modal";
+import { Modal } from "@/components/molecules/Modal";
 import { DateEventRegister } from "@/content/event/DateEventRegister";
 import { Action } from "./Action";
 

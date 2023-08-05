@@ -2,7 +2,7 @@ import { useState } from "react";
 import { ButtonIcon } from "@/components/atoms/ButtonIcon";
 import { Text } from "@/components/atoms/Text";
 import { useEvent } from "@/features/event/useEvent";
-import { Modal } from "@/content/modal/Modal";
+import { Modal } from "@/components/molecules/Modal";
 
 type props = {
     readonly evt: string;

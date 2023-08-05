@@ -2,7 +2,7 @@ import type { BirthdayEvent } from "@/features/event/event";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useCreateBirthday } from "@/features/event/useEventAPI";
-import { Modal } from "@/content/modal/Modal";
+import { Modal } from "@/components/molecules/Modal";
 import { BirthdayEventRegister } from "@/content/event/BirthdayEventRegister";
 import { Action } from "./Action";
 

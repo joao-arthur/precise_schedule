@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import clss from "classnames";
-import { Button } from "@/components/atoms/button/Button";
-import { Text } from "@/components/atoms/Text";
+import { Button } from "../atoms/button/Button";
+import { Text } from "../atoms/Text";
 import { useDevice } from "@/lib/device/useDevice";
 
 export type modalProps = {

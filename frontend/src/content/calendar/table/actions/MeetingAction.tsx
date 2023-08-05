@@ -2,7 +2,7 @@ import type { MeetingEvent } from "@/features/event/event";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useCreateMeeting } from "@/features/event/useEventAPI";
-import { Modal } from "@/content/modal/Modal";
+import { Modal } from "@/components/molecules/Modal";
 import { MeetingEventRegister } from "@/content/event/MeetingEventRegister";
 import { Action } from "./Action";
 

@@ -2,7 +2,7 @@ import type { PartyEvent } from "@/features/event/event";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useCreateParty } from "@/features/event/useEventAPI";
-import { Modal } from "@/content/modal/Modal";
+import { Modal } from "@/components/molecules/Modal";
 import { PartyEventRegister } from "@/content/event/PartyEventRegister";
 import { Action } from "./Action";
 
