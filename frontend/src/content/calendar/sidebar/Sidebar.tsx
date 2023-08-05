@@ -2,11 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import { createMachine } from "xstate";
 import { useMachine } from "@xstate/react";
 import clss from "classnames";
+import { dateFns } from "frontend_core";
 import { useDevice } from "@/lib/device/useDevice";
 import { useCalendar } from "@/features/calendar/useCalendar";
 import { ButtonIcon } from "@/components/atoms/ButtonIcon";
 import { Text } from "@/components/atoms/Text";
-import { If } from "@/components/atoms/layout/If";
 import { Events } from "./Events";
 
 const sidebarMachine = createMachine({
@@ -28,8 +28,8 @@ const sidebarMachine = createMachine({
 
 export function Sidebar() {
     const isMobile = useDevice().isMobile();
-    const { selectedDate, removeSelectedDate } = useCalendar();
-    const [displayDay, setDisplayDay] = useState(selectedDate);
+    const { selectedDay, removeSelectedDate } = useCalendar();
+    const [displayDay, setDisplayDay] = useState(selectedDay);
     const timeoutId = useRef(-1);
     const [state, send] = useMachine(sidebarMachine);
 
@@ -45,17 +45,17 @@ export function Sidebar() {
                 );
                 break;
             case "closed":
-                setDisplayDay("");
+                setDisplayDay(undefined);
                 break;
         }
     }, [state]);
 
     useEffect(() => {
-        if (selectedDate) {
-            setDisplayDay(selectedDate);
+        if (selectedDay) {
+            setDisplayDay(selectedDay);
             if (state.value !== "opened") send("open");
         } else send("close");
-    }, [selectedDate]);
+    }, [selectedDay]);
 
     return (
         <div
@@ -65,10 +65,10 @@ export function Sidebar() {
                 "bg-white dark:bg-dark-light",
                 "transition-all duration-500",
                 {
-                    "w-100 border-l border-gray-300 dark:border-gray-500": selectedDate &&
+                    "w-100 border-l border-gray-300 dark:border-gray-500": selectedDay &&
                         !isMobile,
-                    "w-screen": selectedDate && isMobile,
-                    "w-0": !selectedDate,
+                    "w-screen": selectedDay && isMobile,
+                    "w-0": !selectedDay,
                 },
             )}
         >
@@ -78,35 +78,40 @@ export function Sidebar() {
                     isMobile ? "w-screen" : "w-100",
                 )}
             >
-                <If condition={!!displayDay}>
-                    <div
-                        className={clss(
-                            "flex flex-col flex-1",
-                            isMobile ? "w-screen" : "w-100",
-                        )}
-                    >
+                {displayDay
+                    ? (
                         <div
                             className={clss(
-                                "flex justify-between m-1 border-b",
-                                "items-center px-5 py-4",
-                                "border-gray-300 dark:border-gray-500",
-                                "transition-colors duration-500",
+                                "flex flex-col flex-1",
+                                isMobile ? "w-screen" : "w-100",
                             )}
                         >
-                            <div className="text-center">
-                                <Text size="3xl">
-                                    {displayDay}
-                                </Text>
+                            <div
+                                className={clss(
+                                    "flex justify-between m-1 border-b",
+                                    "items-center px-5 py-4",
+                                    "border-gray-300 dark:border-gray-500",
+                                    "transition-colors duration-500",
+                                )}
+                            >
+                                <div className="text-center">
+                                    <Text size="3xl">
+                                        {dateFns.formatDate(
+                                            displayDay,
+                                            window.navigator.language,
+                                        )}
+                                    </Text>
+                                </div>
+                                <ButtonIcon
+                                    name="x"
+                                    size="big"
+                                    onClick={() => removeSelectedDate()}
+                                />
                             </div>
-                            <ButtonIcon
-                                name="x"
-                                size="big"
-                                onClick={() => removeSelectedDate()}
-                            />
+                            <Events date={displayDay} />
                         </div>
-                        <Events date={displayDay} />
-                    </div>
-                </If>
+                    )
+                    : null}
             </div>
         </div>
     );

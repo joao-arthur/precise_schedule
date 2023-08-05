@@ -3,8 +3,8 @@ import { create } from "zustand";
 type CalendarState = {
     readonly year: number;
     readonly month: number;
-    readonly selectedDate: string;
-    readonly toggleSelectedDate: (selectedDate: string) => void;
+    readonly selectedDay: string | undefined;
+    readonly toggleSelectedDate: (selectedDay: string) => void;
     readonly removeSelectedDate: () => void;
     readonly setYear: (year: number) => void;
     readonly setMonth: (month: number) => void;
@@ -14,12 +14,12 @@ type CalendarState = {
 export const useCalendar = create<CalendarState>((set) => ({
     year: new Date().getFullYear(),
     month: new Date().getMonth() + 1,
-    selectedDate: "",
-    toggleSelectedDate: (selectedDate: string) =>
+    selectedDay: undefined,
+    toggleSelectedDate: (selectedDay: string) =>
         set((state) => ({
-            selectedDate: state.selectedDate !== selectedDate ? selectedDate : "",
+            selectedDay: state.selectedDay !== selectedDay ? selectedDay : undefined,
         })),
-    removeSelectedDate: () => set({ selectedDate: "" }),
+    removeSelectedDate: () => set({ selectedDay: undefined }),
     setYear: (year: number) => set({ year }),
     setMonth: (month: number) => set({ month }),
     setCurrentMonth: () =>

@@ -1,6 +1,6 @@
 import type { Calendar } from "frontend_core";
 import clss from "classnames";
-import { calendarFns } from "frontend_core";
+import { calendarFns, dateFns } from "frontend_core";
 import { useCalendar } from "@/features/calendar/useCalendar";
 import { Event } from "@/features/event/event";
 import { Text } from "@/components/atoms/Text";
@@ -29,7 +29,7 @@ export function Cell({ calendar, date, events }: props) {
                     <>
                         <div className="text-center">
                             <Text size="xl">
-                                {date}
+                                {dateFns.formatDay(date)}
                             </Text>
                         </div>
                         {events.map((evt) => <Text size="xs" key={evt}>{evt}</Text>)}
@@ -38,7 +38,7 @@ export function Cell({ calendar, date, events }: props) {
                 : (
                     <div className="text-center">
                         <Text size="xl" disabled>
-                            {date}
+                            {dateFns.formatDay(date)}
                         </Text>
                     </div>
                 )}
