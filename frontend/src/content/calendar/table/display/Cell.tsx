@@ -16,38 +16,34 @@ export function Cell({ calendar, date, events }: props) {
     const { toggleSelectedDate } = useCalendar();
     const { eventsMap } = useEvent();
 
-    return (
-        <div
-            className={clss(
-                "flex flex-col flex-1 rounded cursor-pointer",
-                "hover:bg-primary-lighter active:bg-primary-light",
-                "dark:hover:bg-primary-darker dark:active:bg-primary-dark",
-                "overflow-hidden",
-            )}
-            onClick={() => toggleSelectedDate(date)}
-        >
-            {calendarFns.isDateIn(calendar, date)
-                ? (
-                    <>
-                        <div className="text-center">
-                            <Text size="xl">
-                                {dateFns.formatDay(date)}
-                            </Text>
-                        </div>
-                        {events.map((evt) => (
-                            <Text size="xs" key={evt}>
-                                {eventsMap.get(evt)?.name}
-                            </Text>
-                        ))}
-                    </>
-                )
-                : (
-                    <div className="text-center">
-                        <Text size="xl" disabled>
-                            {dateFns.formatDay(date)}
-                        </Text>
-                    </div>
+    if (calendarFns.isDateIn(calendar, date)) {
+        return (
+            <div
+                className={clss(
+                    "flex flex-col flex-1 rounded cursor-pointer overflow-hidden",
+                    "hover:bg-primary-lighter active:bg-primary-light",
+                    "dark:hover:bg-primary-darker dark:active:bg-primary-dark",
                 )}
+                onClick={() => toggleSelectedDate(date)}
+            >
+                <div className="text-center">
+                    <Text size="xl">
+                        {dateFns.formatDay(date)}
+                    </Text>
+                </div>
+                {events.map((evt) => (
+                    <Text size="xs" key={evt}>
+                        {eventsMap.get(evt)?.name}
+                    </Text>
+                ))}
+            </div>
+        );
+    }
+    return (
+        <div className="flex flex-col flex-1 rounded overflow-hidden text-center">
+            <Text size="xl" disabled>
+                {dateFns.formatDay(date)}
+            </Text>
         </div>
     );
 }
