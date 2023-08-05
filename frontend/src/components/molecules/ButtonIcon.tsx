@@ -1,6 +1,6 @@
 import cl from "classnames";
 import { Icon, names } from "../atoms/Icon";
-import { TransparentButton } from "../atoms/button/TransparentButton";
+import { TransparentButton } from "../atoms/extraButton/TransparentButton";
 
 type props = {
     readonly name: names;

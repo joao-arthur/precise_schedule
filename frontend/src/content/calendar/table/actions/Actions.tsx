@@ -1,4 +1,4 @@
-import { FloatingButton } from "@/components/atoms/button/FloatingButton";
+import { FloatingButton } from "@/components/atoms/extraButton/FloatingButton";
 import { If } from "@/components/atoms/layout/If";
 import { useState } from "react";
 import { AppointmentAction } from "./AppointmentAction";

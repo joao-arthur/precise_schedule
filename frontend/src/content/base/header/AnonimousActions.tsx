@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { LinkButton } from "@/components/atoms/LinkButton";
+import { LinkButton } from "@/components/atoms/extraButton/LinkButton";
 import { If } from "@/components/atoms/layout/If";
 
 export function AnonimousActions() {

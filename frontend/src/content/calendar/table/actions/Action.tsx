@@ -1,5 +1,5 @@
 import { names } from "@/components/atoms/Icon";
-import { FloatingButton } from "@/components/atoms/button/FloatingButton";
+import { FloatingButton } from "@/components/atoms/extraButton/FloatingButton";
 import { Tooltip } from "@/components/atoms/Tooltip";
 import { Text } from "@/components/atoms/Text";
 
