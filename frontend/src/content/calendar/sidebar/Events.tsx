@@ -11,13 +11,11 @@ type props = {
 };
 
 export function Events({ date }: props) {
-    const device = useDevice();
-    const isMobile = device.isMobile();
-
-    const [eventCalendar, setEventCalendar] = useState<EventCalendar>(new Map());
+    const isMobile = useDevice().isMobile();
+    const { events } = useEvent();
     const { year, month } = useCalendar();
     const calendar = { year, month };
-    const { events } = useEvent();
+    const [eventCalendar, setEventCalendar] = useState<EventCalendar>(new Map());
 
     useEffect(() => {
         if (events.length) {
@@ -31,10 +29,10 @@ export function Events({ date }: props) {
                 "w-screen": isMobile,
             })}
         >
-            {(eventCalendar.get(date) || []).map((event) => (
+            {(eventCalendar.get(date) || []).map((evt) => (
                 <EventItem
-                    event={event}
-                    key={event}
+                    key={evt}
+                    evt={evt}
                 />
             ))}
         </div>

@@ -28,8 +28,8 @@ const sidebarMachine = createMachine({
 
 export function Sidebar() {
     const isMobile = useDevice().isMobile();
-    const { selectedDay, removeSelectedDate } = useCalendar();
-    const [displayDay, setDisplayDay] = useState(selectedDay);
+    const { selectedDate, removeSelectedDate } = useCalendar();
+    const [displayDate, setDisplayDay] = useState(selectedDate);
     const timeoutId = useRef(-1);
     const [state, send] = useMachine(sidebarMachine);
 
@@ -51,11 +51,11 @@ export function Sidebar() {
     }, [state]);
 
     useEffect(() => {
-        if (selectedDay) {
-            setDisplayDay(selectedDay);
+        if (selectedDate) {
+            setDisplayDay(selectedDate);
             if (state.value !== "opened") send("open");
         } else send("close");
-    }, [selectedDay]);
+    }, [selectedDate]);
 
     return (
         <div
@@ -65,10 +65,10 @@ export function Sidebar() {
                 "bg-white dark:bg-dark-light",
                 "transition-all duration-500",
                 {
-                    "w-100 border-l border-gray-300 dark:border-gray-500": selectedDay &&
+                    "w-100 border-l border-gray-300 dark:border-gray-500": selectedDate &&
                         !isMobile,
-                    "w-screen": selectedDay && isMobile,
-                    "w-0": !selectedDay,
+                    "w-screen": selectedDate && isMobile,
+                    "w-0": !selectedDate,
                 },
             )}
         >
@@ -78,7 +78,7 @@ export function Sidebar() {
                     isMobile ? "w-screen" : "w-100",
                 )}
             >
-                {displayDay
+                {displayDate
                     ? (
                         <div
                             className={clss(
@@ -97,7 +97,7 @@ export function Sidebar() {
                                 <div className="text-center">
                                     <Text size="3xl">
                                         {dateFns.formatDate(
-                                            displayDay,
+                                            displayDate,
                                             window.navigator.language,
                                         )}
                                     </Text>
@@ -108,7 +108,7 @@ export function Sidebar() {
                                     onClick={() => removeSelectedDate()}
                                 />
                             </div>
-                            <Events date={displayDay} />
+                            <Events date={displayDate} />
                         </div>
                     )
                     : null}

@@ -4,6 +4,7 @@ import { calendarFns, dateFns } from "frontend_core";
 import { useCalendar } from "@/features/calendar/useCalendar";
 import { Event } from "@/features/event/event";
 import { Text } from "@/components/atoms/Text";
+import { useEvent } from "@/features/event/useEvent";
 
 type props = {
     readonly calendar: Calendar;
@@ -13,6 +14,7 @@ type props = {
 
 export function Cell({ calendar, date, events }: props) {
     const { toggleSelectedDate } = useCalendar();
+    const { eventsMap } = useEvent();
 
     return (
         <div
@@ -32,7 +34,11 @@ export function Cell({ calendar, date, events }: props) {
                                 {dateFns.formatDay(date)}
                             </Text>
                         </div>
-                        {events.map((evt) => <Text size="xs" key={evt}>{evt}</Text>)}
+                        {events.map((evt) => (
+                            <Text size="xs" key={evt}>
+                                {eventsMap.get(evt)?.name}
+                            </Text>
+                        ))}
                     </>
                 )
                 : (

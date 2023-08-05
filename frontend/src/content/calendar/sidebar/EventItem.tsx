@@ -4,21 +4,23 @@ import { Text } from "@/components/atoms/Text";
 //import { InfoEvent } from "../../EventRegister/InfoEvent";
 //import { EditEvent } from "../../EventRegister/EditEvent";
 import { Event } from "@/features/event/event";
+import { useEvent } from "@/features/event/useEvent";
 //import { DeleteEvent } from "../../EventRegister/DeleteEvent";
 
 type props = {
-    readonly event: string;
+    readonly evt: string;
 };
 
-export function EventItem({ event }: props) {
+export function EventItem({ evt }: props) {
     const [isInfoVisible, setIsInfoVisible] = useState(false);
     const [isEditVisible, setIsEditVisible] = useState(false);
     const [isDeleteVisible, setIsDeleteVisible] = useState(false);
+    const { eventsMap } = useEvent();
 
     return (
         <div className="flex justify-between items-center p-3">
             <Text size="lg">
-                {event}
+                {eventsMap.get(evt)?.name}
             </Text>
             <div className="flex gap-2">
                 <ButtonIcon
