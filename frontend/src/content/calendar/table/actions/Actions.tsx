@@ -1,6 +1,7 @@
+import { useState } from "react";
 import { FloatingButton } from "@/components/atoms/extraButton/FloatingButton";
 import { If } from "@/components/atoms/layout/If";
-import { useState } from "react";
+import { Icon } from "@/components/atoms/Icon";
 import { AppointmentAction } from "./AppointmentAction";
 import { BirthdayAction } from "./BirthdayAction";
 import { DateAction } from "./DateAction";
@@ -24,12 +25,15 @@ export function Actions() {
                 </If>
                 <div className="flex w-full justify-end">
                     <FloatingButton
-                        className="w-20 h-20"
-                        icon="plus"
                         onClick={() => {
                             setOpen(!open);
                         }}
-                    />
+                    >
+                        <Icon
+                            name="plus"
+                            className="fill-white p-3 w-20 h-20"
+                        />
+                    </FloatingButton>
                 </div>
             </div>
         </div>

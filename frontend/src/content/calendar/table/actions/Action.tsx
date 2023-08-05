@@ -1,4 +1,4 @@
-import type { IconName } from "@/components/atoms/Icon";
+import { Icon, type IconName } from "@/components/atoms/Icon";
 import { FloatingButton } from "@/components/atoms/extraButton/FloatingButton";
 import { Tooltip } from "@/components/atoms/Tooltip";
 import { Text } from "@/components/atoms/Text";
@@ -16,10 +16,13 @@ export function Action({ title, icon, onClick }: props) {
                 <Text>{title}</Text>
             </Tooltip>
             <FloatingButton
-                className="w-14 h-14"
-                icon={icon}
                 onClick={onClick}
-            />
+            >
+                <Icon
+                    name={icon}
+                    className="fill-white p-3 w-14 h-14"
+                />
+            </FloatingButton>
         </div>
     );
 }
