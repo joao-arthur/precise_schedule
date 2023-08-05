@@ -17,7 +17,7 @@ import { FormContainer } from "@/components/atoms/FormContainer";
 import { ButtonIcon } from "@/components/molecules/ButtonIcon";
 import { Form } from "@/components/molecules/Form";
 import { SubHeader } from "@/content/base/subHeader/SubHeader";
-import { StatusBadge } from "@/components/molecules/StatusBadge";
+import { StatusBadge } from "@/components/molecules/badge/StatusBadge";
 
 function strMinLenValid(value: unknown) {
     if (typeof value !== "string" || value.length < 8) {

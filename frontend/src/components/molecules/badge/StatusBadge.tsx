@@ -1,6 +1,6 @@
-import { Text } from "../atoms/Text";
-import { ErrorBadge } from "../atoms/badge/ErrorBadge";
-import { SuccessBadge } from "../atoms/badge/SuccessBadge";
+import { Text } from "../../atoms/Text";
+import { ErrorBadge } from "../badge/ErrorBadge";
+import { SuccessBadge } from "../badge/SuccessBadge";
 
 type props = {
     readonly valid: boolean;

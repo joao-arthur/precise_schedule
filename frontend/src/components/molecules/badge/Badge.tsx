@@ -1,6 +1,6 @@
-import type { IconName } from "../Icon";
+import type { IconName } from "../../atoms/Icon";
 import cl from "classnames";
-import { Icon } from "../Icon";
+import { Icon } from "../../atoms/Icon";
 
 type props = {
     readonly className: string;
