@@ -40,7 +40,12 @@ export function Cell({ calendar, date, events }: props) {
         );
     }
     return (
-        <div className="flex flex-col flex-1 rounded overflow-hidden text-center">
+        <div
+            className={clss(
+                "flex flex-col flex-1 overflow-hidden text-center bg-gray-100 dark:bg-dark-lightless",
+                "transition-colors duration-500",
+            )}
+        >
             <Text size="xl" disabled>
                 {dateFns.formatDay(date)}
             </Text>

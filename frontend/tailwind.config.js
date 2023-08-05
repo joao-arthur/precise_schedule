@@ -21,7 +21,8 @@ module.exports = {
                 dark: {
                     lighter: '#2f2f2f',
                     light: '#191919',
-                    DEFAULT: '#0d0d0d'
+                    lightless: '#131313',
+                    DEFAULT: '#0d0d0d',
                 }
             },
             flex: {
