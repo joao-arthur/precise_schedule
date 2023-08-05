@@ -19,6 +19,7 @@ import { ErrorBadge } from "@/components/atoms/badge/ErrorBadge";
 import { SuccessBadge } from "@/components/atoms/badge/SuccessBadge";
 import { Form } from "@/components/molecules/Form";
 import { SubHeader } from "@/content/base/subHeader/SubHeader";
+import { StatusBadge } from "@/components/molecules/StatusBadge";
 
 function strMinLenValid(value: unknown) {
     if (typeof value !== "string" || value.length < 8) {
@@ -165,29 +166,27 @@ export default function SignUp() {
                                         strMinUpperValid(value) && strMinLowerValid(value),
                                 })}
                             />
-                            <div className="py-2">
-                                <div className="flex gap-2 p-1 items-center">
-                                    {strMinLenValid(password) ? <SuccessBadge /> : <ErrorBadge />}
-                                    <Text size="sm">At least 8 characters</Text>
-                                </div>
-                                <div className="flex gap-2 p-1 items-center">
-                                    {strMinNumValid(password) ? <SuccessBadge /> : <ErrorBadge />}
-                                    <Text size="sm">At least 1 number</Text>
-                                </div>
-                                <div className="flex gap-2 p-1 items-center">
-                                    {strMinUpperValid(password) ? <SuccessBadge /> : <ErrorBadge />}
-                                    <Text size="sm">At least 1 uppercase letter</Text>
-                                </div>
-                                <div className="flex gap-2 p-1 items-center">
-                                    {strMinLowerValid(password) ? <SuccessBadge /> : <ErrorBadge />}
-                                    <Text size="sm">At least 1 lowercase letter</Text>
-                                </div>
-                                <div className="flex gap-2 p-1 items-center">
-                                    {strMinSpecialValid(password)
-                                        ? <SuccessBadge />
-                                        : <ErrorBadge />}
-                                    <Text size="sm">At least 1 of !@#$%¨&*()[]{}</Text>
-                                </div>
+                            <div className="flex flex-col py-2 gap-2">
+                                <StatusBadge
+                                    valid={strMinLenValid(password)}
+                                    label="At least 8 characters"
+                                />
+                                <StatusBadge
+                                    valid={strMinNumValid(password)}
+                                    label="At least 1 number"
+                                />
+                                <StatusBadge
+                                    valid={strMinUpperValid(password)}
+                                    label="At least 1 uppercase letter"
+                                />
+                                <StatusBadge
+                                    valid={strMinLowerValid(password)}
+                                    label="At least 1 lowercase letter"
+                                />
+                                <StatusBadge
+                                    valid={strMinSpecialValid(password)}
+                                    label="At least 1 of !@#$%¨&*()[]{}"
+                                />
                             </div>
                         </InputWrapper>
                     </Form>
