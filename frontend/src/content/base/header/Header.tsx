@@ -1,4 +1,4 @@
-import cl from "classnames";
+import { cl } from "@/lib/cl";
 import { useTheme } from "@/features/theme/useTheme";
 import { useSession } from "@/features/session/useSession";
 import { Toggle } from "@/components/atoms/input/Toggle";

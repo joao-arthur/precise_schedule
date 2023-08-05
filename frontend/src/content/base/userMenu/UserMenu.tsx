@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import cl from "classnames";
+import { cl } from "@/lib/cl";
 import { useSessionManager } from "@/features/session/useSessionManager";
 import { Link } from "@/components/atoms/Link";
 import { UserMenuItem } from "./UserMenuItem";

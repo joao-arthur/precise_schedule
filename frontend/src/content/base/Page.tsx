@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { useEffect } from "react";
 import { useWindowSize } from "usehooks-ts";
-import cl from "classnames";
+import { cl } from "@/lib/cl";
 import { theme } from "@/features/theme/theme";
 import { useSessionManager } from "@/features/session/useSessionManager";
 import { Header } from "./header/Header";

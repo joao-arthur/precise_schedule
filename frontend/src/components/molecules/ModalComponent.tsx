@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import cl from "classnames";
+import { cl } from "@/lib/cl";
 import { Button } from "../atoms/button/Button";
 import { Text } from "../atoms/Text";
 import { useDevice } from "@/lib/device/useDevice";

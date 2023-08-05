@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createMachine } from "xstate";
 import { useMachine } from "@xstate/react";
-import cl from "classnames";
+import { cl } from "@/lib/cl";
 import { dateFns } from "frontend_core";
 import { useDevice } from "@/lib/device/useDevice";
 import { useCalendar } from "@/features/calendar/useCalendar";

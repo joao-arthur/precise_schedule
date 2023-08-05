@@ -14,7 +14,7 @@ import { RiCheckLine, RiCloseLine } from "react-icons/ri";
 import { BsPeopleFill } from "react-icons/bs";
 import { HiFilter, HiPlusSm } from "react-icons/hi";
 import { MdEdit } from "react-icons/md";
-import cl from "classnames";
+import { cl } from "@/lib/cl";
 
 export type IconName =
     | "user"

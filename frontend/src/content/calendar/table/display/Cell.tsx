@@ -1,5 +1,5 @@
 import type { Calendar } from "frontend_core";
-import cl from "classnames";
+import { cl } from "@/lib/cl";
 import { calendarFns, dateFns } from "frontend_core";
 import { useCalendar } from "@/features/calendar/useCalendar";
 import { Event } from "@/features/event/event";

@@ -1,5 +1,5 @@
 import type { IconName } from "@/components/atoms/Icon";
-import cl from "classnames";
+import { cl } from "@/lib/cl";
 import { Icon } from "@/components/atoms/Icon";
 import { Text } from "@/components/atoms/Text";
 

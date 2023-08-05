@@ -1,5 +1,5 @@
 import type { IconName } from "../atoms/Icon";
-import cl from "classnames";
+import { cl } from "@/lib/cl";
 import { Icon } from "../atoms/Icon";
 import { TransparentButton } from "../atoms/extraButton/TransparentButton";
 

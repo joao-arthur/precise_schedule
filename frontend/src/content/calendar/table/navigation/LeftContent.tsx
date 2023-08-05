@@ -1,4 +1,4 @@
-import cl from "classnames";
+import { cl } from "@/lib/cl";
 import { calendarFns } from "frontend_core";
 import { useCalendar } from "@/features/calendar/useCalendar";
 import { useSession } from "@/features/session/useSession";

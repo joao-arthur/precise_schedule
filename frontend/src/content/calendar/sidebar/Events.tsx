@@ -1,4 +1,4 @@
-import cl from "classnames";
+import { cl } from "@/lib/cl";
 import { useDevice } from "@/lib/device/useDevice";
 import { EventItem } from "./EventItem";
 import { useCalendarEvent } from "@/features/calendarEvent/useCalendarEvent";

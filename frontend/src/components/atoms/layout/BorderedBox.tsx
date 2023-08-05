@@ -1,4 +1,4 @@
-import cl from "classnames";
+import { cl } from "@/lib/cl";
 import type { ReactNode } from "react";
 
 type props = {

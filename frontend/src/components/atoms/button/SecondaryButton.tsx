@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import cl from "classnames";
+import { cl } from "@/lib/cl";
 import { BaseButton } from "./BaseButton";
 
 type props = {
