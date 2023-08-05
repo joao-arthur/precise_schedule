@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import clss from "classnames";
+import cl from "classnames";
 import { BaseButton } from "./BaseButton";
 
 type props = {
@@ -13,7 +13,7 @@ export function SecondaryButton({ children, title, onClick }: props) {
         <BaseButton
             title={title}
             onClick={onClick}
-            className={clss(
+            className={cl(
                 "text-primary",
                 "bg-gray-200 dark:bg-dark-light",
                 "active:bg-gray-300 dark:active:bg-dark-lighter",

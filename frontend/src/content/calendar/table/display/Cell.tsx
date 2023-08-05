@@ -1,5 +1,5 @@
 import type { Calendar } from "frontend_core";
-import clss from "classnames";
+import cl from "classnames";
 import { calendarFns, dateFns } from "frontend_core";
 import { useCalendar } from "@/features/calendar/useCalendar";
 import { Event } from "@/features/event/event";
@@ -19,7 +19,7 @@ export function Cell({ calendar, date, events }: props) {
     if (calendarFns.isDateIn(calendar, date)) {
         return (
             <div
-                className={clss(
+                className={cl(
                     "flex flex-col flex-1 rounded cursor-pointer overflow-hidden",
                     "hover:bg-primary-lighter active:bg-primary-light",
                     "dark:hover:bg-primary-darker dark:active:bg-primary-dark",
@@ -41,7 +41,7 @@ export function Cell({ calendar, date, events }: props) {
     }
     return (
         <div
-            className={clss(
+            className={cl(
                 "flex flex-col flex-1 overflow-hidden text-center bg-gray-100 dark:bg-dark-lightless",
                 "transition-colors duration-500",
             )}

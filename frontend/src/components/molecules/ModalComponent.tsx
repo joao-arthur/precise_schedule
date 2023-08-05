@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import clss from "classnames";
+import cl from "classnames";
 import { Button } from "../atoms/button/Button";
 import { Text } from "../atoms/Text";
 import { useDevice } from "@/lib/device/useDevice";
@@ -26,7 +26,7 @@ export function ModalComponent({
     return (
         <div className="fixed w-full h-full bg-block">
             <div
-                className={clss(
+                className={cl(
                     "flex flex-col absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2",
                     "bg-white dark:bg-dark",
                     isMobile
@@ -35,7 +35,7 @@ export function ModalComponent({
                 )}
             >
                 <div
-                    className={clss(
+                    className={cl(
                         "py-5 px-7 break-all bg-primary",
                         "shadow-sm shadow-gray-500",
                     )}
@@ -46,7 +46,7 @@ export function ModalComponent({
                     {children}
                 </div>
                 <div
-                    className={clss(
+                    className={cl(
                         isMobile ? "flex-col-reverse p-4 gap-4" : "p-2 justify-end gap-2",
                         "flex border-t border-gray-300 dark:border-gray-500",
                     )}

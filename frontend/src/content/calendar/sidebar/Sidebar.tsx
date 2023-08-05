@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createMachine } from "xstate";
 import { useMachine } from "@xstate/react";
-import clss from "classnames";
+import cl from "classnames";
 import { dateFns } from "frontend_core";
 import { useDevice } from "@/lib/device/useDevice";
 import { useCalendar } from "@/features/calendar/useCalendar";
@@ -59,7 +59,7 @@ export function Sidebar() {
 
     return (
         <div
-            className={clss(
+            className={cl(
                 "z-10",
                 "flex overflow-hidden flex-0-auto",
                 "bg-white dark:bg-dark-light",
@@ -73,7 +73,7 @@ export function Sidebar() {
             )}
         >
             <div
-                className={clss(
+                className={cl(
                     "flex flex-0",
                     isMobile ? "w-screen" : "w-100",
                 )}
@@ -81,13 +81,13 @@ export function Sidebar() {
                 {displayDate
                     ? (
                         <div
-                            className={clss(
+                            className={cl(
                                 "flex flex-col flex-1",
                                 isMobile ? "w-screen" : "w-100",
                             )}
                         >
                             <div
-                                className={clss(
+                                className={cl(
                                     "flex justify-between m-1 border-b",
                                     "items-center px-5 py-4",
                                     "border-gray-300 dark:border-gray-500",

@@ -1,10 +1,10 @@
-import clss from "classnames";
+import cl from "classnames";
 import { Icon } from "./Icon";
 
 export function SuccessBadge() {
     return (
         <div
-            className={clss(
+            className={cl(
                 "rounded-full border-2",
                 "border-green-700 bg-green-100",
                 "transition-colors duration-500",

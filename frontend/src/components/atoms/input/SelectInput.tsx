@@ -1,5 +1,5 @@
 import type { ChangeEventHandler, FocusEventHandler, ForwardedRef } from "react";
-import clss from "classnames";
+import cl from "classnames";
 import { forwardRef } from "react";
 
 type option = {
@@ -31,7 +31,7 @@ function SelectInputComp(
         <select
             {...props}
             ref={forwardedRef}
-            className={clss(
+            className={cl(
                 "py-1 px-2 rounded-md text-base w-full box-border h-10 min-w-0",
                 "border border-gray-500 disabled:cursor-not-allowed",
                 "bg-white dark:bg-dark-lighter dark:text-pastel-gray",

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import clss from "classnames";
+import cl from "classnames";
 import { useDevice } from "@/lib/device/useDevice";
 
 type props = {
@@ -11,7 +11,7 @@ export function PageContent({ children }: props) {
 
     return (
         <div
-            className={clss(
+            className={cl(
                 "flex flex-col my-0 mx-auto pt-5",
                 isMobile ? "w-4/5" : "w-100",
             )}

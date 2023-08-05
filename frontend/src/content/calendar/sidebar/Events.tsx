@@ -1,4 +1,4 @@
-import clss from "classnames";
+import cl from "classnames";
 import { useDevice } from "@/lib/device/useDevice";
 import { EventItem } from "./EventItem";
 import { useCalendarEvent } from "@/features/calendarEvent/useCalendarEvent";
@@ -13,7 +13,7 @@ export function Events({ date }: props) {
 
     return (
         <div
-            className={clss("flex-1 m-1", {
+            className={cl("flex-1 m-1", {
                 "w-screen": isMobile,
             })}
         >

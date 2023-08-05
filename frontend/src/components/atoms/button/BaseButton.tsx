@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import clss from "classnames";
+import cl from "classnames";
 
 type props = {
     readonly className: string;
@@ -17,7 +17,7 @@ export function BaseButton(
             title={title}
             onClick={onClick}
             form={form}
-            className={clss("py-5 text-lg rounded w-full", className)}
+            className={cl("py-5 text-lg rounded w-full", className)}
         >
             {children}
         </button>

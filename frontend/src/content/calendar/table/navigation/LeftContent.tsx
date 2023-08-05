@@ -1,4 +1,4 @@
-import clss from "classnames";
+import cl from "classnames";
 import { calendarFns } from "frontend_core";
 import { useCalendar } from "@/features/calendar/useCalendar";
 import { useSession } from "@/features/session/useSession";
@@ -19,7 +19,7 @@ export function LeftContent() {
             </If>
             <If condition={!calendarFns.isCurrent({ year, month })}>
                 <button
-                    className={clss(
+                    className={cl(
                         "h-10 px-1 rounded",
                         "transition-colors hover:duration-200 duration-500",
                         "text-gray-800 bg-white",

@@ -1,4 +1,4 @@
-import clss from "classnames";
+import cl from "classnames";
 
 type props = {
     readonly name: string;
@@ -14,7 +14,7 @@ export function NavigationSelect({ name, options, value, onChange }: props) {
             name={name}
             value={value}
             onChange={(e) => onChange(e.target.value)}
-            className={clss(
+            className={cl(
                 "border border-gray-300 dark:border-gray-500 mx-1 text-lg cursor-pointer text-center h-10",
                 "text-gray-800 rounded bg-white",
                 "transition-colors hover:duration-200 duration-500",

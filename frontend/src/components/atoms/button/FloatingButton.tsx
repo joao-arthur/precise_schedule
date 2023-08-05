@@ -1,4 +1,4 @@
-import clss from "classnames";
+import cl from "classnames";
 import { Icon, names } from "../Icon";
 
 type props = {
@@ -11,14 +11,14 @@ export function FloatingButton({ className, icon, onClick }: props) {
     return (
         <button
             onClick={onClick}
-            className={clss(
+            className={cl(
                 "rounded-full bg-primary active:bg-primary-dark",
                 "shadow-sm shadow-gray-800",
             )}
         >
             <Icon
                 name={icon}
-                className={clss("fill-white p-3", className)}
+                className={cl("fill-white p-3", className)}
             />
         </button>
     );

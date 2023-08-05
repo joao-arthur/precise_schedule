@@ -1,5 +1,5 @@
 import type { ChangeEventHandler, FocusEventHandler, ForwardedRef } from "react";
-import clss from "classnames";
+import cl from "classnames";
 import { forwardRef } from "react";
 
 type forwardedProps = {
@@ -28,7 +28,7 @@ function ToggleInputComp({ forwardedRef, ...props }: props) {
                 className="opacity-0 w-0 h-0 peer"
             />
             <span
-                className={clss(
+                className={cl(
                     "absolute top-0 left-0 bottom-0 right-0",
                     "rounded-full",
                     "border border-gray-500",

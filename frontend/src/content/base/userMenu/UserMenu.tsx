@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import clss from "classnames";
+import cl from "classnames";
 import { useSessionManager } from "@/features/session/useSessionManager";
 import { Link } from "@/components/atoms/Link";
 import { UserMenuItem } from "./UserMenuItem";
@@ -20,7 +20,7 @@ export function UserMenu({ closeMenu }: props) {
 
     return (
         <nav
-            className={clss(
+            className={cl(
                 "flex absolute top-10 right-1 border border-gray-500 rounded z-10",
                 "bg-white dark:bg-dark-light",
                 "transition-colors duration-500",

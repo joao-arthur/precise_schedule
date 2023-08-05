@@ -1,4 +1,4 @@
-import clss from "classnames";
+import cl from "classnames";
 
 type props = {
     readonly required?: boolean;
@@ -20,7 +20,7 @@ export function Toggle({
             onClick={() => {
                 onChange(!value);
             }}
-            className={clss(
+            className={cl(
                 "cursor-pointer select-none",
                 "border w-16 h-8 rounded-2xl ",
                 "border-transparent",
@@ -32,7 +32,7 @@ export function Toggle({
             )}
         >
             <div
-                className={clss(
+                className={cl(
                     "flex justify-center items-center",
                     "bg-white border-gray-500 w-6 h-6 rounded-2xl",
                     "transition-all duration-300",

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import clss from "classnames";
+import cl from "classnames";
 
 type props = {
     readonly onClick: () => void;
@@ -10,7 +10,7 @@ export function TransparentButton({ onClick, children }: props) {
     return (
         <button
             onClick={onClick}
-            className={clss(
+            className={cl(
                 "flex rounded border",
                 "border-transparent",
                 "hover:border-gray-300 dark:hover:border-gray-500",

@@ -1,4 +1,4 @@
-import clss from "classnames";
+import cl from "classnames";
 import { Icon, names } from "./Icon";
 import { TransparentButton } from "./button/TransparentButton";
 
@@ -13,7 +13,7 @@ export function ButtonIcon({ name, onClick, size }: props) {
         <TransparentButton onClick={onClick}>
             <Icon
                 name={name}
-                className={clss(
+                className={cl(
                     "fill-gray-500 box-content",
                     {
                         "w-6 h-6 p-2": size === "medium",

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import clss from "classnames";
+import cl from "classnames";
 
 type props = {
     readonly children: ReactNode;
@@ -18,7 +18,7 @@ type props = {
 export function Text({ children, disabled, selectable, size, color }: props) {
     return (
         <span
-            className={clss(
+            className={cl(
                 "transition-colors duration-500",
                 "text-ellipsis whitespace-nowrap overflow-hidden",
                 disabled ? "text-gray-500 dark:text-gray-500" : "text-dark dark:text-pastel-gray",
