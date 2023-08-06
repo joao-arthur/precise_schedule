@@ -12,7 +12,7 @@ export function Header() {
     return (
         <header
             className={cl(
-                "flex px-2 justify-between h-9 gap-3 items-center",
+                "flex justify-end px-2 h-9 gap-3 items-center",
                 "bg-primary-dark dark:bg-primary-darker",
                 "transition-colors duration-500",
             )}

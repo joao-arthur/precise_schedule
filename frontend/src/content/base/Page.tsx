@@ -4,7 +4,6 @@ import { useWindowSize } from "usehooks-ts";
 import { cl } from "@/lib/cl";
 import { theme } from "@/features/theme/theme";
 import { useSessionManager } from "@/features/session/useSessionManager";
-import { Header } from "./header/Header";
 
 type props = {
     readonly children: ReactNode;
@@ -27,8 +26,7 @@ export function Page({ children }: props) {
                 "transition-colors duration-500",
             )}
         >
-            <Header />
-            <main className="flex h-full">{children}</main>
+            {children}
         </div>
     );
 }
