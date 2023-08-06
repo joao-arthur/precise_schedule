@@ -18,7 +18,7 @@ export default function Charts() {
                     </Link>
                 }
             />
-            <main className="flex h-full">
+            <main className="h-full">
                 <div className="flex flex-col flex-1 h-full overflow-x-hidden">
                     <div className="flex-1 block overflow-x-hidden">
                         <div className="h-1/4 overflow-y-hidden">
