@@ -3,16 +3,16 @@ import { Icon } from "../atoms/Icon";
 import { TransparentButton } from "../atoms/extraButton/TransparentButton";
 
 type props = {
-    readonly name: IconName;
+    readonly icon: IconName;
     readonly onClick?: () => void;
     readonly size: "medium" | "big";
 };
 
-export function ButtonIcon({ name, onClick, size }: props) {
+export function ButtonIcon({ icon, onClick, size }: props) {
     return (
         <TransparentButton onClick={onClick}>
             <div className="box-content p-2">
-                <Icon name={name} fill="gray" size={size === "medium" ? 6 : 9} />
+                <Icon name={icon} fill="gray" size={size === "medium" ? 6 : 9} />
             </div>
         </TransparentButton>
     );

@@ -1,7 +1,7 @@
 import { cl } from "@/lib/cl";
 import { useDevice } from "@/lib/device/useDevice";
-import { EventItem } from "./EventItem";
 import { useCalendarEvent } from "@/features/calendarEvent/useCalendarEvent";
+import { EventItem } from "./EventItem";
 
 type props = {
     readonly date: string;

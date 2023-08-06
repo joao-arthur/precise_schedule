@@ -10,7 +10,7 @@ export function UserActions() {
     return (
         <>
             <TransparentIcon
-                name="user"
+                icon="user"
                 onClick={() => setUserMenuOpen(!userMenuOpen)}
             />
             <If condition={userMenuOpen}>

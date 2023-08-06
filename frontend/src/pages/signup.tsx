@@ -12,10 +12,11 @@ import { DateInput } from "@/components/atoms/input/DateInput";
 import { PasswordInput } from "@/components/atoms/input/PasswordInput";
 import { PageContent } from "@/components/atoms/layout/PageContent";
 import { FormContainer } from "@/components/atoms/FormContainer";
-import { ButtonIcon } from "@/components/molecules/ButtonIcon";
 import { Form } from "@/components/molecules/Form";
 import { Badge } from "@/components/molecules/badge/Badge";
 import { Header } from "@/content/base/header/Header";
+import { RoundButton } from "@/components/atoms/extraButton/RoundButton";
+import { Icon } from "@/components/atoms/Icon";
 
 function strMinLenValid(value: unknown) {
     if (typeof value !== "string" || value.length < 8) {
@@ -102,10 +103,11 @@ export default function SignUp() {
             <Header
                 left={
                     <Link to="/">
-                        <ButtonIcon
-                            name="<"
-                            size="medium"
-                        />
+                        <div className="flex justify-center">
+                            <RoundButton>
+                                <Icon name="<" size={9} fill="white" className="p-2" />
+                            </RoundButton>
+                        </div>
                     </Link>
                 }
             />

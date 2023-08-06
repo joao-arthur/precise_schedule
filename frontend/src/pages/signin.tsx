@@ -10,9 +10,10 @@ import { TextInput } from "@/components/atoms/input/TextInput";
 import { PasswordInput } from "@/components/atoms/input/PasswordInput";
 import { PageContent } from "@/components/atoms/layout/PageContent";
 import { FormContainer } from "@/components/atoms/FormContainer";
-import { ButtonIcon } from "@/components/molecules/ButtonIcon";
 import { Form } from "@/components/molecules/Form";
 import { Header } from "@/content/base/header/Header";
+import { RoundButton } from "@/components/atoms/extraButton/RoundButton";
+import { Icon } from "@/components/atoms/Icon";
 
 export default function SignIn() {
     useAnonPage();
@@ -31,10 +32,11 @@ export default function SignIn() {
             <Header
                 left={
                     <Link to="/">
-                        <ButtonIcon
-                            name="<"
-                            size="medium"
-                        />
+                        <div className="flex justify-center">
+                            <RoundButton>
+                                <Icon name="<" size={9} fill="white" className="p-2" />
+                            </RoundButton>
+                        </div>
                     </Link>
                 }
             />

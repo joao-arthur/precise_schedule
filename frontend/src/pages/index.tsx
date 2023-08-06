@@ -1,6 +1,4 @@
-import { num } from "funis";
 import { calendarFns } from "frontend_core";
-import { cl } from "@/lib/cl";
 import { useSession } from "@/features/session/useSession";
 import { useCalendar } from "@/features/calendar/useCalendar";
 import { useMonths } from "@/features/date/useMonths";
@@ -10,8 +8,10 @@ import { Sidebar } from "@/content/calendar/sidebar/Sidebar";
 import { LoadEvents } from "@/content/calendar/LoadEvents";
 import { If } from "@/components/atoms/layout/If";
 import { Link } from "@/components/atoms/Link";
-import { ButtonIcon } from "@/components/molecules/ButtonIcon";
 import { Text } from "@/components/atoms/Text";
+import { RoundButton } from "@/components/atoms/extraButton/RoundButton";
+import { Icon } from "@/components/atoms/Icon";
+import { HoverButton } from "@/components/atoms/extraButton/HoverButton";
 
 export default function Calendar() {
     const logged = useSession().logged();
@@ -25,34 +25,24 @@ export default function Calendar() {
                     <>
                         <If condition={logged}>
                             <Link to="/charts">
-                                <ButtonIcon name="chart" size="medium" />
+                                <div className="flex justify-center">
+                                    <RoundButton>
+                                        <Icon name="chart" size={9} fill="white" className="p-2" />
+                                    </RoundButton>
+                                </div>
                             </Link>
                         </If>
-                        <ButtonIcon
-                            name="<"
-                            size="medium"
-                            onClick={() => prev()}
-                        />
-                        <ButtonIcon
-                            name=">"
-                            size="medium"
-                            onClick={() => next()}
-                        />
-                        <Text size="2xl">{year} {months[month - 1]}</Text>
+                        <div className="flex justify-center gap-1">
+                            <RoundButton onClick={() => prev()}>
+                                <Icon name="<" size={9} fill="white" />
+                            </RoundButton>
+                            <RoundButton onClick={() => next()}>
+                                <Icon name=">" size={9} fill="white" />
+                            </RoundButton>
+                        </div>
+                        <Text size="2xl" color="white">{year} {months[month - 1]}</Text>
                         <If condition={!calendarFns.isCurrent({ year, month })}>
-                            <button
-                                className={cl(
-                                    "h-10 px-1 rounded",
-                                    "transition-colors hover:duration-200 duration-300",
-                                    "text-gray-800 bg-white",
-                                    "border mx-1 text-lg",
-                                    "hover:bg-pastel-gray active:bg-pastel-gray border-gray-300",
-                                    "dark:text-pastel-gray dark:bg-dark-light dark:hover:bg-dark dark:active:bg-dark dark:border-gray-500",
-                                )}
-                                onClick={() => setCurrentMonth()}
-                            >
-                                Now
-                            </button>
+                            <HoverButton onClick={() => setCurrentMonth()}>Today</HoverButton>
                         </If>
                     </>
                 }

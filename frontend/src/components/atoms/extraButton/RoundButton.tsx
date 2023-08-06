@@ -11,8 +11,9 @@ export function RoundButton({ onClick, children }: props) {
         <button
             onClick={onClick}
             className={cl(
-                "rounded-full bg-primary active:bg-primary-dark",
-                "shadow-sm shadow-gray-800",
+                "rounded-full",
+                "bg-primary active:bg-primary-dark",
+                "transition-colors duration-300",
             )}
         >
             {children}

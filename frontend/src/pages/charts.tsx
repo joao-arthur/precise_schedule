@@ -3,8 +3,9 @@ import { EventsTable } from "@/content/charts/EventsTable/EventsTable";
 import { AllEvents } from "@/content/charts/AllEvents";
 import { EventsByCategory } from "@/content/charts/EventsByCategory";
 import { Link } from "@/components/atoms/Link";
-import { ButtonIcon } from "@/components/molecules/ButtonIcon";
 import { Header } from "@/content/base/header/Header";
+import { RoundButton } from "@/components/atoms/extraButton/RoundButton";
+import { Icon } from "@/components/atoms/Icon";
 
 export default function Charts() {
     useAuthPage();
@@ -14,7 +15,11 @@ export default function Charts() {
             <Header
                 left={
                     <Link to="/">
-                        <ButtonIcon name="calendar" size="medium" />
+                        <div className="flex justify-center">
+                            <RoundButton>
+                                <Icon name="calendar" size={9} fill="white" className="p-2" />
+                            </RoundButton>
+                        </div>
                     </Link>
                 }
             />

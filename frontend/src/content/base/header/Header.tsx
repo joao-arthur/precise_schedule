@@ -22,7 +22,7 @@ export function Header({ left }: props) {
                 "transition-colors duration-300",
             )}
         >
-            <div className="flex items-center">
+            <div className="flex items-center gap-3">
                 {left}
             </div>
             <div className="flex items-center gap-3">

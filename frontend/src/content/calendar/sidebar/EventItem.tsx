@@ -25,7 +25,7 @@ export function EventItem({ evt }: props) {
             </Text>
             <div className="flex gap-2">
                 <ButtonIcon
-                    name="info"
+                    icon="info"
                     size="medium"
                     onClick={() => setIsInfoVisible(true)}
                 />
@@ -36,7 +36,7 @@ export function EventItem({ evt }: props) {
                     />
                 </If>
                 <ButtonIcon
-                    name="pencil"
+                    icon="pencil"
                     size="medium"
                     onClick={() => setIsEditVisible(true)}
                 />
@@ -47,7 +47,7 @@ export function EventItem({ evt }: props) {
                     />
                 </If>
                 <ButtonIcon
-                    name="trash"
+                    icon="trash"
                     size="medium"
                     onClick={() => setIsDeleteVisible(true)}
                 />

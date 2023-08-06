@@ -5,8 +5,9 @@ import { dateFns } from "frontend_core";
 import { cl } from "@/lib/cl";
 import { useDevice } from "@/lib/device/useDevice";
 import { useCalendar } from "@/features/calendar/useCalendar";
-import { ButtonIcon } from "@/components/molecules/ButtonIcon";
 import { Text } from "@/components/atoms/Text";
+import { Button } from "@/components/atoms/button/Button";
+import { ButtonIcon } from "@/components/molecules/ButtonIcon";
 import { Events } from "./Events";
 
 const sidebarMachine = createMachine({
@@ -88,7 +89,7 @@ export function Sidebar() {
                         >
                             <div
                                 className={cl(
-                                    "flex justify-between m-1 border-b",
+                                    "flex justify-between border-b",
                                     "items-center px-5 py-4",
                                     "border-gray-300 dark:border-gray-500",
                                     "transition-colors duration-300",
@@ -103,12 +104,15 @@ export function Sidebar() {
                                     </Text>
                                 </div>
                                 <ButtonIcon
-                                    name="x"
+                                    icon="x"
                                     size="big"
                                     onClick={() => removeSelectedDate()}
                                 />
                             </div>
                             <Events date={displayDate} />
+                            <div className="p-4 border-t">
+                                <Button>NEW EVENT</Button>
+                            </div>
                         </div>
                     )
                     : null}

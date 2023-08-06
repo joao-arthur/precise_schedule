@@ -24,7 +24,7 @@ export default function Settings() {
                 left={
                     <Link to="/">
                         <ButtonIcon
-                            name="<"
+                            icon="<"
                             size="medium"
                         />
                     </Link>
