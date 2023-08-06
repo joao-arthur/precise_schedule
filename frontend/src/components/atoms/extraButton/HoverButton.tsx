@@ -12,7 +12,7 @@ export function HoverButton({ children }: props) {
                 "border-none cursor-pointer py-1 px-2 w-20 text-center",
                 "text-white rounded",
                 "hover:bg-primary-light dark:hover:bg-primary",
-                "transition-colors duration-500",
+                "transition-colors duration-300",
             )}
         >
             {children}

@@ -43,7 +43,7 @@ export default function Calendar() {
                             <button
                                 className={cl(
                                     "h-10 px-1 rounded",
-                                    "transition-colors hover:duration-200 duration-500",
+                                    "transition-colors hover:duration-200 duration-300",
                                     "text-gray-800 bg-white",
                                     "border mx-1 text-lg",
                                     "hover:bg-pastel-gray active:bg-pastel-gray border-gray-300",

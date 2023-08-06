@@ -63,7 +63,7 @@ export function Sidebar() {
                 "z-10",
                 "flex overflow-hidden flex-0-auto",
                 "bg-white dark:bg-dark-light",
-                "transition-all duration-500",
+                "transition-all duration-300",
                 {
                     "w-100 border-l border-gray-300 dark:border-gray-500": selectedDate &&
                         !isMobile,
@@ -91,7 +91,7 @@ export function Sidebar() {
                                     "flex justify-between m-1 border-b",
                                     "items-center px-5 py-4",
                                     "border-gray-300 dark:border-gray-500",
-                                    "transition-colors duration-500",
+                                    "transition-colors duration-300",
                                 )}
                             >
                                 <div className="text-center">

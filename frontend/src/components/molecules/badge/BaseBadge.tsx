@@ -11,7 +11,7 @@ export function BaseBadge({ className, children }: props) {
         <div
             className={cl(
                 "rounded-full p-0.5",
-                "transition-colors duration-500",
+                "transition-colors duration-300",
                 className,
             )}
         >

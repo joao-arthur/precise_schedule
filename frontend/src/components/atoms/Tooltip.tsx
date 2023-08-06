@@ -12,7 +12,7 @@ export function Tooltip({ onClick, children }: props) {
         <div
             className={cl(
                 "bg-white dark:bg-dark-light",
-                "transition-all duration-500",
+                "transition-all duration-300",
                 "px-2 p-1 rounded-md",
                 "shadow-sm shadow-gray-500",
             )}

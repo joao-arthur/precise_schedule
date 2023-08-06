@@ -45,7 +45,7 @@ type props = {
 
 export function Icon({ name, className, fill, size }: props) {
     const composedClassName = cl(
-        "transition-colors duration-500",
+        "transition-colors duration-300",
         {
             "fill-white": fill === "white",
             "fill-gray-500": fill === "gray",

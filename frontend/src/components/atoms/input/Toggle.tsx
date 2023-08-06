@@ -18,7 +18,7 @@ export function Toggle({ value, onChange, display }: props) {
                 "cursor-pointer select-none",
                 "border w-16 h-8 rounded-2xl ",
                 "border-transparent",
-                "transition-all hover:duration-300 duration-500",
+                "transition-all hover:duration-300 duration-300",
                 {
                     "bg-primary": value,
                     "bg-gray-300 dark:bg-dark-light": !value,
