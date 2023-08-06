@@ -21,7 +21,7 @@ export default function Calendar() {
                     </If>
                 }
             />
-            <main className="flex h-full">
+            <main className="h-full">
                 <Table />
                 <Sidebar />
                 {logged ? <LoadEvents /> : null}

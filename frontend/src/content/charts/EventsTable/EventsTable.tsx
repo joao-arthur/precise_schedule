@@ -1,14 +1,22 @@
-import { Header } from "./Header/Header";
 import { mockedData } from "./mockedData";
 import { LeftColumn } from "./LeftColumn";
 import { RightColumn } from "./RightColumn";
 import { CenterColumn } from "./CenterColumn";
 import { DisabledColumn } from "./DisabledColumn";
+import { HeaderColumn } from "./Header/HeaderColumn";
 
 export function EventsTable() {
     return (
         <table className="flex-1 border-collapse w-screen">
-            <Header />
+            <thead>
+                <tr>
+                    <HeaderColumn title="NAME" />
+                    <HeaderColumn title="CATEGORY" />
+                    <HeaderColumn title="FROM" />
+                    <HeaderColumn title="TO" />
+                    <HeaderColumn title="REPEATS" />
+                </tr>
+            </thead>
             <tbody>
                 {mockedData.map(
                     (

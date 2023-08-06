@@ -8,22 +8,26 @@ import { UserActions } from "./UserActions";
 
 type props = {
     readonly left: ReactNode;
+    readonly center?: ReactNode;
 };
 
-export function Header({ left }: props) {
+export function Header({ left, center }: props) {
     const logged = useSession().logged();
     const [theme, setTheme] = useTheme();
 
     return (
         <header
             className={cl(
-                "flex px-2 h-16",
+                "flex w-full h-full flex-0 justify-between px-2",
                 "bg-primary dark:bg-primary-darker",
                 "transition-colors duration-500",
             )}
         >
             <div className="flex items-center">
                 {left}
+            </div>
+            <div className="flex items-center">
+                {center}
             </div>
             <div className="flex items-center gap-3">
                 <Toggle
