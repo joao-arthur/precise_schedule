@@ -3,7 +3,7 @@ import { cl } from "@/lib/cl";
 type props = {
     readonly name: string;
     readonly type: "select";
-    readonly options: string[];
+    readonly options: readonly string[];
     readonly value: string;
     readonly onChange: (newValue: string) => void;
 };

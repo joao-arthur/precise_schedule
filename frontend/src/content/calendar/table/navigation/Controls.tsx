@@ -1,49 +1,11 @@
 import { num } from "funis";
-import { NavigationSelect } from "./NavigationSelect";
 import { useCalendar } from "@/features/calendar/useCalendar";
-import { useDevice } from "@/lib/device/useDevice";
-
-const monthsOfYear = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-];
-
-const monthsOfYearAbbrev = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-];
+import { useMonths } from "@/features/date/useMonths";
+import { NavigationSelect } from "./NavigationSelect";
 
 export function Controls() {
-    const isMobile = useDevice().isMobile();
-
-    const {
-        year,
-        month,
-        setYear,
-        setMonth,
-    } = useCalendar();
-
-    const months = isMobile ? monthsOfYearAbbrev : monthsOfYear;
+    const { year, month, setYear, setMonth } = useCalendar();
+    const months = useMonths();
     const options = num.range(year - 2, year + 2);
 
     return (
