@@ -8,10 +8,9 @@ import { UserActions } from "./UserActions";
 
 type props = {
     readonly left: ReactNode;
-    readonly center?: ReactNode;
 };
 
-export function Header({ left, center }: props) {
+export function Header({ left }: props) {
     const logged = useSession().logged();
     const [theme, setTheme] = useTheme();
 
@@ -19,15 +18,12 @@ export function Header({ left, center }: props) {
         <header
             className={cl(
                 "flex w-full flex-shrink-0 justify-between px-2 h-12",
-                "bg-primary dark:bg-primary-darker",
+                "bg-primary dark:bg-primary-dark",
                 "transition-colors duration-500",
             )}
         >
             <div className="flex items-center">
                 {left}
-            </div>
-            <div className="flex items-center">
-                {center}
             </div>
             <div className="flex items-center gap-3">
                 <Toggle

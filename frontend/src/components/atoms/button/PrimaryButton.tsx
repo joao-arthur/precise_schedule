@@ -16,7 +16,7 @@ export function PrimaryButton(
             title={title}
             onClick={onClick}
             form={form}
-            className="text-white bg-primary active:bg-primary-dark"
+            className="text-white bg-primary dark:bg-primary-dark active:bg-primary-dark dark:active:bg-primary-darker"
         >
             {children}
         </BaseButton>

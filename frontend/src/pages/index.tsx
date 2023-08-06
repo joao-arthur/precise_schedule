@@ -12,6 +12,7 @@ import { NavigationSelect } from "@/content/calendar/table/navigation/Navigation
 import { If } from "@/components/atoms/layout/If";
 import { Link } from "@/components/atoms/Link";
 import { ButtonIcon } from "@/components/molecules/ButtonIcon";
+import { Text } from "@/components/atoms/Text";
 
 export default function Calendar() {
     const logged = useSession().logged();
@@ -44,24 +45,9 @@ export default function Calendar() {
                                 Now
                             </button>
                         </If>
-                    </>
-                }
-                center={
-                    <>
-                        <NavigationSelect
-                            type="select"
-                            options={months}
-                            name="month"
-                            value={months[month - 1]}
-                            onChange={(newMonth) => setMonth(months.indexOf(newMonth) + 1)}
-                        />
-                        <NavigationSelect
-                            type="select"
-                            options={options.map(String)}
-                            name="month"
-                            value={String(year)}
-                            onChange={(newYear) => setYear(Number(newYear))}
-                        />
+                        <ButtonIcon name="<" size="medium" />
+                        <ButtonIcon name=">" size="medium" />
+                        <Text size="2xl">{year} {months[month - 1]}</Text>
                     </>
                 }
             />

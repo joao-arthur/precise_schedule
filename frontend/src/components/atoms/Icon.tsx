@@ -17,11 +17,14 @@ import { MdEdit } from "react-icons/md";
 import { cl } from "@/lib/cl";
 
 export type IconName =
+    | "x"
+    | "v"
+    | "+"
+    | "<"
+    | ">"
     | "user"
     | "cog-wheel"
     | "door"
-    | "x"
-    | "v"
     | "info"
     | "chart"
     | "pencil"
@@ -29,9 +32,6 @@ export type IconName =
     | "filter"
     | "three-dots"
     | "trash"
-    | "+"
-    | "chevron-left"
-    | "chevron-right"
     | "birthday"
     | "people"
     | "party";
@@ -63,16 +63,22 @@ export function Icon({ name, className, fill, size }: props) {
     const props = { className: composedClassName };
 
     switch (name) {
+        case "x":
+            return <RiCloseLine {...props} />;
+        case "v":
+            return <RiCheckLine {...props} />;
+        case "+":
+            return <HiPlusSm {...props} />;
+        case "<":
+            return <BiChevronLeft {...props} />;
+        case ">":
+            return <BiChevronRight {...props} />;
         case "user":
             return <FaUserCircle {...props} />;
         case "cog-wheel":
             return <IoMdSettings {...props} />;
         case "door":
             return <BiDoorOpen {...props} />;
-        case "x":
-            return <RiCloseLine {...props} />;
-        case "v":
-            return <RiCheckLine {...props} />;
         case "info":
             return <BiInfoCircle {...props} />;
         case "chart":
@@ -87,12 +93,6 @@ export function Icon({ name, className, fill, size }: props) {
             return <BiDotsVerticalRounded {...props} />;
         case "trash":
             return <BiTrash {...props} />;
-        case "chevron-left":
-            return <BiChevronLeft {...props} />;
-        case "chevron-right":
-            return <BiChevronRight {...props} />;
-        case "+":
-            return <HiPlusSm {...props} />;
         case "birthday":
             return <FaBirthdayCake {...props} />;
         case "people":
