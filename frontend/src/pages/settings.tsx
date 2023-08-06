@@ -7,8 +7,8 @@ import { PageContent } from "@/components/atoms/layout/PageContent";
 import { FormContainer } from "@/components/atoms/FormContainer";
 import { ButtonIcon } from "@/components/molecules/ButtonIcon";
 import { Form } from "@/components/molecules/Form";
-import { SubHeader } from "@/content/base/subHeader/SubHeader";
 import { useAuthPage } from "@/features/session/useAuthPage";
+import { Header } from "@/content/base/header/Header";
 
 export default function Settings() {
     useAuthPage();
@@ -19,8 +19,8 @@ export default function Settings() {
     }
 
     return (
-        <div className="w-full">
-            <SubHeader
+        <>
+            <Header
                 left={
                     <Link to="/">
                         <ButtonIcon
@@ -30,55 +30,59 @@ export default function Settings() {
                     </Link>
                 }
             />
-            <PageContent>
-                <FormContainer>
-                    <Form
-                        action="SAVE SETTINGS"
-                        disabled={false}
-                        onSubmit={handleSubmit(handle)}
-                    >
-                        <InputWrapper name="language" title="Language">
-                            <SelectInput
-                                options={[
-                                    {
-                                        id: "en-US",
-                                        label: "🇺🇸 English (en)",
-                                    },
-                                    {
-                                        id: "pt-BR",
-                                        label: "🇧🇷 Portuguese (pt)",
-                                    },
-                                    {
-                                        id: "es-ES",
-                                        label: "🇪🇸 Spanish (es)",
-                                    },
-                                    {
-                                        id: "de-DE",
-                                        label: "🇩🇪 German (de)",
-                                    },
-                                ]}
-                                {...register("language")}
-                            />
-                        </InputWrapper>
-                        <InputWrapper name="theme" title="Theme">
-                            <SelectInput
-                                options={[
-                                    { id: "light", label: "☀️ light" },
-                                    { id: "dark", label: "🌑 dark" },
-                                    { id: "auto", label: "🖥️ auto" },
-                                ]}
-                                {...register("theme")}
-                            />
-                        </InputWrapper>
-                        <Link to="#">Delete my account</Link>
-                        <br />
-                        <Link to="#">
-                            What info do PreciseSchedule know about you?
-                        </Link>
-                        <br />
-                    </Form>
-                </FormContainer>
-            </PageContent>
-        </div>
+            <main className="flex h-full">
+                <div className="w-full">
+                    <PageContent>
+                        <FormContainer>
+                            <Form
+                                action="SAVE SETTINGS"
+                                disabled={false}
+                                onSubmit={handleSubmit(handle)}
+                            >
+                                <InputWrapper name="language" title="Language">
+                                    <SelectInput
+                                        options={[
+                                            {
+                                                id: "en-US",
+                                                label: "🇺🇸 English (en)",
+                                            },
+                                            {
+                                                id: "pt-BR",
+                                                label: "🇧🇷 Portuguese (pt)",
+                                            },
+                                            {
+                                                id: "es-ES",
+                                                label: "🇪🇸 Spanish (es)",
+                                            },
+                                            {
+                                                id: "de-DE",
+                                                label: "🇩🇪 German (de)",
+                                            },
+                                        ]}
+                                        {...register("language")}
+                                    />
+                                </InputWrapper>
+                                <InputWrapper name="theme" title="Theme">
+                                    <SelectInput
+                                        options={[
+                                            { id: "light", label: "☀️ light" },
+                                            { id: "dark", label: "🌑 dark" },
+                                            { id: "auto", label: "🖥️ auto" },
+                                        ]}
+                                        {...register("theme")}
+                                    />
+                                </InputWrapper>
+                                <Link to="#">Delete my account</Link>
+                                <br />
+                                <Link to="#">
+                                    What info do PreciseSchedule know about you?
+                                </Link>
+                                <br />
+                            </Form>
+                        </FormContainer>
+                    </PageContent>
+                </div>
+            </main>
+        </>
     );
 }

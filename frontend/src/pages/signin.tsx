@@ -14,7 +14,7 @@ import { PageContent } from "@/components/atoms/layout/PageContent";
 import { FormContainer } from "@/components/atoms/FormContainer";
 import { ButtonIcon } from "@/components/molecules/ButtonIcon";
 import { Form } from "@/components/molecules/Form";
-import { SubHeader } from "@/content/base/subHeader/SubHeader";
+import { Header } from "@/content/base/header/Header";
 
 export default function SignIn() {
     useAnonPage();
@@ -29,8 +29,8 @@ export default function SignIn() {
     }, [data]);
 
     return (
-        <div className="w-full">
-            <SubHeader
+        <>
+            <Header
                 left={
                     <Link to="/">
                         <ButtonIcon
@@ -40,41 +40,46 @@ export default function SignIn() {
                     </Link>
                 }
             />
-            <PageContent>
-                <FormContainer>
-                    <Form
-                        action="SIGN IN"
-                        disabled={isLoading}
-                        onSubmit={handleSubmit((data) => mutate(data))}
-                    >
-                        <InputWrapper name="username" title="Username">
-                            <TextInput
-                                {...register("username", {
-                                    required: true,
-                                    disabled: isLoading,
-                                })}
-                            />
-                        </InputWrapper>
-                        <InputWrapper
-                            name="password"
-                            title="Password"
-                        >
-                            <PasswordInput
-                                {...register("password", {
-                                    required: true,
-                                    minLength: 8,
-                                    disabled: isLoading,
-                                })}
-                            />
-                        </InputWrapper>
-                    </Form>
-                    <BorderedBox>
-                        <Text>
-                            Don't have an account? <Link to="/signup">Create an account</Link>
-                        </Text>
-                    </BorderedBox>
-                </FormContainer>
-            </PageContent>
-        </div>
+            <main className="flex h-full">
+                <div className="w-full">
+                    <PageContent>
+                        <FormContainer>
+                            <Form
+                                action="SIGN IN"
+                                disabled={isLoading}
+                                onSubmit={handleSubmit((data) => mutate(data))}
+                            >
+                                <InputWrapper name="username" title="Username">
+                                    <TextInput
+                                        {...register("username", {
+                                            required: true,
+                                            disabled: isLoading,
+                                        })}
+                                    />
+                                </InputWrapper>
+                                <InputWrapper
+                                    name="password"
+                                    title="Password"
+                                >
+                                    <PasswordInput
+                                        {...register("password", {
+                                            required: true,
+                                            minLength: 8,
+                                            disabled: isLoading,
+                                        })}
+                                    />
+                                </InputWrapper>
+                            </Form>
+                            <BorderedBox>
+                                <Text>
+                                    Don't have an account?{" "}
+                                    <Link to="/signup">Create an account</Link>
+                                </Text>
+                            </BorderedBox>
+                        </FormContainer>
+                    </PageContent>
+                </div>
+            </main>
+        </>
     );
 }
