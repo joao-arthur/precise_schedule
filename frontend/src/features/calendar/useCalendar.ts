@@ -7,9 +7,9 @@ type CalendarState = {
     readonly selectedDate: string | undefined;
     readonly toggleSelectedDate: (selectedDate: string) => void;
     readonly removeSelectedDate: () => void;
-    readonly setYear: (year: number) => void;
-    readonly setMonth: (month: number) => void;
     readonly setCurrentMonth: () => void;
+    readonly next: () => void;
+    readonly prev: () => void;
 };
 
 export const useCalendar = create<CalendarState>((set) => ({
@@ -21,11 +21,31 @@ export const useCalendar = create<CalendarState>((set) => ({
             selectedDate: state.selectedDate !== selectedDate ? selectedDate : undefined,
         })),
     removeSelectedDate: () => set({ selectedDate: undefined }),
-    setYear: (year: number) => set({ year }),
-    setMonth: (month: number) => set({ month }),
     setCurrentMonth: () =>
         set({
             year: dateFns.currentYear(),
             month: dateFns.currentMonth(),
         }),
+    next: () =>
+        set((state) =>
+            state.month === 12
+                ? {
+                    year: state.year + 1,
+                    month: 1,
+                }
+                : {
+                    month: state.month + 1,
+                }
+        ),
+    prev: () =>
+        set((state) =>
+            state.month === 1
+                ? {
+                    year: state.year - 1,
+                    month: 12,
+                }
+                : {
+                    month: state.month - 1,
+                }
+        ),
 }));

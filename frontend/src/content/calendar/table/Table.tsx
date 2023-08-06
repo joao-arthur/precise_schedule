@@ -33,7 +33,7 @@ export function Table() {
                         </Text>
                     ))}
                 </div>
-                <div className="w-full h-full" style={{ height: `calc(${height}px - 6.75rem)` }}>
+                <div className="w-full h-full" style={{ height: `calc(${height}px - 4.5rem)` }}>
                     <div
                         className="grid w-full h-full"
                         style={{ gridTemplateRows: "repeat(6, 1fr)" }}

@@ -24,7 +24,7 @@ export default function Settings() {
                 left={
                     <Link to="/">
                         <ButtonIcon
-                            name="chevron-left"
+                            name="<"
                             size="medium"
                         />
                     </Link>

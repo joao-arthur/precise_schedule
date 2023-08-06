@@ -32,7 +32,7 @@ export default function SignIn() {
                 left={
                     <Link to="/">
                         <ButtonIcon
-                            name="chevron-left"
+                            name="<"
                             size="medium"
                         />
                     </Link>

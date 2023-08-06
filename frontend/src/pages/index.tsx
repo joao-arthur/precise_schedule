@@ -8,7 +8,6 @@ import { Header } from "@/content/base/header/Header";
 import { Table } from "@/content/calendar/table/Table";
 import { Sidebar } from "@/content/calendar/sidebar/Sidebar";
 import { LoadEvents } from "@/content/calendar/LoadEvents";
-import { NavigationSelect } from "@/content/calendar/table/navigation/NavigationSelect";
 import { If } from "@/components/atoms/layout/If";
 import { Link } from "@/components/atoms/Link";
 import { ButtonIcon } from "@/components/molecules/ButtonIcon";
@@ -16,9 +15,8 @@ import { Text } from "@/components/atoms/Text";
 
 export default function Calendar() {
     const logged = useSession().logged();
-    const { year, month, setCurrentMonth, setYear, setMonth } = useCalendar();
+    const { year, month, setCurrentMonth, prev, next } = useCalendar();
     const months = useMonths();
-    const options = num.range(year - 2, year + 2);
 
     return (
         <>
@@ -30,6 +28,17 @@ export default function Calendar() {
                                 <ButtonIcon name="chart" size="medium" />
                             </Link>
                         </If>
+                        <ButtonIcon
+                            name="<"
+                            size="medium"
+                            onClick={() => prev()}
+                        />
+                        <ButtonIcon
+                            name=">"
+                            size="medium"
+                            onClick={() => next()}
+                        />
+                        <Text size="2xl">{year} {months[month - 1]}</Text>
                         <If condition={!calendarFns.isCurrent({ year, month })}>
                             <button
                                 className={cl(
@@ -45,9 +54,6 @@ export default function Calendar() {
                                 Now
                             </button>
                         </If>
-                        <ButtonIcon name="<" size="medium" />
-                        <ButtonIcon name=">" size="medium" />
-                        <Text size="2xl">{year} {months[month - 1]}</Text>
                     </>
                 }
             />

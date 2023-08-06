@@ -9,7 +9,12 @@ type props = {
 export function TransparentIcon({ onClick, name }: props) {
     return (
         <button onClick={onClick}>
-            <Icon size={9} fill="white" name={name} />
+            <Icon
+                size={9}
+                fill="white"
+                className="fill-white active:fill-primary-lighter"
+                name={name}
+            />
         </button>
     );
 }

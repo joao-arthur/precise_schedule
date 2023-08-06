@@ -103,7 +103,7 @@ export default function SignUp() {
                 left={
                     <Link to="/">
                         <ButtonIcon
-                            name="chevron-left"
+                            name="<"
                             size="medium"
                         />
                     </Link>
