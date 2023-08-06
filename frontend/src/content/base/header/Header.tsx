@@ -18,7 +18,7 @@ export function Header({ left, center }: props) {
     return (
         <header
             className={cl(
-                "flex w-full h-full flex-0 justify-between px-2",
+                "flex w-full flex-shrink-0 justify-between px-2 h-12",
                 "bg-primary dark:bg-primary-darker",
                 "transition-colors duration-500",
             )}

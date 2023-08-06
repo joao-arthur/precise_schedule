@@ -109,7 +109,7 @@ export default function SignUp() {
                     </Link>
                 }
             />
-            <main className="h-full">
+            <main className="flex h-full">
                 <PageContent>
                     <FormContainer>
                         <Form

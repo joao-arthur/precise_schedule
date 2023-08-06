@@ -30,7 +30,7 @@ export default function Settings() {
                     </Link>
                 }
             />
-            <main className="h-full">
+            <main className="flex h-full">
                 <PageContent>
                     <FormContainer>
                         <Form

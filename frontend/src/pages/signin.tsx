@@ -38,7 +38,7 @@ export default function SignIn() {
                     </Link>
                 }
             />
-            <main className="h-full">
+            <main className="flex h-full">
                 <PageContent>
                     <FormContainer>
                         <Form
