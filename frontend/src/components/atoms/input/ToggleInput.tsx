@@ -1,6 +1,6 @@
 import type { ChangeEventHandler, FocusEventHandler, ForwardedRef } from "react";
-import { cl } from "@/lib/cl";
 import { forwardRef } from "react";
+import { cl } from "@/lib/cl";
 
 type forwardedProps = {
     readonly name: string;

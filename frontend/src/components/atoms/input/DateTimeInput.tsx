@@ -1,6 +1,6 @@
 import type { ChangeEventHandler, FocusEventHandler, ForwardedRef } from "react";
-import { cl } from "@/lib/cl";
 import { forwardRef } from "react";
+import { cl } from "@/lib/cl";
 
 type forwardedProps = {
     readonly name: string;
@@ -18,9 +18,7 @@ type props = forwardedProps & {
     readonly forwardedRef: ForwardedRef<HTMLInputElement | null>;
 };
 
-function DateTimeInputComp(
-    { forwardedRef, ...props }: props,
-) {
+function DateTimeInputComp({ forwardedRef, ...props }: props) {
     return (
         <input
             {...props}

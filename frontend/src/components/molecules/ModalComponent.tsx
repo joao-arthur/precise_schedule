@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 import { cl } from "@/lib/cl";
+import { useDevice } from "@/lib/device/useDevice";
 import { Button } from "../atoms/button/Button";
 import { Text } from "../atoms/Text";
-import { useDevice } from "@/lib/device/useDevice";
 
 export type modalProps = {
     readonly children: ReactNode;

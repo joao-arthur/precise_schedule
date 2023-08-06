@@ -1,6 +1,6 @@
 import type { ChangeEventHandler, FocusEventHandler, ForwardedRef } from "react";
-import { cl } from "@/lib/cl";
 import { forwardRef } from "react";
+import { cl } from "@/lib/cl";
 
 type option = {
     readonly id: string;
@@ -24,9 +24,7 @@ type props = forwardedProps & {
     readonly forwardedRef: ForwardedRef<HTMLSelectElement | null>;
 };
 
-function SelectInputComp(
-    { forwardedRef, options, ...props }: props,
-) {
+function SelectInputComp({ forwardedRef, options, ...props }: props) {
     return (
         <select
             {...props}

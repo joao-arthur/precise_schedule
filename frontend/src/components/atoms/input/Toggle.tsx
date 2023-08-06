@@ -10,11 +10,7 @@ type props = {
     };
 };
 
-export function Toggle({
-    value,
-    onChange,
-    display,
-}: props) {
+export function Toggle({ value, onChange, display }: props) {
     return (
         <div
             onClick={() => onChange(!value)}

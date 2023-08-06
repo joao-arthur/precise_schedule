@@ -1,10 +1,10 @@
 import type { Calendar } from "frontend_core";
-import { cl } from "@/lib/cl";
 import { calendarFns, dateFns } from "frontend_core";
+import { cl } from "@/lib/cl";
 import { useCalendar } from "@/features/calendar/useCalendar";
 import { Event } from "@/features/event/event";
-import { Text } from "@/components/atoms/Text";
 import { useEvent } from "@/features/event/useEvent";
+import { Text } from "@/components/atoms/Text";
 
 type props = {
     readonly calendar: Calendar;
