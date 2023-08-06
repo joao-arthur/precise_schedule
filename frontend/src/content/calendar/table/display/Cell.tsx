@@ -20,7 +20,9 @@ export function Cell({ calendar, date, events }: props) {
         return (
             <div
                 className={cl(
-                    "flex flex-col flex-1 rounded cursor-pointer overflow-hidden",
+                    "w-full h-full",
+                    "flex flex-col flex-1",
+                    "rounded cursor-pointer overflow-hidden",
                     "hover:bg-primary-lighter active:bg-primary-light",
                     "dark:hover:bg-primary-darker dark:active:bg-primary-dark",
                 )}
@@ -31,18 +33,24 @@ export function Cell({ calendar, date, events }: props) {
                         {dateFns.formatDay(date)}
                     </Text>
                 </div>
-                {events.map((evt) => (
-                    <Text size="xs" key={evt}>
-                        {eventsMap.get(evt)?.name}
-                    </Text>
-                ))}
+                <div className="flex flex-col gap-1">
+                    {events.map((evt) => (
+                        <div key={evt}>
+                            <Text size="xs">
+                                {eventsMap.get(evt)?.name}
+                            </Text>
+                        </div>
+                    ))}
+                </div>
             </div>
         );
     }
     return (
         <div
             className={cl(
-                "flex flex-col flex-1 overflow-hidden text-center bg-gray-100 dark:bg-dark-lightless",
+                "w-full h-full",
+                "flex flex-col flex-1",
+                "overflow-hidden text-center bg-gray-100 dark:bg-dark-lightless",
                 "transition-colors duration-500",
             )}
         >

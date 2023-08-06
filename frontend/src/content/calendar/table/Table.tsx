@@ -12,7 +12,7 @@ export function Table() {
         <>
             {isMobile
                 ? (
-                    <div className="flex overflow-hidden flex-initial">
+                    <div className="flex flex-initial overflow-hidden w-full h-full">
                         <div className="flex flex-grow-0">
                             <div className="flex flex-grow w-screen flex-col">
                                 <Content />
@@ -21,7 +21,7 @@ export function Table() {
                     </div>
                 )
                 : (
-                    <div className="flex overflow-hidden flex-col flex-grow">
+                    <div className="flex flex-col overflow-hidden w-full h-full">
                         <Content />
                     </div>
                 )}

@@ -11,8 +11,7 @@ export function SubHeader({ left, center, right }: props) {
     return (
         <div
             className={cl(
-                "mb-2",
-                "flex items-center justify-between py-1 px-3",
+                "flex items-center justify-between h-12 px-3",
                 "shadow-sm shadow-gray-500",
                 "transition-colors duration-500",
             )}
