@@ -1,16 +1,7 @@
+import type { WeekDays } from "../weekDays.js";
 import { Temporal } from "@js-temporal/polyfill";
 
-type Week = readonly [
-    string,
-    string,
-    string,
-    string,
-    string,
-    string,
-    string,
-];
-
-export function formatWeek(locale: string, format: "long" | "short" | "narrow"): Week {
+export function formatWeekDays(locale: string, format: "long" | "short" | "narrow"): WeekDays {
     function fmt(date: Temporal.PlainDate): string {
         return date
             .toLocaleString(locale, { weekday: format })

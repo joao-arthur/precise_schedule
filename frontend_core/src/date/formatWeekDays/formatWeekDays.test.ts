@@ -1,9 +1,9 @@
 import { assert, it } from "vitest";
-import { formatWeek } from "./formatWeek.js";
+import { formatWeekDays } from "./formatWeekDays.js";
 
-it("formatWeek pt-BR long", () => {
+it("formatWeekDays pt-BR long", () => {
     assert.deepEqual(
-        formatWeek("pt-BR", "long"),
+        formatWeekDays("pt-BR", "long"),
         [
             "domingo",
             "segunda-feira",
@@ -16,79 +16,79 @@ it("formatWeek pt-BR long", () => {
     );
 });
 
-it("formatWeek en-US long", () => {
+it("formatWeekDays en-US long", () => {
     assert.deepEqual(
-        formatWeek("en-US", "long"),
+        formatWeekDays("en-US", "long"),
         ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"],
     );
 });
 
-it("formatWeek de-DE long", () => {
+it("formatWeekDays de-DE long", () => {
     assert.deepEqual(
-        formatWeek("de-DE", "long"),
+        formatWeekDays("de-DE", "long"),
         ["sonntag", "montag", "dienstag", "mittwoch", "donnerstag", "freitag", "samstag"],
     );
 });
 
-it("formatWeek es-AR long", () => {
+it("formatWeekDays es-AR long", () => {
     assert.deepEqual(
-        formatWeek("es-AR", "long"),
+        formatWeekDays("es-AR", "long"),
         ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"],
     );
 });
 
-it("formatWeek pt-BR short", () => {
+it("formatWeekDays pt-BR short", () => {
     assert.deepEqual(
-        formatWeek("pt-BR", "short"),
+        formatWeekDays("pt-BR", "short"),
         ["dom", "seg", "ter", "qua", "qui", "sex", "sáb"],
     );
 });
 
-it("formatWeek en-US short", () => {
+it("formatWeekDays en-US short", () => {
     assert.deepEqual(
-        formatWeek("en-US", "short"),
+        formatWeekDays("en-US", "short"),
         ["sun", "mon", "tue", "wed", "thu", "fri", "sat"],
     );
 });
 
-it("formatWeek de-DE short", () => {
+it("formatWeekDays de-DE short", () => {
     assert.deepEqual(
-        formatWeek("de-DE", "short"),
+        formatWeekDays("de-DE", "short"),
         ["so", "mo", "di", "mi", "do", "fr", "sa"],
     );
 });
 
-it("formatWeek es-AR short", () => {
+it("formatWeekDays es-AR short", () => {
     assert.deepEqual(
-        formatWeek("es-AR", "short"),
+        formatWeekDays("es-AR", "short"),
         ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"],
     );
 });
 
-it("formatWeek pt-BR narrow", () => {
+it("formatWeekDays pt-BR narrow", () => {
     assert.deepEqual(
-        formatWeek("pt-BR", "narrow"),
+        formatWeekDays("pt-BR", "narrow"),
         ["d", "s", "t", "q", "q", "s", "s"],
     );
 });
 
-it("formatWeek en-US narrow", () => {
+it("formatWeekDays en-US narrow", () => {
     assert.deepEqual(
-        formatWeek("en-US", "narrow"),
+        formatWeekDays("en-US", "narrow"),
         ["s", "m", "t", "w", "t", "f", "s"],
     );
 });
 
-it("formatWeek de-DE narrow", () => {
+it("formatWeekDays de-DE narrow", () => {
     assert.deepEqual(
-        formatWeek("de-DE", "narrow"),
+        formatWeekDays("de-DE", "narrow"),
         ["s", "m", "d", "m", "d", "f", "s"],
     );
 });
 
-it("formatWeek es-AR narrow", () => {
+it("formatWeekDays es-AR narrow", () => {
     assert.deepEqual(
-        formatWeek("es-AR", "narrow"),
+        formatWeekDays("es-AR", "narrow"),
         ["d", "l", "m", "m", "j", "v", "s"],
     );
 });

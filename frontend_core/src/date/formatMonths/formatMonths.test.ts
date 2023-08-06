@@ -1,9 +1,9 @@
 import { assert, it } from "vitest";
-import { formatYear } from "./formatYear.js";
+import { formatMonths } from "./formatMonths.js";
 
-it("formatYear pt-BR long", () => {
+it("formatMonths pt-BR long", () => {
     assert.deepEqual(
-        formatYear("pt-BR", "long"),
+        formatMonths("pt-BR", "long"),
         [
             "janeiro",
             "fevereiro",
@@ -21,9 +21,9 @@ it("formatYear pt-BR long", () => {
     );
 });
 
-it("formatYear en-US long", () => {
+it("formatMonths en-US long", () => {
     assert.deepEqual(
-        formatYear("en-US", "long"),
+        formatMonths("en-US", "long"),
         [
             "january",
             "february",
@@ -41,9 +41,9 @@ it("formatYear en-US long", () => {
     );
 });
 
-it("formatYear de-DE long", () => {
+it("formatMonths de-DE long", () => {
     assert.deepEqual(
-        formatYear("de-DE", "long"),
+        formatMonths("de-DE", "long"),
         [
             "januar",
             "februar",
@@ -61,9 +61,9 @@ it("formatYear de-DE long", () => {
     );
 });
 
-it("formatYear es-AR long", () => {
+it("formatMonths es-AR long", () => {
     assert.deepEqual(
-        formatYear("es-AR", "long"),
+        formatMonths("es-AR", "long"),
         [
             "enero",
             "febrero",
@@ -81,58 +81,58 @@ it("formatYear es-AR long", () => {
     );
 });
 
-it("formatYear pt-BR short", () => {
+it("formatMonths pt-BR short", () => {
     assert.deepEqual(
-        formatYear("pt-BR", "short"),
+        formatMonths("pt-BR", "short"),
         ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"],
     );
 });
 
-it("formatYear en-US short", () => {
+it("formatMonths en-US short", () => {
     assert.deepEqual(
-        formatYear("en-US", "short"),
+        formatMonths("en-US", "short"),
         ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"],
     );
 });
 
-it("formatYear de-DE short", () => {
+it("formatMonths de-DE short", () => {
     assert.deepEqual(
-        formatYear("de-DE", "short"),
+        formatMonths("de-DE", "short"),
         ["jan", "feb", "mär", "apr", "mai", "jun", "jul", "aug", "sep", "okt", "nov", "dez"],
     );
 });
 
-it("formatYear es-AR short", () => {
+it("formatMonths es-AR short", () => {
     assert.deepEqual(
-        formatYear("es-AR", "short"),
+        formatMonths("es-AR", "short"),
         ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sept", "oct", "nov", "dic"],
     );
 });
 
-it("formatYear pt-BR narrow", () => {
+it("formatMonths pt-BR narrow", () => {
     assert.deepEqual(
-        formatYear("pt-BR", "narrow"),
+        formatMonths("pt-BR", "narrow"),
         ["j", "f", "m", "a", "m", "j", "j", "a", "s", "o", "n", "d"],
     );
 });
 
-it("formatYear en-US narrow", () => {
+it("formatMonths en-US narrow", () => {
     assert.deepEqual(
-        formatYear("en-US", "narrow"),
+        formatMonths("en-US", "narrow"),
         ["j", "f", "m", "a", "m", "j", "j", "a", "s", "o", "n", "d"],
     );
 });
 
-it("formatYear de-DE narrow", () => {
+it("formatMonths de-DE narrow", () => {
     assert.deepEqual(
-        formatYear("de-DE", "narrow"),
+        formatMonths("de-DE", "narrow"),
         ["j", "f", "m", "a", "m", "j", "j", "a", "s", "o", "n", "d"],
     );
 });
 
-it("formatYear es-AR narrow", () => {
+it("formatMonths es-AR narrow", () => {
     assert.deepEqual(
-        formatYear("es-AR", "narrow"),
+        formatMonths("es-AR", "narrow"),
         ["e", "f", "m", "a", "m", "j", "j", "a", "s", "o", "n", "d"],
     );
 });

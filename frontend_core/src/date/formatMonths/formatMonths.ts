@@ -1,21 +1,7 @@
+import type { Months } from "../months.js";
 import { Temporal } from "@js-temporal/polyfill";
 
-export type Year = readonly [
-    string,
-    string,
-    string,
-    string,
-    string,
-    string,
-    string,
-    string,
-    string,
-    string,
-    string,
-    string,
-];
-
-export function formatYear(locale: string, format: "long" | "short" | "narrow"): Year {
+export function formatMonths(locale: string, format: "long" | "short" | "narrow"): Months {
     function fmt(date: Temporal.PlainDate): string {
         return date.toLocaleString(locale, { month: format })
             .toLocaleLowerCase()

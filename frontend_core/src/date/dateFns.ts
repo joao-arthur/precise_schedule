@@ -3,8 +3,8 @@ import { formatDay } from "./formatDay/formatDay.js";
 import { current } from "./current/current.js";
 import { currentYear } from "./currentYear/currentYear.js";
 import { currentMonth } from "./currentMonth/currentMonth.js";
-import { formatYear } from "./formatYear/formatYear.js";
-import { formatWeek } from "./formatWeek/formatWeek.js";
+import { formatMonths } from "./formatMonths/formatMonths.js";
+import { formatWeekDays } from "./formatWeekDays/formatWeekDays.js";
 
 export const dateFns = {
     formatDate,
@@ -12,6 +12,6 @@ export const dateFns = {
     current,
     currentYear,
     currentMonth,
-    formatYear,
-    formatWeek,
+    formatMonths,
+    formatWeekDays,
 } as const;
