@@ -10,6 +10,7 @@ import { Text } from "@/components/atoms/Text";
 import { Button } from "@/components/atoms/button/Button";
 import { ButtonIcon } from "@/components/molecules/ButtonIcon";
 import { Item } from "./Item";
+import { NewDateModal } from "@/content/event/NewDateModal";
 
 const sidebarMachine = createMachine({
     predictableActionArguments: true,
@@ -35,6 +36,8 @@ export function Sidebar() {
     const timeoutId = useRef(-1);
     const { getDateEvents } = useCalendarEvent();
     const [displayDate, setDisplayDay] = useState(selectedDate);
+
+    const [open, setOpen] = useState(false);
 
     useEffect(() => {
         switch (state.value) {
@@ -121,8 +124,9 @@ export function Sidebar() {
                                 ))}
                             </div>
                             <div className="p-4 border-t border-gray-300 dark:border-gray-500">
-                                <Button>NEW EVENT</Button>
+                                <Button onClick={() => setOpen(!open)}>NEW EVENT</Button>
                             </div>
+                            <NewDateModal open={open} close={() => setOpen(false)} />
                         </div>
                     )
                     : null}

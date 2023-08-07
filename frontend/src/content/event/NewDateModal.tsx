@@ -1,12 +1,16 @@
 import type { DateEvent } from "@/features/event/event";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { useCreateDate } from "@/features/event/useEventAPI";
 import { Modal } from "@/components/molecules/Modal";
-import { DateEventRegister } from "@/content/event/DateEventRegister";
+import { DateNew } from "./DateNew";
 
-export function DateAction() {
-    const [open, setOpen] = useState(false);
+type props = {
+    readonly open: boolean;
+    readonly close: () => void;
+};
+
+export function NewDateModal({ open, close }: props) {
     const { mutate, isLoading, isSuccess } = useCreateDate();
     const queryClient = useQueryClient();
 
@@ -16,7 +20,7 @@ export function DateAction() {
 
     useEffect(() => {
         if (isSuccess) {
-            setOpen(false);
+            close();
             queryClient.invalidateQueries("event/find");
         }
     }, [isSuccess]);
@@ -25,11 +29,11 @@ export function DateAction() {
         <Modal
             title="NEW DATE"
             visible={open}
-            formId="DateEventRegister"
-            onCancel={() => setOpen(false)}
+            formId="DateNew"
+            onCancel={() => close()}
             confirmLabel="SAVE"
         >
-            <DateEventRegister onSubmit={submit} isLoading={isLoading} />
+            <DateNew onSubmit={submit} isLoading={isLoading} />
         </Modal>
     );
 }

@@ -1,6 +1,5 @@
 import type { DateEvent } from "@/features/event/event";
 import { useForm } from "react-hook-form";
-import { ModalForm } from "@/components/atoms/ModalForm";
 import { InputWrapper } from "@/components/atoms/form/InputWrapper";
 import { Group } from "@/components/atoms/layout/Group";
 import { TextInput } from "@/components/atoms/input/TextInput";
@@ -12,14 +11,11 @@ type props = {
     readonly isLoading: boolean;
 };
 
-export function DateEventRegister({ onSubmit, isLoading }: props) {
+export function DateNew({ onSubmit, isLoading }: props) {
     const { register, handleSubmit } = useForm<DateEvent>();
 
     return (
-        <ModalForm
-            id="DateEventRegister"
-            onSubmit={handleSubmit(onSubmit)}
-        >
+        <form id="DateNew" onSubmit={handleSubmit(onSubmit)}>
             <InputWrapper name="name" title="Name">
                 <TextInput
                     {...register("name", {
@@ -54,6 +50,6 @@ export function DateEventRegister({ onSubmit, isLoading }: props) {
                     />
                 </InputWrapper>
             </Group>
-        </ModalForm>
+        </form>
     );
 }

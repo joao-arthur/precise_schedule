@@ -14,9 +14,9 @@ import { PageContent } from "@/components/atoms/layout/PageContent";
 import { FormContainer } from "@/components/atoms/FormContainer";
 import { Form } from "@/components/molecules/Form";
 import { Badge } from "@/components/molecules/badge/Badge";
-import { Header } from "@/content/base/header/Header";
 import { RoundButton } from "@/components/atoms/extraButton/RoundButton";
 import { Icon } from "@/components/atoms/Icon";
+import { Header } from "@/content/base/Header";
 
 function strMinLenValid(value: unknown) {
     if (typeof value !== "string" || value.length < 8) {
