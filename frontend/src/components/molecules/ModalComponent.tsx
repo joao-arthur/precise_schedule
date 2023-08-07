@@ -26,22 +26,17 @@ export function ModalComponent({
     const isMobile = useDevice().isMobile();
 
     return (
-        <div className="fixed w-full h-full bg-block">
+        <div className="fixed w-full h-full bg-block-dark dark:bg-block-light">
             <div
                 className={cl(
                     "flex flex-col absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2",
-                    "bg-pastel-gray dark:bg-drk-dk2",
+                    "bg-pastel-gray dark:bg-drk rounded overflow-hidden",
                     isMobile
                         ? "w-full h-full"
-                        : "w-120 max-w-4/5 border border-gray-300 dark:border-gray-500 rounded",
+                        : "w-120 max-w-4/5 border border-gray-300 dark:border-gray-500",
                 )}
             >
-                <div
-                    className={cl(
-                        "py-5 px-7 break-all bg-prm",
-                        "shadow-sm shadow-gray-500",
-                    )}
-                >
+                <div className="py-5 px-7 break-all bg-prm">
                     <Text size="2xl" color="white" selectable>{title}</Text>
                 </div>
                 <div className="flex-1 overflow-auto p-3">

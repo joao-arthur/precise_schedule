@@ -16,7 +16,10 @@ module.exports = {
                     dk2: "#173C73",
                     dk3: "#002357",
                 },
-                block: "rgba(0, 0, 0, 0.1)",
+                block:{
+                    light: "rgba(255, 255, 255, 0.3)",
+                    dark: "rgba(0, 0, 0, 0.2)",
+                },
                 pastel: {
                     gray: "#f5f5f5",
                 },

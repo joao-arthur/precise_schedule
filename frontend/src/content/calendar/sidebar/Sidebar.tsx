@@ -1,15 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { createMachine } from "xstate";
 import { useMachine } from "@xstate/react";
-import { dateFns } from "frontend_core";
 import { cl } from "@/lib/cl";
 import { useDevice } from "@/lib/device/useDevice";
 import { useCalendar } from "@/features/calendar/useCalendar";
-import { useCalendarEvent } from "@/features/calendarEvent/useCalendarEvent";
-import { Text } from "@/components/atoms/Text";
-import { Button } from "@/components/atoms/button/Button";
-import { ButtonIcon } from "@/components/molecules/ButtonIcon";
-import { Item } from "./Item";
+import { SidebarContent } from "./SidebarContent";
 
 const sidebarMachine = createMachine({
     predictableActionArguments: true,
@@ -33,10 +28,7 @@ export function Sidebar() {
     const isMobile = useDevice().isMobile();
     const { selectedDate, removeSelectedDate } = useCalendar();
     const timeoutId = useRef(-1);
-    const { getDateEvents } = useCalendarEvent();
     const [displayDate, setDisplayDay] = useState(selectedDate);
-
-    const [open, setOpen] = useState(false);
 
     useEffect(() => {
         switch (state.value) {
@@ -46,7 +38,7 @@ export function Sidebar() {
             case "closing":
                 timeoutId.current = window.setTimeout(
                     () => send("close"),
-                    600,
+                    150,
                 );
                 break;
             case "closed":
@@ -67,7 +59,7 @@ export function Sidebar() {
             className={cl(
                 "z-10",
                 "flex overflow-hidden flex-0-auto",
-                "bg-gray-100 dark:bg-drk-dk",
+                "bg-gray-100 dark:bg-drk-dk2",
                 "transition-all duration-100",
                 {
                     "w-100 border-l border-gray-300 dark:border-gray-500": selectedDate &&
@@ -78,55 +70,10 @@ export function Sidebar() {
             )}
         >
             <div
-                className={cl(
-                    "flex flex-0",
-                    isMobile ? "w-screen" : "w-100",
-                )}
+                className={cl("flex flex-0", isMobile ? "w-screen" : "w-100")}
             >
                 {displayDate
-                    ? (
-                        <div
-                            className={cl(
-                                "flex flex-col flex-1",
-                                isMobile ? "w-screen" : "w-100",
-                            )}
-                        >
-                            <div
-                                className={cl(
-                                    "flex justify-between items-center",
-                                    "px-5 py-4",
-                                    "border-b border-gray-300 dark:border-gray-500",
-                                    "transition-colors duration-100",
-                                )}
-                            >
-                                <div className="text-center">
-                                    <Text size="3xl">
-                                        {dateFns.formatDate(
-                                            displayDate,
-                                            window.navigator.language,
-                                        )}
-                                    </Text>
-                                </div>
-                                <ButtonIcon
-                                    icon="x"
-                                    size="big"
-                                    onClick={() => removeSelectedDate()}
-                                />
-                            </div>
-                            <div
-                                className={cl("flex-1 m-1", {
-                                    "w-screen": isMobile,
-                                })}
-                            >
-                                {getDateEvents(displayDate).map((evt) => (
-                                    <Item key={evt} evt={evt} />
-                                ))}
-                            </div>
-                            <div className="p-4 border-t border-gray-300 dark:border-gray-500">
-                                <Button onClick={() => setOpen(!open)}>NEW EVENT</Button>
-                            </div>
-                        </div>
-                    )
+                    ? <SidebarContent date={displayDate} close={() => removeSelectedDate()} />
                     : null}
             </div>
         </div>

@@ -16,7 +16,7 @@ export function SecondaryButton({ children, title, onClick }: props) {
             className={cl(
                 "text-prm",
                 "bg-gray-200 hover:bg-gray-300 active:bg-gray-400",
-                "dark:bg-drk-lg dark:hover:bg-drk dark:active:bg-drk-dk",
+                "dark:bg-drk-lg dark:hover:bg-drk-dk dark:active:bg-drk-dk2",
             )}
         >
             {children}
