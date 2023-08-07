@@ -11,18 +11,16 @@ import { ToggleInput } from "@/components/atoms/input/ToggleInput";
 import { frequencyOptions } from "./frequencyOptions";
 
 type props = {
-    readonly event: AppointmentEvent;
+    readonly event?: AppointmentEvent;
+    readonly disabled: boolean;
     readonly onSubmit: (form: AppointmentEvent) => void;
-    readonly isLoading: boolean;
 };
 
-export function AppointmentEdit({ onSubmit, isLoading, event }: props) {
+export function AppointmentForm({ event, disabled, onSubmit }: props) {
     const { register, handleSubmit, watch, setValue } = useForm<AppointmentEvent>();
-    const required = true;
-    const disabled = isLoading;
-
     const watchFrequency = watch("frequency");
     const canRepeatWeekend = watchFrequency ? ["1D", "2D"].includes(watchFrequency) : true;
+    const required = true;
 
     useEffect(() => {
         if (!canRepeatWeekend) {
@@ -31,25 +29,27 @@ export function AppointmentEdit({ onSubmit, isLoading, event }: props) {
     }, [watchFrequency]);
 
     return (
-        <form id="AppointmentEdit" onSubmit={handleSubmit(onSubmit)}>
+        <form id="AppointmentForm" onSubmit={handleSubmit(onSubmit)}>
             <InputWrapper name="name" title="Name">
-                <TextInput {...register("name", { required, disabled, value: event.name })} />
+                <TextInput {...register("name", { required, disabled, value: event?.name })} />
             </InputWrapper>
             <InputWrapper name="day" title="Day">
-                <DateInput {...register("day", { required, disabled, value: event.day })} />
+                <DateInput {...register("day", { required, disabled, value: event?.day })} />
             </InputWrapper>
             <Group>
                 <InputWrapper name="begin" title="Begin">
-                    <TimeInput {...register("begin", { required, disabled, value: event.begin })} />
+                    <TimeInput
+                        {...register("begin", { required, disabled, value: event?.begin })}
+                    />
                 </InputWrapper>
                 <InputWrapper name="end" title="End">
-                    <TimeInput {...register("end", { required, disabled, value: event.end })} />
+                    <TimeInput {...register("end", { required, disabled, value: event?.end })} />
                 </InputWrapper>
             </Group>
             <Group>
                 <InputWrapper name="frequency" title="Frequency">
                     <SelectInput
-                        {...register("frequency", { required, disabled, value: event.frequency })}
+                        {...register("frequency", { required, disabled, value: event?.frequency })}
                         options={frequencyOptions}
                     />
                 </InputWrapper>
@@ -58,7 +58,7 @@ export function AppointmentEdit({ onSubmit, isLoading, event }: props) {
                         {...register("weekendRepeat", {
                             required,
                             disabled: disabled || !canRepeatWeekend,
-                            value: event.weekendRepeat,
+                            value: event?.weekendRepeat,
                         })}
                     />
                 </InputWrapper>

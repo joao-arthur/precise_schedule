@@ -5,22 +5,22 @@ import { TextInput } from "@/components/atoms/input/TextInput";
 import { DateInput } from "@/components/atoms/input/DateInput";
 
 type props = {
+    readonly event?: BirthdayEvent;
+    readonly disabled: boolean;
     readonly onSubmit: (form: BirthdayEvent) => void;
-    readonly isLoading: boolean;
 };
 
-export function BirthdayNew({ onSubmit, isLoading }: props) {
+export function BirthdayForm({ event, disabled, onSubmit }: props) {
     const { register, handleSubmit } = useForm<BirthdayEvent>();
-    const disabled = isLoading;
     const required = true;
 
     return (
-        <form id="BirthdayNew" onSubmit={handleSubmit(onSubmit)}>
+        <form id="BirthdayForm" onSubmit={handleSubmit(onSubmit)}>
             <InputWrapper name="name" title="Name">
-                <TextInput {...register("name", { required, disabled })} />
+                <TextInput {...register("name", { required, disabled, value: event?.name })} />
             </InputWrapper>
             <InputWrapper name="day" title="Day">
-                <DateInput {...register("day", { required, disabled })} />
+                <DateInput {...register("day", { required, disabled, value: event?.day })} />
             </InputWrapper>
         </form>
     );

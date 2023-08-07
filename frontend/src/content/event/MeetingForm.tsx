@@ -11,15 +11,14 @@ import { ToggleInput } from "@/components/atoms/input/ToggleInput";
 import { frequencyOptions } from "./frequencyOptions";
 
 type props = {
-    readonly event: MeetingEvent;
+    readonly event?: MeetingEvent;
+    readonly disabled: boolean;
     readonly onSubmit: (form: MeetingEvent) => void;
-    readonly isLoading: boolean;
 };
 
-export function MeetingEdit({ onSubmit, isLoading, event }: props) {
+export function MeetingForm({ event, disabled, onSubmit }: props) {
     const { register, handleSubmit, watch, setValue } = useForm<MeetingEvent>();
     const required = true;
-    const disabled = isLoading;
 
     const watchFrequency = watch("frequency");
     const canRepeatWeekend = watchFrequency ? ["1D", "2D"].includes(watchFrequency) : true;
@@ -31,25 +30,27 @@ export function MeetingEdit({ onSubmit, isLoading, event }: props) {
     }, [watchFrequency]);
 
     return (
-        <form id="MeetingEdit" onSubmit={handleSubmit(onSubmit)}>
+        <form id="MeetingForm" onSubmit={handleSubmit(onSubmit)}>
             <InputWrapper name="name" title="Name">
-                <TextInput {...register("name", { required, disabled, value: event.name })} />
+                <TextInput {...register("name", { required, disabled, value: event?.name })} />
             </InputWrapper>
             <InputWrapper name="day" title="Day">
-                <DateInput {...register("day", { required, disabled, value: event.day })} />
+                <DateInput {...register("day", { required, disabled, value: event?.day })} />
             </InputWrapper>
             <Group>
                 <InputWrapper name="begin" title="Begin">
-                    <TimeInput {...register("begin", { required, disabled, value: event.begin })} />
+                    <TimeInput
+                        {...register("begin", { required, disabled, value: event?.begin })}
+                    />
                 </InputWrapper>
                 <InputWrapper name="end" title="End">
-                    <TimeInput {...register("end", { required, disabled, value: event.end })} />
+                    <TimeInput {...register("end", { required, disabled, value: event?.end })} />
                 </InputWrapper>
             </Group>
             <Group>
                 <InputWrapper name="frequency" title="Frequency">
                     <SelectInput
-                        {...register("frequency", { required, disabled, value: event.frequency })}
+                        {...register("frequency", { required, disabled, value: event?.frequency })}
                         options={frequencyOptions}
                     />
                 </InputWrapper>
@@ -58,7 +59,7 @@ export function MeetingEdit({ onSubmit, isLoading, event }: props) {
                         {...register("weekendRepeat", {
                             required,
                             disabled: disabled || !canRepeatWeekend,
-                            value: event.weekendRepeat,
+                            value: event?.weekendRepeat,
                         })}
                     />
                 </InputWrapper>

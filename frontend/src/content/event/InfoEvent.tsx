@@ -1,7 +1,4 @@
 import type { Event } from "@/features/event/event";
-import { useEffect } from "react";
-import { useQueryClient } from "react-query";
-import { useDeleteEvent } from "@/features/event/useEventAPI";
 import { Modal } from "@/components/molecules/Modal";
 
 type props = {
@@ -10,16 +7,6 @@ type props = {
 };
 
 export function InfoEvent({ event, onCancel }: props) {
-    const { isSuccess, mutate } = useDeleteEvent();
-    const queryClient = useQueryClient();
-
-    useEffect(() => {
-        if (isSuccess) {
-            onCancel();
-            queryClient.invalidateQueries("getEvents");
-        }
-    }, [queryClient, isSuccess, onCancel]);
-
     return (
         <Modal
             visible
