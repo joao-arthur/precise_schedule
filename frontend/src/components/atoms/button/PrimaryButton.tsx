@@ -19,9 +19,8 @@ export function PrimaryButton(
             form={form}
             className={cl(
                 "text-white",
-                "bg-prm dark:bg-prm-dk",
-                "hover:bg-prm-dk dark:hover:bg-prm-dk2",
-                "active:bg-prm-dk2 dark:active:bg-prm-dk3",
+                "bg-prm hover:bg-prm-dk active:bg-prm-dk2",
+                "dark:bg-prm-dk dark:hover:bg-prm-dk2 dark:active:bg-prm-dk3",
             )}
         >
             {children}

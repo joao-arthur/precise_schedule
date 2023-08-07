@@ -26,6 +26,15 @@ module.exports = {
                     lightless: "#131313",
                     DEFAULT: "#0d0d0d",
                 },
+                drk: {
+                    lg3: "#4a4a4a",
+                    lg2: "#404040",
+                    lg: "#363636",
+                    DEFAULT: "#2c2c2c",
+                    dk: "#212121",
+                    dk2: "#171717",
+                    dk3: "#0d0d0d",   
+                },
             },
             flex: {
                 "0-auto": "0 0 auto",

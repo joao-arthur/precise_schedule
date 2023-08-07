@@ -9,8 +9,9 @@ type props = {
 export function DisabledButton({ children, title }: props) {
     return (
         <BaseButton
+            type="button"
             title={title}
-            className="cursor-default bg-gray-300 text-white"
+            className="cursor-default text-white bg-gray-300 dark:bg-gray-800"
         >
             {children}
         </BaseButton>

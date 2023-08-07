@@ -11,13 +11,7 @@ type props = {
     readonly form?: string;
 };
 
-export function Button({
-    type = "PRIMARY",
-    onClick,
-    children,
-    title,
-    form,
-}: props) {
+export function Button({ type = "PRIMARY", onClick, children, title, form }: props) {
     switch (type) {
         case "PRIMARY":
             return (
