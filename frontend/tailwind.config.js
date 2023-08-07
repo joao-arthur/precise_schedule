@@ -20,12 +20,6 @@ module.exports = {
                 pastel: {
                     gray: "#f5f5f5",
                 },
-                dark: {
-                    lighter: "#2f2f2f",
-                    light: "#191919",
-                    lightless: "#131313",
-                    DEFAULT: "#0d0d0d",
-                },
                 drk: {
                     lg3: "#4a4a4a",
                     lg2: "#404040",

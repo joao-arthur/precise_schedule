@@ -19,9 +19,8 @@ export function Text({ children, disabled, selectable, size, color }: props) {
     return (
         <span
             className={cl(
-                "transition-colors duration-100",
+                "transition-colors duration-300",
                 "text-ellipsis whitespace-nowrap overflow-hidden",
-                disabled ? "text-gray-500 dark:text-gray-500" : "text-dark dark:text-pastel-gray",
                 selectable ? "" : "select-none",
                 {
                     "text-xs": size === "xs",
@@ -33,6 +32,8 @@ export function Text({ children, disabled, selectable, size, color }: props) {
                 },
                 {
                     "text-white": color === "white",
+                    "text-drk-dk dark:text-pastel-gray": !color,
+                    "text-gray-500 dark:text-gray-500": disabled === true,
                 },
             )}
         >

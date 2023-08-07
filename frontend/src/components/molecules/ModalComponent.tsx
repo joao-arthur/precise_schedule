@@ -30,7 +30,7 @@ export function ModalComponent({
             <div
                 className={cl(
                     "flex flex-col absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2",
-                    "bg-white dark:bg-dark",
+                    "bg-white dark:bg-drk-dk2",
                     isMobile
                         ? "w-full h-full"
                         : "w-120 max-w-4/5 border border-gray-300 dark:border-gray-500 rounded",

@@ -21,7 +21,7 @@ export function Toggle({ value, onChange, display }: props) {
                 "transition-all duration-100",
                 {
                     "bg-prm": value,
-                    "bg-gray-300 dark:bg-dark-light": !value,
+                    "bg-gray-300 dark:bg-drk-dk": !value,
                 },
             )}
         >

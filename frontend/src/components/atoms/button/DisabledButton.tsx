@@ -11,7 +11,7 @@ export function DisabledButton({ children, title }: props) {
         <BaseButton
             type="button"
             title={title}
-            className="cursor-default text-white bg-gray-300 dark:bg-gray-800"
+            className="cursor-not-allowed text-white bg-gray-300 dark:bg-gray-800"
         >
             {children}
         </BaseButton>
