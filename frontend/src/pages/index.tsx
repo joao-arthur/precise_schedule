@@ -24,10 +24,10 @@ export default function Calendar() {
                     <>
                         <div className="flex justify-center gap-1">
                             <RoundButton onClick={() => prev()}>
-                                <Icon name="<" size={9} fill="white" />
+                                <Icon name="<" size={9} fill="white" className="p-2" />
                             </RoundButton>
                             <RoundButton onClick={() => next()}>
-                                <Icon name=">" size={9} fill="white" />
+                                <Icon name=">" size={9} fill="white" className="p-2" />
                             </RoundButton>
                         </div>
                         <Text size="2xl" color="white">{year} {months[month - 1]}</Text>

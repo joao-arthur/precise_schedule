@@ -32,8 +32,8 @@ function ToggleInputComp({ forwardedRef, ...props }: props) {
                     "absolute top-0 left-0 bottom-0 right-0",
                     "rounded-full",
                     "border border-gray-500",
-                    "bg-gray-300 dark:bg-dark-lighter",
-                    "transition-all duration-300",
+                    "bg-gray-300 dark:bg-drk",
+                    "transition-all duration-100",
                     //
                     "before:absolute",
                     "before:h-7 before:w-7",
@@ -41,10 +41,10 @@ function ToggleInputComp({ forwardedRef, ...props }: props) {
                     "before:left-[6px]",
                     "before:bg-white",
                     "before:rounded-full",
-                    "before:transition-all before:duration-300",
+                    "before:transition-all before:duration-100",
                     //
                     "peer-disabled:before:bg-gray-200 peer-disabled:bg-gray-200",
-                    "peer-disabled:before:dark:bg-dark-lighter peer-disabled:dark:bg-dark-lighter",
+                    "peer-disabled:before:dark:bg-drk peer-disabled:dark:bg-drk",
                     "peer-checked:bg-prm peer-checked:border-prm",
                     "peer-checked:before:left-[45px]",
                     "cursor-pointer peer-disabled:cursor-not-allowed",

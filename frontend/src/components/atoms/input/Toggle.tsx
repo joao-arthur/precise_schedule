@@ -18,7 +18,7 @@ export function Toggle({ value, onChange, display }: props) {
                 "cursor-pointer select-none",
                 "border w-16 h-8 rounded-2xl ",
                 "border-transparent",
-                "transition-all hover:duration-300 duration-300",
+                "transition-all duration-100",
                 {
                     "bg-prm": value,
                     "bg-gray-300 dark:bg-dark-light": !value,
@@ -29,7 +29,7 @@ export function Toggle({ value, onChange, display }: props) {
                 className={cl(
                     "flex justify-center items-center",
                     "bg-white border-gray-500 w-6 h-6 rounded-2xl",
-                    "transition-all duration-300",
+                    "transition-all duration-100",
                     "relative top-[3px]",
                     {
                         "left-[35px]": value,

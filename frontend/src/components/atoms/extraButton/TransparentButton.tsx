@@ -11,12 +11,11 @@ export function TransparentButton({ onClick, children }: props) {
         <button
             onClick={onClick}
             className={cl(
-                "flex rounded border",
-                "border-transparent",
-                "hover:border-gray-300 dark:hover:border-gray-500",
-                "active:border-gray-300 dark:active:border-gray-500",
-                "hover:bg-gray-100 dark:hover:bg-dark-light",
-                "active:bg-gray-200 dark:active:bg-dark",
+                "flex rounded border border-transparent",
+                "hover:border-gray-300 active:border-gray-300",
+                "dark:hover:border-gray-500 dark:active:border-gray-500",
+                "hover:bg-gray-100 active:bg-gray-200",
+                "dark:hover:bg-drk-dk dark:active:bg-drk",
             )}
         >
             {children}

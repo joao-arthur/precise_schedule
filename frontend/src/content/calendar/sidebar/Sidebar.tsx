@@ -68,7 +68,7 @@ export function Sidebar() {
                 "z-10",
                 "flex overflow-hidden flex-0-auto",
                 "bg-white dark:bg-dark-light",
-                "transition-all duration-300",
+                "transition-all duration-100",
                 {
                     "w-100 border-l border-gray-300 dark:border-gray-500": selectedDate &&
                         !isMobile,

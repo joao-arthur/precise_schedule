@@ -50,7 +50,7 @@ export function Cell({ calendar, date, events }: props) {
             className={cl(
                 "w-full h-full",
                 "flex flex-col flex-1",
-                "overflow-hidden text-center bg-gray-100 dark:bg-dark-lightless",
+                "overflow-hidden text-center bg-gray-200 dark:bg-drk-dk3",
                 "transition-colors duration-100",
             )}
         >

@@ -12,7 +12,8 @@ export function RoundButton({ onClick, children }: props) {
             onClick={onClick}
             className={cl(
                 "rounded-full",
-                "bg-prm active:bg-prm-dk",
+                "hover:bg-prm-lg active:bg-prm-lg2",
+                "dark:hover:bg-prm dark:active:bg-prm-lg",
                 "transition-colors duration-100",
             )}
         >
