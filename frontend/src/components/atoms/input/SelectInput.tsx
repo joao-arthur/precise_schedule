@@ -34,7 +34,7 @@ function SelectInputComp({ forwardedRef, options, ...props }: props) {
                 "border border-gray-500 disabled:cursor-not-allowed",
                 "bg-white dark:bg-dark-lighter dark:text-pastel-gray",
                 "disabled:bg-gray-200 dark:disabled:bg-dark-light",
-                "transition-colors duration-300",
+                "transition-colors duration-100",
             )}
         >
             {options.map((option) => (

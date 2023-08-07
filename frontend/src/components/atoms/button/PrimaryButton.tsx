@@ -20,8 +20,8 @@ export function PrimaryButton(
             className={cl(
                 "text-white",
                 "bg-prm dark:bg-prm-dk",
-                "active:bg-prm-dk dark:active:bg-prm-dk2",
-                "transition-colors duration-300",
+                "hover:bg-prm-dk dark:hover:bg-prm-dk2",
+                "active:bg-prm-dk2 dark:active:bg-prm-dk3",
             )}
         >
             {children}

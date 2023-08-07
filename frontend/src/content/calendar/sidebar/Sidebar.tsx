@@ -96,7 +96,7 @@ export function Sidebar() {
                                     "flex justify-between items-center",
                                     "px-5 py-4",
                                     "border-b border-gray-300 dark:border-gray-500",
-                                    "transition-colors duration-300",
+                                    "transition-colors duration-100",
                                 )}
                             >
                                 <div className="text-center">

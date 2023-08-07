@@ -24,7 +24,7 @@ export function Header({ left }: props) {
             className={cl(
                 "flex w-full flex-shrink-0 justify-between px-2 h-12",
                 "bg-prm dark:bg-prm-dk",
-                "transition-colors duration-300",
+                "transition-colors duration-100",
             )}
         >
             <div className="flex items-center gap-3">

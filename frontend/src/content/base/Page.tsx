@@ -23,7 +23,7 @@ export function Page({ children }: props) {
             style={{ height }}
             className={cl(
                 "flex flex-col overflow-auto dark:bg-dark-light",
-                "transition-colors duration-300",
+                "transition-colors duration-100",
             )}
         >
             {children}

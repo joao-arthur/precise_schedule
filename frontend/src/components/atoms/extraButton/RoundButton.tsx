@@ -13,7 +13,7 @@ export function RoundButton({ onClick, children }: props) {
             className={cl(
                 "rounded-full",
                 "bg-prm active:bg-prm-dk",
-                "transition-colors duration-300",
+                "transition-colors duration-100",
             )}
         >
             {children}

@@ -12,7 +12,7 @@ export function BorderedBox({ children, filled }: props) {
             className={cl(
                 "border border-gray-500 rounded p-3",
                 filled ? "bg-gray-50 dark:bg-dark" : "",
-                filled ? "transition-colors duration-300" : "",
+                filled ? "transition-colors duration-100" : "",
             )}
         >
             {children}

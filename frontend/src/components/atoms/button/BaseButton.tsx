@@ -17,7 +17,11 @@ export function BaseButton(
             title={title}
             onClick={onClick}
             form={form}
-            className={cl("py-5 text-lg rounded w-full", className)}
+            className={cl(
+                "h-20 rounded w-full text-lg",
+                "transition-all duration-100",
+                className,
+            )}
         >
             {children}
         </button>
