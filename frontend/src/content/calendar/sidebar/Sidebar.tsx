@@ -10,7 +10,6 @@ import { Text } from "@/components/atoms/Text";
 import { Button } from "@/components/atoms/button/Button";
 import { ButtonIcon } from "@/components/molecules/ButtonIcon";
 import { Item } from "./Item";
-import { NewDateModal } from "@/content/event/NewDateModal";
 
 const sidebarMachine = createMachine({
     predictableActionArguments: true,
@@ -126,7 +125,6 @@ export function Sidebar() {
                             <div className="p-4 border-t border-gray-300 dark:border-gray-500">
                                 <Button onClick={() => setOpen(!open)}>NEW EVENT</Button>
                             </div>
-                            <NewDateModal open={open} close={() => setOpen(false)} />
                         </div>
                     )
                     : null}

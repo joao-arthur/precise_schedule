@@ -13,6 +13,7 @@ import { FormContainer } from "@/components/atoms/FormContainer";
 import { Form } from "@/components/molecules/Form";
 import { RoundButton } from "@/components/atoms/extraButton/RoundButton";
 import { Icon } from "@/components/atoms/Icon";
+import { BorderedBox } from "@/components/atoms/layout/BorderedBox";
 import { Header } from "@/content/base/Header";
 
 export default function SignIn() {
@@ -43,32 +44,34 @@ export default function SignIn() {
             <main className="flex h-full">
                 <PageContent>
                     <FormContainer>
-                        <Form
-                            action="SIGN IN"
-                            disabled={isLoading}
-                            onSubmit={handleSubmit((data) => mutate(data))}
-                        >
-                            <InputWrapper name="username" title="Username">
-                                <TextInput
-                                    {...register("username", {
-                                        required: true,
-                                        disabled: isLoading,
-                                    })}
-                                />
-                            </InputWrapper>
-                            <InputWrapper
-                                name="password"
-                                title="Password"
+                        <BorderedBox filled>
+                            <Form
+                                action="SIGN IN"
+                                disabled={isLoading}
+                                onSubmit={handleSubmit((data) => mutate(data))}
                             >
-                                <PasswordInput
-                                    {...register("password", {
-                                        required: true,
-                                        minLength: 8,
-                                        disabled: isLoading,
-                                    })}
-                                />
-                            </InputWrapper>
-                        </Form>
+                                <InputWrapper name="username" title="Username">
+                                    <TextInput
+                                        {...register("username", {
+                                            required: true,
+                                            disabled: isLoading,
+                                        })}
+                                    />
+                                </InputWrapper>
+                                <InputWrapper
+                                    name="password"
+                                    title="Password"
+                                >
+                                    <PasswordInput
+                                        {...register("password", {
+                                            required: true,
+                                            minLength: 8,
+                                            disabled: isLoading,
+                                        })}
+                                    />
+                                </InputWrapper>
+                            </Form>
+                        </BorderedBox>
                     </FormContainer>
                 </PageContent>
             </main>

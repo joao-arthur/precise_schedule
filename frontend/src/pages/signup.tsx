@@ -16,6 +16,7 @@ import { Form } from "@/components/molecules/Form";
 import { Badge } from "@/components/molecules/badge/Badge";
 import { RoundButton } from "@/components/atoms/extraButton/RoundButton";
 import { Icon } from "@/components/atoms/Icon";
+import { BorderedBox } from "@/components/atoms/layout/BorderedBox";
 import { Header } from "@/content/base/Header";
 
 function strMinLenValid(value: unknown) {
@@ -114,81 +115,83 @@ export default function SignUp() {
             <main className="flex h-full">
                 <PageContent>
                     <FormContainer>
-                        <Form
-                            action="CREATE ACCOUNT"
-                            disabled={isLoading}
-                            onSubmit={handleSubmit((data) => mutate(data))}
-                        >
-                            <InputWrapper name="firstName" title="First name">
-                                <TextInput
-                                    {...register("firstName", {
-                                        required: true,
-                                        disabled: isLoading,
-                                    })}
-                                />
-                            </InputWrapper>
-                            <InputWrapper name="birthdate" title="Birthdate">
-                                <DateInput
-                                    {...register("birthdate", {
-                                        required: true,
-                                        disabled: isLoading,
-                                    })}
-                                />
-                            </InputWrapper>
-                            <InputWrapper name="email" title="E-mail">
-                                <EmailInput
-                                    {...register("email", {
-                                        required: true,
-                                        disabled: isLoading,
-                                    })}
-                                />
-                            </InputWrapper>
-                            <InputWrapper name="username" title="Username">
-                                <TextInput
-                                    {...register("username", {
-                                        required: true,
-                                        disabled: isLoading,
-                                    })}
-                                />
-                            </InputWrapper>
-                            <InputWrapper
-                                name="password"
-                                title="Password"
+                        <BorderedBox filled>
+                            <Form
+                                action="CREATE ACCOUNT"
+                                disabled={isLoading}
+                                onSubmit={handleSubmit((data) => mutate(data))}
                             >
-                                <PasswordInput
-                                    {...register("password", {
-                                        required: true,
-                                        minLength: 8,
-                                        disabled: isLoading,
-                                        validate: (value) =>
-                                            strMinLenValid(value) && strMinNumValid(value) &&
-                                            strMinUpperValid(value) && strMinLowerValid(value),
-                                    })}
-                                />
-                                <div className="flex flex-col py-2 gap-2">
-                                    <Badge
-                                        valid={strMinLenValid(password)}
-                                        label="At least 8 characters"
+                                <InputWrapper name="firstName" title="First name">
+                                    <TextInput
+                                        {...register("firstName", {
+                                            required: true,
+                                            disabled: isLoading,
+                                        })}
                                     />
-                                    <Badge
-                                        valid={strMinNumValid(password)}
-                                        label="At least 1 number"
+                                </InputWrapper>
+                                <InputWrapper name="birthdate" title="Birthdate">
+                                    <DateInput
+                                        {...register("birthdate", {
+                                            required: true,
+                                            disabled: isLoading,
+                                        })}
                                     />
-                                    <Badge
-                                        valid={strMinUpperValid(password)}
-                                        label="At least 1 uppercase letter"
+                                </InputWrapper>
+                                <InputWrapper name="email" title="E-mail">
+                                    <EmailInput
+                                        {...register("email", {
+                                            required: true,
+                                            disabled: isLoading,
+                                        })}
                                     />
-                                    <Badge
-                                        valid={strMinLowerValid(password)}
-                                        label="At least 1 lowercase letter"
+                                </InputWrapper>
+                                <InputWrapper name="username" title="Username">
+                                    <TextInput
+                                        {...register("username", {
+                                            required: true,
+                                            disabled: isLoading,
+                                        })}
                                     />
-                                    <Badge
-                                        valid={strMinSpecialValid(password)}
-                                        label="At least 1 of !@#$%¨&*()[]{}"
+                                </InputWrapper>
+                                <InputWrapper
+                                    name="password"
+                                    title="Password"
+                                >
+                                    <PasswordInput
+                                        {...register("password", {
+                                            required: true,
+                                            minLength: 8,
+                                            disabled: isLoading,
+                                            validate: (value) =>
+                                                strMinLenValid(value) && strMinNumValid(value) &&
+                                                strMinUpperValid(value) && strMinLowerValid(value),
+                                        })}
                                     />
-                                </div>
-                            </InputWrapper>
-                        </Form>
+                                    <div className="flex flex-col py-2 gap-2">
+                                        <Badge
+                                            valid={strMinLenValid(password)}
+                                            label="At least 8 characters"
+                                        />
+                                        <Badge
+                                            valid={strMinNumValid(password)}
+                                            label="At least 1 number"
+                                        />
+                                        <Badge
+                                            valid={strMinUpperValid(password)}
+                                            label="At least 1 uppercase letter"
+                                        />
+                                        <Badge
+                                            valid={strMinLowerValid(password)}
+                                            label="At least 1 lowercase letter"
+                                        />
+                                        <Badge
+                                            valid={strMinSpecialValid(password)}
+                                            label="At least 1 of !@#$%¨&*()[]{}"
+                                        />
+                                    </div>
+                                </InputWrapper>
+                            </Form>
+                        </BorderedBox>
                     </FormContainer>
                 </PageContent>
             </main>
