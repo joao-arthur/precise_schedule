@@ -9,7 +9,7 @@ import { TimeInput } from "@/components/atoms/input/TimeInput";
 type props = {
     readonly event?: PartyEvent;
     readonly disabled: boolean;
-    readonly onSubmit: (form: PartyEvent) => void;
+    readonly onSubmit?: (form: PartyEvent) => void;
 };
 
 export function PartyForm({ event, disabled, onSubmit }: props) {
@@ -17,7 +17,7 @@ export function PartyForm({ event, disabled, onSubmit }: props) {
     const required = true;
 
     return (
-        <form id="PartyForm" onSubmit={handleSubmit(onSubmit)}>
+        <form id="PartyForm" onSubmit={onSubmit ? handleSubmit(onSubmit) : undefined}>
             <InputWrapper name="name" title="Name">
                 <TextInput {...register("name", { required, disabled, value: event?.name })} />
             </InputWrapper>

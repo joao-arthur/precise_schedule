@@ -13,7 +13,7 @@ import { frequencyOptions } from "./frequencyOptions";
 type props = {
     readonly event?: MeetingEvent;
     readonly disabled: boolean;
-    readonly onSubmit: (form: MeetingEvent) => void;
+    readonly onSubmit?: (form: MeetingEvent) => void;
 };
 
 export function MeetingForm({ event, disabled, onSubmit }: props) {
@@ -30,7 +30,7 @@ export function MeetingForm({ event, disabled, onSubmit }: props) {
     }, [watchFrequency]);
 
     return (
-        <form id="MeetingForm" onSubmit={handleSubmit(onSubmit)}>
+        <form id="MeetingForm" onSubmit={onSubmit ? handleSubmit(onSubmit) : undefined}>
             <InputWrapper name="name" title="Name">
                 <TextInput {...register("name", { required, disabled, value: event?.name })} />
             </InputWrapper>

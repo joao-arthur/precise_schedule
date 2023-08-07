@@ -7,7 +7,7 @@ import { DateInput } from "@/components/atoms/input/DateInput";
 type props = {
     readonly event?: BirthdayEvent;
     readonly disabled: boolean;
-    readonly onSubmit: (form: BirthdayEvent) => void;
+    readonly onSubmit?: (form: BirthdayEvent) => void;
 };
 
 export function BirthdayForm({ event, disabled, onSubmit }: props) {
@@ -15,7 +15,7 @@ export function BirthdayForm({ event, disabled, onSubmit }: props) {
     const required = true;
 
     return (
-        <form id="BirthdayForm" onSubmit={handleSubmit(onSubmit)}>
+        <form id="BirthdayForm" onSubmit={onSubmit ? handleSubmit(onSubmit) : undefined}>
             <InputWrapper name="name" title="Name">
                 <TextInput {...register("name", { required, disabled, value: event?.name })} />
             </InputWrapper>

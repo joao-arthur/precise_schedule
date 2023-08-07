@@ -11,6 +11,7 @@ export type modalProps = {
     readonly onCancel: () => void;
     readonly onConfirm?: () => void;
     readonly confirmLabel?: string;
+    readonly hideConfirm?: true;
 };
 
 export function ModalComponent({
@@ -20,6 +21,7 @@ export function ModalComponent({
     onCancel,
     onConfirm,
     confirmLabel,
+    hideConfirm,
 }: modalProps) {
     const isMobile = useDevice().isMobile();
 
@@ -54,9 +56,13 @@ export function ModalComponent({
                     <Button onClick={onCancel} type="SECONDARY">
                         CANCEL
                     </Button>
-                    <Button onClick={onConfirm} form={formId}>
-                        {confirmLabel || "CONFIRM"}
-                    </Button>
+                    {!hideConfirm
+                        ? (
+                            <Button onClick={onConfirm} form={formId}>
+                                {confirmLabel || "CONFIRM"}
+                            </Button>
+                        )
+                        : null}
                 </div>
             </div>
         </div>

@@ -1,5 +1,10 @@
 import type { Event } from "@/features/event/event";
 import { Modal } from "@/components/molecules/Modal";
+import { AppointmentForm } from "./AppointmentForm";
+import { BirthdayForm } from "./BirthdayForm";
+import { DateForm } from "./DateForm";
+import { MeetingForm } from "./MeetingForm";
+import { PartyForm } from "./PartyForm";
 
 type props = {
     readonly event: Event;
@@ -12,9 +17,19 @@ export function InfoEvent({ event, onCancel }: props) {
             visible
             title={event.name.toLocaleUpperCase()}
             onCancel={onCancel}
-            onConfirm={() => mutate(event.id)}
+            hideConfirm
         >
-            <div>A ring ding ding ding d-ding baa aramba baa baa barooumba</div>
+            {event.category === "APPOINTMENT"
+                ? <AppointmentForm event={event} disabled />
+                : event.category === "BIRTHDAY"
+                ? <BirthdayForm event={event} disabled />
+                : event.category === "DATE"
+                ? <DateForm event={event} disabled />
+                : event.category === "MEETING"
+                ? <MeetingForm event={event} disabled />
+                : event.category === "PARTY"
+                ? <PartyForm event={event} disabled />
+                : null}
         </Modal>
     );
 }
