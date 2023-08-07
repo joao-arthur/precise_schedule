@@ -1,6 +1,5 @@
 import type { PartyEvent } from "@/features/event/event";
 import { useForm } from "react-hook-form";
-import { ModalForm } from "@/components/atoms/ModalForm";
 import { InputWrapper } from "@/components/atoms/form/InputWrapper";
 import { Group } from "@/components/atoms/layout/Group";
 import { TextInput } from "@/components/atoms/input/TextInput";
@@ -12,48 +11,27 @@ type props = {
     readonly isLoading: boolean;
 };
 
-export function PartyRegister({ onSubmit, isLoading }: props) {
+export function PartyNew({ onSubmit, isLoading }: props) {
     const { register, handleSubmit } = useForm<PartyEvent>();
+    const disabled = isLoading;
+    const required = true;
 
     return (
-        <ModalForm
-            id="PartyRegister"
-            onSubmit={handleSubmit(onSubmit)}
-        >
+        <form id="PartyNew" onSubmit={handleSubmit(onSubmit)}>
             <InputWrapper name="name" title="Name">
-                <TextInput
-                    {...register("name", {
-                        required: true,
-                        disabled: isLoading,
-                    })}
-                />
+                <TextInput {...register("name", { required, disabled })} />
             </InputWrapper>
             <InputWrapper name="day" title="Day">
-                <DateInput
-                    {...register("day", {
-                        required: true,
-                        disabled: isLoading,
-                    })}
-                />
+                <DateInput {...register("day", { required, disabled })} />
             </InputWrapper>
             <Group>
                 <InputWrapper name="begin" title="Begin">
-                    <TimeInput
-                        {...register("begin", {
-                            required: true,
-                            disabled: isLoading,
-                        })}
-                    />
+                    <TimeInput {...register("begin", { required, disabled })} />
                 </InputWrapper>
                 <InputWrapper name="end" title="End">
-                    <TimeInput
-                        {...register("end", {
-                            required: true,
-                            disabled: isLoading,
-                        })}
-                    />
+                    <TimeInput {...register("end", { required, disabled })} />
                 </InputWrapper>
             </Group>
-        </ModalForm>
+        </form>
     );
 }
