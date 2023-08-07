@@ -28,7 +28,7 @@ export function Toggle({ value, onChange, display }: props) {
             <div
                 className={cl(
                     "flex justify-center items-center",
-                    "bg-white border-gray-500 w-6 h-6 rounded-2xl",
+                    "bg-pastel-gray border-gray-500 w-6 h-6 rounded-2xl",
                     "transition-all duration-100",
                     "relative top-[3px]",
                     {

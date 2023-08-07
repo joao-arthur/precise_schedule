@@ -27,7 +27,7 @@ function EmailInputComp({ forwardedRef, ...props }: props) {
             className={cl(
                 "py-1 px-2 rounded-md text-base w-full box-border h-10 min-w-0",
                 "border border-gray-500 disabled:cursor-not-allowed",
-                "bg-white dark:bg-drk dark:text-pastel-gray",
+                "bg-pastel-gray dark:bg-drk dark:text-pastel-gray",
                 "disabled:bg-gray-200 dark:disabled:bg-drk-dk",
                 "transition-colors duration-100",
             )}

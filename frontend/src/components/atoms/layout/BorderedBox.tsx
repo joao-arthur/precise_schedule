@@ -11,7 +11,7 @@ export function BorderedBox({ children, filled }: props) {
         <div
             className={cl(
                 "border border-gray-500 rounded p-3",
-                filled ? "bg-gray-50 dark:bg-drk" : "",
+                filled ? "bg-pastel-gray dark:bg-drk" : "",
                 filled ? "transition-colors duration-100" : "",
             )}
         >
