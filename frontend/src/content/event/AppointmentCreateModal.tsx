@@ -1,22 +1,21 @@
-import type { AppointmentEvent } from "@/features/event/event";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { useCreateAppointment } from "@/features/event/useEventAPI";
 import { Modal } from "@/components/molecules/Modal";
-import { AppointmentEventRegister } from "@/content/event/AppointmentEventRegister";
+import { AppointmentForm } from "./AppointmentForm";
 
-export function AppointmentAction() {
-    const [open, setOpen] = useState(false);
+type props = {
+    readonly open: boolean;
+    readonly onCancel: () => void;
+};
+
+export function AppointmentCreateModal({ open, onCancel }: props) {
     const { mutate, isLoading, isSuccess } = useCreateAppointment();
     const queryClient = useQueryClient();
 
-    function submit(data: AppointmentEvent) {
-        mutate(data);
-    }
-
     useEffect(() => {
         if (isSuccess) {
-            setOpen(false);
+            onCancel();
             queryClient.invalidateQueries("event/find");
         }
     }, [isSuccess]);
@@ -25,11 +24,11 @@ export function AppointmentAction() {
         <Modal
             title="NEW APPOINTMENT"
             visible={open}
-            formId="AppointmentEventRegister"
-            onCancel={() => setOpen(false)}
+            formId="AppointmentForm"
+            onCancel={onCancel}
             confirmLabel="SAVE"
         >
-            <AppointmentEventRegister onSubmit={submit} isLoading={isLoading} />
+            <AppointmentForm disabled={isLoading} onSubmit={(data) => mutate(data)} />
         </Modal>
     );
 }

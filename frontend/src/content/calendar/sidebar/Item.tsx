@@ -4,7 +4,7 @@ import { ButtonIcon } from "@/components/molecules/ButtonIcon";
 import { Text } from "@/components/atoms/Text";
 import { If } from "@/components/atoms/layout/If";
 import { InfoEvent } from "@/content/event/InfoEvent";
-import { EditEvent } from "@/content/event/EditEvent";
+import { UpdateEvent } from "@/content/event/UpdateEvent";
 import { DeleteEvent } from "@/content/event/DeleteEvent";
 
 type props = {
@@ -41,7 +41,7 @@ export function Item({ evt }: props) {
                     onClick={() => setIsEditVisible(true)}
                 />
                 <If condition={isEditVisible}>
-                    <EditEvent
+                    <UpdateEvent
                         event={event}
                         onCancel={() => setIsEditVisible(false)}
                     />

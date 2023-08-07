@@ -1,22 +1,21 @@
-import type { PartyEvent } from "@/features/event/event";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { useCreateParty } from "@/features/event/useEventAPI";
 import { Modal } from "@/components/molecules/Modal";
-import { PartyRegister } from "@/content/event/PartyRegister";
+import { PartyForm } from "./PartyForm";
 
-export function PartyRegisterModal() {
-    const [open, setOpen] = useState(false);
+type props = {
+    readonly open: boolean;
+    readonly onCancel: () => void;
+};
+
+export function PartyCreateModal({ open, onCancel }: props) {
     const { mutate, isLoading, isSuccess } = useCreateParty();
     const queryClient = useQueryClient();
 
-    function submit(data: PartyEvent) {
-        mutate(data);
-    }
-
     useEffect(() => {
         if (isSuccess) {
-            setOpen(false);
+            onCancel();
             queryClient.invalidateQueries("event/find");
         }
     }, [isSuccess]);
@@ -25,11 +24,11 @@ export function PartyRegisterModal() {
         <Modal
             title="NEW PARTY"
             visible={open}
-            formId="PartyRegister"
-            onCancel={() => setOpen(false)}
+            formId="PartyForm"
+            onCancel={onCancel}
             confirmLabel="SAVE"
         >
-            <PartyRegister onSubmit={submit} isLoading={isLoading} />
+            <PartyForm disabled={isLoading} onSubmit={(data) => mutate(data)} />
         </Modal>
     );
 }

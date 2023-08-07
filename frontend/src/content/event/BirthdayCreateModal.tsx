@@ -1,22 +1,21 @@
-import type { BirthdayEvent } from "@/features/event/event";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { useCreateBirthday } from "@/features/event/useEventAPI";
 import { Modal } from "@/components/molecules/Modal";
-import { BirthdayEventRegister } from "@/content/event/BirthdayEventRegister";
+import { BirthdayForm } from "./BirthdayForm";
 
-export function BirthdayAction() {
-    const [open, setOpen] = useState(false);
+type props = {
+    readonly open: boolean;
+    readonly onCancel: () => void;
+};
+
+export function BirthdayCreateModal({ open, onCancel }: props) {
     const { mutate, isLoading, isSuccess } = useCreateBirthday();
     const queryClient = useQueryClient();
 
-    function submit(data: BirthdayEvent) {
-        mutate(data);
-    }
-
     useEffect(() => {
         if (isSuccess) {
-            setOpen(false);
+            onCancel();
             queryClient.invalidateQueries("event/find");
         }
     }, [isSuccess]);
@@ -25,11 +24,11 @@ export function BirthdayAction() {
         <Modal
             title="NEW BIRTHDAY"
             visible={open}
-            formId="BirthdayEventRegister"
-            onCancel={() => setOpen(false)}
+            formId="BirthdayForm"
+            onCancel={onCancel}
             confirmLabel="SAVE"
         >
-            <BirthdayEventRegister onSubmit={submit} isLoading={isLoading} />
+            <BirthdayForm disabled={isLoading} onSubmit={(data) => mutate(data)} />
         </Modal>
     );
 }
