@@ -20,7 +20,7 @@ export function Toggle({ value, onChange, display }: props) {
                 "border-transparent",
                 "transition-all hover:duration-300 duration-300",
                 {
-                    "bg-primary": value,
+                    "bg-prm": value,
                     "bg-gray-300 dark:bg-dark-light": !value,
                 },
             )}

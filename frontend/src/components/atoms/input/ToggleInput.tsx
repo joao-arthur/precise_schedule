@@ -45,7 +45,7 @@ function ToggleInputComp({ forwardedRef, ...props }: props) {
                     //
                     "peer-disabled:before:bg-gray-200 peer-disabled:bg-gray-200",
                     "peer-disabled:before:dark:bg-dark-lighter peer-disabled:dark:bg-dark-lighter",
-                    "peer-checked:bg-primary peer-checked:border-primary",
+                    "peer-checked:bg-prm peer-checked:border-prm",
                     "peer-checked:before:left-[45px]",
                     "cursor-pointer peer-disabled:cursor-not-allowed",
                 )}

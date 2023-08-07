@@ -12,7 +12,7 @@ export function TransparentIcon({ onClick, icon }: props) {
             <Icon
                 size={9}
                 fill="white"
-                className="fill-white active:fill-primary-lighter"
+                className="fill-white active:fill-prm-lg2"
                 name={icon}
             />
         </button>

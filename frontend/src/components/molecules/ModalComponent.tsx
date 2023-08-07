@@ -38,7 +38,7 @@ export function ModalComponent({
             >
                 <div
                     className={cl(
-                        "py-5 px-7 break-all bg-primary",
+                        "py-5 px-7 break-all bg-prm",
                         "shadow-sm shadow-gray-500",
                     )}
                 >

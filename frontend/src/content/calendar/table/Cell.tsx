@@ -23,8 +23,8 @@ export function Cell({ calendar, date, events }: props) {
                     "w-full h-full",
                     "flex flex-col flex-1",
                     "rounded cursor-pointer overflow-hidden",
-                    "hover:bg-primary-lighter active:bg-primary-light",
-                    "dark:hover:bg-primary-darker dark:active:bg-primary-dark",
+                    "hover:bg-prm-lg2 active:bg-prm-lg",
+                    "dark:hover:bg-prm-dk2 dark:active:bg-prm-dk",
                 )}
                 onClick={() => toggleSelectedDate(date)}
             >

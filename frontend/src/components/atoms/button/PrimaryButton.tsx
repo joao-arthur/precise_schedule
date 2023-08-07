@@ -19,8 +19,8 @@ export function PrimaryButton(
             form={form}
             className={cl(
                 "text-white",
-                "bg-primary dark:bg-primary-dark",
-                "active:bg-primary-dark dark:active:bg-primary-darker",
+                "bg-prm dark:bg-prm-dk",
+                "active:bg-prm-dk dark:active:bg-prm-dk2",
                 "transition-colors duration-300",
             )}
         >

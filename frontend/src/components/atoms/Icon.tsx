@@ -49,7 +49,7 @@ export function Icon({ name, className, fill, size }: props) {
         {
             "fill-white": fill === "white",
             "fill-gray-500": fill === "gray",
-            "fill-primary": fill === "primary",
+            "fill-prm": fill === "primary",
         },
         {
             "w-6 h-6": size === 6,

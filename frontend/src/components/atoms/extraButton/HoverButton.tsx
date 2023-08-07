@@ -13,7 +13,7 @@ export function HoverButton({ onClick, children }: props) {
             className={cl(
                 "border-none cursor-pointer py-1 px-2 w-20 text-center",
                 "text-white rounded",
-                "hover:bg-primary-light dark:hover:bg-primary",
+                "hover:bg-prm-lg dark:hover:bg-prm",
                 "transition-colors duration-300",
             )}
         >

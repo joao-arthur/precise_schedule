@@ -23,7 +23,7 @@ export function Header({ left }: props) {
         <header
             className={cl(
                 "flex w-full flex-shrink-0 justify-between px-2 h-12",
-                "bg-primary dark:bg-primary-dark",
+                "bg-prm dark:bg-prm-dk",
                 "transition-colors duration-300",
             )}
         >

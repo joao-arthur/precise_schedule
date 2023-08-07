@@ -14,10 +14,10 @@ export function SecondaryButton({ children, title, onClick }: props) {
             title={title}
             onClick={onClick}
             className={cl(
-                "text-primary",
+                "text-prm",
                 "bg-gray-200 dark:bg-dark-light",
                 "active:bg-gray-300 dark:active:bg-dark-lighter",
-                "active:text-primary-dark dark:active:text-primary-light",
+                "active:text-prm-dk dark:active:text-prm-lg",
             )}
         >
             {children}
