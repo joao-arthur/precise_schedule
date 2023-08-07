@@ -9,7 +9,7 @@ import { useCalendarEvent } from "@/features/calendarEvent/useCalendarEvent";
 import { Text } from "@/components/atoms/Text";
 import { Button } from "@/components/atoms/button/Button";
 import { ButtonIcon } from "@/components/molecules/ButtonIcon";
-import { EventItem } from "./EventItem";
+import { Item } from "./Item";
 
 const sidebarMachine = createMachine({
     predictableActionArguments: true,
@@ -117,7 +117,7 @@ export function Sidebar() {
                                 })}
                             >
                                 {getDateEvents(displayDate).map((evt) => (
-                                    <EventItem key={evt} evt={evt} />
+                                    <Item key={evt} evt={evt} />
                                 ))}
                             </div>
                             <div className="p-4 border-t border-gray-300 dark:border-gray-500">

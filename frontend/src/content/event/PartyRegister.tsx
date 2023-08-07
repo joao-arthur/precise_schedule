@@ -12,12 +12,12 @@ type props = {
     readonly isLoading: boolean;
 };
 
-export function PartyEventRegister({ onSubmit, isLoading }: props) {
+export function PartyRegister({ onSubmit, isLoading }: props) {
     const { register, handleSubmit } = useForm<PartyEvent>();
 
     return (
         <ModalForm
-            id="PartyEventRegister"
+            id="PartyRegister"
             onSubmit={handleSubmit(onSubmit)}
         >
             <InputWrapper name="name" title="Name">

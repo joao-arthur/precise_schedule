@@ -5,7 +5,7 @@ import { useCreateMeeting } from "@/features/event/useEventAPI";
 import { Modal } from "@/components/molecules/Modal";
 import { MeetingEventRegister } from "@/content/event/MeetingEventRegister";
 
-export function MeetingAction() {
+export function MeetingRegisterModal() {
     const [open, setOpen] = useState(false);
     const { mutate, isLoading, isSuccess } = useCreateMeeting();
     const queryClient = useQueryClient();

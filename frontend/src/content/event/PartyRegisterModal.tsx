@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useCreateParty } from "@/features/event/useEventAPI";
 import { Modal } from "@/components/molecules/Modal";
-import { PartyEventRegister } from "@/content/event/PartyEventRegister";
+import { PartyRegister } from "@/content/event/PartyRegister";
 
-export function PartyAction() {
+export function PartyRegisterModal() {
     const [open, setOpen] = useState(false);
     const { mutate, isLoading, isSuccess } = useCreateParty();
     const queryClient = useQueryClient();
@@ -25,11 +25,11 @@ export function PartyAction() {
         <Modal
             title="NEW PARTY"
             visible={open}
-            formId="PartyEventRegister"
+            formId="PartyRegister"
             onCancel={() => setOpen(false)}
             confirmLabel="SAVE"
         >
-            <PartyEventRegister onSubmit={submit} isLoading={isLoading} />
+            <PartyRegister onSubmit={submit} isLoading={isLoading} />
         </Modal>
     );
 }
