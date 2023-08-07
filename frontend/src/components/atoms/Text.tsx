@@ -19,7 +19,7 @@ export function Text({ children, disabled, selectable, size, color }: props) {
     return (
         <span
             className={cl(
-                "transition-colors duration-300",
+                "transition-colors duration-100",
                 "text-ellipsis whitespace-nowrap overflow-hidden",
                 selectable ? "" : "select-none",
                 {
