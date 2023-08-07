@@ -4,7 +4,6 @@ import { useQueryClient } from "react-query";
 import { useCreateDate } from "@/features/event/useEventAPI";
 import { Modal } from "@/components/molecules/Modal";
 import { DateEventRegister } from "@/content/event/DateEventRegister";
-import { Action } from "./Action";
 
 export function DateAction() {
     const [open, setOpen] = useState(false);
@@ -23,21 +22,14 @@ export function DateAction() {
     }, [isSuccess]);
 
     return (
-        <>
-            <Action
-                title="DATE"
-                icon="people"
-                onClick={() => setOpen(!open)}
-            />
-            <Modal
-                title="NEW DATE"
-                visible={open}
-                formId="DateEventRegister"
-                onCancel={() => setOpen(false)}
-                confirmLabel="SAVE"
-            >
-                <DateEventRegister onSubmit={submit} isLoading={isLoading} />
-            </Modal>
-        </>
+        <Modal
+            title="NEW DATE"
+            visible={open}
+            formId="DateEventRegister"
+            onCancel={() => setOpen(false)}
+            confirmLabel="SAVE"
+        >
+            <DateEventRegister onSubmit={submit} isLoading={isLoading} />
+        </Modal>
     );
 }

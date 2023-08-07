@@ -4,7 +4,6 @@ import { useQueryClient } from "react-query";
 import { useCreateMeeting } from "@/features/event/useEventAPI";
 import { Modal } from "@/components/molecules/Modal";
 import { MeetingEventRegister } from "@/content/event/MeetingEventRegister";
-import { Action } from "./Action";
 
 export function MeetingAction() {
     const [open, setOpen] = useState(false);
@@ -23,21 +22,14 @@ export function MeetingAction() {
     }, [isSuccess]);
 
     return (
-        <>
-            <Action
-                title="MEETING"
-                icon="door"
-                onClick={() => setOpen(!open)}
-            />
-            <Modal
-                title="NEW MEETING"
-                visible={open}
-                formId="MeetingEventRegister"
-                onCancel={() => setOpen(false)}
-                confirmLabel="SAVE"
-            >
-                <MeetingEventRegister onSubmit={submit} isLoading={isLoading} />
-            </Modal>
-        </>
+        <Modal
+            title="NEW MEETING"
+            visible={open}
+            formId="MeetingEventRegister"
+            onCancel={() => setOpen(false)}
+            confirmLabel="SAVE"
+        >
+            <MeetingEventRegister onSubmit={submit} isLoading={isLoading} />
+        </Modal>
     );
 }

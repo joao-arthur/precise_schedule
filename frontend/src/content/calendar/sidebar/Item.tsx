@@ -11,7 +11,7 @@ type props = {
     readonly evt: string;
 };
 
-export function EventItem({ evt }: props) {
+export function Item({ evt }: props) {
     const [isInfoVisible, setIsInfoVisible] = useState(false);
     const [isEditVisible, setIsEditVisible] = useState(false);
     const [isDeleteVisible, setIsDeleteVisible] = useState(false);

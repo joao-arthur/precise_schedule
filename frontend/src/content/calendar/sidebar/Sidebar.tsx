@@ -5,10 +5,11 @@ import { dateFns } from "frontend_core";
 import { cl } from "@/lib/cl";
 import { useDevice } from "@/lib/device/useDevice";
 import { useCalendar } from "@/features/calendar/useCalendar";
+import { useCalendarEvent } from "@/features/calendarEvent/useCalendarEvent";
 import { Text } from "@/components/atoms/Text";
 import { Button } from "@/components/atoms/button/Button";
 import { ButtonIcon } from "@/components/molecules/ButtonIcon";
-import { Events } from "./Events";
+import { EventItem } from "./EventItem";
 
 const sidebarMachine = createMachine({
     predictableActionArguments: true,
@@ -28,11 +29,12 @@ const sidebarMachine = createMachine({
 });
 
 export function Sidebar() {
+    const [state, send] = useMachine(sidebarMachine);
     const isMobile = useDevice().isMobile();
     const { selectedDate, removeSelectedDate } = useCalendar();
-    const [displayDate, setDisplayDay] = useState(selectedDate);
     const timeoutId = useRef(-1);
-    const [state, send] = useMachine(sidebarMachine);
+    const { getDateEvents } = useCalendarEvent();
+    const [displayDate, setDisplayDay] = useState(selectedDate);
 
     useEffect(() => {
         switch (state.value) {
@@ -89,9 +91,9 @@ export function Sidebar() {
                         >
                             <div
                                 className={cl(
-                                    "flex justify-between border-b",
-                                    "items-center px-5 py-4",
-                                    "border-gray-300 dark:border-gray-500",
+                                    "flex justify-between items-center",
+                                    "px-5 py-4",
+                                    "border-b border-gray-300 dark:border-gray-500",
                                     "transition-colors duration-300",
                                 )}
                             >
@@ -109,8 +111,16 @@ export function Sidebar() {
                                     onClick={() => removeSelectedDate()}
                                 />
                             </div>
-                            <Events date={displayDate} />
-                            <div className="p-4 border-t">
+                            <div
+                                className={cl("flex-1 m-1", {
+                                    "w-screen": isMobile,
+                                })}
+                            >
+                                {getDateEvents(displayDate).map((evt) => (
+                                    <EventItem key={evt} evt={evt} />
+                                ))}
+                            </div>
+                            <div className="p-4 border-t border-gray-300 dark:border-gray-500">
                                 <Button>NEW EVENT</Button>
                             </div>
                         </div>

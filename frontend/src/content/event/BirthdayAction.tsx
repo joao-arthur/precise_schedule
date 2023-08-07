@@ -4,7 +4,6 @@ import { useQueryClient } from "react-query";
 import { useCreateBirthday } from "@/features/event/useEventAPI";
 import { Modal } from "@/components/molecules/Modal";
 import { BirthdayEventRegister } from "@/content/event/BirthdayEventRegister";
-import { Action } from "./Action";
 
 export function BirthdayAction() {
     const [open, setOpen] = useState(false);
@@ -23,21 +22,14 @@ export function BirthdayAction() {
     }, [isSuccess]);
 
     return (
-        <>
-            <Action
-                title="BIRTHDAY"
-                icon="birthday"
-                onClick={() => setOpen(!open)}
-            />
-            <Modal
-                title="NEW BIRTHDAY"
-                visible={open}
-                formId="BirthdayEventRegister"
-                onCancel={() => setOpen(false)}
-                confirmLabel="SAVE"
-            >
-                <BirthdayEventRegister onSubmit={submit} isLoading={isLoading} />
-            </Modal>
-        </>
+        <Modal
+            title="NEW BIRTHDAY"
+            visible={open}
+            formId="BirthdayEventRegister"
+            onCancel={() => setOpen(false)}
+            confirmLabel="SAVE"
+        >
+            <BirthdayEventRegister onSubmit={submit} isLoading={isLoading} />
+        </Modal>
     );
 }
