@@ -8,7 +8,7 @@ import { SelectInput } from "@/components/atoms/input/SelectInput";
 import { DateInput } from "@/components/atoms/input/DateInput";
 import { TimeInput } from "@/components/atoms/input/TimeInput";
 import { ToggleInput } from "@/components/atoms/input/ToggleInput";
-import { frequencyOptions } from "./frequencyOptions";
+import { frequencyOptions } from "../frequencyOptions";
 
 type props = {
     readonly event?: AppointmentEvent;

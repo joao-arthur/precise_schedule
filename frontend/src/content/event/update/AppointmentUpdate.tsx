@@ -3,14 +3,14 @@ import { useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { useUpdateAppointment } from "@/features/event/useEventAPI";
 import { Modal } from "@/components/molecules/Modal";
-import { AppointmentForm } from "./AppointmentForm";
+import { AppointmentForm } from "../form/AppointmentForm";
 
 type props = {
     readonly event: AppointmentEvent;
     readonly onCancel: () => void;
 };
 
-export function AppointmentUpdateModal({ event, onCancel }: props) {
+export function AppointmentUpdate({ event, onCancel }: props) {
     const { mutate, isSuccess, isLoading } = useUpdateAppointment();
     const queryClient = useQueryClient();
 

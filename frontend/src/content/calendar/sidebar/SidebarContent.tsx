@@ -8,7 +8,7 @@ import { Text } from "@/components/atoms/Text";
 import { Button } from "@/components/atoms/button/Button";
 import { ButtonIcon } from "@/components/molecules/ButtonIcon";
 import { If } from "@/components/atoms/layout/If";
-import { CreateEventModal } from "@/content/event/CreateEventModal";
+import { CreateEvent } from "@/content/event/CreateEvent";
 import { Item } from "./Item";
 
 type props = {

@@ -1,16 +1,16 @@
 import { useEffect } from "react";
 import { useQueryClient } from "react-query";
-import { useCreateBirthday } from "@/features/event/useEventAPI";
+import { useCreateParty } from "@/features/event/useEventAPI";
 import { Modal } from "@/components/molecules/Modal";
-import { BirthdayForm } from "./BirthdayForm";
+import { PartyForm } from "../form/PartyForm";
 
 type props = {
     readonly open: boolean;
     readonly onCancel: () => void;
 };
 
-export function BirthdayCreateModal({ open, onCancel }: props) {
-    const { mutate, isLoading, isSuccess } = useCreateBirthday();
+export function PartyCreate({ open, onCancel }: props) {
+    const { mutate, isLoading, isSuccess } = useCreateParty();
     const queryClient = useQueryClient();
 
     useEffect(() => {
@@ -22,13 +22,13 @@ export function BirthdayCreateModal({ open, onCancel }: props) {
 
     return (
         <Modal
-            title="NEW BIRTHDAY"
+            title="NEW PARTY"
             visible={open}
-            formId="BirthdayForm"
+            formId="PartyForm"
             onCancel={onCancel}
             confirmLabel="SAVE"
         >
-            <BirthdayForm disabled={isLoading} onSubmit={(data) => mutate(data)} />
+            <PartyForm disabled={isLoading} onSubmit={(data) => mutate(data)} />
         </Modal>
     );
 }

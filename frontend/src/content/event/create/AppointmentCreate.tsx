@@ -1,16 +1,16 @@
 import { useEffect } from "react";
 import { useQueryClient } from "react-query";
-import { useCreateDate } from "@/features/event/useEventAPI";
+import { useCreateAppointment } from "@/features/event/useEventAPI";
 import { Modal } from "@/components/molecules/Modal";
-import { DateForm } from "./DateForm";
+import { AppointmentForm } from "../form/AppointmentForm";
 
 type props = {
     readonly open: boolean;
     readonly onCancel: () => void;
 };
 
-export function DateCreateModal({ open, onCancel }: props) {
-    const { mutate, isLoading, isSuccess } = useCreateDate();
+export function AppointmentCreate({ open, onCancel }: props) {
+    const { mutate, isLoading, isSuccess } = useCreateAppointment();
     const queryClient = useQueryClient();
 
     useEffect(() => {
@@ -22,13 +22,13 @@ export function DateCreateModal({ open, onCancel }: props) {
 
     return (
         <Modal
-            title="NEW DATE"
+            title="NEW APPOINTMENT"
             visible={open}
-            formId="DateForm"
+            formId="AppointmentForm"
             onCancel={onCancel}
             confirmLabel="SAVE"
         >
-            <DateForm disabled={isLoading} onSubmit={(data) => mutate(data)} />
+            <AppointmentForm disabled={isLoading} onSubmit={(data) => mutate(data)} />
         </Modal>
     );
 }

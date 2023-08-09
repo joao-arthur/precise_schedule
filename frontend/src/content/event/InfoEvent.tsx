@@ -1,10 +1,10 @@
 import type { Event } from "@/features/event/event";
 import { Modal } from "@/components/molecules/Modal";
-import { AppointmentForm } from "./AppointmentForm";
-import { BirthdayForm } from "./BirthdayForm";
-import { DateForm } from "./DateForm";
-import { MeetingForm } from "./MeetingForm";
-import { PartyForm } from "./PartyForm";
+import { AppointmentForm } from "./form/AppointmentForm";
+import { BirthdayForm } from "./form/BirthdayForm";
+import { DateForm } from "./form/DateForm";
+import { MeetingForm } from "./form/MeetingForm";
+import { PartyForm } from "./form/PartyForm";
 
 type props = {
     readonly event: Event;

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button } from "@/components/atoms/button/Button";
 import { Modal } from "@/components/molecules/Modal";
 import { AppointmentCreateModal } from "./AppointmentCreateModal";
@@ -5,14 +6,13 @@ import { BirthdayCreateModal } from "./BirthdayCreateModal";
 import { DateCreateModal } from "./DateCreateModal";
 import { MeetingCreateModal } from "./MeetingCreateModal";
 import { PartyCreateModal } from "./PartyCreateModal";
-import { useState } from "react";
 
 type props = {
     readonly open: boolean;
     readonly onCancel: () => void;
 };
 
-export function CreateEventModal({ open, onCancel }: props) {
+export function CreateEvent({ open, onCancel }: props) {
     const [appointmentOpen, setAppointmentOpen] = useState(false);
     const [birthdayOpen, setBirthdayOpen] = useState(false);
     const [dateOpen, setDateOpen] = useState(false);

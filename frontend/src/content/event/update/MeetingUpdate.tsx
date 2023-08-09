@@ -1,17 +1,17 @@
-import type { DateEvent } from "@/features/event/event";
+import type { MeetingEvent } from "@/features/event/event";
 import { useEffect } from "react";
 import { useQueryClient } from "react-query";
-import { useUpdateDate } from "@/features/event/useEventAPI";
+import { useUpdateMeeting } from "@/features/event/useEventAPI";
 import { Modal } from "@/components/molecules/Modal";
-import { DateForm } from "./DateForm";
+import { MeetingForm } from "../form/MeetingForm";
 
 type props = {
-    readonly event: DateEvent;
+    readonly event: MeetingEvent;
     readonly onCancel: () => void;
 };
 
-export function DateUpdateModal({ event, onCancel }: props) {
-    const { mutate, isSuccess, isLoading } = useUpdateDate();
+export function MeetingUpdate({ event, onCancel }: props) {
+    const { mutate, isSuccess, isLoading } = useUpdateMeeting();
     const queryClient = useQueryClient();
 
     useEffect(() => {
@@ -26,10 +26,10 @@ export function DateUpdateModal({ event, onCancel }: props) {
             visible
             title={`EDIT "${event.name.toLocaleUpperCase()}"`}
             onCancel={onCancel}
-            formId="DateForm"
+            formId="MeetingForm"
             confirmLabel="SAVE"
         >
-            <DateForm event={event} disabled={isLoading} onSubmit={(data) => mutate(data)} />
+            <MeetingForm event={event} disabled={isLoading} onSubmit={(data) => mutate(data)} />
         </Modal>
     );
 }

@@ -3,14 +3,14 @@ import { useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { useUpdateBirthday } from "@/features/event/useEventAPI";
 import { Modal } from "@/components/molecules/Modal";
-import { BirthdayForm } from "./BirthdayForm";
+import { BirthdayForm } from "../form/BirthdayForm";
 
 type props = {
     readonly event: BirthdayEvent;
     readonly onCancel: () => void;
 };
 
-export function BirthdayUpdateModal({ event, onCancel }: props) {
+export function BirthdayUpdate({ event, onCancel }: props) {
     const { mutate, isSuccess, isLoading } = useUpdateBirthday();
     const queryClient = useQueryClient();
 

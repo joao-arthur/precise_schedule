@@ -1,16 +1,16 @@
 import { useEffect } from "react";
 import { useQueryClient } from "react-query";
-import { useCreateParty } from "@/features/event/useEventAPI";
+import { useCreateMeeting } from "@/features/event/useEventAPI";
 import { Modal } from "@/components/molecules/Modal";
-import { PartyForm } from "./PartyForm";
+import { MeetingForm } from "../form/MeetingForm";
 
 type props = {
     readonly open: boolean;
     readonly onCancel: () => void;
 };
 
-export function PartyCreateModal({ open, onCancel }: props) {
-    const { mutate, isLoading, isSuccess } = useCreateParty();
+export function MeetingCreate({ open, onCancel }: props) {
+    const { mutate, isLoading, isSuccess } = useCreateMeeting();
     const queryClient = useQueryClient();
 
     useEffect(() => {
@@ -22,13 +22,13 @@ export function PartyCreateModal({ open, onCancel }: props) {
 
     return (
         <Modal
-            title="NEW PARTY"
+            title="NEW MEETING"
             visible={open}
-            formId="PartyForm"
+            formId="MeetingForm"
             onCancel={onCancel}
             confirmLabel="SAVE"
         >
-            <PartyForm disabled={isLoading} onSubmit={(data) => mutate(data)} />
+            <MeetingForm disabled={isLoading} onSubmit={(data) => mutate(data)} />
         </Modal>
     );
 }
