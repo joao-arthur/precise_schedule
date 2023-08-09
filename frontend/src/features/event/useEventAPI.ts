@@ -74,7 +74,7 @@ export function useUpdateAppointment() {
     return useMutation(
         "event/update/APPOINTMENT",
         (event: AppointmentEvent) =>
-            request.post("event/APPOINTMENT", event, {
+            request.put(`event/APPOINTMENT/${event.id}`, event, {
                 loading: `Saving "${event.name}"...`,
                 success: `"${event.name}" edited!`,
             }),
@@ -86,7 +86,7 @@ export function useUpdateBirthday() {
     return useMutation(
         "event/update/BIRTHDAY",
         (event: BirthdayEvent) =>
-            request.post("event/BIRTHDAY", event, {
+            request.put(`event/BIRTHDAY/${event.id}`, event, {
                 loading: `Saving "${event.name}"...`,
                 success: `"${event.name}" edited!`,
             }),
@@ -98,7 +98,7 @@ export function useUpdateDate() {
     return useMutation(
         "event/update/DATE",
         (event: DateEvent) =>
-            request.post("event/DATE", event, {
+            request.put(`event/DATE/${event.id}`, event, {
                 loading: `Saving "${event.name}"...`,
                 success: `"${event.name}" edited!`,
             }),
@@ -110,7 +110,7 @@ export function useUpdateMeeting() {
     return useMutation(
         "event/update/MEETING",
         (event: MeetingEvent) =>
-            request.post("event/MEETING", event, {
+            request.put(`event/MEETING/${event.id}`, event, {
                 loading: `Saving "${event.name}"...`,
                 success: `"${event.name}" edited!`,
             }),
@@ -122,7 +122,7 @@ export function useUpdateParty() {
     return useMutation(
         "event/update/PARTY",
         (event: PartyEvent) =>
-            request.post("event/PARTY", event, {
+            request.put(`event/PARTY/${event.id}`, {
                 loading: `Saving "${event.name}"...`,
                 success: `"${event.name}" edited!`,
             }),

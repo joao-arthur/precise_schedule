@@ -28,7 +28,7 @@ export function Sidebar() {
     const isMobile = useDevice().isMobile();
     const { selectedDate, removeSelectedDate } = useCalendar();
     const timeoutId = useRef(-1);
-    const [displayDate, setDisplayDay] = useState(selectedDate);
+    const [date, setDate] = useState(selectedDate);
 
     useEffect(() => {
         switch (state.value) {
@@ -42,14 +42,14 @@ export function Sidebar() {
                 );
                 break;
             case "closed":
-                setDisplayDay(undefined);
+                setDate(undefined);
                 break;
         }
     }, [state]);
 
     useEffect(() => {
         if (selectedDate) {
-            setDisplayDay(selectedDate);
+            setDate(selectedDate);
             if (state.value !== "opened") send("open");
         } else send("close");
     }, [selectedDate]);
@@ -72,9 +72,7 @@ export function Sidebar() {
             <div
                 className={cl("flex flex-0", isMobile ? "w-screen" : "w-100")}
             >
-                {displayDate
-                    ? <SidebarContent date={displayDate} close={() => removeSelectedDate()} />
-                    : null}
+                {date ? <SidebarContent date={date} close={() => removeSelectedDate()} /> : null}
             </div>
         </div>
     );

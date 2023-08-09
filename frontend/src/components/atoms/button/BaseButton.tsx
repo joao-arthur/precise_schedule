@@ -10,7 +10,7 @@ type props = {
     readonly type?: "button" | "submit";
 };
 
-export function BaseButton({ children, title, onClick, className, form, type = "submit" }: props) {
+export function BaseButton({ children, title, onClick, className, form, type }: props) {
     return (
         <button
             type={type}

@@ -13,25 +13,25 @@ type props = {
 };
 
 export function DateForm({ event, disabled, onSubmit }: props) {
-    const { register, handleSubmit } = useForm<DateEvent>();
+    const { register, handleSubmit } = useForm<DateEvent>(
+        event ? { defaultValues: event } : undefined,
+    );
     const required = true;
 
     return (
         <form id="DateForm" onSubmit={onSubmit ? handleSubmit(onSubmit) : undefined}>
             <InputWrapper name="name" title="Name">
-                <TextInput {...register("name", { required, disabled, value: event?.name })} />
+                <TextInput {...register("name", { required, disabled })} />
             </InputWrapper>
             <InputWrapper name="day" title="Day">
-                <DateInput {...register("day", { required, disabled, value: event?.day })} />
+                <DateInput {...register("day", { required, disabled })} />
             </InputWrapper>
             <Group>
                 <InputWrapper name="begin" title="Begin">
-                    <TimeInput
-                        {...register("begin", { required, disabled, value: event?.begin })}
-                    />
+                    <TimeInput {...register("begin", { required, disabled })} />
                 </InputWrapper>
                 <InputWrapper name="end" title="End">
-                    <TimeInput {...register("end", { required, disabled, value: event?.end })} />
+                    <TimeInput {...register("end", { required, disabled })} />
                 </InputWrapper>
             </Group>
         </form>

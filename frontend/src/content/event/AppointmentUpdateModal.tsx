@@ -22,8 +22,14 @@ export function AppointmentUpdateModal({ event, onCancel }: props) {
     }, [queryClient, isSuccess, onCancel]);
 
     return (
-        <Modal visible title={`EDIT "${event.name.toLocaleUpperCase()}"`} onCancel={onCancel}>
-            <AppointmentForm event={event} disabled={isLoading} onSubmit={mutate} />
+        <Modal
+            visible
+            title={`EDIT "${event.name.toLocaleUpperCase()}"`}
+            onCancel={onCancel}
+            formId="AppointmentForm"
+            confirmLabel="SAVE"
+        >
+            <AppointmentForm event={event} disabled={isLoading} onSubmit={(data) => mutate(data)} />
         </Modal>
     );
 }

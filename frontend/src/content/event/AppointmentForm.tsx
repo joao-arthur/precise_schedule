@@ -17,7 +17,9 @@ type props = {
 };
 
 export function AppointmentForm({ event, disabled, onSubmit }: props) {
-    const { register, handleSubmit, watch, setValue } = useForm<AppointmentEvent>();
+    const { register, handleSubmit, watch, setValue } = useForm<AppointmentEvent>(
+        event ? { defaultValues: event } : undefined,
+    );
     const watchFrequency = watch("frequency");
     const canRepeatWeekend = watchFrequency ? ["1D", "2D"].includes(watchFrequency) : true;
     const required = true;
@@ -31,35 +33,29 @@ export function AppointmentForm({ event, disabled, onSubmit }: props) {
     return (
         <form id="AppointmentForm" onSubmit={onSubmit ? handleSubmit(onSubmit) : undefined}>
             <InputWrapper name="name" title="Name">
-                <TextInput {...register("name", { required, disabled, value: event?.name })} />
+                <TextInput {...register("name", { required, disabled })} />
             </InputWrapper>
             <InputWrapper name="day" title="Day">
-                <DateInput {...register("day", { required, disabled, value: event?.day })} />
+                <DateInput {...register("day", { required, disabled })} />
             </InputWrapper>
             <Group>
                 <InputWrapper name="begin" title="Begin">
-                    <TimeInput
-                        {...register("begin", { required, disabled, value: event?.begin })}
-                    />
+                    <TimeInput {...register("begin", { required, disabled })} />
                 </InputWrapper>
                 <InputWrapper name="end" title="End">
-                    <TimeInput {...register("end", { required, disabled, value: event?.end })} />
+                    <TimeInput {...register("end", { required, disabled })} />
                 </InputWrapper>
             </Group>
             <Group>
                 <InputWrapper name="frequency" title="Frequency">
                     <SelectInput
-                        {...register("frequency", { required, disabled, value: event?.frequency })}
+                        {...register("frequency", { required, disabled })}
                         options={frequencyOptions}
                     />
                 </InputWrapper>
                 <InputWrapper name="weekendRepeat" title="Repeats on weekend">
                     <ToggleInput
-                        {...register("weekendRepeat", {
-                            required,
-                            disabled: disabled || !canRepeatWeekend,
-                            value: event?.weekendRepeat,
-                        })}
+                        {...register("weekendRepeat", { disabled: disabled || !canRepeatWeekend })}
                     />
                 </InputWrapper>
             </Group>

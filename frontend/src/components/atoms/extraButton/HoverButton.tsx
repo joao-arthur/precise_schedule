@@ -11,7 +11,7 @@ export function HoverButton({ onClick, children }: props) {
         <button
             onClick={onClick}
             className={cl(
-                "text-white text-center cursor-pointer py-1 px-2 w-20 rounded",
+                "text-white text-center cursor-pointer py-1 px-2 w-24 rounded",
                 "hover:bg-prm-lg active:bg-prm-lg2",
                 "dark:hover:bg-prm dark:active:bg-prm-lg",
                 "transition-colors duration-100",

@@ -11,6 +11,7 @@ type props = {
 export function SecondaryButton({ children, title, onClick }: props) {
     return (
         <BaseButton
+            type="button"
             title={title}
             onClick={onClick}
             className={cl(

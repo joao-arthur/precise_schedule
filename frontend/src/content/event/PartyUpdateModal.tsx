@@ -22,8 +22,14 @@ export function PartyUpdateModal({ event, onCancel }: props) {
     }, [queryClient, isSuccess, onCancel]);
 
     return (
-        <Modal visible title={`EDIT "${event.name.toLocaleUpperCase()}"`} onCancel={onCancel}>
-            <PartyForm event={event} disabled={isLoading} onSubmit={mutate} />
+        <Modal
+            visible
+            title={`EDIT "${event.name.toLocaleUpperCase()}"`}
+            onCancel={onCancel}
+            formId="PartyForm"
+            confirmLabel="SAVE"
+        >
+            <PartyForm event={event} disabled={isLoading} onSubmit={(data) => mutate(data)} />
         </Modal>
     );
 }

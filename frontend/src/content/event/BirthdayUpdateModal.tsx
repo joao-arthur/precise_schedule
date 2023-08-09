@@ -22,8 +22,14 @@ export function BirthdayUpdateModal({ event, onCancel }: props) {
     }, [queryClient, isSuccess, onCancel]);
 
     return (
-        <Modal visible title={`EDIT "${event.name.toLocaleUpperCase()}"`} onCancel={onCancel}>
-            <BirthdayForm event={event} disabled={isLoading} onSubmit={mutate} />
+        <Modal
+            visible
+            title={`EDIT "${event.name.toLocaleUpperCase()}"`}
+            onCancel={onCancel}
+            formId="BirthdayForm"
+            confirmLabel="SAVE"
+        >
+            <BirthdayForm event={event} disabled={isLoading} onSubmit={(data) => mutate(data)} />
         </Modal>
     );
 }

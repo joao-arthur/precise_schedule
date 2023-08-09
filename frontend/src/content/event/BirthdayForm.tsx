@@ -11,7 +11,9 @@ type props = {
 };
 
 export function BirthdayForm({ event, disabled, onSubmit }: props) {
-    const { register, handleSubmit } = useForm<BirthdayEvent>();
+    const { register, handleSubmit } = useForm<BirthdayEvent>(
+        event ? { defaultValues: event } : undefined,
+    );
     const required = true;
 
     return (

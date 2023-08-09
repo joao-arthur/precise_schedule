@@ -14,6 +14,7 @@ export function PrimaryButton(
 ) {
     return (
         <BaseButton
+            type="submit"
             title={title}
             onClick={onClick}
             form={form}

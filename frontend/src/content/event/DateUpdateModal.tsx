@@ -22,8 +22,14 @@ export function DateUpdateModal({ event, onCancel }: props) {
     }, [queryClient, isSuccess, onCancel]);
 
     return (
-        <Modal visible title={`EDIT "${event.name.toLocaleUpperCase()}"`} onCancel={onCancel}>
-            <DateForm event={event} disabled={isLoading} onSubmit={mutate} />
+        <Modal
+            visible
+            title={`EDIT "${event.name.toLocaleUpperCase()}"`}
+            onCancel={onCancel}
+            formId="DateForm"
+            confirmLabel="SAVE"
+        >
+            <DateForm event={event} disabled={isLoading} onSubmit={(data) => mutate(data)} />
         </Modal>
     );
 }
