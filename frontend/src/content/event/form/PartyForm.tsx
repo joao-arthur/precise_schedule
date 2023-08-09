@@ -5,6 +5,7 @@ import { Group } from "@/components/atoms/layout/Group";
 import { TextInput } from "@/components/atoms/input/TextInput";
 import { DateInput } from "@/components/atoms/input/DateInput";
 import { TimeInput } from "@/components/atoms/input/TimeInput";
+import { getFormName } from "./getFormName";
 
 type props = {
     readonly event?: PartyEvent;
@@ -19,7 +20,10 @@ export function PartyForm({ event, disabled, onSubmit }: props) {
     const required = true;
 
     return (
-        <form id="PartyForm" onSubmit={onSubmit ? handleSubmit(onSubmit) : undefined}>
+        <form
+            id={getFormName("PARTY")}
+            onSubmit={onSubmit ? handleSubmit(onSubmit) : undefined}
+        >
             <InputWrapper name="name" title="Name">
                 <TextInput {...register("name", { required, disabled })} />
             </InputWrapper>

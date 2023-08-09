@@ -24,38 +24,17 @@ export function Item({ evt }: props) {
                 {event.name}
             </Text>
             <div className="flex gap-2">
-                <ButtonIcon
-                    icon="info"
-                    size="medium"
-                    onClick={() => setIsInfoVisible(true)}
-                />
+                <ButtonIcon icon="info" size="medium" onClick={() => setIsInfoVisible(true)} />
                 <If condition={isInfoVisible}>
-                    <InfoEvent
-                        event={event}
-                        onCancel={() => setIsInfoVisible(false)}
-                    />
+                    <InfoEvent event={event} onClose={() => setIsInfoVisible(false)} />
                 </If>
-                <ButtonIcon
-                    icon="pencil"
-                    size="medium"
-                    onClick={() => setIsEditVisible(true)}
-                />
+                <ButtonIcon icon="pencil" size="medium" onClick={() => setIsEditVisible(true)} />
                 <If condition={isEditVisible}>
-                    <UpdateEvent
-                        event={event}
-                        onCancel={() => setIsEditVisible(false)}
-                    />
+                    <UpdateEvent event={event} onClose={() => setIsEditVisible(false)} />
                 </If>
-                <ButtonIcon
-                    icon="trash"
-                    size="medium"
-                    onClick={() => setIsDeleteVisible(true)}
-                />
+                <ButtonIcon icon="trash" size="medium" onClick={() => setIsDeleteVisible(true)} />
                 <If condition={isDeleteVisible}>
-                    <DeleteEvent
-                        event={event}
-                        onCancel={() => setIsDeleteVisible(false)}
-                    />
+                    <DeleteEvent event={event} onCancel={() => setIsDeleteVisible(false)} />
                 </If>
             </div>
         </div>

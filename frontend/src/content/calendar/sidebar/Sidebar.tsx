@@ -69,10 +69,8 @@ export function Sidebar() {
                 },
             )}
         >
-            <div
-                className={cl("flex flex-0", isMobile ? "w-screen" : "w-100")}
-            >
-                {date ? <SidebarContent date={date} close={() => removeSelectedDate()} /> : null}
+            <div className={cl("flex flex-0", isMobile ? "w-screen" : "w-100")}>
+                {date ? <SidebarContent date={date} close={removeSelectedDate} /> : null}
             </div>
         </div>
     );

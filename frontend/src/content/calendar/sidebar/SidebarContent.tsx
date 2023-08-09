@@ -8,7 +8,7 @@ import { Text } from "@/components/atoms/Text";
 import { Button } from "@/components/atoms/button/Button";
 import { ButtonIcon } from "@/components/molecules/ButtonIcon";
 import { If } from "@/components/atoms/layout/If";
-import { CreateEvent } from "@/content/event/CreateEvent";
+import { CreateEventModal } from "@/content/event/CreateEventModal";
 import { Item } from "./Item";
 
 type props = {
@@ -18,17 +18,12 @@ type props = {
 
 export function SidebarContent({ date, close }: props) {
     const isMobile = useDevice().isMobile();
-    const [open, setOpen] = useState(false);
+    const [visible, setVisible] = useState(false);
     const { getDateEvents } = useCalendarEvent();
     const logged = useSession().logged();
 
     return (
-        <div
-            className={cl(
-                "flex flex-col flex-1",
-                isMobile ? "w-screen" : "w-100",
-            )}
-        >
+        <div className={cl("flex flex-col flex-1", isMobile ? "w-screen" : "w-100")}>
             <div
                 className={cl(
                     "flex justify-between items-center",
@@ -44,17 +39,13 @@ export function SidebarContent({ date, close }: props) {
                 </div>
                 <ButtonIcon icon="x" size="big" onClick={close} />
             </div>
-            <div
-                className={cl("flex-1 m-1", {
-                    "w-screen": isMobile,
-                })}
-            >
+            <div className={cl("flex-1 m-1", { "w-screen": isMobile })}>
                 {getDateEvents(date).map((evt) => <Item key={evt} evt={evt} />)}
             </div>
             <If condition={logged}>
                 <div className="p-4 border-t border-gray-300 dark:border-gray-500">
-                    <Button onClick={() => setOpen(true)}>NEW EVENT</Button>
-                    <CreateEventModal open={open} onCancel={() => setOpen(false)} />
+                    <Button onClick={() => setVisible(true)}>NEW EVENT</Button>
+                    <CreateEventModal visible={visible} onClose={() => setVisible(false)} />
                 </div>
             </If>
         </div>

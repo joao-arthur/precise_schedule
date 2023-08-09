@@ -9,6 +9,7 @@ import { DateInput } from "@/components/atoms/input/DateInput";
 import { TimeInput } from "@/components/atoms/input/TimeInput";
 import { ToggleInput } from "@/components/atoms/input/ToggleInput";
 import { frequencyOptions } from "../frequencyOptions";
+import { getFormName } from "./getFormName";
 
 type props = {
     readonly event?: MeetingEvent;
@@ -31,7 +32,10 @@ export function MeetingForm({ event, disabled, onSubmit }: props) {
     }, [watchFrequency]);
 
     return (
-        <form id="MeetingForm" onSubmit={onSubmit ? handleSubmit(onSubmit) : undefined}>
+        <form
+            id={getFormName("MEETING")}
+            onSubmit={onSubmit ? handleSubmit(onSubmit) : undefined}
+        >
             <InputWrapper name="name" title="Name">
                 <TextInput {...register("name", { required, disabled })} />
             </InputWrapper>

@@ -38,7 +38,7 @@ export function Header({ left }: props) {
                 />
                 {logged
                     ? (
-                        <HoverButton onClick={() => unlog()}>
+                        <HoverButton onClick={unlog}>
                             SIGN OUT
                         </HoverButton>
                     )

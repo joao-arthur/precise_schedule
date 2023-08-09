@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { InputWrapper } from "@/components/atoms/form/InputWrapper";
 import { TextInput } from "@/components/atoms/input/TextInput";
 import { DateInput } from "@/components/atoms/input/DateInput";
+import { getFormName } from "./getFormName";
 
 type props = {
     readonly event?: BirthdayEvent;
@@ -17,7 +18,7 @@ export function BirthdayForm({ event, disabled, onSubmit }: props) {
     const required = true;
 
     return (
-        <form id="BirthdayForm" onSubmit={onSubmit ? handleSubmit(onSubmit) : undefined}>
+        <form id={getFormName("BIRTHDAY")} onSubmit={onSubmit ? handleSubmit(onSubmit) : undefined}>
             <InputWrapper name="name" title="Name">
                 <TextInput {...register("name", { required, disabled, value: event?.name })} />
             </InputWrapper>

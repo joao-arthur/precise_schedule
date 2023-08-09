@@ -24,8 +24,8 @@ export function DeleteEvent({ event, onCancel }: props) {
     return (
         <Modal
             visible
-            title={`DELETE "${event.name.toLocaleUpperCase()}"`}
             onCancel={onCancel}
+            title={`DELETE "${event.name.toLocaleUpperCase()}"`}
             onConfirm={() => mutate(event.id)}
         >
             <div className="py-5">

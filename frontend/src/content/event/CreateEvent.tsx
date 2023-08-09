@@ -1,84 +1,24 @@
-import { useState } from "react";
-import { Button } from "@/components/atoms/button/Button";
+import type { Event } from "@/features/event/event";
 import { Modal } from "@/components/molecules/Modal";
-import { AppointmentCreateModal } from "./AppointmentCreateModal";
-import { BirthdayCreateModal } from "./BirthdayCreateModal";
-import { DateCreateModal } from "./DateCreateModal";
-import { MeetingCreateModal } from "./MeetingCreateModal";
-import { PartyCreateModal } from "./PartyCreateModal";
+import { CreateEventBuilder } from "./CreateEventBuilder";
+import { getFormName } from "./form/getFormName";
 
 type props = {
-    readonly open: boolean;
-    readonly onCancel: () => void;
+    readonly category: Event["category"];
+    readonly visible: boolean;
+    readonly onClose: () => void;
 };
 
-export function CreateEvent({ open, onCancel }: props) {
-    const [appointmentOpen, setAppointmentOpen] = useState(false);
-    const [birthdayOpen, setBirthdayOpen] = useState(false);
-    const [dateOpen, setDateOpen] = useState(false);
-    const [meetingOpen, setMeetingOpen] = useState(false);
-    const [partyOpen, setPartyOpen] = useState(false);
-
+export function CreateEvent({ category, visible, onClose }: props) {
     return (
-        <>
-            <Modal
-                title="NEW EVENT"
-                visible={open}
-                formId="DateForm"
-                onCancel={onCancel}
-                hideConfirm
-            >
-                <div className="flex flex-col p-5 gap-3">
-                    <Button
-                        onClick={() => {
-                            setAppointmentOpen(true);
-                            onCancel();
-                        }}
-                    >
-                        Appointment
-                    </Button>
-                    <Button
-                        onClick={() => {
-                            setBirthdayOpen(true);
-                            onCancel();
-                        }}
-                    >
-                        Birthday
-                    </Button>
-                    <Button
-                        onClick={() => {
-                            setDateOpen(true);
-                            onCancel();
-                        }}
-                    >
-                        Date
-                    </Button>
-                    <Button
-                        onClick={() => {
-                            setMeetingOpen(true);
-                            onCancel();
-                        }}
-                    >
-                        Meeting
-                    </Button>
-                    <Button
-                        onClick={() => {
-                            setPartyOpen(true);
-                            onCancel();
-                        }}
-                    >
-                        Party
-                    </Button>
-                </div>
-            </Modal>
-            <AppointmentCreateModal
-                open={appointmentOpen}
-                onCancel={() => setAppointmentOpen(false)}
-            />
-            <BirthdayCreateModal open={birthdayOpen} onCancel={() => setBirthdayOpen(false)} />
-            <DateCreateModal open={dateOpen} onCancel={() => setDateOpen(false)} />
-            <MeetingCreateModal open={meetingOpen} onCancel={() => setMeetingOpen(false)} />
-            <PartyCreateModal open={partyOpen} onCancel={() => setPartyOpen(false)} />
-        </>
+        <Modal
+            visible={visible}
+            onCancel={onClose}
+            title={`NEW ${category}`}
+            formId={getFormName(category)}
+            confirmLabel="SAVE"
+        >
+            <CreateEventBuilder category={category} onClose={onClose} />
+        </Modal>
     );
 }

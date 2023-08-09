@@ -23,16 +23,16 @@ export default function Calendar() {
                 left={
                     <>
                         <div className="flex justify-center gap-1">
-                            <RoundButton onClick={() => prev()}>
+                            <RoundButton onClick={prev}>
                                 <Icon name="<" size={9} fill="white" className="p-2" />
                             </RoundButton>
-                            <RoundButton onClick={() => next()}>
+                            <RoundButton onClick={next}>
                                 <Icon name=">" size={9} fill="white" className="p-2" />
                             </RoundButton>
                         </div>
                         <Text size="2xl" color="white">{year} {months[month - 1]}</Text>
                         <If condition={!calendarFns.isCurrent({ year, month })}>
-                            <HoverButton onClick={() => setCurrentMonth()}>Today</HoverButton>
+                            <HoverButton onClick={setCurrentMonth}>Today</HoverButton>
                         </If>
                     </>
                 }
