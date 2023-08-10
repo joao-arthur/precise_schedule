@@ -47,7 +47,7 @@ export default function Calendar() {
                     </>
                 }
             />
-            <main className="flex h-full">
+            <main className="flex h-full overflow-hidden">
                 <Table />
                 <Sidebar />
                 {logged ? <LoadEvents /> : null}
