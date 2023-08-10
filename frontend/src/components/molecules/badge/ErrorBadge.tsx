@@ -10,11 +10,7 @@ export function ErrorBadge() {
                 "bg-red-200 dark:bg-red-500",
             )}
         >
-            <Icon
-                name="x"
-                size={6}
-                className="fill-red-500 dark:fill-white"
-            />
+            <Icon name="x" color="red" colorDark="white" />
         </BaseBadge>
     );
 }

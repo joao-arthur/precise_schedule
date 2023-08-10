@@ -5,7 +5,7 @@ import { useSession } from "@/features/session/useSession";
 import { useCalendarEvent } from "@/features/calendarEvent/useCalendarEvent";
 import { useFormatDate } from "@/features/date/useFormatDate";
 import { Text } from "@/components/atoms/Text";
-import { ButtonIcon } from "@/components/molecules/ButtonIcon";
+import { TransparentButtonIcon } from "@/components/molecules/TransparentButtonIcon";
 import { If } from "@/components/atoms/layout/If";
 import { CreateEventModal } from "@/content/event/CreateEventModal";
 import { Item } from "./Item";
@@ -43,13 +43,14 @@ export function SidebarContent({ date, close }: props) {
                 </div>
                 <div className="flex">
                     <If condition={logged}>
-                        <ButtonIcon
-                            icon="calendar-plus"
-                            size="big"
+                        <TransparentButtonIcon
                             onClick={() => setVisible(true)}
+                            title="Add event"
+                            icon="calendar-plus"
+                            size={9}
                         />
                     </If>
-                    <ButtonIcon icon="x" size="big" onClick={close} />
+                    <TransparentButtonIcon onClick={close} icon="x" size={9} color="gray" />
                 </div>
             </div>
             <div className={cl("flex-1 m-1 overflow-auto", { "w-screen": isMobile })}>

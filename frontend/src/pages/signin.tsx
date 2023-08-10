@@ -35,7 +35,7 @@ export default function SignIn() {
                     <Link to="/">
                         <div className="flex justify-center">
                             <RoundButton>
-                                <Icon name="<" size={9} fill="white" className="p-2" />
+                                <Icon name="<" size={9} color="white" className="p-2" />
                             </RoundButton>
                         </div>
                     </Link>

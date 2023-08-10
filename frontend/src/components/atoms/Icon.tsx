@@ -20,29 +20,42 @@ export type IconName =
     | "trash"
     | "calendar-plus";
 
+export type IconSize = 6 | 9 | 14 | 20;
+
+export type IconColor = "white" | "gray" | "green" | "red" | "prm";
+
 type props = {
     readonly name: IconName;
-    readonly className?: string;
-    readonly fill?: "white" | "gray";
-    readonly size?: 6 | 9 | 14 | 20;
+    readonly size?: IconSize;
+    readonly color?: IconColor;
+    readonly colorDark?: IconColor;
 };
 
-export function Icon({ name, className, fill, size }: props) {
-    const composedClassName = cl(
+export function Icon({ name, color = "prm", colorDark = "prm", size = 6 }: props) {
+    const className = cl(
         "transition-colors duration-100",
-        {
-            "fill-white": fill === "white",
-            "fill-gray-500": fill === "gray",
-        },
         {
             "w-6 h-6": size === 6,
             "w-9 h-9": size === 9,
             "w-14 h-14": size === 14,
             "w-20 h-20": size === 20,
         },
-        className,
+        {
+            "fill-white": color === "white",
+            "fill-gray-500": color === "gray",
+            "fill-red-500": color === "red",
+            "fill-green-600": color === "green",
+            "fill-prm": color === "prm",
+        },
+        {
+            "dark:fill-white": colorDark === "white",
+            "dark:fill-gray-500": colorDark === "gray",
+            "dark:fill-red-500": colorDark === "red",
+            "dark:fill-green-600": colorDark === "green",
+            "dark:fill-prm": colorDark === "prm",
+        },
     );
-    const props = { className: composedClassName };
+    const props = { className };
 
     switch (name) {
         case "x":

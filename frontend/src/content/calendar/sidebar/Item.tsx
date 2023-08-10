@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useEvent } from "@/features/event/useEvent";
-import { ButtonIcon } from "@/components/molecules/ButtonIcon";
+import { TransparentButtonIcon } from "@/components/molecules/TransparentButtonIcon";
 import { Text } from "@/components/atoms/Text";
 import { If } from "@/components/atoms/layout/If";
 import { InfoEvent } from "@/content/event/InfoEvent";
@@ -24,15 +24,27 @@ export function Item({ evt }: props) {
                 {event.name}
             </Text>
             <div className="flex gap-2">
-                <ButtonIcon icon="info" size="medium" onClick={() => setIsInfoVisible(true)} />
+                <TransparentButtonIcon
+                    onClick={() => setIsInfoVisible(true)}
+                    icon="info"
+                    color="gray"
+                />
                 <If condition={isInfoVisible}>
                     <InfoEvent event={event} onClose={() => setIsInfoVisible(false)} />
                 </If>
-                <ButtonIcon icon="pencil" size="medium" onClick={() => setIsEditVisible(true)} />
+                <TransparentButtonIcon
+                    onClick={() => setIsEditVisible(true)}
+                    icon="pencil"
+                    color="gray"
+                />
                 <If condition={isEditVisible}>
                     <UpdateEvent event={event} onClose={() => setIsEditVisible(false)} />
                 </If>
-                <ButtonIcon icon="trash" size="medium" onClick={() => setIsDeleteVisible(true)} />
+                <TransparentButtonIcon
+                    onClick={() => setIsDeleteVisible(true)}
+                    icon="trash"
+                    color="gray"
+                />
                 <If condition={isDeleteVisible}>
                     <DeleteEvent event={event} onCancel={() => setIsDeleteVisible(false)} />
                 </If>

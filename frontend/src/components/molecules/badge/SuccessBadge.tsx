@@ -11,11 +11,7 @@ export function SuccessBadge() {
                 "fill-green-600 dark:fill-white",
             )}
         >
-            <Icon
-                name="v"
-                size={6}
-                className="fill-green-600 dark:fill-white"
-            />
+            <Icon name="v" color="green" colorDark="white" />
         </BaseBadge>
     );
 }
