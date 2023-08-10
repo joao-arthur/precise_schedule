@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useEvent } from "@/features/event/useEvent";
 import { TransparentButtonIcon } from "@/components/molecules/TransparentButtonIcon";
 import { Text } from "@/components/atoms/Text";
-import { If } from "@/components/atoms/layout/If";
 import { InfoEvent } from "@/content/event/InfoEvent";
 import { UpdateEvent } from "@/content/event/UpdateEvent";
 import { DeleteEvent } from "@/content/event/DeleteEvent";
@@ -16,26 +15,26 @@ export function Item({ evt }: props) {
     const [isEditVisible, setIsEditVisible] = useState(false);
     const [isDeleteVisible, setIsDeleteVisible] = useState(false);
     const { eventsMap } = useEvent();
-    const event = eventsMap.get(evt)!;
+    const event = eventsMap.get(evt);
 
     return (
         <div className="flex justify-between items-center p-3">
             <Text size="lg">
-                {event.name}
+                {event?.name}
             </Text>
             <div className="flex gap-2">
                 <TransparentButtonIcon onClick={() => setIsInfoVisible(true)} icon="info" />
-                <If condition={isInfoVisible}>
-                    <InfoEvent event={event} onClose={() => setIsInfoVisible(false)} />
-                </If>
+                {isInfoVisible && event
+                    ? <InfoEvent event={event} onClose={() => setIsInfoVisible(false)} />
+                    : null}
                 <TransparentButtonIcon onClick={() => setIsEditVisible(true)} icon="pencil" />
-                <If condition={isEditVisible}>
-                    <UpdateEvent event={event} onClose={() => setIsEditVisible(false)} />
-                </If>
+                {isEditVisible && event
+                    ? <UpdateEvent event={event} onClose={() => setIsEditVisible(false)} />
+                    : null}
                 <TransparentButtonIcon onClick={() => setIsDeleteVisible(true)} icon="trash" />
-                <If condition={isDeleteVisible}>
-                    <DeleteEvent event={event} onCancel={() => setIsDeleteVisible(false)} />
-                </If>
+                {isDeleteVisible && event
+                    ? <DeleteEvent event={event} onCancel={() => setIsDeleteVisible(false)} />
+                    : null}
             </div>
         </div>
     );
