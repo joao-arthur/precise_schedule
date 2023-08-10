@@ -8,6 +8,8 @@ import { Toggle } from "@/components/atoms/input/Toggle";
 import { HoverButton } from "@/components/atoms/extraButton/HoverButton";
 import { Link } from "@/components/atoms/Link";
 import { If } from "@/components/atoms/layout/If";
+import { useEvent } from "@/features/event/useEvent";
+import { useCalendar } from "@/features/calendar/useCalendar";
 
 type props = {
     readonly left: ReactNode;
@@ -18,6 +20,14 @@ export function Header({ left }: props) {
     const [theme, setTheme] = useTheme();
     const { pathname } = useRouter();
     const { unlog } = useSessionManager();
+    const { setEvents } = useEvent();
+    const { removeSelectedDate } = useCalendar();
+
+    function handleUnlog() {
+        unlog();
+        setEvents([]);
+        removeSelectedDate();
+    }
 
     return (
         <header
@@ -40,7 +50,7 @@ export function Header({ left }: props) {
                 </div>
                 {logged
                     ? (
-                        <HoverButton onClick={unlog}>
+                        <HoverButton onClick={handleUnlog}>
                             SIGN OUT
                         </HoverButton>
                     )
