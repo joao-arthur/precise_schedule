@@ -1,7 +1,7 @@
 import { calendarFns } from "frontend_core";
 import { useSession } from "@/features/session/useSession";
 import { useCalendar } from "@/features/calendar/useCalendar";
-import { useMonths } from "@/features/date/useMonths";
+import { useFormatMonth } from "@/features/date/useFormatMonth";
 import { If } from "@/components/atoms/layout/If";
 import { Text } from "@/components/atoms/Text";
 import { RoundButton } from "@/components/atoms/extraButton/RoundButton";
@@ -15,7 +15,7 @@ import { LoadEvents } from "@/content/calendar/LoadEvents";
 export default function Calendar() {
     const logged = useSession().logged();
     const { year, month, setCurrentMonth, prev, next } = useCalendar();
-    const months = useMonths();
+    const formatMonth = useFormatMonth();
 
     return (
         <>
@@ -30,7 +30,11 @@ export default function Calendar() {
                                 <Icon name=">" size={9} fill="white" className="p-2" />
                             </RoundButton>
                         </div>
-                        <Text size="2xl" color="white">{year} {months[month - 1]}</Text>
+                        <Text size="2xl" color="white">
+                            <div className="capitalize">
+                                {year} {formatMonth(month)}
+                            </div>
+                        </Text>
                         <If condition={!calendarFns.isCurrent({ year, month })}>
                             <HoverButton onClick={setCurrentMonth}>Today</HoverButton>
                         </If>

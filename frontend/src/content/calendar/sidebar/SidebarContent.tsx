@@ -4,6 +4,7 @@ import { cl } from "@/lib/cl";
 import { useDevice } from "@/lib/device/useDevice";
 import { useSession } from "@/features/session/useSession";
 import { useCalendarEvent } from "@/features/calendarEvent/useCalendarEvent";
+import { useFormatDate } from "@/features/date/useFormatDate";
 import { Text } from "@/components/atoms/Text";
 import { Button } from "@/components/atoms/button/Button";
 import { ButtonIcon } from "@/components/molecules/ButtonIcon";
@@ -21,6 +22,7 @@ export function SidebarContent({ date, close }: props) {
     const [visible, setVisible] = useState(false);
     const { getDateEvents } = useCalendarEvent();
     const logged = useSession().logged();
+    const formatDate = useFormatDate();
 
     return (
         <div className={cl("flex flex-col flex-1", isMobile ? "w-screen" : "w-100")}>
@@ -34,7 +36,7 @@ export function SidebarContent({ date, close }: props) {
             >
                 <div className="text-center">
                     <Text size="3xl">
-                        {dateFns.formatDate(date, window.navigator.language)}
+                        {formatDate(date)}
                     </Text>
                 </div>
                 <ButtonIcon icon="x" size="big" onClick={close} />
