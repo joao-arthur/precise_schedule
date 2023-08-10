@@ -1,19 +1,14 @@
-import type { FormEvent, ReactNode } from "react";
+import type { ReactNode } from "react";
 import { Button } from "../atoms/button/Button";
 
 type props = {
     readonly action: string;
     readonly disabled: boolean;
-    readonly onSubmit: (e: FormEvent<HTMLFormElement>) => void;
+    readonly onSubmit: () => void;
     readonly children: ReactNode;
 };
 
-export function Form({
-    action,
-    disabled,
-    onSubmit,
-    children,
-}: props) {
+export function Form({ action, disabled, onSubmit, children }: props) {
     return (
         <form onSubmit={onSubmit}>
             {children}

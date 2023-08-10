@@ -1,4 +1,5 @@
 import {
+    BiCalendarPlus,
     BiCheck,
     BiChevronLeft,
     BiChevronRight,
@@ -16,7 +17,8 @@ export type IconName =
     | ">"
     | "info"
     | "pencil"
-    | "trash";
+    | "trash"
+    | "calendar-plus";
 
 type props = {
     readonly name: IconName;
@@ -57,5 +59,7 @@ export function Icon({ name, className, fill, size }: props) {
             return <BiPencil {...props} />;
         case "trash":
             return <BiTrash {...props} />;
+        case "calendar-plus":
+            return <BiCalendarPlus {...props} />;
     }
 }

@@ -57,8 +57,7 @@ export function Sidebar() {
     return (
         <div
             className={cl(
-                "z-10",
-                "flex overflow-hidden flex-0-auto",
+                "z-10 overflow-hidden flex flex-0-auto",
                 "bg-gray-100 dark:bg-drk-dk2",
                 "transition-all duration-100",
                 {

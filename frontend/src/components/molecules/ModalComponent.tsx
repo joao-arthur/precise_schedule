@@ -31,9 +31,7 @@ export function ModalComponent({
                 className={cl(
                     "flex flex-col absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2",
                     "bg-pastel-gray dark:bg-drk rounded overflow-hidden",
-                    isMobile
-                        ? "w-full h-full"
-                        : "w-120 max-w-4/5 border border-gray-300 dark:border-gray-500",
+                    isMobile ? "w-full h-full" : "w-120 max-w-4/5",
                 )}
             >
                 <div className="py-5 px-7 break-all bg-prm">
