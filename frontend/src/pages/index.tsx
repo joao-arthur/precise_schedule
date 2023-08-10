@@ -4,9 +4,9 @@ import { useCalendar } from "@/features/calendar/useCalendar";
 import { useFormatMonth } from "@/features/date/useFormatMonth";
 import { If } from "@/components/atoms/layout/If";
 import { Text } from "@/components/atoms/Text";
-import { RoundButton } from "@/components/atoms/extraButton/RoundButton";
 import { Icon } from "@/components/atoms/Icon";
 import { HoverButton } from "@/components/atoms/extraButton/HoverButton";
+import { RoundButtonIcon } from "@/components/molecules/RoundButtonIcon";
 import { Header } from "@/content/base/Header";
 import { Table } from "@/content/calendar/table/Table";
 import { Sidebar } from "@/content/calendar/sidebar/Sidebar";
@@ -23,12 +23,18 @@ export default function Calendar() {
                 left={
                     <>
                         <div className="flex justify-center gap-1">
-                            <RoundButton onClick={prev}>
-                                <Icon name="<" size={9} color="white" className="p-2" />
-                            </RoundButton>
-                            <RoundButton onClick={next}>
-                                <Icon name=">" size={9} color="white" className="p-2" />
-                            </RoundButton>
+                            <RoundButtonIcon
+                                onClick={prev}
+                                title="Previous month"
+                                icon="<"
+                                color="white"
+                            />
+                            <RoundButtonIcon
+                                onClick={next}
+                                title="Next month"
+                                icon=">"
+                                color="white"
+                            />
                         </div>
                         <Text size="2xl" color="white">
                             <div className="capitalize">

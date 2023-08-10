@@ -10,10 +10,9 @@ import { TextInput } from "@/components/atoms/input/TextInput";
 import { PasswordInput } from "@/components/atoms/input/PasswordInput";
 import { PageContent } from "@/components/atoms/layout/PageContent";
 import { FormContainer } from "@/components/atoms/FormContainer";
-import { Form } from "@/components/molecules/Form";
-import { RoundButton } from "@/components/atoms/extraButton/RoundButton";
-import { Icon } from "@/components/atoms/Icon";
 import { BorderedBox } from "@/components/atoms/layout/BorderedBox";
+import { Form } from "@/components/molecules/Form";
+import { RoundButtonIcon } from "@/components/molecules/RoundButtonIcon";
 import { Header } from "@/content/base/Header";
 
 export default function SignIn() {
@@ -34,9 +33,7 @@ export default function SignIn() {
                 left={
                     <Link to="/">
                         <div className="flex justify-center">
-                            <RoundButton>
-                                <Icon name="<" size={9} color="white" className="p-2" />
-                            </RoundButton>
+                            <RoundButtonIcon title="Back to calendar" icon="<" color="white" />
                         </div>
                     </Link>
                 }

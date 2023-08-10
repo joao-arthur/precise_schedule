@@ -24,27 +24,15 @@ export function Item({ evt }: props) {
                 {event.name}
             </Text>
             <div className="flex gap-2">
-                <TransparentButtonIcon
-                    onClick={() => setIsInfoVisible(true)}
-                    icon="info"
-                    color="gray"
-                />
+                <TransparentButtonIcon onClick={() => setIsInfoVisible(true)} icon="info" />
                 <If condition={isInfoVisible}>
                     <InfoEvent event={event} onClose={() => setIsInfoVisible(false)} />
                 </If>
-                <TransparentButtonIcon
-                    onClick={() => setIsEditVisible(true)}
-                    icon="pencil"
-                    color="gray"
-                />
+                <TransparentButtonIcon onClick={() => setIsEditVisible(true)} icon="pencil" />
                 <If condition={isEditVisible}>
                     <UpdateEvent event={event} onClose={() => setIsEditVisible(false)} />
                 </If>
-                <TransparentButtonIcon
-                    onClick={() => setIsDeleteVisible(true)}
-                    icon="trash"
-                    color="gray"
-                />
+                <TransparentButtonIcon onClick={() => setIsDeleteVisible(true)} icon="trash" />
                 <If condition={isDeleteVisible}>
                     <DeleteEvent event={event} onCancel={() => setIsDeleteVisible(false)} />
                 </If>

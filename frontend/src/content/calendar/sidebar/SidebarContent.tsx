@@ -47,10 +47,11 @@ export function SidebarContent({ date, close }: props) {
                             onClick={() => setVisible(true)}
                             title="Add event"
                             icon="calendar-plus"
+                            color="prm"
                             size={9}
                         />
                     </If>
-                    <TransparentButtonIcon onClick={close} icon="x" size={9} color="gray" />
+                    <TransparentButtonIcon onClick={close} icon="x" size={9} />
                 </div>
             </div>
             <div className={cl("flex-1 m-1 overflow-auto", { "w-screen": isMobile })}>

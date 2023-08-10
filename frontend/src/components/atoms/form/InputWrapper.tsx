@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { InputTitle } from "./InputTitle";
+import { Text } from "../Text";
 
 type props = {
     readonly name: string;
@@ -10,7 +10,9 @@ type props = {
 export function InputWrapper({ name, title, children }: props) {
     return (
         <div className="flex flex-col flex-1 py-1">
-            <InputTitle name={name} title={title} />
+            <label className="py-1" htmlFor={name}>
+                <Text>{title}</Text>
+            </label>
             {children}
         </div>
     );

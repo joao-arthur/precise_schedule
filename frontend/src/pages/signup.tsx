@@ -12,11 +12,10 @@ import { DateInput } from "@/components/atoms/input/DateInput";
 import { PasswordInput } from "@/components/atoms/input/PasswordInput";
 import { PageContent } from "@/components/atoms/layout/PageContent";
 import { FormContainer } from "@/components/atoms/FormContainer";
+import { BorderedBox } from "@/components/atoms/layout/BorderedBox";
 import { Form } from "@/components/molecules/Form";
 import { Badge } from "@/components/molecules/badge/Badge";
-import { RoundButton } from "@/components/atoms/extraButton/RoundButton";
-import { Icon } from "@/components/atoms/Icon";
-import { BorderedBox } from "@/components/atoms/layout/BorderedBox";
+import { RoundButtonIcon } from "@/components/molecules/RoundButtonIcon";
 import { Header } from "@/content/base/Header";
 
 function strMinLenValid(value: unknown) {
@@ -105,9 +104,7 @@ export default function SignUp() {
                 left={
                     <Link to="/">
                         <div className="flex justify-center">
-                            <RoundButton>
-                                <Icon name="<" size={9} color="white" className="p-2" />
-                            </RoundButton>
+                            <RoundButtonIcon title="Back to calendar" icon="<" color="white" />
                         </div>
                     </Link>
                 }
