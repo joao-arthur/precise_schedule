@@ -31,11 +31,13 @@ export function Header({ left }: props) {
                 {left}
             </div>
             <div className="flex items-center gap-3">
-                <Toggle
-                    value={theme === "dark"}
-                    onChange={setTheme}
-                    display={{ on: "🌑", off: "☀️" }}
-                />
+                <div className="w-16">
+                    <Toggle
+                        value={theme === "dark"}
+                        onChange={setTheme}
+                        display={{ on: "🌑", off: "☀️" }}
+                    />
+                </div>
                 {logged
                     ? (
                         <HoverButton onClick={unlog}>
