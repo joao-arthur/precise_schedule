@@ -1,13 +1,15 @@
+import type { AppointmentEvent } from "@/features/event/event";
 import { useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { useCreateAppointment } from "@/features/event/useEventAPI";
 import { AppointmentForm } from "./AppointmentForm";
 
 type props = {
+    readonly event?: Partial<AppointmentEvent>;
     readonly onClose: () => void;
 };
 
-export function AppointmentCreate({ onClose }: props) {
+export function AppointmentCreate({ event, onClose }: props) {
     const { mutate, isLoading, isSuccess } = useCreateAppointment();
     const queryClient = useQueryClient();
 
@@ -18,5 +20,5 @@ export function AppointmentCreate({ onClose }: props) {
         }
     }, [queryClient, isSuccess, onClose]);
 
-    return <AppointmentForm disabled={isLoading} onSubmit={(data) => mutate(data)} />;
+    return <AppointmentForm event={event} disabled={isLoading} onSubmit={(data) => mutate(data)} />;
 }

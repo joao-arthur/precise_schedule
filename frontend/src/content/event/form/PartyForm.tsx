@@ -8,7 +8,7 @@ import { TimeInput } from "@/components/atoms/input/TimeInput";
 import { getFormName } from "./getFormName";
 
 type props = {
-    readonly event?: PartyEvent;
+    readonly event?: Partial<PartyEvent>;
     readonly disabled: boolean;
     readonly onSubmit?: (form: PartyEvent) => void;
 };

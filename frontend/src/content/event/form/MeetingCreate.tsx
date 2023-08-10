@@ -1,13 +1,15 @@
+import type { MeetingEvent } from "@/features/event/event";
 import { useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { useCreateMeeting } from "@/features/event/useEventAPI";
 import { MeetingForm } from "./MeetingForm";
 
 type props = {
+    readonly event?: Partial<MeetingEvent>;
     readonly onClose: () => void;
 };
 
-export function MeetingCreate({ onClose }: props) {
+export function MeetingCreate({ event, onClose }: props) {
     const { mutate, isLoading, isSuccess } = useCreateMeeting();
     const queryClient = useQueryClient();
 
@@ -18,5 +20,5 @@ export function MeetingCreate({ onClose }: props) {
         }
     }, [queryClient, isSuccess, onClose]);
 
-    return <MeetingForm disabled={isLoading} onSubmit={(data) => mutate(data)} />;
+    return <MeetingForm event={event} disabled={isLoading} onSubmit={(data) => mutate(data)} />;
 }

@@ -1,13 +1,15 @@
+import type { BirthdayEvent } from "@/features/event/event";
 import { useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { useCreateBirthday } from "@/features/event/useEventAPI";
 import { BirthdayForm } from "./BirthdayForm";
 
 type props = {
+    readonly event?: Partial<BirthdayEvent>;
     readonly onClose: () => void;
 };
 
-export function BirthdayCreate({ onClose }: props) {
+export function BirthdayCreate({ event, onClose }: props) {
     const { mutate, isLoading, isSuccess } = useCreateBirthday();
     const queryClient = useQueryClient();
 
@@ -18,5 +20,5 @@ export function BirthdayCreate({ onClose }: props) {
         }
     }, [queryClient, isSuccess, onClose]);
 
-    return <BirthdayForm disabled={isLoading} onSubmit={(data) => mutate(data)} />;
+    return <BirthdayForm event={event} disabled={isLoading} onSubmit={(data) => mutate(data)} />;
 }

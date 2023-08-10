@@ -5,11 +5,12 @@ import { Modal } from "@/components/molecules/Modal";
 import { CreateEvent } from "./CreateEvent";
 
 type props = {
+    readonly date: string;
     readonly visible: boolean;
     readonly onClose: () => void;
 };
 
-export function CreateEventModal({ visible, onClose }: props) {
+export function CreateEventModal({ date, visible, onClose }: props) {
     const [category, setCategory] = useState<Event["category"] | undefined>(undefined);
 
     return (
@@ -65,7 +66,13 @@ export function CreateEventModal({ visible, onClose }: props) {
                 </div>
             </Modal>
             {category !== undefined
-                ? <CreateEvent category={category} visible onClose={() => setCategory(undefined)} />
+                ? (
+                    <CreateEvent
+                        event={{ category, day: date }}
+                        visible
+                        onClose={() => setCategory(undefined)}
+                    />
+                )
                 : undefined}
         </>
     );

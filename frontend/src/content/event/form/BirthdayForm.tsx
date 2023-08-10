@@ -6,7 +6,7 @@ import { DateInput } from "@/components/atoms/input/DateInput";
 import { getFormName } from "./getFormName";
 
 type props = {
-    readonly event?: BirthdayEvent;
+    readonly event?: Partial<BirthdayEvent>;
     readonly disabled: boolean;
     readonly onSubmit?: (form: BirthdayEvent) => void;
 };

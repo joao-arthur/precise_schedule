@@ -12,7 +12,7 @@ import { frequencyOptions } from "../frequencyOptions";
 import { getFormName } from "./getFormName";
 
 type props = {
-    readonly event?: AppointmentEvent;
+    readonly event?: Partial<AppointmentEvent>;
     readonly disabled: boolean;
     readonly onSubmit?: (form: AppointmentEvent) => void;
 };

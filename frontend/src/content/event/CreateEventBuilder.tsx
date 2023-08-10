@@ -6,21 +6,21 @@ import { MeetingCreate } from "./form/MeetingCreate";
 import { PartyCreate } from "./form/PartyCreate";
 
 type props = {
-    readonly category: Event["category"];
+    readonly event: Partial<Event>;
     readonly onClose: () => void;
 };
 
-export function CreateEventBuilder({ category, onClose }: props) {
-    switch (category) {
+export function CreateEventBuilder({ event, onClose }: props) {
+    switch (event.category!) {
         case "APPOINTMENT":
-            return <AppointmentCreate onClose={onClose} />;
+            return <AppointmentCreate event={event} onClose={onClose} />;
         case "BIRTHDAY":
-            return <BirthdayCreate onClose={onClose} />;
+            return <BirthdayCreate event={event} onClose={onClose} />;
         case "DATE":
-            return <DateCreate onClose={onClose} />;
+            return <DateCreate event={event} onClose={onClose} />;
         case "MEETING":
-            return <MeetingCreate onClose={onClose} />;
+            return <MeetingCreate event={event} onClose={onClose} />;
         case "PARTY":
-            return <PartyCreate onClose={onClose} />;
+            return <PartyCreate event={event} onClose={onClose} />;
     }
 }

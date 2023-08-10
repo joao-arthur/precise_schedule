@@ -1,13 +1,15 @@
+import type { DateEvent } from "@/features/event/event";
 import { useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { useCreateDate } from "@/features/event/useEventAPI";
 import { DateForm } from "./DateForm";
 
 type props = {
+    readonly event?: Partial<DateEvent>;
     readonly onClose: () => void;
 };
 
-export function DateCreate({ onClose }: props) {
+export function DateCreate({ event, onClose }: props) {
     const { mutate, isLoading, isSuccess } = useCreateDate();
     const queryClient = useQueryClient();
 
@@ -18,5 +20,5 @@ export function DateCreate({ onClose }: props) {
         }
     }, [queryClient, isSuccess, onClose]);
 
-    return <DateForm disabled={isLoading} onSubmit={(data) => mutate(data)} />;
+    return <DateForm event={event} disabled={isLoading} onSubmit={(data) => mutate(data)} />;
 }

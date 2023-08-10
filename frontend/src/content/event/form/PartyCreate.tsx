@@ -1,13 +1,15 @@
+import type { PartyEvent } from "@/features/event/event";
 import { useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { useCreateParty } from "@/features/event/useEventAPI";
 import { PartyForm } from "./PartyForm";
 
 type props = {
+    readonly event?: Partial<PartyEvent>;
     readonly onClose: () => void;
 };
 
-export function PartyCreate({ onClose }: props) {
+export function PartyCreate({ event, onClose }: props) {
     const { mutate, isLoading, isSuccess } = useCreateParty();
     const queryClient = useQueryClient();
 
@@ -18,5 +20,5 @@ export function PartyCreate({ onClose }: props) {
         }
     }, [queryClient, isSuccess, onClose]);
 
-    return <PartyForm disabled={isLoading} onSubmit={(data) => mutate(data)} />;
+    return <PartyForm event={event} disabled={isLoading} onSubmit={(data) => mutate(data)} />;
 }

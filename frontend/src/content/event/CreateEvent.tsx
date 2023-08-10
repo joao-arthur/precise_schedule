@@ -4,21 +4,21 @@ import { CreateEventBuilder } from "./CreateEventBuilder";
 import { getFormName } from "./form/getFormName";
 
 type props = {
-    readonly category: Event["category"];
+    readonly event: Partial<Event>;
     readonly visible: boolean;
     readonly onClose: () => void;
 };
 
-export function CreateEvent({ category, visible, onClose }: props) {
+export function CreateEvent({ event, visible, onClose }: props) {
     return (
         <Modal
             visible={visible}
             onCancel={onClose}
-            title={`NEW ${category}`}
-            formId={getFormName(category)}
+            title={`NEW ${event.category}`}
+            formId={getFormName(event.category!)}
             confirmLabel="SAVE"
         >
-            <CreateEventBuilder category={category} onClose={onClose} />
+            <CreateEventBuilder event={event} onClose={onClose} />
         </Modal>
     );
 }

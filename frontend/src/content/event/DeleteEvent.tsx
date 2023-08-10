@@ -17,7 +17,7 @@ export function DeleteEvent({ event, onCancel }: props) {
     useEffect(() => {
         if (isSuccess) {
             onCancel();
-            queryClient.invalidateQueries("getEvents");
+            queryClient.invalidateQueries("event/find");
         }
     }, [queryClient, isSuccess, onCancel]);
 

@@ -57,7 +57,7 @@ export function SidebarContent({ date, close }: props) {
             <div className={cl("flex-1 m-1 overflow-auto", { "w-screen": isMobile })}>
                 {getDateEvents(date).map((evt) => <Item key={evt} evt={evt} />)}
             </div>
-            <CreateEventModal visible={visible} onClose={() => setVisible(false)} />
+            <CreateEventModal date={date} visible={visible} onClose={() => setVisible(false)} />
         </div>
     );
 }
