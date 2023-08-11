@@ -44,7 +44,7 @@ export function Table() {
                                     calendar={calendar}
                                     date={date}
                                     key={date}
-                                    events={getDateEvents(date)}
+                                    dateEvents={getDateEvents(date)}
                                 />
                             ))}
                         </div>

@@ -8,12 +8,12 @@ import { Text } from "@/components/atoms/Text";
 type props = {
     readonly calendar: Calendar;
     readonly date: string;
-    readonly events: readonly Event["id"][];
+    readonly dateEvents: readonly Event["id"][];
 };
 
-export function Cell({ calendar, date, events }: props) {
+export function Cell({ calendar, date, dateEvents }: props) {
     const { toggleSelectedDate } = useCalendar();
-    const { eventsMap } = useEvent();
+    const { events } = useEvent();
 
     if (calendarFns.isDateIn(calendar, date)) {
         return (
@@ -33,10 +33,10 @@ export function Cell({ calendar, date, events }: props) {
                     </Text>
                 </div>
                 <div className="flex flex-col gap-1">
-                    {events.map((evt) => (
+                    {dateEvents.map((evt) => (
                         <div key={evt}>
                             <Text size="xs">
-                                {eventsMap.get(evt)?.name}
+                                {events.find((e) => e.id === evt)?.name}
                             </Text>
                         </div>
                     ))}

@@ -1,12 +1,10 @@
 import { useState } from "react";
 import { cl } from "@/lib/cl";
 import { useDevice } from "@/lib/device/useDevice";
-import { useSession } from "@/features/session/useSession";
 import { useCalendarEvent } from "@/features/calendarEvent/useCalendarEvent";
 import { useFormatDate } from "@/features/date/useFormatDate";
 import { Text } from "@/components/atoms/Text";
 import { TransparentButtonIcon } from "@/components/molecules/TransparentButtonIcon";
-import { If } from "@/components/atoms/layout/If";
 import { CreateEventModal } from "@/content/event/CreateEventModal";
 import { Item } from "./Item";
 
@@ -19,7 +17,6 @@ export function SidebarContent({ date, close }: props) {
     const isMobile = useDevice().isMobile();
     const [visible, setVisible] = useState(false);
     const { getDateEvents } = useCalendarEvent();
-    const logged = useSession().logged();
     const { fmt } = useFormatDate();
 
     return (
@@ -43,15 +40,13 @@ export function SidebarContent({ date, close }: props) {
                     </Text>
                 </div>
                 <div className="flex">
-                    <If condition={logged}>
-                        <TransparentButtonIcon
-                            onClick={() => setVisible(true)}
-                            title="Add event"
-                            icon="calendar-plus"
-                            color="prm"
-                            size={9}
-                        />
-                    </If>
+                    <TransparentButtonIcon
+                        onClick={() => setVisible(true)}
+                        title="Add event"
+                        icon="calendar-plus"
+                        color="prm"
+                        size={9}
+                    />
                     <TransparentButtonIcon onClick={close} icon="x" size={9} />
                 </div>
             </div>

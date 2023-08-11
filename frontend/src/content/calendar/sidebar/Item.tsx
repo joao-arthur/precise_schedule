@@ -14,8 +14,8 @@ export function Item({ evt }: props) {
     const [isInfoVisible, setIsInfoVisible] = useState(false);
     const [isEditVisible, setIsEditVisible] = useState(false);
     const [isDeleteVisible, setIsDeleteVisible] = useState(false);
-    const { eventsMap } = useEvent();
-    const event = eventsMap.get(evt);
+    const { events } = useEvent();
+    const event = events.find((e) => e.id === evt);
 
     return (
         <div className="flex justify-between items-center p-3">

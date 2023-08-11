@@ -1,33 +1,14 @@
 import type { ReactNode } from "react";
-import { useRouter } from "next/router";
 import { cl } from "@/lib/cl";
 import { useTheme } from "@/features/theme/useTheme";
-import { useSession } from "@/features/session/useSession";
-import { useSessionManager } from "@/features/session/useSessionManager";
 import { Toggle } from "@/components/atoms/input/Toggle";
-import { HoverButton } from "@/components/atoms/extraButton/HoverButton";
-import { Link } from "@/components/atoms/Link";
-import { If } from "@/components/atoms/layout/If";
-import { useEvent } from "@/features/event/useEvent";
-import { useCalendar } from "@/features/calendar/useCalendar";
 
 type props = {
     readonly left: ReactNode;
 };
 
 export function Header({ left }: props) {
-    const logged = useSession().logged();
     const [theme, setTheme] = useTheme();
-    const { pathname } = useRouter();
-    const { unlog } = useSessionManager();
-    const { setEvents } = useEvent();
-    const { removeSelectedDate } = useCalendar();
-
-    function handleUnlog() {
-        unlog();
-        setEvents([]);
-        removeSelectedDate();
-    }
 
     return (
         <header
@@ -48,30 +29,6 @@ export function Header({ left }: props) {
                         display={{ on: "🌑", off: "☀️" }}
                     />
                 </div>
-                {logged
-                    ? (
-                        <HoverButton onClick={handleUnlog}>
-                            SIGN OUT
-                        </HoverButton>
-                    )
-                    : (
-                        <div>
-                            <If condition={pathname !== "/signin"}>
-                                <Link to="/signin">
-                                    <HoverButton>
-                                        SIGN IN
-                                    </HoverButton>
-                                </Link>
-                            </If>
-                            <If condition={pathname !== "/signup"}>
-                                <Link to="/signup">
-                                    <HoverButton>
-                                        SIGN UP
-                                    </HoverButton>
-                                </Link>
-                            </If>
-                        </div>
-                    )}
             </div>
         </header>
     );

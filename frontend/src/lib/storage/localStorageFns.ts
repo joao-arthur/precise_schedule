@@ -1,4 +1,4 @@
-const PREFIX = "@PreciseSchedule/";
+const PREFIX = "@PS/";
 
 function getItem<T>(item: string): T | undefined {
     const value = localStorage.getItem(PREFIX + item);

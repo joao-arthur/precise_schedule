@@ -24,8 +24,6 @@ export type User = {
     readonly email: string;
     readonly username: string;
     readonly password: string;
-    //readonly status: Status;
-    //readonly language: Language;
     readonly createdAt: Date;
     readonly updatedAt: Date;
 };
@@ -36,8 +34,6 @@ type DatabaseUser = {
     readonly birthdate: string;
     readonly email: string;
     readonly language: string;
-    //readonly status: string;
-    //readonly language: string;
     readonly username: string;
     readonly password: string;
     readonly createdAt: string;

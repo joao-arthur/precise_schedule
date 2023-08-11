@@ -1,7 +1,6 @@
 import type { Party } from "frontend_core";
-import { useEffect } from "react";
-import { useQueryClient } from "react-query";
-import { useCreateParty } from "@/features/event/useEventAPI";
+import { partyEventFns } from "frontend_core";
+import { useEvent } from "@/features/event/useEvent";
 import { PartyForm } from "./PartyForm";
 
 type props = {
@@ -10,15 +9,12 @@ type props = {
 };
 
 export function PartyCreate({ event, onClose }: props) {
-    const { mutate, isLoading, isSuccess } = useCreateParty();
-    const queryClient = useQueryClient();
+    const { add } = useEvent();
 
-    useEffect(() => {
-        if (isSuccess) {
-            onClose();
-            queryClient.invalidateQueries("event/find");
-        }
-    }, [queryClient, isSuccess, onClose]);
+    function handleSubmit(event: Party) {
+        add(partyEventFns.toEvent(event));
+        onClose();
+    }
 
-    return <PartyForm event={event} disabled={isLoading} onSubmit={(data) => mutate(data)} />;
+    return <PartyForm event={event} disabled={false} onSubmit={handleSubmit} />;
 }

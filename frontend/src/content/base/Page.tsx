@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import { useWindowSize } from "usehooks-ts";
 import { cl } from "@/lib/cl";
 import { theme } from "@/features/theme/theme";
-import { useSessionManager } from "@/features/session/useSessionManager";
 
 type props = {
     readonly children: ReactNode;
@@ -11,11 +10,9 @@ type props = {
 
 export function Page({ children }: props) {
     const { height } = useWindowSize();
-    const session = useSessionManager();
 
     useEffect(() => {
         theme.init();
-        session.init();
     }, []);
 
     return (

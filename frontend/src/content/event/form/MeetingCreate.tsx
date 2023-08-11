@@ -1,7 +1,6 @@
 import type { Meeting } from "frontend_core";
-import { useEffect } from "react";
-import { useQueryClient } from "react-query";
-import { useCreateMeeting } from "@/features/event/useEventAPI";
+import { meetingEventFns } from "frontend_core";
+import { useEvent } from "@/features/event/useEvent";
 import { MeetingForm } from "./MeetingForm";
 
 type props = {
@@ -10,15 +9,12 @@ type props = {
 };
 
 export function MeetingCreate({ event, onClose }: props) {
-    const { mutate, isLoading, isSuccess } = useCreateMeeting();
-    const queryClient = useQueryClient();
+    const { add } = useEvent();
 
-    useEffect(() => {
-        if (isSuccess) {
-            onClose();
-            queryClient.invalidateQueries("event/find");
-        }
-    }, [queryClient, isSuccess, onClose]);
+    function handleSubmit(event: Meeting) {
+        add(meetingEventFns.toEvent(event));
+        onClose();
+    }
 
-    return <MeetingForm event={event} disabled={isLoading} onSubmit={(data) => mutate(data)} />;
+    return <MeetingForm event={event} disabled={false} onSubmit={handleSubmit} />;
 }

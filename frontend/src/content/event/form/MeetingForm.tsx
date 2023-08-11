@@ -2,7 +2,7 @@ import type { FormEvent } from "react";
 import type { Meeting, MeetingForm as MeetingFormType } from "frontend_core";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { meetingFns } from "frontend_core";
+import { meetingEventFns } from "frontend_core";
 import { InputWrapper } from "@/components/atoms/form/InputWrapper";
 import { Group } from "@/components/atoms/layout/Group";
 import { TextInput } from "@/components/atoms/input/TextInput";
@@ -21,7 +21,7 @@ type props = {
 
 export function MeetingForm({ event, disabled, onSubmit }: props) {
     const { register, handleSubmit, watch, setValue } = useForm<MeetingFormType>(
-        event ? { defaultValues: meetingFns.toForm(event) } : undefined,
+        event ? { defaultValues: meetingEventFns.toForm(event) } : undefined,
     );
     const frequency = watch("frequency");
     const repeats = watch("repeats");
@@ -38,7 +38,7 @@ export function MeetingForm({ event, disabled, onSubmit }: props) {
     function handleOnSubmit(e: FormEvent<HTMLFormElement>) {
         if (!onSubmit) return;
         handleSubmit((form) => {
-            onSubmit(meetingFns.fromForm(form));
+            onSubmit(meetingEventFns.fromForm(form));
         })(e);
     }
 

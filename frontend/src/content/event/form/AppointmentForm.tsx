@@ -2,7 +2,7 @@ import type { FormEvent } from "react";
 import type { Appointment, AppointmentForm as AppointmentFormType } from "frontend_core";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { appointmentFns } from "frontend_core";
+import { appointmentEventFns } from "frontend_core";
 import { InputWrapper } from "@/components/atoms/form/InputWrapper";
 import { Group } from "@/components/atoms/layout/Group";
 import { TextInput } from "@/components/atoms/input/TextInput";
@@ -21,7 +21,7 @@ type props = {
 
 export function AppointmentForm({ event, disabled, onSubmit }: props) {
     const { register, handleSubmit, watch, setValue } = useForm<AppointmentFormType>(
-        event ? { defaultValues: appointmentFns.toForm(event) } : undefined,
+        event ? { defaultValues: appointmentEventFns.toForm(event) } : undefined,
     );
     const frequency = watch("frequency");
     const repeats = watch("repeats");
@@ -38,7 +38,7 @@ export function AppointmentForm({ event, disabled, onSubmit }: props) {
     function handleOnSubmit(e: FormEvent<HTMLFormElement>) {
         if (!onSubmit) return;
         handleSubmit((form) => {
-            onSubmit(appointmentFns.fromForm(form));
+            onSubmit(appointmentEventFns.fromForm(form));
         })(e);
     }
 

@@ -1,7 +1,6 @@
 import type { Appointment } from "frontend_core";
-import { useEffect } from "react";
-import { useQueryClient } from "react-query";
-import { useCreateAppointment } from "@/features/event/useEventAPI";
+import { appointmentEventFns } from "frontend_core";
+import { useEvent } from "@/features/event/useEvent";
 import { AppointmentForm } from "./AppointmentForm";
 
 type props = {
@@ -10,15 +9,12 @@ type props = {
 };
 
 export function AppointmentCreate({ event, onClose }: props) {
-    const { mutate, isLoading, isSuccess } = useCreateAppointment();
-    const queryClient = useQueryClient();
+    const { add } = useEvent();
 
-    useEffect(() => {
-        if (isSuccess) {
-            onClose();
-            queryClient.invalidateQueries("event/find");
-        }
-    }, [queryClient, isSuccess, onClose]);
+    function handleSubmit(event: Appointment) {
+        add(appointmentEventFns.toEvent(event));
+        onClose();
+    }
 
-    return <AppointmentForm event={event} disabled={isLoading} onSubmit={(data) => mutate(data)} />;
+    return <AppointmentForm event={event} disabled={false} onSubmit={handleSubmit} />;
 }

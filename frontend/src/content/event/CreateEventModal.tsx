@@ -73,7 +73,7 @@ export function CreateEventModal({ date, visible, onClose }: props) {
                         onClose={() => setCategory(undefined)}
                     />
                 )
-                : undefined}
+                : null}
         </>
     );
 }

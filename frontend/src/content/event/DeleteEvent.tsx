@@ -1,9 +1,7 @@
 import type { Event } from "frontend_core";
-import { useEffect } from "react";
-import { useQueryClient } from "react-query";
-import { useDeleteEvent } from "@/features/event/useEventAPI";
 import { Text } from "@/components/atoms/Text";
 import { Modal } from "@/components/molecules/Modal";
+import { useEvent } from "@/features/event/useEvent";
 
 type props = {
     readonly event: Event;
@@ -11,22 +9,19 @@ type props = {
 };
 
 export function DeleteEvent({ event, onCancel }: props) {
-    const { isSuccess, mutate } = useDeleteEvent();
-    const queryClient = useQueryClient();
+    const { remove } = useEvent();
 
-    useEffect(() => {
-        if (isSuccess) {
-            onCancel();
-            queryClient.invalidateQueries("event/find");
-        }
-    }, [queryClient, isSuccess, onCancel]);
+    function handleDelete() {
+        remove(event.id);
+        onCancel();
+    }
 
     return (
         <Modal
             visible
             onCancel={onCancel}
             title={`DELETE "${event.name.toLocaleUpperCase()}"`}
-            onConfirm={() => mutate(event.id)}
+            onConfirm={handleDelete}
         >
             <div className="py-5">
                 <Text>This action can't be undone, are you sure?</Text>
