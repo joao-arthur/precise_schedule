@@ -1,6 +1,8 @@
-import type { Meeting } from "frontend_core";
+import type { FormEvent } from "react";
+import type { Meeting, MeetingForm as MeetingFormType } from "frontend_core";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { meetingFns } from "frontend_core";
 import { InputWrapper } from "@/components/atoms/form/InputWrapper";
 import { Group } from "@/components/atoms/layout/Group";
 import { TextInput } from "@/components/atoms/input/TextInput";
@@ -18,24 +20,30 @@ type props = {
 };
 
 export function MeetingForm({ event, disabled, onSubmit }: props) {
-    const { register, handleSubmit, watch, setValue } = useForm<Meeting>(
-        event ? { defaultValues: event } : undefined,
+    const { register, handleSubmit, watch, setValue } = useForm<MeetingFormType>(
+        event ? { defaultValues: meetingFns.toForm(event) } : undefined,
     );
-    const watchFrequency = watch("frequency");
-    const canRepeatWeekend = watchFrequency ? ["1D", "2D"].includes(watchFrequency) : true;
+    const frequency = watch("frequency");
+    const repeats = watch("repeats");
+
+    const canRepeatWeekend = frequency ? ["1D", "2D"].includes(frequency) : true;
     const required = true;
 
     useEffect(() => {
         if (!canRepeatWeekend) {
             setValue("weekendRepeat", false);
         }
-    }, [watchFrequency]);
+    }, [canRepeatWeekend]);
+
+    function handleOnSubmit(e: FormEvent<HTMLFormElement>) {
+        if (!onSubmit) return;
+        handleSubmit((form) => {
+            onSubmit(meetingFns.fromForm(form));
+        })(e);
+    }
 
     return (
-        <form
-            id={getFormName("MEETING")}
-            onSubmit={onSubmit ? handleSubmit(onSubmit) : undefined}
-        >
+        <form id={getFormName("MEETING")} onSubmit={handleOnSubmit}>
             <InputWrapper name="name" title="Name">
                 <TextInput {...register("name", { required, disabled })} />
             </InputWrapper>
@@ -51,18 +59,21 @@ export function MeetingForm({ event, disabled, onSubmit }: props) {
                 </InputWrapper>
             </Group>
             <Group>
-                <InputWrapper name="frequency" title="Frequency">
-                    <SelectInput
-                        {...register("frequency", { required, disabled })}
-                        options={frequencyOptions}
-                    />
+                <InputWrapper name="repeats" title="Repeats">
+                    <ToggleInput {...register("repeats")} />
                 </InputWrapper>
-                <InputWrapper name="weekendRepeat" title="Repeats on weekend">
+                <InputWrapper name="weekendRepeat" title="Repeats on weekend" hidden={!repeats}>
                     <ToggleInput
                         {...register("weekendRepeat", { disabled: disabled || !canRepeatWeekend })}
                     />
                 </InputWrapper>
             </Group>
+            <InputWrapper name="frequency" title="Frequency" hidden={!repeats}>
+                <SelectInput
+                    {...register("frequency", { required, disabled })}
+                    options={frequencyOptions}
+                />
+            </InputWrapper>
         </form>
     );
 }

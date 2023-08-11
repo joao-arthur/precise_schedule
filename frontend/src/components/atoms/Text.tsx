@@ -3,8 +3,8 @@ import { cl } from "@/lib/cl";
 
 type props = {
     readonly children: ReactNode;
-    readonly disabled?: true;
-    readonly selectable?: true;
+    readonly disabled?: boolean;
+    readonly selectable?: boolean;
     readonly size?:
         | "xs"
         | "sm"

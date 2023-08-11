@@ -11,7 +11,7 @@ type forwardedProps = {
     readonly name: string;
     readonly onChange?: ChangeEventHandler<HTMLSelectElement>;
     readonly onBlur?: FocusEventHandler<HTMLSelectElement>;
-    readonly disabled?: boolean | undefined;
+    readonly disabled?: boolean;
     readonly required?: boolean;
     readonly max?: string | number;
     readonly maxLength?: number;

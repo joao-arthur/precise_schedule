@@ -3,7 +3,7 @@ import { cl } from "@/lib/cl";
 
 type props = {
     readonly children: ReactNode;
-    readonly filled?: true;
+    readonly filled?: boolean;
 };
 
 export function BorderedBox({ children, filled }: props) {
@@ -11,8 +11,10 @@ export function BorderedBox({ children, filled }: props) {
         <div
             className={cl(
                 "border border-gray-500 rounded p-3",
-                filled ? "bg-pastel-gray dark:bg-drk" : "",
-                filled ? "transition-colors duration-100" : "",
+                {
+                    "bg-pastel-gray dark:bg-drk": !!filled,
+                    "transition-colors duration-100": !!filled,
+                },
             )}
         >
             {children}

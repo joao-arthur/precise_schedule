@@ -8,7 +8,7 @@ export function fromForm(event: AppointmentForm): Appointment {
         day: event.day,
         begin: event.begin,
         end: event.end,
-        frequency: event.frequency,
+        frequency: event.repeats ? event.frequency : undefined,
         weekendRepeat: event.weekendRepeat,
     };
 }

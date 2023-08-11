@@ -11,7 +11,7 @@ export type modalProps = {
     readonly onCancel: () => void;
     readonly onConfirm?: () => void;
     readonly confirmLabel?: string;
-    readonly hideConfirm?: true;
+    readonly hideConfirm?: boolean;
 };
 
 export function ModalComponent({
