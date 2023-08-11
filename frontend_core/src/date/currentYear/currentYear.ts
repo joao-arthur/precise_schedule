@@ -1,5 +1,5 @@
 import { current } from "../current/current.js";
 
-export function currentYear() {
+export function currentYear(): number {
     return current().year;
 }

@@ -1,6 +1,7 @@
-import type { Appointment } from "frontend_core";
+import type { Appointment, AppointmentForm as AppointmentFormType } from "frontend_core";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { appointmentFns } from "frontend_core";
 import { InputWrapper } from "@/components/atoms/form/InputWrapper";
 import { Group } from "@/components/atoms/layout/Group";
 import { TextInput } from "@/components/atoms/input/TextInput";
@@ -17,21 +18,19 @@ type props = {
     readonly onSubmit?: (form: Appointment) => void;
 };
 
-type AppointmentFormType = Appointment & { readonly repeats: boolean };
-
 export function AppointmentForm({ event, disabled, onSubmit }: props) {
     const { register, handleSubmit, watch, setValue } = useForm<AppointmentFormType>(
-        event ? { defaultValues: event } : undefined,
+        event ? { defaultValues: appointmentFns.toForm(event) } : undefined,
     );
-    const watchFrequency = watch("frequency");
-    const canRepeatWeekend = watchFrequency ? ["1D", "2D"].includes(watchFrequency) : true;
+    const watchValue = watch("frequency");
+    const canRepeatWeekend = watchValue ? ["1D", "2D"].includes(watchValue) : true;
     const required = true;
 
     useEffect(() => {
         if (!canRepeatWeekend) {
             setValue("weekendRepeat", false);
         }
-    }, [watchFrequency]);
+    }, [watchValue]);
 
     return (
         <form

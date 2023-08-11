@@ -1,4 +1,4 @@
-import { assert, expect, it } from "vitest";
+import { assert, it } from "vitest";
 import { map } from "funis";
 import { getOnCalendar } from "./getOnCalendar.js";
 
