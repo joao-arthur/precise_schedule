@@ -33,7 +33,7 @@ export function MeetingForm({ event, disabled, onSubmit }: props) {
         if (!canRepeatWeekend) {
             setValue("weekendRepeat", false);
         }
-    }, [canRepeatWeekend]);
+    }, [frequency]);
 
     function handleOnSubmit(e: FormEvent<HTMLFormElement>) {
         if (!onSubmit) return;
@@ -60,15 +60,19 @@ export function MeetingForm({ event, disabled, onSubmit }: props) {
             </Group>
             <Group>
                 <InputWrapper name="repeats" title="Repeats">
-                    <ToggleInput {...register("repeats")} />
+                    <ToggleInput {...register("repeats", { disabled })} />
                 </InputWrapper>
-                <InputWrapper name="weekendRepeat" title="Repeats on weekend" hidden={!repeats}>
+                <InputWrapper
+                    name="weekendRepeat"
+                    title="Repeats on weekend"
+                    hidden={repeats === false}
+                >
                     <ToggleInput
                         {...register("weekendRepeat", { disabled: disabled || !canRepeatWeekend })}
                     />
                 </InputWrapper>
             </Group>
-            <InputWrapper name="frequency" title="Frequency" hidden={!repeats}>
+            <InputWrapper name="frequency" title="Frequency" hidden={repeats === false}>
                 <SelectInput
                     {...register("frequency", { required, disabled })}
                     options={frequencyOptions}
