@@ -1,4 +1,4 @@
-import type { MeetingEvent } from "@/features/event/event";
+import type { Meeting } from "frontend_core";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { InputWrapper } from "@/components/atoms/form/InputWrapper";
@@ -12,13 +12,13 @@ import { frequencyOptions } from "../frequencyOptions";
 import { getFormName } from "./getFormName";
 
 type props = {
-    readonly event?: Partial<MeetingEvent>;
+    readonly event?: Partial<Meeting>;
     readonly disabled: boolean;
-    readonly onSubmit?: (form: MeetingEvent) => void;
+    readonly onSubmit?: (form: Meeting) => void;
 };
 
 export function MeetingForm({ event, disabled, onSubmit }: props) {
-    const { register, handleSubmit, watch, setValue } = useForm<MeetingEvent>(
+    const { register, handleSubmit, watch, setValue } = useForm<Meeting>(
         event ? { defaultValues: event } : undefined,
     );
     const watchFrequency = watch("frequency");

@@ -1,4 +1,4 @@
-import type { Event } from "@/features/event/event";
+import type { Event } from "frontend_core";
 import { AppointmentUpdate } from "./form/AppointmentUpdate";
 import { BirthdayUpdate } from "./form/BirthdayUpdate";
 import { DateUpdate } from "./form/DateUpdate";

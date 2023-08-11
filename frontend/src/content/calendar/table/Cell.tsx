@@ -1,8 +1,7 @@
-import type { Calendar } from "frontend_core";
+import type { Calendar, Event } from "frontend_core";
 import { calendarFns, dateFns } from "frontend_core";
 import { cl } from "@/lib/cl";
 import { useCalendar } from "@/features/calendar/useCalendar";
-import { Event } from "@/features/event/event";
 import { useEvent } from "@/features/event/useEvent";
 import { Text } from "@/components/atoms/Text";
 

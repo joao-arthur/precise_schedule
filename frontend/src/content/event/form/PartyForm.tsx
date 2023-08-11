@@ -1,4 +1,4 @@
-import type { PartyEvent } from "@/features/event/event";
+import type { Party } from "frontend_core";
 import { useForm } from "react-hook-form";
 import { InputWrapper } from "@/components/atoms/form/InputWrapper";
 import { Group } from "@/components/atoms/layout/Group";
@@ -8,13 +8,13 @@ import { TimeInput } from "@/components/atoms/input/TimeInput";
 import { getFormName } from "./getFormName";
 
 type props = {
-    readonly event?: Partial<PartyEvent>;
+    readonly event?: Partial<Party>;
     readonly disabled: boolean;
-    readonly onSubmit?: (form: PartyEvent) => void;
+    readonly onSubmit?: (form: Party) => void;
 };
 
 export function PartyForm({ event, disabled, onSubmit }: props) {
-    const { register, handleSubmit } = useForm<PartyEvent>(
+    const { register, handleSubmit } = useForm<Party>(
         event ? { defaultValues: event } : undefined,
     );
     const required = true;

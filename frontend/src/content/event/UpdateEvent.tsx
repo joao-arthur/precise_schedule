@@ -1,4 +1,4 @@
-import type { Event } from "@/features/event/event";
+import type { Event } from "frontend_core";
 import { Modal } from "@/components/molecules/Modal";
 import { UpdateEventBuilder } from "./UpdateEventBuilder";
 import { getFormName } from "./form/getFormName";

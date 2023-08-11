@@ -1,11 +1,11 @@
-import type { DateEvent } from "@/features/event/event";
+import type { Date } from "frontend_core";
 import { useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { useCreateDate } from "@/features/event/useEventAPI";
 import { DateForm } from "./DateForm";
 
 type props = {
-    readonly event?: Partial<DateEvent>;
+    readonly event?: Partial<Date>;
     readonly onClose: () => void;
 };
 

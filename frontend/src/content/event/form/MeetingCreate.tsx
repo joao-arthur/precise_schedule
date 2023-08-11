@@ -1,11 +1,11 @@
-import type { MeetingEvent } from "@/features/event/event";
+import type { Meeting } from "frontend_core";
 import { useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { useCreateMeeting } from "@/features/event/useEventAPI";
 import { MeetingForm } from "./MeetingForm";
 
 type props = {
-    readonly event?: Partial<MeetingEvent>;
+    readonly event?: Partial<Meeting>;
     readonly onClose: () => void;
 };
 

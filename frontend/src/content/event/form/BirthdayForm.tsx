@@ -1,4 +1,4 @@
-import type { BirthdayEvent } from "@/features/event/event";
+import type { Birthday } from "frontend_core";
 import { useForm } from "react-hook-form";
 import { InputWrapper } from "@/components/atoms/form/InputWrapper";
 import { TextInput } from "@/components/atoms/input/TextInput";
@@ -6,13 +6,13 @@ import { DateInput } from "@/components/atoms/input/DateInput";
 import { getFormName } from "./getFormName";
 
 type props = {
-    readonly event?: Partial<BirthdayEvent>;
+    readonly event?: Partial<Birthday>;
     readonly disabled: boolean;
-    readonly onSubmit?: (form: BirthdayEvent) => void;
+    readonly onSubmit?: (form: Birthday) => void;
 };
 
 export function BirthdayForm({ event, disabled, onSubmit }: props) {
-    const { register, handleSubmit } = useForm<BirthdayEvent>(
+    const { register, handleSubmit } = useForm<Birthday>(
         event ? { defaultValues: event } : undefined,
     );
     const required = true;

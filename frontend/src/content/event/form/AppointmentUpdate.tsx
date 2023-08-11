@@ -1,11 +1,11 @@
-import type { AppointmentEvent } from "@/features/event/event";
+import type { Appointment } from "frontend_core";
 import { useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { useUpdateAppointment } from "@/features/event/useEventAPI";
 import { AppointmentForm } from "./AppointmentForm";
 
 type props = {
-    readonly event: AppointmentEvent;
+    readonly event: Appointment;
     readonly onClose: () => void;
 };
 

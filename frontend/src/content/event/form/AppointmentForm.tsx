@@ -1,4 +1,4 @@
-import type { AppointmentEvent } from "@/features/event/event";
+import type { Appointment } from "frontend_core";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { InputWrapper } from "@/components/atoms/form/InputWrapper";
@@ -12,12 +12,12 @@ import { frequencyOptions } from "../frequencyOptions";
 import { getFormName } from "./getFormName";
 
 type props = {
-    readonly event?: Partial<AppointmentEvent>;
+    readonly event?: Partial<Appointment>;
     readonly disabled: boolean;
-    readonly onSubmit?: (form: AppointmentEvent) => void;
+    readonly onSubmit?: (form: Appointment) => void;
 };
 
-type AppointmentFormType = AppointmentEvent & { readonly repeats: boolean };
+type AppointmentFormType = Appointment & { readonly repeats: boolean };
 
 export function AppointmentForm({ event, disabled, onSubmit }: props) {
     const { register, handleSubmit, watch, setValue } = useForm<AppointmentFormType>(

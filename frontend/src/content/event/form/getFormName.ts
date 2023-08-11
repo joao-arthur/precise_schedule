@@ -1,4 +1,4 @@
-import { Event } from "@/features/event/event";
+import type { Event } from "frontend_core";
 
 export function getFormName(category: Event["category"]) {
     switch (category) {

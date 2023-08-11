@@ -1,11 +1,11 @@
-import type { PartyEvent } from "@/features/event/event";
+import type { Party } from "frontend_core";
 import { useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { useCreateParty } from "@/features/event/useEventAPI";
 import { PartyForm } from "./PartyForm";
 
 type props = {
-    readonly event?: Partial<PartyEvent>;
+    readonly event?: Partial<Party>;
     readonly onClose: () => void;
 };
 

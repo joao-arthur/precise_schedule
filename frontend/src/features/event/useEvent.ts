@@ -1,4 +1,4 @@
-import type { Event } from "./event";
+import type { Event } from "frontend_core";
 import { map } from "funis";
 import { create } from "zustand";
 

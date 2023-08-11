@@ -1,4 +1,4 @@
-import type { Event } from "@/features/event/event";
+import type { Event } from "frontend_core";
 import { useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { useDeleteEvent } from "@/features/event/useEventAPI";

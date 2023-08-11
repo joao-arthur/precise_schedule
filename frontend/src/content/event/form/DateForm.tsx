@@ -1,4 +1,4 @@
-import type { DateEvent } from "@/features/event/event";
+import type { Date } from "frontend_core";
 import { useForm } from "react-hook-form";
 import { InputWrapper } from "@/components/atoms/form/InputWrapper";
 import { Group } from "@/components/atoms/layout/Group";
@@ -8,13 +8,13 @@ import { TimeInput } from "@/components/atoms/input/TimeInput";
 import { getFormName } from "./getFormName";
 
 type props = {
-    readonly event?: Partial<DateEvent>;
+    readonly event?: Partial<Date>;
     readonly disabled: boolean;
-    readonly onSubmit?: (form: DateEvent) => void;
+    readonly onSubmit?: (form: Date) => void;
 };
 
 export function DateForm({ event, disabled, onSubmit }: props) {
-    const { register, handleSubmit } = useForm<DateEvent>(
+    const { register, handleSubmit } = useForm<Date>(
         event ? { defaultValues: event } : undefined,
     );
     const required = true;

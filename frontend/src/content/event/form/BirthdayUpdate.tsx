@@ -1,11 +1,11 @@
-import type { BirthdayEvent } from "@/features/event/event";
+import type { Birthday } from "frontend_core";
 import { useEffect } from "react";
 import { useQueryClient } from "react-query";
 import { useUpdateBirthday } from "@/features/event/useEventAPI";
 import { BirthdayForm } from "./BirthdayForm";
 
 type props = {
-    readonly event: BirthdayEvent;
+    readonly event: Birthday;
     readonly onClose: () => void;
 };
 

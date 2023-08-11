@@ -1,4 +1,4 @@
-import { Event } from "@/features/event/event";
+import type { Event } from "frontend_core";
 
 type frequencyOption = {
     readonly id: Event["frequency"];

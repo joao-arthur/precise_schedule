@@ -1,5 +1,5 @@
+import type { Event } from "frontend_core";
 import { useState } from "react";
-import { Event } from "@/features/event/event";
 import { Button } from "@/components/atoms/button/Button";
 import { Modal } from "@/components/molecules/Modal";
 import { CreateEvent } from "./CreateEvent";
