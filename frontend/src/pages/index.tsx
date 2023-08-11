@@ -4,7 +4,6 @@ import { useCalendar } from "@/features/calendar/useCalendar";
 import { useFormatMonth } from "@/features/date/useFormatMonth";
 import { If } from "@/components/atoms/layout/If";
 import { Text } from "@/components/atoms/Text";
-import { Icon } from "@/components/atoms/Icon";
 import { HoverButton } from "@/components/atoms/extraButton/HoverButton";
 import { RoundButtonIcon } from "@/components/molecules/RoundButtonIcon";
 import { Header } from "@/content/base/Header";
@@ -15,7 +14,7 @@ import { LoadEvents } from "@/content/calendar/LoadEvents";
 export default function Calendar() {
     const logged = useSession().logged();
     const { year, month, setCurrentMonth, prev, next } = useCalendar();
-    const formatMonth = useFormatMonth();
+    const { fmt } = useFormatMonth();
 
     return (
         <>
@@ -38,7 +37,7 @@ export default function Calendar() {
                         </div>
                         <Text size="2xl" color="white">
                             <div className="capitalize">
-                                {year} {formatMonth(month)}
+                                {year} {fmt(month)}
                             </div>
                         </Text>
                         <If condition={!calendarFns.isCurrent({ year, month })}>

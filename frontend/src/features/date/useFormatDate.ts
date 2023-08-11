@@ -13,5 +13,5 @@ export function useFormatDate() {
         [language],
     );
 
-    return fmt;
+    return { fmt };
 }

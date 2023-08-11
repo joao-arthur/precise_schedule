@@ -20,7 +20,7 @@ export function SidebarContent({ date, close }: props) {
     const [visible, setVisible] = useState(false);
     const { getDateEvents } = useCalendarEvent();
     const logged = useSession().logged();
-    const formatDate = useFormatDate();
+    const { fmt } = useFormatDate();
 
     return (
         <div
@@ -33,12 +33,13 @@ export function SidebarContent({ date, close }: props) {
                 className={cl(
                     "flex justify-between items-center",
                     "px-5 py-4",
+                    "border-b border-gray-300 dark:border-gray-500",
                     "transition-colors duration-100",
                 )}
             >
                 <div className="text-center">
                     <Text size="3xl">
-                        {formatDate(date)}
+                        {fmt(date)}
                     </Text>
                 </div>
                 <div className="flex">

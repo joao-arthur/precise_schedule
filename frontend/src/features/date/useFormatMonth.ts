@@ -13,5 +13,5 @@ export function useFormatMonth() {
         [language],
     );
 
-    return fmt;
+    return { fmt };
 }

@@ -17,8 +17,10 @@ type props = {
     readonly onSubmit?: (form: AppointmentEvent) => void;
 };
 
+type AppointmentFormType = AppointmentEvent & { readonly repeats: boolean };
+
 export function AppointmentForm({ event, disabled, onSubmit }: props) {
-    const { register, handleSubmit, watch, setValue } = useForm<AppointmentEvent>(
+    const { register, handleSubmit, watch, setValue } = useForm<AppointmentFormType>(
         event ? { defaultValues: event } : undefined,
     );
     const watchFrequency = watch("frequency");
@@ -50,6 +52,9 @@ export function AppointmentForm({ event, disabled, onSubmit }: props) {
                     <TimeInput {...register("end", { required, disabled })} />
                 </InputWrapper>
             </Group>
+            <InputWrapper name="repeats" title="Repeats">
+                <ToggleInput {...register("repeats")} />
+            </InputWrapper>
             <Group>
                 <InputWrapper name="frequency" title="Frequency">
                     <SelectInput
