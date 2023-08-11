@@ -232,6 +232,10 @@ it("closestRep undefined", () => {
         repInPeriod({ d: "2000-01-01", freq: undefined }, "2023-08-01", "2023-08-31"),
         [],
     );
+    assert.deepEqual(
+        repInPeriod({ d: "2023-08-22", freq: undefined }, "2023-08-01", "2023-08-31"),
+        ["2023-08-22"],
+    );
 });
 
 it("closestRep between repetition", () => {

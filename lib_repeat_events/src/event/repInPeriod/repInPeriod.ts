@@ -21,7 +21,7 @@ export function repInPeriod(evt: Event, begin: string, end: string): string[] {
     }
     const itt = repLazy({ d: base, freq: evt.freq });
     let current = itt.next().value;
-    while (Temporal.PlainDate.compare(current, end) < 1) {
+    while (current !== undefined && Temporal.PlainDate.compare(current, end) < 1) {
         res.push(current);
         current = itt.next().value;
     }
