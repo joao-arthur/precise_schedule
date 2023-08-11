@@ -1,5 +1,5 @@
 import { toEvent } from "./toEvent.js";
 
-export const birthdayFns = {
+export const birthdayEventFns = {
     toEvent,
 } as const;

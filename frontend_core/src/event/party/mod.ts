@@ -1,3 +1,3 @@
 export type { Party } from "./party.js";
 
-export { partyFns } from "./partyFns.js";
+export { partyEventFns } from "./partyEventFns.js";
