@@ -4,7 +4,7 @@ import type { EventFindRepository } from "./repository.ts";
 export class EventFindRepositoryStub implements EventFindRepository {
     constructor(private readonly event: Event | undefined) {}
 
-    public findByUser(): Promise<Event[]> {
+    public findByUser(): Promise<readonly Event[]> {
         return Promise.resolve(this.event ? [this.event] : []);
     }
 

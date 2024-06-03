@@ -6,7 +6,9 @@ import { DecodeSessionServiceJWTAdapter } from "../session/decode/jwt.adapter.ts
 import { makeHeaders } from "./makeHeaders.ts";
 
 export async function makeUserId(ctx: Context): Promise<User["id"]> {
-    return new DecodeSessionServiceJWTAdapter().decode(
-        new SessionFromRequestServiceImpl().create({ headers: await makeHeaders(ctx) }) as Session,
-    );
+    const headers = await makeHeaders(ctx);
+    const sessionFromRequest = new SessionFromRequestServiceImpl();
+    const jwtAdapter = new DecodeSessionServiceJWTAdapter();
+    const session = sessionFromRequest.create({ headers }) as Session;
+    const result = await jwtAdapter.decode(session);
 }

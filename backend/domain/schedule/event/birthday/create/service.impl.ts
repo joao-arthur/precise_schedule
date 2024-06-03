@@ -6,6 +6,7 @@ import type { BirthdayCreateModel } from "./model.ts";
 import type { BirthdayCreateFactory } from "./factory.ts";
 import type { BirthdayCreateService } from "./service.ts";
 
+import { buildErr, buildOk } from "../../../../lang/result.ts";
 import { createBirthdayValidation } from "./validation.ts";
 
 export class BirthdayCreateServiceImpl implements BirthdayCreateService {
@@ -16,7 +17,10 @@ export class BirthdayCreateServiceImpl implements BirthdayCreateService {
     ) {}
 
     public create(userId: User["id"], event: BirthdayCreateModel): Promise<Event> {
-        this.validator.validate(event, createBirthdayValidation);
+        const modelValidation = this.validator.validate(event, createBirthdayValidation);
+        if (modelValidation.type === "err") {
+            return buildErr(modelValidation.error);
+        }
         const buildedEvent = this.factory.build(event);
         return this.service.create(userId, buildedEvent);
     }

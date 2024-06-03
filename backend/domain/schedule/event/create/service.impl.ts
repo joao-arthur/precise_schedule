@@ -11,7 +11,10 @@ export class EventCreateServiceImpl implements EventCreateService {
         private readonly factory: EventCreateFactory,
     ) {}
 
-    public async create(userId: User["id"], event: EventCreateModel): Promise<Event> {
+    public async create(
+        userId: User["id"],
+        event: EventCreateModel,
+    ): Promise<Event> {
         const buildedEvent = this.factory.build(userId, event);
         await this.repository.create(buildedEvent);
         return buildedEvent;

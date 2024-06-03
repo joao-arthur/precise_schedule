@@ -1,6 +1,10 @@
+import type { Result } from "../../../lang/result.ts";
 import type { User } from "../model.ts";
 import type { UserFindModel } from "./model.ts";
 import type { UserFindService } from "./service.ts";
+import type { UserNotFound } from "./error.userNotFound.ts";
+
+import { buildOk } from "../../../lang/result.ts";
 
 export class UserFindServiceStub implements UserFindService {
     constructor(
@@ -8,15 +12,15 @@ export class UserFindServiceStub implements UserFindService {
         private readonly userFindModel: UserFindModel,
     ) {}
 
-    public findById(): Promise<User> {
-        return Promise.resolve(this.user);
+    public findById(): Promise<Result<User, UserNotFound>> {
+        return Promise.resolve(buildOk(this.user));
     }
 
-    public findByIdMapped(): Promise<UserFindModel> {
-        return Promise.resolve(this.userFindModel);
+    public findByIdMapped(): Promise<Result<UserFindModel, UserNotFound>> {
+        return Promise.resolve(buildOk(this.userFindModel));
     }
 
-    public findByCredentials(): Promise<User> {
-        return Promise.resolve(this.user);
+    public findByCredentials(): Promise<Result<User, UserNotFound>> {
+        return Promise.resolve(buildOk(this.user));
     }
 }

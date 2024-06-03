@@ -5,6 +5,7 @@ import type { UserFindService } from "../find/service.ts";
 import type { UserLoginModel } from "./model.ts";
 import type { UserLoginService } from "./service.ts";
 
+import { buildErr, buildOk } from "../../../lang/result.ts";
 import { userLoginValidation } from "./validation.ts";
 
 export class UserLoginServiceImpl implements UserLoginService {
@@ -15,7 +16,10 @@ export class UserLoginServiceImpl implements UserLoginService {
     ) {}
 
     public async userLogin(user: UserLoginModel): Promise<Session> {
-        this.validator.validate(user, userLoginValidation);
+        const modelValidation = this.validator.validate(user, userLoginValidation);
+        if (modelValidation.type === "err") {
+            return buildErr(modelValidation.error);
+        }
         const existingUser = await this.userFindService.findByCredentials(
             user.username,
             user.password,

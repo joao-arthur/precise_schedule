@@ -1,13 +1,22 @@
-import { User } from "../../user/model.ts";
+import type { Result } from "../../../lang/result.ts";
+import type { User } from "../../user/model.ts";
 import type { Event } from "../model.ts";
 import type { EventFindModel } from "./model.ts";
+import type { EventNotFound } from "./error.eventNotFound.ts";
 
 export type EventFindService = {
-    readonly findByUser: (userId: User["id"]) => Promise<Event[]>;
-    readonly findByUserMapped: (userId: User["id"]) => Promise<EventFindModel[]>;
-    readonly findByUserAndId: (userId: User["id"], id: Event["id"]) => Promise<Event>;
+    readonly findByUser: (
+        userId: User["id"],
+    ) => Promise<readonly Event[]>;
+    readonly findByUserMapped: (
+        userId: User["id"],
+    ) => Promise<readonly EventFindModel[]>;
+    readonly findByUserAndId: (
+        userId: User["id"],
+        id: Event["id"],
+    ) => Promise<Result<Event, EventNotFound>>;
     readonly findByUserAndIdMapped: (
         userId: User["id"],
         id: Event["id"],
-    ) => Promise<EventFindModel>;
+    ) => Promise<Result<EventFindModel, EventNotFound>>;
 };

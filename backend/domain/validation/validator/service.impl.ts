@@ -1,10 +1,12 @@
-import type { Schema } from "@ps/domain/validation/schema.ts";
-import type { ValidatorService } from "@ps/domain/validation/validator/service.ts";
-import type { ValidatorProvider } from "@ps/domain/validation/validator/provider.ts";
-import type { Validation } from "@ps/domain/validation/model.ts";
-import type { ValidationResult } from "@ps/domain/validation/ValidationResult.ts";
+import type { Result } from "../../lang/result.ts";
+import type { Schema } from "../schema.ts";
+import type { Validation } from "../model.ts";
+import type { ValidationResult } from "../ValidationResult.ts";
+import type { ValidatorService } from "./service.ts";
+import type { ValidatorProvider } from "./provider.ts";
 
-import { ValidationError } from "@ps/domain/validation/ValidationError.ts";
+import { buildErr, buildOk } from "../../lang/result.ts";
+import { ValidationError } from "../ValidationError.ts";
 
 export class ValidatorServiceImpl implements ValidatorService {
     constructor(private readonly provider: ValidatorProvider) {}
@@ -12,7 +14,7 @@ export class ValidatorServiceImpl implements ValidatorService {
     public validate<Keys>(
         validated: Keys | undefined | null,
         schema: Schema<Keys>,
-    ): void {
+    ): Result<void, ValidationError> {
         const entries = Object.entries<readonly Validation[]>(schema);
         const result = entries
             .map(([key, validations]) => [
@@ -25,8 +27,10 @@ export class ValidatorServiceImpl implements ValidatorService {
                     .map((err) => (err as Error).message),
             ])
             .filter(([_, message]) => message.length);
-        if (!result.length) return;
+        if (!result.length) {
+            return buildOk(undefined);
+        }
         const obj: ValidationResult = Object.fromEntries(result);
-        throw new ValidationError(obj);
+        return buildErr(new ValidationError(obj));
     }
 }

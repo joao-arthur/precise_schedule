@@ -6,6 +6,7 @@ import type { IdParam } from "../../../http/IdParam.ts";
 import type { EventFindController } from "./controller.ts";
 
 import { ok } from "../../../http/response/ok/builder.ts";
+import { badRequest } from "../../../http/response/badRequest/builder.ts";
 
 export class EventFindControllerImpl implements EventFindController {
     constructor(private readonly eventFindService: EventFindService) {}
@@ -15,6 +16,11 @@ export class EventFindControllerImpl implements EventFindController {
         req: HTTPRequest<undefined, IdParam>,
     ): Promise<HTTPResponse> {
         const result = await this.eventFindService.findByUserAndIdMapped(userId, req.params.id);
-        return ok(result);
+        switch (result.type) {
+            case "ok":
+                return ok(result.data);
+            case "err":
+                return badRequest({ message: result.error.message });
+        }
     }
 }

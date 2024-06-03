@@ -6,6 +6,7 @@ import type { BirthdayUpdateModel } from "./model.ts";
 import type { BirthdayUpdateFactory } from "./factory.ts";
 import type { BirthdayUpdateService } from "./service.ts";
 
+import { buildErr, buildOk } from "../../../../lang/result.ts";
 import { updateBirthdayValidation } from "./validation.ts";
 
 export class BirthdayUpdateServiceImpl implements BirthdayUpdateService {
@@ -20,7 +21,10 @@ export class BirthdayUpdateServiceImpl implements BirthdayUpdateService {
         id: Event["id"],
         event: BirthdayUpdateModel,
     ): Promise<Event> {
-        this.validator.validate(event, updateBirthdayValidation);
+        const modelValidation = this.validator.validate(event, updateBirthdayValidation);
+        if (modelValidation.type === "err") {
+            return buildErr(modelValidation.error);
+        }
         const buildedEvent = this.factory.build(event);
         return this.service.update(userId, id, buildedEvent);
     }

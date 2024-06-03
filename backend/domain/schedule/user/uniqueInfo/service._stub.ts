@@ -1,7 +1,20 @@
+import type { Result } from "../../../lang/result.ts";
+import type { UsernameAlreadyRegistered } from "./error.usernameAlreadyRegistered.ts";
+import type { EmailAlreadyRegistered } from "./error.emailAlreadyRegistered.ts";
 import type { UserUniqueInfoService } from "./service.ts";
 
-export class UserUniqueInfoServiceStub implements UserUniqueInfoService {
-    public async validateNew(): Promise<void> {}
+import { buildOk } from "../../../lang/result.ts";
 
-    public async validateExisting(): Promise<void> {}
+export class UserUniqueInfoServiceStub implements UserUniqueInfoService {
+    public validateNew(): Promise<
+        Result<void, UsernameAlreadyRegistered | EmailAlreadyRegistered>
+    > {
+        return Promise.resolve(buildOk(undefined));
+    }
+
+    public validateExisting(): Promise<
+        Result<void, UsernameAlreadyRegistered | EmailAlreadyRegistered>
+    > {
+        return Promise.resolve(buildOk(undefined));
+    }
 }

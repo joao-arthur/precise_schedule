@@ -1,6 +1,4 @@
-import { BusinessError } from "../../../general/business/error.ts";
-
-export class EventNotFound extends BusinessError {
+export class EventNotFound extends Error {
     constructor() {
         super("The event was not found!");
     }

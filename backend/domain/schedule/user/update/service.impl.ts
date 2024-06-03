@@ -7,6 +7,7 @@ import type { UserUpdateService } from "./service.ts";
 import type { UserUpdateFactory } from "./factory.ts";
 import type { UserUpdateRepository } from "./repository.ts";
 
+import { buildErr, buildOk } from "../../../lang/result.ts";
 import { userUpdateValidation } from "./validation.ts";
 
 export class UserUpdateServiceImpl implements UserUpdateService {
@@ -22,7 +23,10 @@ export class UserUpdateServiceImpl implements UserUpdateService {
         id: User["id"],
         user: UserUpdateModel,
     ): Promise<User> {
-        this.validator.validate(user, userUpdateValidation);
+        const modelValidation = this.validator.validate(user, userUpdateValidation);
+        if (modelValidation.type === "err") {
+            return buildErr(modelValidation.error);
+        }
         const existingUser = await this.userFindService.findById(id);
         await this.uniqueInfoService.validateExisting(user, existingUser);
         const userToUpdate = this.factory.build(user, existingUser);

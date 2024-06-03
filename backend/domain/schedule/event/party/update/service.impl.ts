@@ -6,6 +6,7 @@ import type { PartyUpdateModel } from "./model.ts";
 import type { PartyUpdateService } from "./service.ts";
 import type { PartyUpdateFactory } from "./factory.ts";
 
+import { buildErr, buildOk } from "../../../../lang/result.ts";
 import { updatePartyValidation } from "./validation.ts";
 
 export class PartyUpdateServiceImpl implements PartyUpdateService {
@@ -20,7 +21,10 @@ export class PartyUpdateServiceImpl implements PartyUpdateService {
         id: Event["id"],
         event: PartyUpdateModel,
     ): Promise<Event> {
-        this.validator.validate(event, updatePartyValidation);
+        const modelValidation = this.validator.validate(event, updatePartyValidation);
+        if (modelValidation.type === "err") {
+            return buildErr(modelValidation.error);
+        }
         const buildedEvent = this.factory.build(event);
         return this.service.update(userId, id, buildedEvent);
     }

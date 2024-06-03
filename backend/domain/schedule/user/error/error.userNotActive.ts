@@ -1,6 +1,4 @@
-import { BusinessError } from "../../../general/business/error.ts";
-
-export class UserNotActive extends BusinessError {
+export class UserNotActive extends Error {
     constructor() {
         super("The user is not active!");
     }
