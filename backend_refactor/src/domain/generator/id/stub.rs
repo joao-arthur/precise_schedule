@@ -17,7 +17,7 @@ impl IdGenerator for IdGeneratorStub {
 }
 
 #[cfg(test)]
-mod test {
+mod id_generator_test {
     use crate::domain::generator::id::service::IdGenerator;
     use crate::domain::generator::id::stub::IdGeneratorStub;
 
