@@ -1,10 +1,10 @@
 #[derive(Debug, PartialEq)]
 pub enum EventCategory {
-    APPOINTMENT,
-    BIRTHDAY,
-    DATE,
-    MEETING,
-    PARTY,
+    Appointment,
+    Birthday,
+    Date,
+    Meeting,
+    Party,
 }
 
 #[derive(Debug, PartialEq)]

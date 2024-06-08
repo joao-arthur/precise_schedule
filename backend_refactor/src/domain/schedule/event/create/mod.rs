@@ -31,11 +31,11 @@ pub fn build_event<'a>(event: EventCreateModel<'a>, id: &'a str, user: &'a str) 
 
 #[cfg(test)]
 mod event_create_test {
+    use super::build_event;
+    use super::EventCreateModel;
+    use crate::domain::schedule::event::model::Event;
     use crate::domain::schedule::event::model::EventCategory;
     use crate::domain::schedule::event::model::EventFrequency;
-    use crate::domain::schedule::event::model::Event;
-    use super::EventCreateModel;
-    use super::build_event;
 
     #[test]
     fn test_build_event() {
