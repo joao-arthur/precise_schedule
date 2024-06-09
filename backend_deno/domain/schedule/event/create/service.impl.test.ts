@@ -1,5 +1,4 @@
 import { assertEquals } from "@std/assert/assert-equals";
-
 import { eventStub } from "../model._stub.ts";
 import { createEventModelStub } from "./model._stub.ts";
 import { EventCreateRepositoryStub } from "./repository._stub.ts";

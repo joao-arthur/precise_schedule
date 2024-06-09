@@ -1,4 +1,4 @@
-import { assertEquals } from "std/testing/asserts.ts";
+import { assertEquals } from "@std/assert/assert-equals";
 import { emailValidation } from "./validation.ts";
 import { EmailValidationError } from "./error.ts";
 

@@ -1,7 +1,6 @@
 import type { EventRepository } from "@ps/domain/schedule/event/repository.ts";
 import type { IdGenerator } from "@ps/domain/generator/id/service.ts";
 import type { ValidatorService } from "@ps/domain/validation/validator/service.ts";
-
 import { Router } from "oak/mod.ts";
 import { EventFindServiceImpl } from "@ps/domain/schedule/event/find/service.impl.ts";
 import { EventFindFactoryImpl } from "@ps/domain/schedule/event/find/factory.impl.ts";

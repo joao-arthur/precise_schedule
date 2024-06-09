@@ -3,7 +3,6 @@ import type { UserCreateService } from "@ps/domain/schedule/user/create/service.
 import type { HTTPRequest } from "../../../http/request/model.ts";
 import type { HTTPResponse } from "../../../http/response/model.ts";
 import type { UserCreateController } from "./controller.ts";
-
 import { ok } from "../../../http/response/ok/builder.ts";
 
 export class UserCreateControllerImpl implements UserCreateController {

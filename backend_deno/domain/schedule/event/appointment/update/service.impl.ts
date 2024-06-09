@@ -5,7 +5,6 @@ import type { EventUpdateService } from "../../update/service.ts";
 import type { AppointmentUpdateModel } from "./model.ts";
 import type { AppointmentUpdateFactory } from "./factory.ts";
 import type { AppointmentUpdateService } from "./service.ts";
-
 import { updateAppointmentValidation } from "./validation.ts";
 
 export class AppointmentUpdateServiceImpl implements AppointmentUpdateService {

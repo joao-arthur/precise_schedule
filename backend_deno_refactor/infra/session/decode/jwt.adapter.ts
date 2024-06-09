@@ -2,7 +2,6 @@ import type { Result } from "@ps/domain/lang/result.ts";
 import type { User } from "@ps/domain/schedule/user/model.ts";
 import type { Session } from "@ps/domain/session/model.ts";
 import type { DecodeSessionService } from "@ps/domain/session/decode/service.ts";
-
 import { verify } from "djwt/mod.ts";
 import { buildErr, buildOk } from "@ps/domain/lang/result.ts";
 import { InvalidSessionError } from "@ps/domain/session/invalid/error.ts";

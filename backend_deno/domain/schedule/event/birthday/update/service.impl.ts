@@ -5,7 +5,6 @@ import type { EventUpdateService } from "../../update/service.ts";
 import type { BirthdayUpdateModel } from "./model.ts";
 import type { BirthdayUpdateFactory } from "./factory.ts";
 import type { BirthdayUpdateService } from "./service.ts";
-
 import { updateBirthdayValidation } from "./validation.ts";
 
 export class BirthdayUpdateServiceImpl implements BirthdayUpdateService {

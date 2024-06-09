@@ -1,6 +1,5 @@
 import type { HTTPResponse } from "../../response/model.ts";
 import type { ErrorHandlerMiddleware } from "./middleware.ts";
-
 import { ValidationError } from "@ps/domain/validation/ValidationError.ts";
 import { BusinessError } from "@ps/domain/general/business/error.ts";
 import { InvalidSessionError } from "@ps/domain/session/invalid/error.ts";

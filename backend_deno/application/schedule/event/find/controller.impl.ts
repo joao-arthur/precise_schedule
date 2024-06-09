@@ -4,7 +4,6 @@ import type { HTTPRequest } from "../../../http/request/model.ts";
 import type { HTTPResponse } from "../../../http/response/model.ts";
 import type { IdParam } from "../../../http/IdParam.ts";
 import type { EventFindController } from "./controller.ts";
-
 import { ok } from "../../../http/response/ok/builder.ts";
 
 export class EventFindControllerImpl implements EventFindController {

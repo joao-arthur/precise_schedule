@@ -1,4 +1,4 @@
-import { assertEquals } from "std/testing/asserts.ts";
+import { assertEquals } from "@std/assert/assert-equals";
 import { userStub } from "../model._stub.ts";
 import { UserCreateFactoryStub } from "./factory._stub.ts";
 

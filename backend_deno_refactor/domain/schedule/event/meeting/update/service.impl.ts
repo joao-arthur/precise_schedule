@@ -5,7 +5,6 @@ import type { EventUpdateService } from "../../update/service.ts";
 import type { MeetingUpdateModel } from "./model.ts";
 import type { MeetingUpdateFactory } from "./factory.ts";
 import type { MeetingUpdateService } from "./service.ts";
-
 import { buildErr, buildOk } from "../../../../lang/result.ts";
 import { updateMeetingValidation } from "./validation.ts";
 

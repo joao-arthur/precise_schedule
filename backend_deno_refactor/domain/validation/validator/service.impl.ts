@@ -4,7 +4,6 @@ import type { Validation } from "../model.ts";
 import type { ValidationResult } from "../ValidationResult.ts";
 import type { ValidatorService } from "./service.ts";
 import type { ValidatorProvider } from "./provider.ts";
-
 import { buildErr, buildOk } from "../../lang/result.ts";
 import { ValidationError } from "../ValidationError.ts";
 

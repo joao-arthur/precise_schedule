@@ -1,4 +1,4 @@
-import { assertEquals } from "std/testing/asserts.ts";
+import { assertEquals } from "@std/assert/assert-equals";
 import { unauthorized } from "./builder.ts";
 
 Deno.test("unauthorized", () => {

@@ -4,7 +4,6 @@ import type { BirthdayCreateService } from "@ps/domain/schedule/event/birthday/c
 import type { HTTPRequest } from "../../../../http/request/model.ts";
 import type { HTTPResponse } from "../../../../http/response/model.ts";
 import type { BirthdayCreateController } from "./controller.ts";
-
 import { created } from "../../../../http/response/created/builder.ts";
 
 export class BirthdayCreateControllerImpl implements BirthdayCreateController {

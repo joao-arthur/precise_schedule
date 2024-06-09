@@ -1,6 +1,5 @@
 import type { ValidatorProvider } from "@ps/domain/validation/validator/provider.ts";
 import type { Validation } from "@ps/domain/validation/model.ts";
-
 import { boolValidation } from "../validations/bool/validation.ts";
 import { dtValidation } from "../validations/dt/validation.ts";
 import { dtMinValidation } from "../validations/dtMin/validation.ts";

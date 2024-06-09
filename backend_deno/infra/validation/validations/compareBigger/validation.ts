@@ -1,5 +1,4 @@
 import type { CompareBiggerVal } from "@ps/domain/validation/model.ts";
-
 import { CompareBiggerValidationError } from "./error.ts";
 
 export function compareBiggerValidation(

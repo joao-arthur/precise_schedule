@@ -4,7 +4,6 @@ import type { AppointmentCreateService } from "@ps/domain/schedule/event/appoint
 import type { HTTPRequest } from "../../../../http/request/model.ts";
 import type { HTTPResponse } from "../../../../http/response/model.ts";
 import type { AppointmentCreateController } from "./controller.ts";
-
 import { created } from "../../../../http/response/created/builder.ts";
 
 export class AppointmentCreateControllerImpl implements AppointmentCreateController {

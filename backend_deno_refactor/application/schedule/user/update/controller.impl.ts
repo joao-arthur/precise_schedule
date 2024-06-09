@@ -4,7 +4,6 @@ import type { UserUpdateService } from "@ps/domain/schedule/user/update/service.
 import type { HTTPRequest } from "../../../http/request/model.ts";
 import type { HTTPResponse } from "../../../http/response/model.ts";
 import type { UserUpdateController } from "./controller.ts";
-
 import { noContent } from "../../../http/response/noContent/builder.ts";
 
 export class UserUpdateControllerImpl implements UserUpdateController {

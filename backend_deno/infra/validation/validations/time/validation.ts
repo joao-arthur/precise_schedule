@@ -1,5 +1,4 @@
 import type { TimeVal } from "@ps/domain/validation/model.ts";
-
 import { TimeValidationError } from "./error.ts";
 
 export function timeValidation(_: TimeVal, value: unknown): TimeValidationError | undefined {

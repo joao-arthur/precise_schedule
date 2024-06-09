@@ -1,6 +1,5 @@
 import type { Result } from "../../lang/result.ts";
 import type { ValidatorService } from "./service.ts";
-
 import { buildOk } from "../../lang/result.ts";
 import { ValidationError } from "../ValidationError.ts";
 

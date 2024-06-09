@@ -1,4 +1,4 @@
-import { assertEquals } from "std/testing/asserts.ts";
+import { assertEquals } from "@std/assert/assert-equals";
 import { compareBiggerValidation } from "./validation.ts";
 import { CompareBiggerValidationError } from "./error.ts";
 

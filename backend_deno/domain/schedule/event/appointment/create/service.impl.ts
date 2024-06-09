@@ -5,7 +5,6 @@ import type { EventCreateService } from "../../create/service.ts";
 import type { AppointmentCreateModel } from "./model.ts";
 import type { AppointmentCreateFactory } from "./factory.ts";
 import type { AppointmentCreateService } from "./service.ts";
-
 import { createAppointmentValidation } from "./validation.ts";
 
 export class AppointmentCreateServiceImpl implements AppointmentCreateService {

@@ -5,7 +5,6 @@ import type { EventCreateService } from "../../create/service.ts";
 import type { MeetingCreateModel } from "./model.ts";
 import type { MeetingCreateFactory } from "./factory.ts";
 import type { MeetingCreateService } from "./service.ts";
-
 import { createMeetingValidation } from "./validation.ts";
 
 export class MeetingCreateServiceImpl implements MeetingCreateService {

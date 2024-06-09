@@ -1,5 +1,4 @@
 import type { DtVal } from "@ps/domain/validation/model.ts";
-
 import { DtValidationError } from "./error.ts";
 
 export function dtValidation(_: DtVal, value: unknown): DtValidationError | undefined {

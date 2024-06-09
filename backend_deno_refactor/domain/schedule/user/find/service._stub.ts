@@ -3,7 +3,6 @@ import type { User } from "../model.ts";
 import type { UserFindModel } from "./model.ts";
 import type { UserFindService } from "./service.ts";
 import type { UserNotFound } from "./error.userNotFound.ts";
-
 import { buildOk } from "../../../lang/result.ts";
 
 export class UserFindServiceStub implements UserFindService {

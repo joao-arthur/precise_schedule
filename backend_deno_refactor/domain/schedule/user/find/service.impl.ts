@@ -4,7 +4,6 @@ import type { UserFindModel } from "./model.ts";
 import type { UserFindService } from "./service.ts";
 import type { UserFindFactory } from "./factory.ts";
 import type { UserFindRepository } from "./repository.ts";
-
 import { buildErr, buildOk } from "../../../lang/result.ts";
 import { UserNotFound } from "./error.userNotFound.ts";
 

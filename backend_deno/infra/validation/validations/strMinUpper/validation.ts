@@ -1,5 +1,4 @@
 import type { StrMinUpperVal } from "@ps/domain/validation/model.ts";
-
 import { StrMinUpperValidationError } from "./error.ts";
 
 export function strMinUpperValidation(

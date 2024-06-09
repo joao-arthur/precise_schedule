@@ -4,7 +4,6 @@ import type { HTTPRequest } from "../../../http/request/model.ts";
 import type { HTTPResponse } from "../../../http/response/model.ts";
 import type { IdParam } from "../../../http/IdParam.ts";
 import type { EventDeleteController } from "./controller.ts";
-
 import { noContent } from "../../../http/response/noContent/builder.ts";
 
 export class EventDeleteControllerImpl implements EventDeleteController {

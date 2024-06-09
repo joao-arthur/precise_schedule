@@ -5,7 +5,6 @@ import type { EventUpdateService } from "../../update/service.ts";
 import type { PartyUpdateModel } from "./model.ts";
 import type { PartyUpdateService } from "./service.ts";
 import type { PartyUpdateFactory } from "./factory.ts";
-
 import { updatePartyValidation } from "./validation.ts";
 
 export class PartyUpdateServiceImpl implements PartyUpdateService {

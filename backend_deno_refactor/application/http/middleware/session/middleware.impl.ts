@@ -5,7 +5,6 @@ import type { HTTPRequest } from "../../request/model.ts";
 import type { HTTPHeaders } from "../../headers/model.ts";
 import type { SessionFromRequestService } from "../../sessionFromRequest/service.ts";
 import type { SessionMiddleware } from "./middleware.ts";
-
 import { buildErr, buildOk } from "@ps/domain/lang/result.ts";
 import { InvalidSessionError } from "@ps/domain/session/invalid/error.ts";
 

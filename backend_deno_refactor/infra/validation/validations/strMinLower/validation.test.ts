@@ -1,4 +1,4 @@
-import { assertEquals } from "std/testing/asserts.ts";
+import { assertEquals } from "@std/assert/assert-equals";
 import { strMinLowerValidation } from "./validation.ts";
 import { StrMinLowerValidationError } from "./error.ts";
 

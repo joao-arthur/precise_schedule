@@ -5,7 +5,6 @@ import type { EventUpdateService } from "../../update/service.ts";
 import type { BirthdayUpdateModel } from "./model.ts";
 import type { BirthdayUpdateFactory } from "./factory.ts";
 import type { BirthdayUpdateService } from "./service.ts";
-
 import { buildErr, buildOk } from "../../../../lang/result.ts";
 import { updateBirthdayValidation } from "./validation.ts";
 

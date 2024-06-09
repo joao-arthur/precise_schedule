@@ -1,4 +1,4 @@
-import { assertEquals } from "std/testing/asserts.ts";
+import { assertEquals } from "@std/assert/assert-equals";
 import { EventFindControllerImpl } from "./controller.impl.ts";
 import { eventFindModelStub } from "@ps/domain/schedule/event/find/model._stub.ts";
 import { EventFindServiceStub } from "@ps/domain/schedule/event/find/service._stub.ts";

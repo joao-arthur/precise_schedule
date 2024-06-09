@@ -1,7 +1,6 @@
 import type { UserRepository } from "@ps/domain/schedule/user/repository.ts";
 import type { IdGenerator } from "@ps/domain/generator/id/service.ts";
 import type { ValidatorService } from "@ps/domain/validation/validator/service.ts";
-
 import { Router } from "oak/mod.ts";
 import { UserCreateServiceImpl } from "@ps/domain/schedule/user/create/service.impl.ts";
 import { UserCreateFactoryImpl } from "@ps/domain/schedule/user/create/factory.impl.ts";

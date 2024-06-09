@@ -3,7 +3,6 @@ import type { Event } from "../model.ts";
 import type { EventFindModel } from "./model.ts";
 import type { EventFindService } from "./service.ts";
 import type { EventNotFound } from "./error.eventNotFound.ts";
-
 import { buildOk } from "../../../lang/result.ts";
 
 export class EventFindServiceStub implements EventFindService {

@@ -6,7 +6,6 @@ import type { UserUpdateModel } from "./model.ts";
 import type { UserUpdateService } from "./service.ts";
 import type { UserUpdateFactory } from "./factory.ts";
 import type { UserUpdateRepository } from "./repository.ts";
-
 import { userUpdateValidation } from "./validation.ts";
 
 export class UserUpdateServiceImpl implements UserUpdateService {

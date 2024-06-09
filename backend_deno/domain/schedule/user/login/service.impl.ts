@@ -4,7 +4,6 @@ import type { SessionCreateService } from "../../../session/create/service.ts";
 import type { UserFindService } from "../find/service.ts";
 import type { UserLoginModel } from "./model.ts";
 import type { UserLoginService } from "./service.ts";
-
 import { userLoginValidation } from "./validation.ts";
 
 export class UserLoginServiceImpl implements UserLoginService {

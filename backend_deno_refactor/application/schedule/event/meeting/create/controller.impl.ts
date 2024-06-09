@@ -4,7 +4,6 @@ import type { MeetingCreateService } from "@ps/domain/schedule/event/meeting/cre
 import type { HTTPRequest } from "../../../../http/request/model.ts";
 import type { HTTPResponse } from "../../../../http/response/model.ts";
 import type { MeetingCreateController } from "./controller.ts";
-
 import { created } from "../../../../http/response/created/builder.ts";
 
 export class MeetingCreateControllerImpl implements MeetingCreateController {

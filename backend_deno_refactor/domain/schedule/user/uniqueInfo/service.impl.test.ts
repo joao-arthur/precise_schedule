@@ -1,6 +1,6 @@
 import type { User } from "../model.ts";
-
-import { assertEquals, assertRejects } from "std/testing/asserts.ts";
+import { assertEquals } from "@std/assert/assert-equals";
+import { assertRejects } from "@std/assert/assert-rejects";
 import { userStub } from "../model._stub.ts";
 import { UserUniqueInfoRepositoryStub } from "./repository._stub.ts";
 import { uniqueInfoModelStub } from "./model._stub.ts";

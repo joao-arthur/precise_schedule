@@ -3,7 +3,6 @@ import type { User } from "../model.ts";
 import type { UserUniqueInfoModel } from "./model.ts";
 import type { UserUniqueInfoErrors, UserUniqueInfoService } from "./service.ts";
 import type { UserUniqueInfoRepository } from "./repository.ts";
-
 import { buildErr, buildOk } from "../../../lang/result.ts";
 import { EmailAlreadyRegistered } from "./error.emailAlreadyRegistered.ts";
 import { UsernameAlreadyRegistered } from "./error.usernameAlreadyRegistered.ts";

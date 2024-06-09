@@ -1,4 +1,4 @@
-import { assertEquals } from "std/testing/asserts.ts";
+import { assertEquals } from "@std/assert/assert-equals";
 import { ValidationError } from "@ps/domain/validation/ValidationError.ts";
 import { InvalidSessionError } from "@ps/domain/session/invalid/error.ts";
 import { badRequest } from "../../response/badRequest/builder.ts";
