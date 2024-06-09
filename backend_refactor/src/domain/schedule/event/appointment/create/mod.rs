@@ -2,8 +2,9 @@ use crate::domain::schedule::event::create::EventCreateModel;
 use crate::domain::schedule::event::model::EventCategory;
 use crate::domain::schedule::event::model::EventFrequency;
 use rocket::serde::Deserialize;
+use rocket::serde::Serialize;
 
-#[derive(Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 #[serde(crate = "rocket::serde")]
 pub struct AppointmentCreateModel<'a> {
     pub name: &'a str,
