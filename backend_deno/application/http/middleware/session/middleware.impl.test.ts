@@ -1,4 +1,5 @@
-import { assertEquals, assertRejects } from "std/testing/asserts.ts";
+import { assertEquals } from "std/assert/assert_equals.ts";
+import { assertRejects } from "std/assert/assert_rejects.ts";
 import { InvalidSessionError } from "@ps/domain/session/invalid/error.ts";
 import { ValidateUserSessionServiceStub } from "@ps/domain/userSession/service._stub.ts";
 import { maybeSessionStub, sessionStub } from "@ps/domain/session/model._stub.ts";

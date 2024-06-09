@@ -1,4 +1,4 @@
-import { assertEquals } from "std/testing/asserts.ts";
+import { assertEquals } from "std/assert/assert_equals.ts";
 import { eventStub } from "@ps/domain/schedule/event/model._stub.ts";
 import { EventRepositoryMemory } from "./memory.adapter.ts";
 

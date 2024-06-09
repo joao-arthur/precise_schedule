@@ -1,4 +1,4 @@
-import { assertEquals } from "std/testing/asserts.ts";
+import { assertEquals } from "std/assert/assert_equals.ts";
 import { UserLoginServiceStub } from "@ps/domain/schedule/user/login/service._stub.ts";
 import { sessionStub } from "@ps/domain/session/model._stub.ts";
 import { httpRequestBodyStub } from "../../../http/request/model._stub.ts";

@@ -1,4 +1,4 @@
-import { assertEquals } from "std/testing/asserts.ts";
+import { assertEquals } from "std/assert/assert_equals.ts";
 import { birthdayUpdateModelStub } from "./model._stub.ts";
 import { BirthdayUpdateFactoryImpl } from "./factory.impl.ts";
 

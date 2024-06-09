@@ -1,4 +1,4 @@
-import { assertEquals } from "std/testing/asserts.ts";
+import { assertEquals } from "std/assert/assert_equals.ts";
 import { SessionCreateServiceJWTAdapter } from "./create/jwt.adapter.ts";
 import { DecodeSessionServiceJWTAdapter } from "./decode/jwt.adapter.ts";
 

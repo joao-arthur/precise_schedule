@@ -1,4 +1,4 @@
-import { assertEquals } from "std/testing/asserts.ts";
+import { assertEquals } from "std/assert/assert_equals.ts";
 import { ValidationError } from "@ps/domain/validation/ValidationError.ts";
 import { ValidatorProviderStub } from "@ps/domain/validation/validator/provider._stub.ts";
 import { ValidatorServiceImpl } from "./service.impl.ts";
@@ -9,7 +9,7 @@ Deno.test("ValidatorServiceImpl", () => {
             new ValidatorProviderStub(undefined),
         ).validate(
             null,
-            { dt: [{ type: "dt" }], time: [{ type: "time" }] } as any,
+            { dt: [{ type: "dt" }], time: [{ type: "time" }] } as unknown as null,
         ),
         undefined,
     );

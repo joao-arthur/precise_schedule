@@ -1,4 +1,4 @@
-import { assertEquals } from "std/testing/asserts.ts";
+import { assertEquals } from "std/assert/assert_equals.ts";
 import { createEventModelStub } from "../../create/model._stub.ts";
 import { PartyCreateFactoryStub } from "./factory._stub.ts";
 

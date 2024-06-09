@@ -1,4 +1,4 @@
-import { assertEquals } from "std/testing/asserts.ts";
+import { assertEquals } from "std/assert/assert_equals.ts";
 import { enumValidation } from "./validation.ts";
 import { EnumValidationError } from "./error.ts";
 
