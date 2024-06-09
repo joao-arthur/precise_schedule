@@ -1,4 +1,4 @@
-import { assertEquals } from "std/assert/assert_equals.ts";
+import { assertEquals } from "@std/assert/assert-equals";
 import { boolValidation } from "./validation.ts";
 import { BoolValidationError } from "./error.ts";
 

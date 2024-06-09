@@ -1,5 +1,5 @@
-import { assertEquals } from "std/assert/assert_equals.ts";
-import { assertRejects } from "std/assert/assert_rejects.ts";
+import { assertEquals } from "@std/assert/assert-equals";
+import { assertRejects } from "@std/assert/assert-rejects";
 import { eventStub } from "../model._stub.ts";
 import { EventFindRepositoryStub } from "./repository._stub.ts";
 import { EventNotFound } from "./error.eventNotFound.ts";

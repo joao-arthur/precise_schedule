@@ -1,4 +1,4 @@
-import { assertEquals } from "std/assert/assert_equals.ts";
+import { assertEquals } from "@std/assert/assert-equals";
 import { ValidationError } from "@ps/domain/validation/ValidationError.ts";
 import { ValidatorProviderStub } from "@ps/domain/validation/validator/provider._stub.ts";
 import { ValidatorServiceImpl } from "./service.impl.ts";

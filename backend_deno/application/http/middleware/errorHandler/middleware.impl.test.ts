@@ -1,4 +1,4 @@
-import { assertEquals } from "std/assert/assert_equals.ts";
+import { assertEquals } from "@std/assert/assert-equals";
 import { ValidationError } from "@ps/domain/validation/ValidationError.ts";
 import { BusinessError } from "@ps/domain/general/business/error.ts";
 import { InvalidSessionError } from "@ps/domain/session/invalid/error.ts";

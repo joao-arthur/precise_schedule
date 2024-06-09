@@ -1,4 +1,4 @@
-import { assertEquals } from "std/assert/assert_equals.ts";
+import { assertEquals } from "@std/assert/assert-equals";
 import { ValidateUserSessionServiceStub } from "./service._stub.ts";
 
 Deno.test("ValidateUserSessionServiceStub", async () => {
