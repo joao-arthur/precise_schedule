@@ -3,7 +3,7 @@ export type IdGenerator = {
 };
 
 export class IdGeneratorStub implements IdGenerator {
-    constructor(private readonly value: string) { }
+    constructor(private readonly value: string) {}
 
     public generate(): string {
         return this.value;

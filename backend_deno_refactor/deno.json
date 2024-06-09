@@ -5,15 +5,17 @@
     },
     "lint": {
         "rules": {
-            "include": ["explicit-function-return-type"]
+            "include": [
+                "explicit-function-return-type"
+            ]
         }
     },
     "imports": {
-        "std/": "https://deno.land/std@0.192.0/",
-        "oak/": "https://deno.land/x/oak@v12.5.0/",
+        "@ps/": "./",
+        "@std/assert": "jsr:@std/assert@^0.226.0",
         "cors/": "https://deno.land/x/cors@v1.2.2/",
-        "djwt/": "https://deno.land/x/djwt@v2.9/",
-        "@ps/": "./"
+        "djwt/": "https://deno.land/x/djwt@v3.0.2/",
+        "oak/": "https://deno.land/x/oak@v16.1.0/"
     },
     "tasks": {
         "dev": "deno run --allow-net ./main/main.ts"
