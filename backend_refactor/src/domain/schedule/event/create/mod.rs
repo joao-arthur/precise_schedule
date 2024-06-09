@@ -44,7 +44,7 @@ mod event_create_test {
             day: "2024-03-31",
             begin: "18:00",
             end: "22:00",
-            category: EventCategory::APPOINTMENT,
+            category: EventCategory::Appointment,
             frequency: Some(EventFrequency::D2),
             weekend_repeat: Some(true),
         };
@@ -54,7 +54,7 @@ mod event_create_test {
             day: "2024-03-31",
             begin: "18:00",
             end: "22:00",
-            category: EventCategory::APPOINTMENT,
+            category: EventCategory::Appointment,
             frequency: Some(EventFrequency::D2),
             weekend_repeat: Some(true),
             user: "ab12-cd34",

@@ -1,7 +1,10 @@
 use crate::domain::schedule::event::create::EventCreateModel;
 use crate::domain::schedule::event::model::EventCategory;
 use crate::domain::schedule::event::model::EventFrequency;
+use rocket::serde::Deserialize;
 
+#[derive(Deserialize, Debug)]
+#[serde(crate = "rocket::serde")]
 pub struct AppointmentCreateModel<'a> {
     pub name: &'a str,
     pub day: &'a str,
@@ -17,7 +20,7 @@ pub fn build_event_create(event: AppointmentCreateModel) -> EventCreateModel {
         day: event.day,
         begin: event.begin,
         end: event.end,
-        category: EventCategory::APPOINTMENT,
+        category: EventCategory::Appointment,
         frequency: if let Some(freq) = event.frequency {
             EventFrequency::parse(freq)
         } else {
@@ -50,7 +53,7 @@ mod appointment_create_test {
             day: "2024-03-31",
             begin: "18:00",
             end: "22:00",
-            category: EventCategory::APPOINTMENT,
+            category: EventCategory::Appointment,
             frequency: Some(EventFrequency::D2),
             weekend_repeat: Some(true),
         };
