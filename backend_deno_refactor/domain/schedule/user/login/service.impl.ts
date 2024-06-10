@@ -23,7 +23,7 @@ export class UserLoginServiceImpl implements UserLoginService {
             user.username,
             user.password,
         );
-        if (existingUser.type === 'err') {
+        if (existingUser.type === "err") {
             return existingUser;
         }
         return this.sessionCreateService.create(existingUser.data.id);

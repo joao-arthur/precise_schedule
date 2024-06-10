@@ -15,8 +15,8 @@ export class UserFindServiceImpl implements UserFindService {
 
     public async findById(id: User["id"]): Promise<Result<User, UserNotFound>> {
         const maybeUser = await this.repository.findById(id);
-        if (maybeUser.type === 'err') {
-            return maybeUser
+        if (maybeUser.type === "err") {
+            return maybeUser;
         }
         if (maybeUser.data === undefined) {
             return buildErr(new UserNotFound());
@@ -26,8 +26,8 @@ export class UserFindServiceImpl implements UserFindService {
 
     public async findByIdMapped(id: User["id"]): Promise<Result<UserFindModel, UserNotFound>> {
         const maybeUser = await this.repository.findById(id);
-        if (maybeUser.type === 'err') {
-            return maybeUser
+        if (maybeUser.type === "err") {
+            return maybeUser;
         }
         if (maybeUser.data === undefined) {
             return buildErr(new UserNotFound());
@@ -40,8 +40,8 @@ export class UserFindServiceImpl implements UserFindService {
         password: User["password"],
     ): Promise<Result<User, UserNotFound>> {
         const maybeUser = await this.repository.findByCredentials(username, password);
-        if (maybeUser.type === 'err') {
-            return maybeUser
+        if (maybeUser.type === "err") {
+            return maybeUser;
         }
         if (maybeUser.data === undefined) {
             return buildErr(new UserNotFound());

@@ -9,7 +9,7 @@ import { buildErr, buildOk } from "../../../lang/result.ts";
 
 Deno.test("UserFindServiceImpl.findById", async () => {
     assertEquals(
-        await  new UserFindServiceImpl(
+        await new UserFindServiceImpl(
             new UserFindFactoryStub(userFindModelStub),
             new UserFindRepositoryStub(undefined),
         ).findById(userStub.id),
@@ -26,7 +26,7 @@ Deno.test("UserFindServiceImpl.findById", async () => {
 
 Deno.test("UserFindServiceImpl.findByIdMapped", async () => {
     assertEquals(
-        await  new UserFindServiceImpl(
+        await new UserFindServiceImpl(
             new UserFindFactoryStub(userFindModelStub),
             new UserFindRepositoryStub(undefined),
         ).findByIdMapped(userStub.id),

@@ -1,4 +1,5 @@
 import { assertEquals } from "@std/assert/assert-equals";
+import { buildErr, buildOk } from "../../lang/result.ts";
 import { ValidationError } from "../ValidationError.ts";
 import { ValidatorProviderStub } from "./provider._stub.ts";
 import { ValidatorServiceImpl } from "./service.impl.ts";
@@ -11,21 +12,17 @@ Deno.test("ValidatorServiceImpl", () => {
             null,
             { dt: [{ type: "dt" }], time: [{ type: "time" }] } as any,
         ),
-        undefined,
+        buildOk(undefined),
     );
-    try {
+    assertEquals(
         new ValidatorServiceImpl(
             new ValidatorProviderStub(new Error("invalid")),
         ).validate(
             { a: undefined, b: undefined },
             { a: [{ type: "str" }], b: [{ type: "dt" }] },
-        );
-    } catch (e) {
-        assertEquals(
-            e,
-            new ValidationError({ a: ["invalid"], b: ["invalid"] }),
-        );
-    }
+        ),
+        buildErr(new ValidationError({ a: ["invalid"], b: ["invalid"] })),
+    );
     assertEquals(
         new ValidatorServiceImpl(
             new ValidatorProviderStub(undefined),
@@ -33,6 +30,6 @@ Deno.test("ValidatorServiceImpl", () => {
             { dt: "1999-12-31", time: "00:00" },
             { dt: [{ type: "dt" }], time: [{ type: "time" }] },
         ),
-        undefined,
+        buildOk(undefined),
     );
 });
