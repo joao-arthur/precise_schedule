@@ -4,6 +4,7 @@ import { eventFindModelStub } from "../../../schedule/event/find/model._stub.ts"
 import { EventFindServiceStub } from "../find/service._stub.ts";
 import { EventDeleteServiceImpl } from "./service.impl.ts";
 import { EventDeleteRepositoryStub } from "./repository._stub.ts";
+import { buildOk } from "../../../lang/result.ts";
 
 Deno.test("EventDeleteServiceImpl", async () => {
     assertEquals(
@@ -11,6 +12,6 @@ Deno.test("EventDeleteServiceImpl", async () => {
             new EventDeleteRepositoryStub(),
             new EventFindServiceStub(eventStub, eventFindModelStub),
         ).del(eventStub.user, eventStub.id),
-        undefined,
+        buildOk(undefined),
     );
 });

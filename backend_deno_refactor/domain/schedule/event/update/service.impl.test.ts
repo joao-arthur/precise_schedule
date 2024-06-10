@@ -6,6 +6,7 @@ import { eventUpdateModelStub } from "./model._stub.ts";
 import { EventUpdateServiceImpl } from "./service.impl.ts";
 import { EventUpdateFactoryStub } from "./factory._stub.ts";
 import { EventUpdateRepositoryStub } from "./repository._stub.ts";
+import { buildOk } from "../../../lang/result.ts";
 
 Deno.test("EventUpdateServiceImpl", async () => {
     assertEquals(
@@ -14,6 +15,6 @@ Deno.test("EventUpdateServiceImpl", async () => {
             new EventUpdateFactoryStub(eventStub),
             new EventFindServiceStub(eventStub, eventFindModelStub),
         ).update(eventStub.user, eventStub.id, eventUpdateModelStub),
-        eventStub,
+        buildOk(eventStub),
     );
 });

@@ -1,3 +1,4 @@
+import type { Result } from "../../../../lang/result.ts";
 import type { ValidatorService } from "../../../../validation/validator/service.ts";
 import type { User } from "../../../user/model.ts";
 import type { Event } from "../../model.ts";
@@ -6,7 +7,6 @@ import type { AppointmentUpdateModel } from "./model.ts";
 import type { AppointmentUpdateFactory } from "./factory.ts";
 import type { AppointmentUpdateService } from "./service.ts";
 import { updateAppointmentValidation } from "./validation.ts";
-import { buildErr } from "@ps/domain/lang/result.ts";
 
 export class AppointmentUpdateServiceImpl implements AppointmentUpdateService {
     constructor(
@@ -19,10 +19,10 @@ export class AppointmentUpdateServiceImpl implements AppointmentUpdateService {
         userId: User["id"],
         id: Event["id"],
         event: AppointmentUpdateModel,
-    ): Promise<Event> {
+    ): Promise<Result<Event>> {
         const modelValidation = this.validator.validate(event, updateAppointmentValidation);
         if (modelValidation.type === "err") {
-            return buildErr(modelValidation.error);
+            return Promise.resolve(modelValidation);
         }
         const buildedEvent = this.factory.build(event);
         return this.service.update(userId, id, buildedEvent);

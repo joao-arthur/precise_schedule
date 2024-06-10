@@ -1,4 +1,4 @@
-import type { Result } from "@ps/domain/lang/result.ts";
+import type { Result } from "../../lang/result.ts";
 import type { Schema } from "../schema.ts";
 import type { ValidationError } from "../ValidationError.ts";
 

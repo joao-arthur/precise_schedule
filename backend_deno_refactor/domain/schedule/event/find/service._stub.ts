@@ -11,12 +11,12 @@ export class EventFindServiceStub implements EventFindService {
         private readonly eventFind: EventFindModel,
     ) {}
 
-    public findByUser(): Promise<readonly Event[]> {
-        return Promise.resolve([this.event]);
+    public findByUser(): Promise<Result<readonly Event[]>> {
+        return Promise.resolve(buildOk([this.event]));
     }
 
-    public findByUserMapped(): Promise<readonly EventFindModel[]> {
-        return Promise.resolve([this.eventFind]);
+    public findByUserMapped(): Promise<Result<readonly EventFindModel[]>> {
+        return Promise.resolve(buildOk([this.eventFind]));
     }
 
     public findByUserAndId(): Promise<Result<Event, EventNotFound>> {

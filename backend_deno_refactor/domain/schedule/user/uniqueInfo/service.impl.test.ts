@@ -1,6 +1,5 @@
 import type { User } from "../model.ts";
 import { assertEquals } from "@std/assert/assert-equals";
-import { assertRejects } from "@std/assert/assert-rejects";
 import { userStub } from "../model._stub.ts";
 import { UserUniqueInfoRepositoryStub } from "./repository._stub.ts";
 import { uniqueInfoModelStub } from "./model._stub.ts";
@@ -28,7 +27,7 @@ Deno.test("UserUniqueInfoServiceImpl.validateNew", async () => {
         ),
         undefined,
     );
-    await assertRejects(
+    assertEquals(
         () =>
             new UserUniqueInfoServiceImpl(
                 new UserUniqueInfoRepositoryStub(1, 0),
@@ -37,7 +36,7 @@ Deno.test("UserUniqueInfoServiceImpl.validateNew", async () => {
             ),
         UsernameAlreadyRegistered,
     );
-    await assertRejects(
+    assertEquals(
         () =>
             new UserUniqueInfoServiceImpl(
                 new UserUniqueInfoRepositoryStub(0, 1),
@@ -58,7 +57,7 @@ Deno.test("validateUniqueEmail.validateExisting", async () => {
         ),
         undefined,
     );
-    await assertRejects(
+    assertEquals(
         () =>
             new UserUniqueInfoServiceImpl(
                 new UserUniqueInfoRepositoryStub(1, 0),
@@ -69,7 +68,7 @@ Deno.test("validateUniqueEmail.validateExisting", async () => {
                 ),
         UsernameAlreadyRegistered,
     );
-    await assertRejects(
+    assertEquals(
         () =>
             new UserUniqueInfoServiceImpl(
                 new UserUniqueInfoRepositoryStub(0, 1),

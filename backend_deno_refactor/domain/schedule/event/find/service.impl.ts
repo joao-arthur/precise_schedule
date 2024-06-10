@@ -14,13 +14,19 @@ export class EventFindServiceImpl implements EventFindService {
         private readonly repository: EventFindRepository,
     ) {}
 
-    public findByUser(userId: User["id"]): Promise<readonly Event[]> {
+    public findByUser(userId: User["id"]): Promise<Result<readonly Event[]>> {
         return this.repository.findByUser(userId);
     }
 
-    public async findByUserMapped(userId: User["id"]): Promise<readonly EventFindModel[]> {
+    public async findByUserMapped(
+        userId: User["id"],
+    ): Promise<Result<readonly EventFindModel[]>> {
         const foundUsers = await this.repository.findByUser(userId);
-        return foundUsers.map((event) => this.factory.build(event));
+        if (foundUsers.type === "err") {
+            return foundUsers;
+        }
+        const mapped = foundUsers.data.map((event) => this.factory.build(event));
+        return buildOk(mapped);
     }
 
     public async findByUserAndId(
@@ -28,10 +34,13 @@ export class EventFindServiceImpl implements EventFindService {
         id: Event["id"],
     ): Promise<Result<Event, EventNotFound>> {
         const maybeEvent = await this.repository.findByUserAndId(userId, id);
-        if (maybeEvent === undefined) {
+        if (maybeEvent.type === "err") {
+            return maybeEvent;
+        }
+        if (maybeEvent.data === undefined) {
             return buildErr(new EventNotFound());
         }
-        return buildOk(maybeEvent);
+        return buildOk(maybeEvent.data);
     }
 
     public async findByUserAndIdMapped(
@@ -39,9 +48,12 @@ export class EventFindServiceImpl implements EventFindService {
         id: Event["id"],
     ): Promise<Result<EventFindModel, EventNotFound>> {
         const maybeEvent = await this.repository.findByUserAndId(userId, id);
-        if (maybeEvent === undefined) {
+        if (maybeEvent.type === "err") {
+            return maybeEvent;
+        }
+        if (maybeEvent.data === undefined) {
             return buildErr(new EventNotFound());
         }
-        return buildOk(this.factory.build(maybeEvent));
+        return buildOk(this.factory.build(maybeEvent.data));
     }
 }

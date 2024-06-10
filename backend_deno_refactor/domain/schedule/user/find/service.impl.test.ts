@@ -1,5 +1,4 @@
 import { assertEquals } from "@std/assert/assert-equals";
-import { assertRejects } from "@std/assert/assert-rejects";
 import { userStub } from "../model._stub.ts";
 import { userFindModelStub } from "./model._stub.ts";
 import { UserFindFactoryStub } from "./factory._stub.ts";
@@ -8,12 +7,11 @@ import { UserNotFound } from "./error.userNotFound.ts";
 import { UserFindServiceImpl } from "./service.impl.ts";
 
 Deno.test("UserFindServiceImpl.findById", async () => {
-    await assertRejects(
-        () =>
-            new UserFindServiceImpl(
-                new UserFindFactoryStub(userFindModelStub),
-                new UserFindRepositoryStub(undefined),
-            ).findById(userStub.id),
+    assertEquals(
+        new UserFindServiceImpl(
+            new UserFindFactoryStub(userFindModelStub),
+            new UserFindRepositoryStub(undefined),
+        ).findById(userStub.id),
         UserNotFound,
     );
     assertEquals(
@@ -26,12 +24,11 @@ Deno.test("UserFindServiceImpl.findById", async () => {
 });
 
 Deno.test("UserFindServiceImpl.findByIdMapped", async () => {
-    await assertRejects(
-        () =>
-            new UserFindServiceImpl(
-                new UserFindFactoryStub(userFindModelStub),
-                new UserFindRepositoryStub(undefined),
-            ).findByIdMapped(userStub.id),
+    assertEquals(
+        new UserFindServiceImpl(
+            new UserFindFactoryStub(userFindModelStub),
+            new UserFindRepositoryStub(undefined),
+        ).findByIdMapped(userStub.id),
         UserNotFound,
     );
     assertEquals(
@@ -44,12 +41,11 @@ Deno.test("UserFindServiceImpl.findByIdMapped", async () => {
 });
 
 Deno.test("UserFindServiceImpl.findByCredentials", async () => {
-    await assertRejects(
-        () =>
-            new UserFindServiceImpl(
-                new UserFindFactoryStub(userFindModelStub),
-                new UserFindRepositoryStub(undefined),
-            ).findByCredentials(userStub.username, userStub.password),
+    assertEquals(
+        new UserFindServiceImpl(
+            new UserFindFactoryStub(userFindModelStub),
+            new UserFindRepositoryStub(undefined),
+        ).findByCredentials(userStub.username, userStub.password),
         UserNotFound,
     );
     assertEquals(

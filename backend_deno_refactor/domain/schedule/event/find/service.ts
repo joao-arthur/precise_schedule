@@ -7,10 +7,10 @@ import type { EventNotFound } from "./error.eventNotFound.ts";
 export type EventFindService = {
     readonly findByUser: (
         userId: User["id"],
-    ) => Promise<readonly Event[]>;
+    ) => Promise<Result<readonly Event[]>>;
     readonly findByUserMapped: (
         userId: User["id"],
-    ) => Promise<readonly EventFindModel[]>;
+    ) => Promise<Result<readonly EventFindModel[]>>;
     readonly findByUserAndId: (
         userId: User["id"],
         id: Event["id"],

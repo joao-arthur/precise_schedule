@@ -1,3 +1,4 @@
+import type { Result } from "../../../../lang/result.ts";
 import type { User } from "../../../user/model.ts";
 import type { Event } from "../../model.ts";
 import type { AppointmentUpdateModel } from "./model.ts";
@@ -7,5 +8,5 @@ export type AppointmentUpdateService = {
         userId: User["id"],
         id: Event["id"],
         event: AppointmentUpdateModel,
-    ) => Promise<Event>;
+    ) => Promise<Result<Event>>;
 };
