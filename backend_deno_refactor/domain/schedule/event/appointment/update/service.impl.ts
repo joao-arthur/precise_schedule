@@ -20,9 +20,9 @@ export class AppointmentUpdateServiceImpl implements AppointmentUpdateService {
         id: Event["id"],
         event: AppointmentUpdateModel,
     ): Promise<Result<Event>> {
-        const modelValidation = this.validator.validate(event, updateAppointmentValidation);
-        if (modelValidation.type === "err") {
-            return Promise.resolve(modelValidation);
+        const validationResult = this.validator.validate(event, updateAppointmentValidation);
+        if (validationResult.type === "err") {
+            return Promise.resolve(validationResult);
         }
         const buildedEvent = this.factory.build(event);
         return this.service.update(userId, id, buildedEvent);

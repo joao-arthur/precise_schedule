@@ -20,9 +20,9 @@ export class MeetingUpdateServiceImpl implements MeetingUpdateService {
         id: Event["id"],
         event: MeetingUpdateModel,
     ): Promise<Result<Event>> {
-        const modelValidation = this.validator.validate(event, updateMeetingValidation);
-        if (modelValidation.type === "err") {
-            return Promise.resolve(modelValidation);
+        const validationResult = this.validator.validate(event, updateMeetingValidation);
+        if (validationResult.type === "err") {
+            return Promise.resolve(validationResult);
         }
         const buildedEvent = this.factory.build(event);
         return this.service.update(userId, id, buildedEvent);

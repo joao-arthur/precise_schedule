@@ -20,11 +20,11 @@ export class EventUpdateServiceImpl implements EventUpdateService {
         id: Event["id"],
         event: EventUpdateModel,
     ): Promise<Result<Event>> {
-        const existingEvent = await this.eventFindService.findByUserAndId(userId, id);
-        if (existingEvent.type === "err") {
-            return existingEvent;
+        const existingEventResult = await this.eventFindService.findByUserAndId(userId, id);
+        if (existingEventResult.type === "err") {
+            return existingEventResult;
         }
-        const buildedEvent = this.factory.build(event, existingEvent.data);
+        const buildedEvent = this.factory.build(event, existingEventResult.data);
         await this.repository.update(buildedEvent);
         return buildOk(buildedEvent);
     }

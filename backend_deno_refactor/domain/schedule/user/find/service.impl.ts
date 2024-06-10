@@ -14,38 +14,38 @@ export class UserFindServiceImpl implements UserFindService {
     ) {}
 
     public async findById(id: User["id"]): Promise<Result<User, UserNotFound>> {
-        const maybeUser = await this.repository.findById(id);
-        if (maybeUser.type === "err") {
-            return maybeUser;
+        const foundUserResult = await this.repository.findById(id);
+        if (foundUserResult.type === "err") {
+            return foundUserResult;
         }
-        if (maybeUser.data === undefined) {
+        if (foundUserResult.data === undefined) {
             return buildErr(new UserNotFound());
         }
-        return buildOk(maybeUser.data);
+        return buildOk(foundUserResult.data);
     }
 
     public async findByIdMapped(id: User["id"]): Promise<Result<UserFindModel, UserNotFound>> {
-        const maybeUser = await this.repository.findById(id);
-        if (maybeUser.type === "err") {
-            return maybeUser;
+        const foundUserResult = await this.repository.findById(id);
+        if (foundUserResult.type === "err") {
+            return foundUserResult;
         }
-        if (maybeUser.data === undefined) {
+        if (foundUserResult.data === undefined) {
             return buildErr(new UserNotFound());
         }
-        return buildOk(this.factory.build(maybeUser.data));
+        return buildOk(this.factory.build(foundUserResult.data));
     }
 
     public async findByCredentials(
         username: User["username"],
         password: User["password"],
     ): Promise<Result<User, UserNotFound>> {
-        const maybeUser = await this.repository.findByCredentials(username, password);
-        if (maybeUser.type === "err") {
-            return maybeUser;
+        const foundUserResult = await this.repository.findByCredentials(username, password);
+        if (foundUserResult.type === "err") {
+            return foundUserResult;
         }
-        if (maybeUser.data === undefined) {
+        if (foundUserResult.data === undefined) {
             return buildErr(new UserNotFound());
         }
-        return buildOk(maybeUser.data);
+        return buildOk(foundUserResult.data);
     }
 }

@@ -20,9 +20,9 @@ export class DateUpdateServiceImpl implements DateUpdateService {
         id: Event["id"],
         event: DateUpdateModel,
     ): Promise<Result<Event>> {
-        const modelValidation = this.validator.validate(event, updateDateValidation);
-        if (modelValidation.type === "err") {
-            return Promise.resolve(modelValidation);
+        const validationResult = this.validator.validate(event, updateDateValidation);
+        if (validationResult.type === "err") {
+            return Promise.resolve(validationResult);
         }
         const buildedEvent = this.factory.build(event);
         return this.service.update(userId, id, buildedEvent);

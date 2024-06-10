@@ -20,9 +20,9 @@ export class BirthdayUpdateServiceImpl implements BirthdayUpdateService {
         id: Event["id"],
         event: BirthdayUpdateModel,
     ): Promise<Result<Event>> {
-        const modelValidation = this.validator.validate(event, updateBirthdayValidation);
-        if (modelValidation.type === "err") {
-            return Promise.resolve(modelValidation);
+        const validationResult = this.validator.validate(event, updateBirthdayValidation);
+        if (validationResult.type === "err") {
+            return Promise.resolve(validationResult);
         }
         const buildedEvent = this.factory.build(event);
         return this.service.update(userId, id, buildedEvent);

@@ -21,11 +21,11 @@ export class EventFindServiceImpl implements EventFindService {
     public async findByUserMapped(
         userId: User["id"],
     ): Promise<Result<readonly EventFindModel[]>> {
-        const foundUsers = await this.repository.findByUser(userId);
-        if (foundUsers.type === "err") {
-            return foundUsers;
+        const foundUsersResult = await this.repository.findByUser(userId);
+        if (foundUsersResult.type === "err") {
+            return foundUsersResult;
         }
-        const mapped = foundUsers.data.map((event) => this.factory.build(event));
+        const mapped = foundUsersResult.data.map((event) => this.factory.build(event));
         return buildOk(mapped);
     }
 
@@ -33,27 +33,27 @@ export class EventFindServiceImpl implements EventFindService {
         userId: User["id"],
         id: Event["id"],
     ): Promise<Result<Event, EventNotFound>> {
-        const maybeEvent = await this.repository.findByUserAndId(userId, id);
-        if (maybeEvent.type === "err") {
-            return maybeEvent;
+        const maybeEventResult = await this.repository.findByUserAndId(userId, id);
+        if (maybeEventResult.type === "err") {
+            return maybeEventResult;
         }
-        if (maybeEvent.data === undefined) {
+        if (maybeEventResult.data === undefined) {
             return buildErr(new EventNotFound());
         }
-        return buildOk(maybeEvent.data);
+        return buildOk(maybeEventResult.data);
     }
 
     public async findByUserAndIdMapped(
         userId: User["id"],
         id: Event["id"],
     ): Promise<Result<EventFindModel, EventNotFound>> {
-        const maybeEvent = await this.repository.findByUserAndId(userId, id);
-        if (maybeEvent.type === "err") {
-            return maybeEvent;
+        const maybeEventResult = await this.repository.findByUserAndId(userId, id);
+        if (maybeEventResult.type === "err") {
+            return maybeEventResult;
         }
-        if (maybeEvent.data === undefined) {
+        if (maybeEventResult.data === undefined) {
             return buildErr(new EventNotFound());
         }
-        return buildOk(this.factory.build(maybeEvent.data));
+        return buildOk(this.factory.build(maybeEventResult.data));
     }
 }

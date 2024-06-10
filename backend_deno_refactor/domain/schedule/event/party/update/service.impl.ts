@@ -20,9 +20,9 @@ export class PartyUpdateServiceImpl implements PartyUpdateService {
         id: Event["id"],
         event: PartyUpdateModel,
     ): Promise<Result<Event>> {
-        const modelValidation = this.validator.validate(event, updatePartyValidation);
-        if (modelValidation.type === "err") {
-            return Promise.resolve(modelValidation);
+        const validationResult = this.validator.validate(event, updatePartyValidation);
+        if (validationResult.type === "err") {
+            return Promise.resolve(validationResult);
         }
         const buildedEvent = this.factory.build(event);
         return this.service.update(userId, id, buildedEvent);

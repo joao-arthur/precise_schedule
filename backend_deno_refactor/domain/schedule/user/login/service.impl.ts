@@ -15,17 +15,17 @@ export class UserLoginServiceImpl implements UserLoginService {
     ) {}
 
     public async userLogin(user: UserLoginModel): Promise<Result<Session>> {
-        const modelValidation = this.validator.validate(user, userLoginValidation);
-        if (modelValidation.type === "err") {
-            return modelValidation;
+        const validationResult = this.validator.validate(user, userLoginValidation);
+        if (validationResult.type === "err") {
+            return validationResult;
         }
-        const existingUser = await this.userFindService.findByCredentials(
+        const existingUserResult = await this.userFindService.findByCredentials(
             user.username,
             user.password,
         );
-        if (existingUser.type === "err") {
-            return existingUser;
+        if (existingUserResult.type === "err") {
+            return existingUserResult;
         }
-        return this.sessionCreateService.create(existingUser.data.id);
+        return this.sessionCreateService.create(existingUserResult.data.id);
     }
 }

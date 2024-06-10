@@ -16,9 +16,9 @@ export class DateCreateServiceImpl implements DateCreateService {
     ) {}
 
     public create(userId: User["id"], event: DateCreateModel): Promise<Result<Event>> {
-        const modelValidation = this.validator.validate(event, createDateValidation);
-        if (modelValidation.type === "err") {
-            return Promise.resolve(modelValidation);
+        const validationResult = this.validator.validate(event, createDateValidation);
+        if (validationResult.type === "err") {
+            return Promise.resolve(validationResult);
         }
         const buildedEvent = this.factory.build(event);
         return this.service.create(userId, buildedEvent);

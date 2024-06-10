@@ -21,9 +21,9 @@ export class UserCreateServiceImpl implements UserCreateService {
     public async create(
         user: UserCreateModel,
     ): Promise<Result<Session, UserCreateErrors>> {
-        const modelValidation = this.validator.validate(user, userCreateValidation);
-        if (modelValidation.type === "err") {
-            return modelValidation;
+        const validationResult = this.validator.validate(user, userCreateValidation);
+        if (validationResult.type === "err") {
+            return validationResult;
         }
         await this.uniqueInfoService.validateNew(user);
         const buildedUser = this.factory.build(user);

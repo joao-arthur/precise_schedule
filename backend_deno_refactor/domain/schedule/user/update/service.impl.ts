@@ -23,9 +23,9 @@ export class UserUpdateServiceImpl implements UserUpdateService {
         id: User["id"],
         user: UserUpdateModel,
     ): Promise<Result<User>> {
-        const modelValidation = this.validator.validate(user, userUpdateValidation);
-        if (modelValidation.type === "err") {
-            return modelValidation;
+        const validationResult = this.validator.validate(user, userUpdateValidation);
+        if (validationResult.type === "err") {
+            return validationResult;
         }
         const existingUser = await this.userFindService.findById(id);
         if (existingUser.type === "err") {

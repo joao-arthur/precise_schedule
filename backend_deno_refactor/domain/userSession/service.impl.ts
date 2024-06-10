@@ -13,12 +13,12 @@ export class ValidateUserSessionServiceImpl implements ValidateUserSessionServic
     ) {}
 
     public async validate(session: Session): Promise<Result<void, InvalidSessionError>> {
-        const userId = await this.decodeSessionService.decode(session);
-        if (userId.type === "err") {
+        const userIdResult = await this.decodeSessionService.decode(session);
+        if (userIdResult.type === "err") {
             return buildErr(new InvalidSessionError());
         }
-        const user = await this.userFindService.findById(userId.data);
-        if (user.type === "err") {
+        const userResult = await this.userFindService.findById(userIdResult.data);
+        if (userResult.type === "err") {
             return buildErr(new InvalidSessionError());
         }
         return buildOk(undefined);

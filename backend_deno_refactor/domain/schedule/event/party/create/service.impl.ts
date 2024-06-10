@@ -16,9 +16,9 @@ export class PartyCreateServiceImpl implements PartyCreateService {
     ) {}
 
     public create(userId: User["id"], event: PartyCreateModel): Promise<Result<Event>> {
-        const modelValidation = this.validator.validate(event, createPartyValidation);
-        if (modelValidation.type === "err") {
-            return Promise.resolve(modelValidation);
+        const validationResult = this.validator.validate(event, createPartyValidation);
+        if (validationResult.type === "err") {
+            return Promise.resolve(validationResult);
         }
         const buildedEvent = this.factory.build(event);
         return this.service.create(userId, buildedEvent);
