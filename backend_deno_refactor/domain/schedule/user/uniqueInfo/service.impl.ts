@@ -15,14 +15,14 @@ export class UserUniqueInfoServiceImpl implements UserUniqueInfoService {
     ): Promise<Result<void, UserUniqueInfoErrors>> {
         const countUsername = await this.repository.countUsername(user.username);
         if (countUsername.type === "err") {
-            return buildErr(countUsername.error);
+            return countUsername;
         }
         if (countUsername.data > 0) {
             return buildErr(new UsernameAlreadyRegistered());
         }
         const countEmail = await this.repository.countEmail(user.email);
         if (countEmail.type === "err") {
-            return buildErr(countEmail.error);
+            return countEmail;
         }
         if (countEmail.data > 0) {
             return buildErr(new EmailAlreadyRegistered());
@@ -36,14 +36,14 @@ export class UserUniqueInfoServiceImpl implements UserUniqueInfoService {
     ): Promise<Result<void, UserUniqueInfoErrors>> {
         const countUsername = await this.repository.countUsername(user.username);
         if (countUsername.type === "err") {
-            return buildErr(countUsername.error);
+            return countUsername;
         }
         if (countUsername.data > 0 && user.username !== oldUser.username) {
             return buildErr(new UsernameAlreadyRegistered());
         }
         const countEmail = await this.repository.countEmail(user.email);
         if (countEmail.type === "err") {
-            return buildErr(countEmail.error);
+            return countEmail;
         }
         if (countEmail.data > 0 && user.email !== oldUser.email) {
             return buildErr(new EmailAlreadyRegistered());

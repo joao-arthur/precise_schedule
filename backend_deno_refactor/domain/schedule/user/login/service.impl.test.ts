@@ -7,6 +7,7 @@ import { userFindModelStub } from "../find/model._stub.ts";
 import { UserFindServiceStub } from "../find/service._stub.ts";
 import { userLoginModelStub } from "./model._stub.ts";
 import { UserLoginServiceImpl } from "./service.impl.ts";
+import { buildOk } from "../../../lang/result.ts";
 
 Deno.test("validateUniqueUsername", async () => {
     assertEquals(
@@ -15,6 +16,6 @@ Deno.test("validateUniqueUsername", async () => {
             new UserFindServiceStub(userStub, userFindModelStub),
             new SessionCreateServiceStub(sessionStub),
         ).userLogin(userLoginModelStub),
-        sessionStub,
+        buildOk(sessionStub),
     );
 });

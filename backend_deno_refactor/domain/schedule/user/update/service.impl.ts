@@ -1,3 +1,4 @@
+import type { Result } from "../../../lang/result.ts";
 import type { ValidatorService } from "../../../validation/validator/service.ts";
 import type { User } from "../model.ts";
 import type { UserUniqueInfoService } from "../uniqueInfo/service.ts";
@@ -6,7 +7,7 @@ import type { UserUpdateModel } from "./model.ts";
 import type { UserUpdateService } from "./service.ts";
 import type { UserUpdateFactory } from "./factory.ts";
 import type { UserUpdateRepository } from "./repository.ts";
-import { buildErr, buildOk } from "../../../lang/result.ts";
+import { buildOk } from "../../../lang/result.ts";
 import { userUpdateValidation } from "./validation.ts";
 
 export class UserUpdateServiceImpl implements UserUpdateService {
@@ -21,15 +22,18 @@ export class UserUpdateServiceImpl implements UserUpdateService {
     public async update(
         id: User["id"],
         user: UserUpdateModel,
-    ): Promise<User> {
+    ): Promise<Result<User>> {
         const modelValidation = this.validator.validate(user, userUpdateValidation);
         if (modelValidation.type === "err") {
-            return buildErr(modelValidation.error);
+            return modelValidation;
         }
         const existingUser = await this.userFindService.findById(id);
-        await this.uniqueInfoService.validateExisting(user, existingUser);
-        const userToUpdate = this.factory.build(user, existingUser);
+        if (existingUser.type === "err") {
+            return existingUser;
+        }
+        await this.uniqueInfoService.validateExisting(user, existingUser.data);
+        const userToUpdate = this.factory.build(user, existingUser.data);
         await this.repository.update(userToUpdate);
-        return userToUpdate;
+        return buildOk(userToUpdate);
     }
 }

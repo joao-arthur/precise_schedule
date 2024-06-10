@@ -15,18 +15,24 @@ export class UserFindServiceImpl implements UserFindService {
 
     public async findById(id: User["id"]): Promise<Result<User, UserNotFound>> {
         const maybeUser = await this.repository.findById(id);
-        if (maybeUser === undefined) {
+        if (maybeUser.type === 'err') {
+            return maybeUser
+        }
+        if (maybeUser.data === undefined) {
             return buildErr(new UserNotFound());
         }
-        return buildOk(maybeUser);
+        return buildOk(maybeUser.data);
     }
 
     public async findByIdMapped(id: User["id"]): Promise<Result<UserFindModel, UserNotFound>> {
         const maybeUser = await this.repository.findById(id);
-        if (maybeUser === undefined) {
+        if (maybeUser.type === 'err') {
+            return maybeUser
+        }
+        if (maybeUser.data === undefined) {
             return buildErr(new UserNotFound());
         }
-        return buildOk(this.factory.build(maybeUser));
+        return buildOk(this.factory.build(maybeUser.data));
     }
 
     public async findByCredentials(
@@ -34,9 +40,12 @@ export class UserFindServiceImpl implements UserFindService {
         password: User["password"],
     ): Promise<Result<User, UserNotFound>> {
         const maybeUser = await this.repository.findByCredentials(username, password);
-        if (maybeUser === undefined) {
+        if (maybeUser.type === 'err') {
+            return maybeUser
+        }
+        if (maybeUser.data === undefined) {
             return buildErr(new UserNotFound());
         }
-        return buildOk(maybeUser);
+        return buildOk(maybeUser.data);
     }
 }

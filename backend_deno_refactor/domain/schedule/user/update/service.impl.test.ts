@@ -8,6 +8,7 @@ import { userUpdateModelStub } from "./model._stub.ts";
 import { UserUpdateFactoryStub } from "./factory._stub.ts";
 import { UserUpdateRepositoryStub } from "./repository._stub.ts";
 import { UserUpdateServiceImpl } from "./service.impl.ts";
+import { buildOk } from "../../../lang/result.ts";
 
 Deno.test("UserUpdateServiceImpl", async () => {
     assertEquals(
@@ -18,6 +19,6 @@ Deno.test("UserUpdateServiceImpl", async () => {
             new ValidatorStub(),
             new UserFindServiceStub(userStub, userFindModelStub),
         ).update(userStub.id, userUpdateModelStub),
-        userStub,
+        buildOk(userStub),
     );
 });

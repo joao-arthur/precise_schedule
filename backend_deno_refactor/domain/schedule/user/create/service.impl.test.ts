@@ -8,6 +8,7 @@ import { userCreateModelStub } from "./model._stub.ts";
 import { UserCreateServiceImpl } from "./service.impl.ts";
 import { UserCreateFactoryStub } from "./factory._stub.ts";
 import { UserCreateRepositoryStub } from "./repository._stub.ts";
+import { buildOk } from "../../../lang/result.ts";
 
 Deno.test("UserCreateServiceImpl", async () => {
     assertEquals(
@@ -18,6 +19,6 @@ Deno.test("UserCreateServiceImpl", async () => {
             new SessionCreateServiceStub(sessionStub),
             new ValidatorStub(),
         ).create(userCreateModelStub),
-        sessionStub,
+        buildOk(sessionStub),
     );
 });

@@ -7,7 +7,6 @@ import type { UserCreateModel } from "./model.ts";
 import type { UserCreateErrors, UserCreateService } from "./service.ts";
 import type { UserCreateFactory } from "./factory.ts";
 import type { UserCreateRepository } from "./repository.ts";
-import { buildErr } from "../../../lang/result.ts";
 import { userCreateValidation } from "./validation.ts";
 
 export class UserCreateServiceImpl implements UserCreateService {
@@ -24,7 +23,7 @@ export class UserCreateServiceImpl implements UserCreateService {
     ): Promise<Result<Session, UserCreateErrors>> {
         const modelValidation = this.validator.validate(user, userCreateValidation);
         if (modelValidation.type === "err") {
-            return buildErr(modelValidation.error);
+            return modelValidation;
         }
         await this.uniqueInfoService.validateNew(user);
         const buildedUser = this.factory.build(user);

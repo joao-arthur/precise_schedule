@@ -1,4 +1,7 @@
+import type { Result } from "../../../lang/result.ts";
+import type { RepositoryError } from "../../../repository/RepositoryError.ts";
 import type { UserUniqueInfoRepository } from "./repository.ts";
+import { buildOk } from "../../../lang/result.ts";
 
 export class UserUniqueInfoRepositoryStub implements UserUniqueInfoRepository {
     constructor(
@@ -6,11 +9,11 @@ export class UserUniqueInfoRepositoryStub implements UserUniqueInfoRepository {
         private readonly numEmail: number,
     ) {}
 
-    public countUsername(): Promise<number> {
-        return Promise.resolve(this.numUsername);
+    public countUsername(): Promise<Result<number, RepositoryError>> {
+        return Promise.resolve(buildOk(this.numUsername));
     }
 
-    public countEmail(): Promise<number> {
-        return Promise.resolve(this.numEmail);
+    public countEmail(): Promise<Result<number, RepositoryError>> {
+        return Promise.resolve(buildOk(this.numEmail));
     }
 }

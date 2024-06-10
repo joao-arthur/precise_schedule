@@ -1,13 +1,14 @@
 import { assertEquals } from "@std/assert/assert-equals";
 import { UserUniqueInfoRepositoryStub } from "./repository._stub.ts";
+import { buildOk } from "../../../lang/result.ts";
 
 Deno.test("UserUniqueInfoRepositoryStub", async () => {
     assertEquals(
         await new UserUniqueInfoRepositoryStub(1, 2).countUsername(),
-        1,
+        buildOk(1),
     );
     assertEquals(
         await new UserUniqueInfoRepositoryStub(1, 2).countEmail(),
-        2,
+        buildOk(2),
     );
 });
