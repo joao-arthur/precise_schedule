@@ -1,6 +1,14 @@
 import type { EventUpdateModel } from "../../update/model.ts";
 import type { PartyUpdateModel } from "./model.ts";
 
-export type PartyUpdateFactory = {
-    readonly build: (event: PartyUpdateModel) => EventUpdateModel;
-};
+export function buildEventUpdate(event: PartyUpdateModel): EventUpdateModel {
+    return {
+        name: event.name,
+        day: event.day,
+        begin: event.begin,
+        end: event.end,
+        category: "PARTY",
+        frequency: undefined,
+        weekendRepeat: false,
+    };
+}

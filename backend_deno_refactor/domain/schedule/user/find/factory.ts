@@ -1,6 +1,11 @@
 import type { User } from "../model.ts";
 import type { UserFindModel } from "./model.ts";
 
-export type UserFindFactory = {
-    readonly build: (user: User) => UserFindModel;
-};
+export function buildUserFind(user: User): UserFindModel {
+    return {
+        firstName: user.firstName,
+        birthdate: user.birthdate,
+        email: user.email,
+        username: user.username,
+    };
+}

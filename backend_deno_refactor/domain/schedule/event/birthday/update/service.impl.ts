@@ -4,14 +4,13 @@ import type { User } from "../../../user/model.ts";
 import type { Event } from "../../model.ts";
 import type { EventUpdateService } from "../../update/service.ts";
 import type { BirthdayUpdateModel } from "./model.ts";
-import type { BirthdayUpdateFactory } from "./factory.ts";
 import type { BirthdayUpdateErrors, BirthdayUpdateService } from "./service.ts";
+import { buildEventUpdate } from "./factory.ts";
 import { updateBirthdayValidation } from "./validation.ts";
 
 export class BirthdayUpdateServiceImpl implements BirthdayUpdateService {
     constructor(
         private readonly validator: ValidatorService,
-        private readonly factory: BirthdayUpdateFactory,
         private readonly service: EventUpdateService,
     ) {}
 
@@ -24,7 +23,7 @@ export class BirthdayUpdateServiceImpl implements BirthdayUpdateService {
         if (validationResult.type === "err") {
             return Promise.resolve(validationResult);
         }
-        const builtEvent = this.factory.build(event);
+        const builtEvent = buildEventUpdate(event);
         return this.service.update(userId, id, builtEvent);
     }
 }

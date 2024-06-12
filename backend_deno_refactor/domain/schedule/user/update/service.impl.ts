@@ -4,17 +4,16 @@ import type { User } from "../model.ts";
 import type { UserUniqueInfoService } from "../uniqueInfo/service.ts";
 import type { UserFindService } from "../find/service.ts";
 import type { UserUpdateModel } from "./model.ts";
-import type { UserUpdateFactory } from "./factory.ts";
 import type { UserUpdateRepository } from "./repository.ts";
 import type { UserUpdateErrors, UserUpdateService } from "./service.ts";
 import { ok } from "../../../lang/result.ts";
+import { buildUser } from "./factory.ts";
 import { userUpdateValidation } from "./validation.ts";
 
 export class UserUpdateServiceImpl implements UserUpdateService {
     constructor(
         private readonly repository: UserUpdateRepository,
         private readonly uniqueInfoService: UserUniqueInfoService,
-        private readonly factory: UserUpdateFactory,
         private readonly validator: ValidatorService,
         private readonly userFindService: UserFindService,
     ) {}
@@ -38,11 +37,11 @@ export class UserUpdateServiceImpl implements UserUpdateService {
         if (existingResult.type === "err") {
             return existingResult;
         }
-        const userToUpdate = this.factory.build(user, existingUser.data);
-        const updateResult = await this.repository.update(userToUpdate);
+        const builtUser = buildUser(user, existingUser.data);
+        const updateResult = await this.repository.update(builtUser);
         if (updateResult.type === "err") {
             return updateResult;
         }
-        return ok(userToUpdate);
+        return ok(builtUser);
     }
 }

@@ -4,14 +4,13 @@ import type { User } from "../../../user/model.ts";
 import type { Event } from "../../model.ts";
 import type { EventCreateService } from "../../create/service.ts";
 import type { DateCreateModel } from "./model.ts";
-import type { DateCreateFactory } from "./factory.ts";
 import type { DateCreateErrors, DateCreateService } from "./service.ts";
+import { buildEventCreate } from "./factory.ts";
 import { createDateValidation } from "./validation.ts";
 
 export class DateCreateServiceImpl implements DateCreateService {
     constructor(
         private readonly validator: ValidatorService,
-        private readonly factory: DateCreateFactory,
         private readonly service: EventCreateService,
     ) {}
 
@@ -23,7 +22,7 @@ export class DateCreateServiceImpl implements DateCreateService {
         if (validationResult.type === "err") {
             return Promise.resolve(validationResult);
         }
-        const builtEvent = this.factory.build(event);
+        const builtEvent = buildEventCreate(event);
         return this.service.create(userId, builtEvent);
     }
 }

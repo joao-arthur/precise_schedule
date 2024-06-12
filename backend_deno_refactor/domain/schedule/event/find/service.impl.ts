@@ -1,16 +1,15 @@
 import type { Result } from "../../../lang/result.ts";
 import type { User } from "../../user/model.ts";
 import type { Event } from "../model.ts";
-import type { EventFindFactory } from "./factory.ts";
 import type { EventFindRepository } from "./repository.ts";
 import type { EventFindModel } from "./model.ts";
 import type { EventFindService, FindByUserAndIdErrors, FindByUserErrors } from "./service.ts";
 import { err, ok } from "../../../lang/result.ts";
+import { buildEventFind } from "./factory.ts";
 import { EventNotFound } from "./error.eventNotFound.ts";
 
 export class EventFindServiceImpl implements EventFindService {
     constructor(
-        private readonly factory: EventFindFactory,
         private readonly repository: EventFindRepository,
     ) {}
 
@@ -27,7 +26,7 @@ export class EventFindServiceImpl implements EventFindService {
         if (foundUsersResult.type === "err") {
             return foundUsersResult;
         }
-        const mapped = foundUsersResult.data.map((event) => this.factory.build(event));
+        const mapped = foundUsersResult.data.map((event) => buildEventFind(event));
         return ok(mapped);
     }
 
@@ -56,6 +55,7 @@ export class EventFindServiceImpl implements EventFindService {
         if (maybeEventResult.data === undefined) {
             return err(new EventNotFound());
         }
-        return ok(this.factory.build(maybeEventResult.data));
+        const builtEvent = buildEventFind(maybeEventResult.data);
+        return ok(builtEvent);
     }
 }

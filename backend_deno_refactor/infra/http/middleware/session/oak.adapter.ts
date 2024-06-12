@@ -2,7 +2,7 @@ import type { UserRepository } from "@ps/domain/schedule/user/repository.ts";
 import { Context, Next } from "oak/mod.ts";
 import { ValidateUserSessionServiceImpl } from "@ps/domain/userSession/service.impl.ts";
 import { UserFindServiceImpl } from "@ps/domain/schedule/user/find/service.impl.ts";
-import { UserFindFactoryImpl } from "@ps/domain/schedule/user/find/factory.impl.ts";
+import { UserFindFactoryImpl } from "@ps/domain/schedule/user/find/factory.ts";
 import { SessionMiddlewareImpl } from "@ps/application/http/middleware/session/middleware.impl.ts";
 import { SessionFromRequestServiceImpl } from "@ps/application/http/sessionFromRequest/service.impl.ts";
 import { DecodeSessionServiceJWTAdapter } from "../../../session/decode/jwt.adapter.ts";

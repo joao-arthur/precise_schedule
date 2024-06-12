@@ -4,14 +4,13 @@ import type { User } from "../../../user/model.ts";
 import type { Event } from "../../model.ts";
 import type { EventCreateService } from "../../create/service.ts";
 import type { MeetingCreateModel } from "./model.ts";
-import type { MeetingCreateFactory } from "./factory.ts";
 import type { MeetingCreateErrors, MeetingCreateService } from "./service.ts";
+import {buildEventCreate } from "./factory.ts";
 import { createMeetingValidation } from "./validation.ts";
 
 export class MeetingCreateServiceImpl implements MeetingCreateService {
     constructor(
         private readonly validator: ValidatorService,
-        private readonly factory: MeetingCreateFactory,
         private readonly service: EventCreateService,
     ) {}
 
@@ -23,7 +22,7 @@ export class MeetingCreateServiceImpl implements MeetingCreateService {
         if (validationResult.type === "err") {
             return Promise.resolve(validationResult);
         }
-        const builtEvent = this.factory.build(event);
+        const builtEvent = buildEventCreate(event);
         return this.service.create(userId, builtEvent);
     }
 }

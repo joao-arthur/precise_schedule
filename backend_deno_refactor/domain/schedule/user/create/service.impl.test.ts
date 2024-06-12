@@ -6,7 +6,6 @@ import { userStub } from "../model._stub.ts";
 import { UserUniqueInfoServiceStub } from "../uniqueInfo/service._stub.ts";
 import { userCreateModelStub } from "./model._stub.ts";
 import { UserCreateServiceImpl } from "./service.impl.ts";
-import { UserCreateFactoryStub } from "./factory._stub.ts";
 import { UserCreateRepositoryStub } from "./repository._stub.ts";
 import { ok } from "../../../lang/result.ts";
 
@@ -15,7 +14,6 @@ Deno.test("UserCreateServiceImpl", async () => {
         await new UserCreateServiceImpl(
             new UserCreateRepositoryStub(),
             new UserUniqueInfoServiceStub(),
-            new UserCreateFactoryStub(userStub),
             new SessionCreateServiceStub(sessionStub),
             new ValidatorStub(),
         ).create(userCreateModelStub),

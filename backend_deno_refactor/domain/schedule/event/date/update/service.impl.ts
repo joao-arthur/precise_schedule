@@ -4,14 +4,12 @@ import type { User } from "../../../user/model.ts";
 import type { Event } from "../../model.ts";
 import type { EventUpdateService } from "../../update/service.ts";
 import type { DateUpdateModel } from "./model.ts";
-import type { DateUpdateFactory } from "./factory.ts";
 import type { DateUpdateErrors, DateUpdateService } from "./service.ts";
 import { updateDateValidation } from "./validation.ts";
 
 export class DateUpdateServiceImpl implements DateUpdateService {
     constructor(
         private readonly validator: ValidatorService,
-        private readonly factory: DateUpdateFactory,
         private readonly service: EventUpdateService,
     ) {}
 

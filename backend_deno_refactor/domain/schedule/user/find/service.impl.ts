@@ -1,15 +1,14 @@
 import type { Result } from "../../../lang/result.ts";
 import type { User } from "../model.ts";
 import type { UserFindModel } from "./model.ts";
-import type { UserFindFactory } from "./factory.ts";
 import type { UserFindRepository } from "./repository.ts";
 import type { UserFindErrors, UserFindService } from "./service.ts";
 import { err, ok } from "../../../lang/result.ts";
+import { buildUserFind } from "./factory.ts";
 import { UserNotFound } from "./error.userNotFound.ts";
 
 export class UserFindServiceImpl implements UserFindService {
     constructor(
-        private readonly factory: UserFindFactory,
         private readonly repository: UserFindRepository,
     ) {}
 
@@ -32,7 +31,8 @@ export class UserFindServiceImpl implements UserFindService {
         if (foundUserResult.data === undefined) {
             return err(new UserNotFound());
         }
-        return ok(this.factory.build(foundUserResult.data));
+        const builtUser = buildUserFind(foundUserResult.data);
+        return ok(builtUser);
     }
 
     public async findByCredentials(
