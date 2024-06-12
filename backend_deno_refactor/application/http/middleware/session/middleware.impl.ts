@@ -5,7 +5,7 @@ import type { HTTPRequest } from "../../request/model.ts";
 import type { HTTPHeaders } from "../../headers/model.ts";
 import type { SessionFromRequestService } from "../../sessionFromRequest/service.ts";
 import type { SessionMiddleware } from "./middleware.ts";
-import { buildErr, buildOk } from "@ps/domain/lang/result.ts";
+import { err, ok } from "@ps/domain/lang/result.ts";
 import { InvalidSessionError } from "@ps/domain/session/invalid/error.ts";
 
 export class SessionMiddlewareImpl implements SessionMiddleware {
@@ -19,12 +19,12 @@ export class SessionMiddlewareImpl implements SessionMiddleware {
     ): Promise<Result<void, InvalidSessionError>> {
         const session = this.sessionFromRequestService.create(req);
         if (!session.token) {
-            return buildErr(new InvalidSessionError());
+            return err(new InvalidSessionError());
         }
         const result = await this.validateUserSessionService.validate(session as Session);
         if (result.type === "err") {
-            return buildErr(new InvalidSessionError());
+            return err(new InvalidSessionError());
         }
-        return buildOk(undefined);
+        return ok(undefined);
     }
 }

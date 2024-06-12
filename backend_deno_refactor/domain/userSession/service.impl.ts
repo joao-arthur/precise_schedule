@@ -3,7 +3,7 @@ import type { UserFindService } from "../schedule/user/find/service.ts";
 import type { Session } from "../session/model.ts";
 import type { DecodeSessionService } from "../session/decode/service.ts";
 import type { UserSessionErrors, ValidateUserSessionService } from "./service.ts";
-import { buildErr, buildOk } from "../lang/result.ts";
+import { err, ok } from "../lang/result.ts";
 import { InvalidSessionError } from "../session/invalid/error.ts";
 
 export class ValidateUserSessionServiceImpl implements ValidateUserSessionService {
@@ -15,12 +15,12 @@ export class ValidateUserSessionServiceImpl implements ValidateUserSessionServic
     public async validate(session: Session): Promise<Result<void, UserSessionErrors>> {
         const userIdResult = await this.decodeSessionService.decode(session);
         if (userIdResult.type === "err") {
-            return buildErr(new InvalidSessionError());
+            return err(new InvalidSessionError());
         }
         const userResult = await this.userFindService.findById(userIdResult.data);
         if (userResult.type === "err") {
-            return buildErr(new InvalidSessionError());
+            return err(new InvalidSessionError());
         }
-        return buildOk(undefined);
+        return ok(undefined);
     }
 }

@@ -1,5 +1,5 @@
 import { assertEquals } from "@std/assert/assert-equals";
-import { buildOk } from "../lang/result.ts";
+import { ok } from "../lang/result.ts";
 import { userFindModelStub } from "../schedule/user/find/model._stub.ts";
 import { UserFindServiceStub } from "../schedule/user/find/service._stub.ts";
 import { userStub } from "../schedule/user/model._stub.ts";
@@ -13,6 +13,6 @@ Deno.test("ValidateUserSessionServiceImpl", async () => {
             new UserFindServiceStub(userStub, userFindModelStub),
             new DecodeSessionServiceStub(userStub.id),
         ).validate(sessionStub),
-        buildOk(undefined),
+        ok(undefined),
     );
 });

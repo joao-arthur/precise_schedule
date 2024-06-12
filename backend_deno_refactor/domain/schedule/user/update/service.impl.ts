@@ -7,7 +7,7 @@ import type { UserUpdateModel } from "./model.ts";
 import type { UserUpdateFactory } from "./factory.ts";
 import type { UserUpdateRepository } from "./repository.ts";
 import type { UserUpdateErrors, UserUpdateService } from "./service.ts";
-import { buildOk } from "../../../lang/result.ts";
+import { ok } from "../../../lang/result.ts";
 import { userUpdateValidation } from "./validation.ts";
 
 export class UserUpdateServiceImpl implements UserUpdateService {
@@ -43,6 +43,6 @@ export class UserUpdateServiceImpl implements UserUpdateService {
         if (updateResult.type === "err") {
             return updateResult;
         }
-        return buildOk(userToUpdate);
+        return ok(userToUpdate);
     }
 }

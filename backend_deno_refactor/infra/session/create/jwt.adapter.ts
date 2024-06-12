@@ -8,7 +8,7 @@ import type {
 import type { SessionPayload } from "../SessionPayload.ts";
 import { create, getNumericDate } from "djwt/mod.ts";
 import { SessionCreateError } from "../../../domain/session/create/error.ts";
-import { buildErr, buildOk } from "../../../domain/lang/result.ts";
+import { err, ok } from "../../../domain/lang/result.ts";
 import { key } from "../key.ts";
 
 export class SessionCreateServiceJWTAdapter implements SessionCreateService {
@@ -27,9 +27,9 @@ export class SessionCreateServiceJWTAdapter implements SessionCreateService {
                 payload,
                 key,
             );
-            return buildOk({ token });
+            return ok({ token });
         } catch {
-            return buildErr(new SessionCreateError());
+            return err(new SessionCreateError());
         }
     }
 }

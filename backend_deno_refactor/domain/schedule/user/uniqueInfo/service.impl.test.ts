@@ -1,6 +1,6 @@
 import type { User } from "../model.ts";
 import { assertEquals } from "@std/assert/assert-equals";
-import { buildErr, buildOk } from "../../../lang/result.ts";
+import { err, ok } from "../../../lang/result.ts";
 import { userStub } from "../model._stub.ts";
 import { UserUniqueInfoRepositoryStub } from "./repository._stub.ts";
 import { uniqueInfoModelStub } from "./model._stub.ts";
@@ -26,7 +26,7 @@ Deno.test("UserUniqueInfoServiceImpl.validateNew", async () => {
         ).validateNew(
             uniqueInfoModelStub,
         ),
-        buildOk(undefined),
+        ok(undefined),
     );
     assertEquals(
         await new UserUniqueInfoServiceImpl(
@@ -34,7 +34,7 @@ Deno.test("UserUniqueInfoServiceImpl.validateNew", async () => {
         ).validateNew(
             uniqueInfoModelStub,
         ),
-        buildErr(new UsernameAlreadyRegistered()),
+        err(new UsernameAlreadyRegistered()),
     );
     assertEquals(
         await new UserUniqueInfoServiceImpl(
@@ -42,7 +42,7 @@ Deno.test("UserUniqueInfoServiceImpl.validateNew", async () => {
         ).validateNew(
             uniqueInfoModelStub,
         ),
-        buildErr(new EmailAlreadyRegistered()),
+        err(new EmailAlreadyRegistered()),
     );
 });
 
@@ -54,7 +54,7 @@ Deno.test("validateUniqueEmail.validateExisting", async () => {
             uniqueInfoModelStub,
             unique,
         ),
-        buildOk(undefined),
+        ok(undefined),
     );
     assertEquals(
         await new UserUniqueInfoServiceImpl(
@@ -64,7 +64,7 @@ Deno.test("validateUniqueEmail.validateExisting", async () => {
                 uniqueInfoModelStub,
                 unique,
             ),
-        buildErr(new UsernameAlreadyRegistered()),
+        err(new UsernameAlreadyRegistered()),
     );
     assertEquals(
         await new UserUniqueInfoServiceImpl(
@@ -74,7 +74,7 @@ Deno.test("validateUniqueEmail.validateExisting", async () => {
                 uniqueInfoModelStub,
                 unique,
             ),
-        buildErr(new EmailAlreadyRegistered()),
+        err(new EmailAlreadyRegistered()),
     );
 });
 
@@ -86,7 +86,7 @@ Deno.test("validateUniqueEmail.validateExisting", async () => {
             uniqueInfoModelStub,
             equals,
         ),
-        buildOk(undefined),
+        ok(undefined),
     );
     assertEquals(
         await new UserUniqueInfoServiceImpl(
@@ -95,7 +95,7 @@ Deno.test("validateUniqueEmail.validateExisting", async () => {
             uniqueInfoModelStub,
             equals,
         ),
-        buildOk(undefined),
+        ok(undefined),
     );
     assertEquals(
         await new UserUniqueInfoServiceImpl(
@@ -104,6 +104,6 @@ Deno.test("validateUniqueEmail.validateExisting", async () => {
             uniqueInfoModelStub,
             equals,
         ),
-        buildOk(undefined),
+        ok(undefined),
     );
 });

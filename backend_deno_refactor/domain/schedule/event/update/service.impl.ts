@@ -6,7 +6,7 @@ import type { EventUpdateModel } from "./model.ts";
 import type { EventUpdateFactory } from "./factory.ts";
 import type { EventUpdateRepository } from "./repository.ts";
 import type { EventUpdateErrors, EventUpdateService } from "./service.ts";
-import { buildOk } from "../../../lang/result.ts";
+import { ok } from "../../../lang/result.ts";
 
 export class EventUpdateServiceImpl implements EventUpdateService {
     constructor(
@@ -29,6 +29,6 @@ export class EventUpdateServiceImpl implements EventUpdateService {
         if (updateResult.type === "err") {
             return updateResult;
         }
-        return buildOk(builtEvent);
+        return ok(builtEvent);
     }
 }

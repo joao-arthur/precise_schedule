@@ -5,7 +5,7 @@ import { UserFindFactoryStub } from "./factory._stub.ts";
 import { UserFindRepositoryStub } from "./repository._stub.ts";
 import { UserNotFound } from "./error.userNotFound.ts";
 import { UserFindServiceImpl } from "./service.impl.ts";
-import { buildErr, buildOk } from "../../../lang/result.ts";
+import { err, ok } from "../../../lang/result.ts";
 
 Deno.test("UserFindServiceImpl.findById", async () => {
     assertEquals(
@@ -13,14 +13,14 @@ Deno.test("UserFindServiceImpl.findById", async () => {
             new UserFindFactoryStub(userFindModelStub),
             new UserFindRepositoryStub(undefined),
         ).findById(userStub.id),
-        buildErr(new UserNotFound()),
+        err(new UserNotFound()),
     );
     assertEquals(
         await new UserFindServiceImpl(
             new UserFindFactoryStub(userFindModelStub),
             new UserFindRepositoryStub(userStub),
         ).findById(userStub.id),
-        buildOk(userStub),
+        ok(userStub),
     );
 });
 
@@ -30,14 +30,14 @@ Deno.test("UserFindServiceImpl.findByIdMapped", async () => {
             new UserFindFactoryStub(userFindModelStub),
             new UserFindRepositoryStub(undefined),
         ).findByIdMapped(userStub.id),
-        buildErr(new UserNotFound()),
+        err(new UserNotFound()),
     );
     assertEquals(
         await new UserFindServiceImpl(
             new UserFindFactoryStub(userFindModelStub),
             new UserFindRepositoryStub(userStub),
         ).findByIdMapped(userStub.id),
-        buildOk(userFindModelStub),
+        ok(userFindModelStub),
     );
 });
 
@@ -47,13 +47,13 @@ Deno.test("UserFindServiceImpl.findByCredentials", async () => {
             new UserFindFactoryStub(userFindModelStub),
             new UserFindRepositoryStub(undefined),
         ).findByCredentials(userStub.username, userStub.password),
-        buildErr(new UserNotFound()),
+        err(new UserNotFound()),
     );
     assertEquals(
         await new UserFindServiceImpl(
             new UserFindFactoryStub(userFindModelStub),
             new UserFindRepositoryStub(userStub),
         ).findByCredentials(userStub.username, userStub.password),
-        buildOk(userStub),
+        ok(userStub),
     );
 });

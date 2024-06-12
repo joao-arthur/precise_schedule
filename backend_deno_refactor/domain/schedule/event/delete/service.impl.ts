@@ -4,7 +4,7 @@ import type { Event } from "../model.ts";
 import type { EventFindService } from "../find/service.ts";
 import type { EventDeleteRepository } from "./repository.ts";
 import type { EventDeleteErrors, EventDeleteService } from "./service.ts";
-import { buildOk } from "../../../lang/result.ts";
+import { ok } from "../../../lang/result.ts";
 
 export class EventDeleteServiceImpl implements EventDeleteService {
     constructor(
@@ -24,6 +24,6 @@ export class EventDeleteServiceImpl implements EventDeleteService {
         if (deleteResult.type === "err") {
             return deleteResult;
         }
-        return buildOk(undefined);
+        return ok(undefined);
     }
 }

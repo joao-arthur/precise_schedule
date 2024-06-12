@@ -4,7 +4,7 @@ import type { UserFindModel } from "./model.ts";
 import type { UserFindFactory } from "./factory.ts";
 import type { UserFindRepository } from "./repository.ts";
 import type { UserFindErrors, UserFindService } from "./service.ts";
-import { buildErr, buildOk } from "../../../lang/result.ts";
+import { err, ok } from "../../../lang/result.ts";
 import { UserNotFound } from "./error.userNotFound.ts";
 
 export class UserFindServiceImpl implements UserFindService {
@@ -19,9 +19,9 @@ export class UserFindServiceImpl implements UserFindService {
             return foundUserResult;
         }
         if (foundUserResult.data === undefined) {
-            return buildErr(new UserNotFound());
+            return err(new UserNotFound());
         }
-        return buildOk(foundUserResult.data);
+        return ok(foundUserResult.data);
     }
 
     public async findByIdMapped(id: User["id"]): Promise<Result<UserFindModel, UserFindErrors>> {
@@ -30,9 +30,9 @@ export class UserFindServiceImpl implements UserFindService {
             return foundUserResult;
         }
         if (foundUserResult.data === undefined) {
-            return buildErr(new UserNotFound());
+            return err(new UserNotFound());
         }
-        return buildOk(this.factory.build(foundUserResult.data));
+        return ok(this.factory.build(foundUserResult.data));
     }
 
     public async findByCredentials(
@@ -44,8 +44,8 @@ export class UserFindServiceImpl implements UserFindService {
             return foundUserResult;
         }
         if (foundUserResult.data === undefined) {
-            return buildErr(new UserNotFound());
+            return err(new UserNotFound());
         }
-        return buildOk(foundUserResult.data);
+        return ok(foundUserResult.data);
     }
 }

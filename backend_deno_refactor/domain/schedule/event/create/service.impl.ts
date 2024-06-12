@@ -5,7 +5,7 @@ import type { EventCreateModel } from "./model.ts";
 import type { EventCreateFactory } from "./factory.ts";
 import type { EventCreateRepository } from "./repository.ts";
 import type { EventCreateErrors, EventCreateService } from "./service.ts";
-import { buildOk } from "../../../lang/result.ts";
+import { ok } from "../../../lang/result.ts";
 
 export class EventCreateServiceImpl implements EventCreateService {
     constructor(
@@ -22,6 +22,6 @@ export class EventCreateServiceImpl implements EventCreateService {
         if (createResult.type === "err") {
             return createResult;
         }
-        return buildOk(builtEvent);
+        return ok(builtEvent);
     }
 }

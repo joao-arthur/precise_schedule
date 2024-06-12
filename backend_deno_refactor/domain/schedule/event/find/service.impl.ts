@@ -5,7 +5,7 @@ import type { EventFindFactory } from "./factory.ts";
 import type { EventFindRepository } from "./repository.ts";
 import type { EventFindModel } from "./model.ts";
 import type { EventFindService, FindByUserAndIdErrors, FindByUserErrors } from "./service.ts";
-import { buildErr, buildOk } from "../../../lang/result.ts";
+import { err, ok } from "../../../lang/result.ts";
 import { EventNotFound } from "./error.eventNotFound.ts";
 
 export class EventFindServiceImpl implements EventFindService {
@@ -28,7 +28,7 @@ export class EventFindServiceImpl implements EventFindService {
             return foundUsersResult;
         }
         const mapped = foundUsersResult.data.map((event) => this.factory.build(event));
-        return buildOk(mapped);
+        return ok(mapped);
     }
 
     public async findByUserAndId(
@@ -40,9 +40,9 @@ export class EventFindServiceImpl implements EventFindService {
             return maybeEventResult;
         }
         if (maybeEventResult.data === undefined) {
-            return buildErr(new EventNotFound());
+            return err(new EventNotFound());
         }
-        return buildOk(maybeEventResult.data);
+        return ok(maybeEventResult.data);
     }
 
     public async findByUserAndIdMapped(
@@ -54,8 +54,8 @@ export class EventFindServiceImpl implements EventFindService {
             return maybeEventResult;
         }
         if (maybeEventResult.data === undefined) {
-            return buildErr(new EventNotFound());
+            return err(new EventNotFound());
         }
-        return buildOk(this.factory.build(maybeEventResult.data));
+        return ok(this.factory.build(maybeEventResult.data));
     }
 }

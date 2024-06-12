@@ -1,25 +1,25 @@
-export type ResultOk<Data> = {
+export type Ok<Data> = {
     readonly type: "ok";
     readonly data: Data;
 };
 
-export type ResultErr<Err> = {
+export type Err<E> = {
     readonly type: "err";
-    readonly error: Err;
+    readonly error: E;
 };
 
-export type Result<Data, Err> =
-    | ResultOk<Data>
-    | ResultErr<Err>;
+export type Result<Data, E> =
+    | Ok<Data>
+    | Err<E>;
 
-export function buildOk<Data>(data: Data): ResultOk<Data> {
+export function ok<Data>(data: Data): Ok<Data> {
     return {
         type: "ok",
         data,
     };
 }
 
-export function buildErr<E extends Error>(error: E): ResultErr<E> {
+export function err<E extends Error>(error: E): Err<E> {
     return {
         type: "err",
         error,

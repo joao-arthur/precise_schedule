@@ -1,6 +1,6 @@
 import { assertEquals } from "@std/assert/assert-equals";
 import { SessionCreateServiceStub } from "./service._stub.ts";
-import { buildOk } from "../../lang/result.ts";
+import { ok } from "../../lang/result.ts";
 import { sessionStub } from "../model._stub.ts";
 
 Deno.test("SessionCreateServiceStub", async () => {
@@ -9,6 +9,6 @@ Deno.test("SessionCreateServiceStub", async () => {
     );
     assertEquals(
         await sessionCreateServiceStub.create(),
-        buildOk(sessionStub),
+        ok(sessionStub),
     );
 });

@@ -3,7 +3,7 @@ import type { User } from "../model.ts";
 import type { UserUniqueInfoModel } from "./model.ts";
 import type { UserUniqueInfoErrors, UserUniqueInfoService } from "./service.ts";
 import type { UserUniqueInfoRepository } from "./repository.ts";
-import { buildErr, buildOk } from "../../../lang/result.ts";
+import { err, ok } from "../../../lang/result.ts";
 import { EmailAlreadyRegistered } from "./error.emailAlreadyRegistered.ts";
 import { UsernameAlreadyRegistered } from "./error.usernameAlreadyRegistered.ts";
 
@@ -18,16 +18,16 @@ export class UserUniqueInfoServiceImpl implements UserUniqueInfoService {
             return countUsername;
         }
         if (countUsername.data > 0) {
-            return buildErr(new UsernameAlreadyRegistered());
+            return err(new UsernameAlreadyRegistered());
         }
         const countEmail = await this.repository.countEmail(user.email);
         if (countEmail.type === "err") {
             return countEmail;
         }
         if (countEmail.data > 0) {
-            return buildErr(new EmailAlreadyRegistered());
+            return err(new EmailAlreadyRegistered());
         }
-        return buildOk(undefined);
+        return ok(undefined);
     }
 
     public async validateExisting(
@@ -41,15 +41,15 @@ export class UserUniqueInfoServiceImpl implements UserUniqueInfoService {
             return countUsername;
         }
         if (countUsername.data > 0 && user.username !== oldUser.username) {
-            return buildErr(new UsernameAlreadyRegistered());
+            return err(new UsernameAlreadyRegistered());
         }
         const countEmail = await this.repository.countEmail(user.email);
         if (countEmail.type === "err") {
             return countEmail;
         }
         if (countEmail.data > 0 && user.email !== oldUser.email) {
-            return buildErr(new EmailAlreadyRegistered());
+            return err(new EmailAlreadyRegistered());
         }
-        return buildOk(undefined);
+        return ok(undefined);
     }
 }

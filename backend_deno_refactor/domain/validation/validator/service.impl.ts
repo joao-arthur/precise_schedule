@@ -4,7 +4,7 @@ import type { Validation } from "../model.ts";
 import type { ValidationResult } from "../ValidationResult.ts";
 import type { ValidatorProvider } from "./provider.ts";
 import type { ValidatorService } from "./service.ts";
-import { buildErr, buildOk } from "../../lang/result.ts";
+import { err, ok } from "../../lang/result.ts";
 import { ValidationError } from "../ValidationError.ts";
 
 export class ValidatorServiceImpl implements ValidatorService {
@@ -27,9 +27,9 @@ export class ValidatorServiceImpl implements ValidatorService {
             ])
             .filter(([_, message]) => message.length);
         if (!result.length) {
-            return buildOk(undefined);
+            return ok(undefined);
         }
         const obj: ValidationResult = Object.fromEntries(result);
-        return buildErr(new ValidationError(obj));
+        return err(new ValidationError(obj));
     }
 }
