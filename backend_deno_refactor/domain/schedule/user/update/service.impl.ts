@@ -4,9 +4,9 @@ import type { User } from "../model.ts";
 import type { UserUniqueInfoService } from "../uniqueInfo/service.ts";
 import type { UserFindService } from "../find/service.ts";
 import type { UserUpdateModel } from "./model.ts";
-import type { UserUpdateService } from "./service.ts";
 import type { UserUpdateFactory } from "./factory.ts";
 import type { UserUpdateRepository } from "./repository.ts";
+import type { UserUpdateErrors, UserUpdateService } from "./service.ts";
 import { buildOk } from "../../../lang/result.ts";
 import { userUpdateValidation } from "./validation.ts";
 
@@ -22,7 +22,7 @@ export class UserUpdateServiceImpl implements UserUpdateService {
     public async update(
         id: User["id"],
         user: UserUpdateModel,
-    ): Promise<Result<User>> {
+    ): Promise<Result<User, UserUpdateErrors>> {
         const validationResult = this.validator.validate(user, userUpdateValidation);
         if (validationResult.type === "err") {
             return validationResult;
@@ -31,9 +31,18 @@ export class UserUpdateServiceImpl implements UserUpdateService {
         if (existingUser.type === "err") {
             return existingUser;
         }
-        await this.uniqueInfoService.validateExisting(user, existingUser.data);
+        const existingResult = await this.uniqueInfoService.validateExisting(
+            user,
+            existingUser.data,
+        );
+        if (existingResult.type === "err") {
+            return existingResult;
+        }
         const userToUpdate = this.factory.build(user, existingUser.data);
-        await this.repository.update(userToUpdate);
+        const updateResult = await this.repository.update(userToUpdate);
+        if (updateResult.type === "err") {
+            return updateResult;
+        }
         return buildOk(userToUpdate);
     }
 }

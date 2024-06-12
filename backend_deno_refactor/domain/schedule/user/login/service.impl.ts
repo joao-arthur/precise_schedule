@@ -4,7 +4,7 @@ import type { Session } from "../../../session/model.ts";
 import type { SessionCreateService } from "../../../session/create/service.ts";
 import type { UserFindService } from "../find/service.ts";
 import type { UserLoginModel } from "./model.ts";
-import type { UserLoginService } from "./service.ts";
+import type { UserLoginErrors, UserLoginService } from "./service.ts";
 import { userLoginValidation } from "./validation.ts";
 
 export class UserLoginServiceImpl implements UserLoginService {
@@ -14,7 +14,7 @@ export class UserLoginServiceImpl implements UserLoginService {
         private readonly sessionCreateService: SessionCreateService,
     ) {}
 
-    public async userLogin(user: UserLoginModel): Promise<Result<Session>> {
+    public async userLogin(user: UserLoginModel): Promise<Result<Session, UserLoginErrors>> {
         const validationResult = this.validator.validate(user, userLoginValidation);
         if (validationResult.type === "err") {
             return validationResult;

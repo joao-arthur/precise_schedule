@@ -5,7 +5,7 @@ import type { Event } from "../../model.ts";
 import type { EventCreateService } from "../../create/service.ts";
 import type { PartyCreateModel } from "./model.ts";
 import type { PartyCreateFactory } from "./factory.ts";
-import type { PartyCreateService } from "./service.ts";
+import type { PartyCreateErrors, PartyCreateService } from "./service.ts";
 import { createPartyValidation } from "./validation.ts";
 
 export class PartyCreateServiceImpl implements PartyCreateService {
@@ -15,12 +15,15 @@ export class PartyCreateServiceImpl implements PartyCreateService {
         private readonly service: EventCreateService,
     ) {}
 
-    public create(userId: User["id"], event: PartyCreateModel): Promise<Result<Event>> {
+    public create(
+        userId: User["id"],
+        event: PartyCreateModel,
+    ): Promise<Result<Event, PartyCreateErrors>> {
         const validationResult = this.validator.validate(event, createPartyValidation);
         if (validationResult.type === "err") {
             return Promise.resolve(validationResult);
         }
-        const buildedEvent = this.factory.build(event);
-        return this.service.create(userId, buildedEvent);
+        const builtEvent = this.factory.build(event);
+        return this.service.create(userId, builtEvent);
     }
 }

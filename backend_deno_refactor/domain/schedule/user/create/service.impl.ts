@@ -4,9 +4,9 @@ import type { Session } from "../../../session/model.ts";
 import type { SessionCreateService } from "../../../session/create/service.ts";
 import type { UserUniqueInfoService } from "../uniqueInfo/service.ts";
 import type { UserCreateModel } from "./model.ts";
-import type { UserCreateErrors, UserCreateService } from "./service.ts";
 import type { UserCreateFactory } from "./factory.ts";
 import type { UserCreateRepository } from "./repository.ts";
+import type { UserCreateErrors, UserCreateService } from "./service.ts";
 import { userCreateValidation } from "./validation.ts";
 
 export class UserCreateServiceImpl implements UserCreateService {
@@ -25,9 +25,12 @@ export class UserCreateServiceImpl implements UserCreateService {
         if (validationResult.type === "err") {
             return validationResult;
         }
-        await this.uniqueInfoService.validateNew(user);
-        const buildedUser = this.factory.build(user);
-        await this.repository.create(buildedUser);
-        return this.sessionCreateService.create(buildedUser.id);
+        const validationInfoResult = await this.uniqueInfoService.validateNew(user);
+        if (validationInfoResult.type === "err") {
+            return validationInfoResult;
+        }
+        const builtUser = this.factory.build(user);
+        await this.repository.create(builtUser);
+        return this.sessionCreateService.create(builtUser.id);
     }
 }

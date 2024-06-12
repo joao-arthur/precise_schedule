@@ -33,7 +33,9 @@ export class UserUniqueInfoServiceImpl implements UserUniqueInfoService {
     public async validateExisting(
         user: UserUniqueInfoModel,
         oldUser: User,
-    ): Promise<Result<void, UserUniqueInfoErrors>> {
+    ): Promise<
+        Result<void, UserUniqueInfoErrors>
+    > {
         const countUsername = await this.repository.countUsername(user.username);
         if (countUsername.type === "err") {
             return countUsername;

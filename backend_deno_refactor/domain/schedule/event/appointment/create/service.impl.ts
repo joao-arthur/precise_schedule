@@ -5,7 +5,7 @@ import type { Event } from "../../model.ts";
 import type { EventCreateService } from "../../create/service.ts";
 import type { AppointmentCreateModel } from "./model.ts";
 import type { AppointmentCreateFactory } from "./factory.ts";
-import type { AppointmentCreateService } from "./service.ts";
+import type { AppointmentCreateErrors, AppointmentCreateService } from "./service.ts";
 import { createAppointmentValidation } from "./validation.ts";
 
 export class AppointmentCreateServiceImpl implements AppointmentCreateService {
@@ -15,12 +15,15 @@ export class AppointmentCreateServiceImpl implements AppointmentCreateService {
         private readonly service: EventCreateService,
     ) {}
 
-    public create(userId: User["id"], event: AppointmentCreateModel): Promise<Result<Event>> {
+    public create(
+        userId: User["id"],
+        event: AppointmentCreateModel,
+    ): Promise<Result<Event, AppointmentCreateErrors>> {
         const validationResult = this.validator.validate(event, createAppointmentValidation);
         if (validationResult.type === "err") {
             return Promise.resolve(validationResult);
         }
-        const buildedEvent = this.factory.build(event);
-        return this.service.create(userId, buildedEvent);
+        const builtEvent = this.factory.build(event);
+        return this.service.create(userId, builtEvent);
     }
 }

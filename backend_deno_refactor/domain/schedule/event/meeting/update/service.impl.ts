@@ -5,7 +5,7 @@ import type { Event } from "../../model.ts";
 import type { EventUpdateService } from "../../update/service.ts";
 import type { MeetingUpdateModel } from "./model.ts";
 import type { MeetingUpdateFactory } from "./factory.ts";
-import type { MeetingUpdateService } from "./service.ts";
+import type { MeetingUpdateErrors, MeetingUpdateService } from "./service.ts";
 import { updateMeetingValidation } from "./validation.ts";
 
 export class MeetingUpdateServiceImpl implements MeetingUpdateService {
@@ -19,12 +19,12 @@ export class MeetingUpdateServiceImpl implements MeetingUpdateService {
         userId: User["id"],
         id: Event["id"],
         event: MeetingUpdateModel,
-    ): Promise<Result<Event>> {
+    ): Promise<Result<Event, MeetingUpdateErrors>> {
         const validationResult = this.validator.validate(event, updateMeetingValidation);
         if (validationResult.type === "err") {
             return Promise.resolve(validationResult);
         }
-        const buildedEvent = this.factory.build(event);
-        return this.service.update(userId, id, buildedEvent);
+        const builtEvent = this.factory.build(event);
+        return this.service.update(userId, id, builtEvent);
     }
 }

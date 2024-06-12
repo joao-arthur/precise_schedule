@@ -1,4 +1,5 @@
 import type { Result } from "../../../lang/result.ts";
+import type { RepositoryError } from "../../../repository/RepositoryError.ts";
 import type { ValidationError } from "../../../validation/ValidationError.ts";
 import type { Session } from "../../../session/model.ts";
 import type { UsernameAlreadyRegistered } from "../uniqueInfo/error.usernameAlreadyRegistered.ts";
@@ -6,6 +7,7 @@ import type { EmailAlreadyRegistered } from "../uniqueInfo/error.emailAlreadyReg
 import type { UserCreateModel } from "./model.ts";
 
 export type UserCreateErrors =
+    | RepositoryError
     | ValidationError
     | UsernameAlreadyRegistered
     | EmailAlreadyRegistered;

@@ -5,7 +5,7 @@ import type { Event } from "../../model.ts";
 import type { EventUpdateService } from "../../update/service.ts";
 import type { AppointmentUpdateModel } from "./model.ts";
 import type { AppointmentUpdateFactory } from "./factory.ts";
-import type { AppointmentUpdateService } from "./service.ts";
+import type { AppointmentUpdateErrors, AppointmentUpdateService } from "./service.ts";
 import { updateAppointmentValidation } from "./validation.ts";
 
 export class AppointmentUpdateServiceImpl implements AppointmentUpdateService {
@@ -19,12 +19,12 @@ export class AppointmentUpdateServiceImpl implements AppointmentUpdateService {
         userId: User["id"],
         id: Event["id"],
         event: AppointmentUpdateModel,
-    ): Promise<Result<Event>> {
+    ): Promise<Result<Event, AppointmentUpdateErrors>> {
         const validationResult = this.validator.validate(event, updateAppointmentValidation);
         if (validationResult.type === "err") {
             return Promise.resolve(validationResult);
         }
-        const buildedEvent = this.factory.build(event);
-        return this.service.update(userId, id, buildedEvent);
+        const builtEvent = this.factory.build(event);
+        return this.service.update(userId, id, builtEvent);
     }
 }

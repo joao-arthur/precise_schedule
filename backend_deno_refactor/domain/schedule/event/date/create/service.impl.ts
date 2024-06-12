@@ -4,8 +4,8 @@ import type { User } from "../../../user/model.ts";
 import type { Event } from "../../model.ts";
 import type { EventCreateService } from "../../create/service.ts";
 import type { DateCreateModel } from "./model.ts";
-import type { DateCreateService } from "./service.ts";
 import type { DateCreateFactory } from "./factory.ts";
+import type { DateCreateErrors, DateCreateService } from "./service.ts";
 import { createDateValidation } from "./validation.ts";
 
 export class DateCreateServiceImpl implements DateCreateService {
@@ -15,12 +15,15 @@ export class DateCreateServiceImpl implements DateCreateService {
         private readonly service: EventCreateService,
     ) {}
 
-    public create(userId: User["id"], event: DateCreateModel): Promise<Result<Event>> {
+    public create(
+        userId: User["id"],
+        event: DateCreateModel,
+    ): Promise<Result<Event, DateCreateErrors>> {
         const validationResult = this.validator.validate(event, createDateValidation);
         if (validationResult.type === "err") {
             return Promise.resolve(validationResult);
         }
-        const buildedEvent = this.factory.build(event);
-        return this.service.create(userId, buildedEvent);
+        const builtEvent = this.factory.build(event);
+        return this.service.create(userId, builtEvent);
     }
 }

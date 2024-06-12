@@ -3,14 +3,14 @@ export type ResultOk<Data> = {
     readonly data: Data;
 };
 
-export type ResultErr<E extends Error> = {
+export type ResultErr<Err> = {
     readonly type: "err";
-    readonly error: E;
+    readonly error: Err;
 };
 
-export type Result<Data, E extends Error = Error> =
+export type Result<Data, Err> =
     | ResultOk<Data>
-    | ResultErr<E>;
+    | ResultErr<Err>;
 
 export function buildOk<Data>(data: Data): ResultOk<Data> {
     return {
