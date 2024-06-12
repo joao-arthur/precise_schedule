@@ -1,7 +1,7 @@
 import type { Schema } from "../../../../validation/schema.ts";
-import type { BirthdayCreateModel } from "./model.ts";
+import type { BirthdayUpdateModel } from "./model.ts";
 
-export const createBirthdayValidation: Schema<BirthdayCreateModel> = {
+export const updateBirthdaySchema: Schema<BirthdayUpdateModel> = {
     name: [
         { type: "str" },
         { type: "strMinLen", min: 1 },

@@ -1,7 +1,7 @@
 import type { Schema } from "../../../../validation/schema.ts";
-import type { BirthdayUpdateModel } from "./model.ts";
+import type { DateUpdateModel } from "./model.ts";
 
-export const updateBirthdayValidation: Schema<BirthdayUpdateModel> = {
+export const updateDateSchema: Schema<DateUpdateModel> = {
     name: [
         { type: "str" },
         { type: "strMinLen", min: 1 },
@@ -10,5 +10,12 @@ export const updateBirthdayValidation: Schema<BirthdayUpdateModel> = {
     day: [
         { type: "dt" },
         { type: "dtMin", min: "1970-01-01" },
+    ],
+    begin: [
+        { type: "time" },
+    ],
+    end: [
+        { type: "time" },
+        { type: "compareBigger", field: "begin" },
     ],
 };

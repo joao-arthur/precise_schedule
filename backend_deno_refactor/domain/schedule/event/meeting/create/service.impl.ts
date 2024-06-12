@@ -6,7 +6,7 @@ import type { EventCreateService } from "../../create/service.ts";
 import type { MeetingCreateModel } from "./model.ts";
 import type { MeetingCreateErrors, MeetingCreateService } from "./service.ts";
 import {buildEventCreate } from "./factory.ts";
-import { createMeetingValidation } from "./validation.ts";
+import { createMeetingSchema } from "./validation.ts";
 
 export class MeetingCreateServiceImpl implements MeetingCreateService {
     constructor(
@@ -18,7 +18,7 @@ export class MeetingCreateServiceImpl implements MeetingCreateService {
         userId: User["id"],
         event: MeetingCreateModel,
     ): Promise<Result<Event, MeetingCreateErrors>> {
-        const validationResult = this.validator.validate(event, createMeetingValidation);
+        const validationResult = this.validator.validate(event, createMeetingSchema);
         if (validationResult.type === "err") {
             return Promise.resolve(validationResult);
         }

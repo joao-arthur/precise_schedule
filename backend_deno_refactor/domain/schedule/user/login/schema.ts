@@ -1,7 +1,7 @@
 import type { Schema } from "../../../validation/schema.ts";
 import type { UserLoginModel } from "./model.ts";
 
-export const userLoginValidation: Schema<UserLoginModel> = {
+export const userLoginSchema: Schema<UserLoginModel> = {
     username: [
         { type: "str" },
         { type: "strMinLen", min: 1 },

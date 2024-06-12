@@ -1,7 +1,7 @@
 import type { Schema } from "../../../../validation/schema.ts";
-import type { MeetingCreateModel } from "./model.ts";
+import type { PartyCreateModel } from "./model.ts";
 
-export const createMeetingValidation: Schema<MeetingCreateModel> = {
+export const createPartySchema: Schema<PartyCreateModel> = {
     name: [
         { type: "str" },
         { type: "strMinLen", min: 1 },
@@ -17,11 +17,5 @@ export const createMeetingValidation: Schema<MeetingCreateModel> = {
     end: [
         { type: "time" },
         { type: "compareBigger", field: "begin" },
-    ],
-    frequency: [
-        { type: "enum", values: ["1D", "2D", "1W", "1M", "3M", "6M", "1Y", "2Y", undefined] },
-    ],
-    weekendRepeat: [
-        { type: "bool" },
     ],
 };

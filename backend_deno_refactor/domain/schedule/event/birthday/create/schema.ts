@@ -1,7 +1,7 @@
 import type { Schema } from "../../../../validation/schema.ts";
-import type { PartyUpdateModel } from "./model.ts";
+import type { BirthdayCreateModel } from "./model.ts";
 
-export const updatePartyValidation: Schema<PartyUpdateModel> = {
+export const createBirthdaySchema: Schema<BirthdayCreateModel> = {
     name: [
         { type: "str" },
         { type: "strMinLen", min: 1 },
@@ -10,12 +10,5 @@ export const updatePartyValidation: Schema<PartyUpdateModel> = {
     day: [
         { type: "dt" },
         { type: "dtMin", min: "1970-01-01" },
-    ],
-    begin: [
-        { type: "time" },
-    ],
-    end: [
-        { type: "time" },
-        { type: "compareBigger", field: "begin" },
     ],
 };

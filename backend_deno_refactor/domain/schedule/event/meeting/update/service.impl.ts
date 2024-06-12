@@ -6,7 +6,7 @@ import type { EventUpdateService } from "../../update/service.ts";
 import type { MeetingUpdateModel } from "./model.ts";
 import type { MeetingUpdateErrors, MeetingUpdateService } from "./service.ts";
 import { buildEventUpdate } from "./factory.ts";
-import { updateMeetingValidation } from "./validation.ts";
+import { updateMeetingSchema } from "./validation.ts";
 
 export class MeetingUpdateServiceImpl implements MeetingUpdateService {
     constructor(
@@ -19,7 +19,7 @@ export class MeetingUpdateServiceImpl implements MeetingUpdateService {
         id: Event["id"],
         event: MeetingUpdateModel,
     ): Promise<Result<Event, MeetingUpdateErrors>> {
-        const validationResult = this.validator.validate(event, updateMeetingValidation);
+        const validationResult = this.validator.validate(event, updateMeetingSchema);
         if (validationResult.type === "err") {
             return Promise.resolve(validationResult);
         }

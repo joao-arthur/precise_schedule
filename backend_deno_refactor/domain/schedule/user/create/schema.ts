@@ -1,7 +1,7 @@
 import type { Schema } from "../../../validation/schema.ts";
-import type { UserUpdateModel } from "./model.ts";
+import type { UserCreateModel } from "./model.ts";
 
-export const userUpdateValidation: Schema<UserUpdateModel> = {
+export const userCreateSchema: Schema<UserCreateModel> = {
     firstName: [
         { type: "str" },
         { type: "strMinLen", min: 1 },

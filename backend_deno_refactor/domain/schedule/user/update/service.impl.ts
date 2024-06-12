@@ -8,7 +8,7 @@ import type { UserUpdateRepository } from "./repository.ts";
 import type { UserUpdateErrors, UserUpdateService } from "./service.ts";
 import { ok } from "../../../lang/result.ts";
 import { buildUser } from "./factory.ts";
-import { userUpdateValidation } from "./validation.ts";
+import { userUpdateSchema } from "./validation.ts";
 
 export class UserUpdateServiceImpl implements UserUpdateService {
     constructor(
@@ -22,7 +22,7 @@ export class UserUpdateServiceImpl implements UserUpdateService {
         id: User["id"],
         user: UserUpdateModel,
     ): Promise<Result<User, UserUpdateErrors>> {
-        const validationResult = this.validator.validate(user, userUpdateValidation);
+        const validationResult = this.validator.validate(user, userUpdateSchema);
         if (validationResult.type === "err") {
             return validationResult;
         }

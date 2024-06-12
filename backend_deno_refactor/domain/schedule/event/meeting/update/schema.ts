@@ -1,7 +1,7 @@
 import type { Schema } from "../../../../validation/schema.ts";
-import type { DateUpdateModel } from "./model.ts";
+import type { MeetingUpdateModel } from "./model.ts";
 
-export const updateDateValidation: Schema<DateUpdateModel> = {
+export const updateMeetingSchema: Schema<MeetingUpdateModel> = {
     name: [
         { type: "str" },
         { type: "strMinLen", min: 1 },
@@ -17,5 +17,11 @@ export const updateDateValidation: Schema<DateUpdateModel> = {
     end: [
         { type: "time" },
         { type: "compareBigger", field: "begin" },
+    ],
+    frequency: [
+        { type: "enum", values: ["1D", "2D", "1W", "1M", "3M", "6M", "1Y", "2Y", undefined] },
+    ],
+    weekendRepeat: [
+        { type: "bool" },
     ],
 };
