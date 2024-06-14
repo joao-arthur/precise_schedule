@@ -1,7 +1,7 @@
 import type { Schema } from "../../../../validation/schema.ts";
 import type { DateCreateModel } from "./model.ts";
 
-export const createDateSchema: Schema<DateCreateModel> = {
+export const dateCreateSchema: Schema<DateCreateModel> = {
     name: [
         { type: "str" },
         { type: "strMinLen", min: 1 },

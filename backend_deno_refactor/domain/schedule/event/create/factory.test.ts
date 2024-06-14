@@ -6,12 +6,12 @@ Deno.test("buildEvent", () => {
     assertEquals(
         buildEvent(
             createEventModelStub,
-            "id",
-            "user",
+            "event-id",
+            "user-id",
         ),
         {
-            id: "id",
-            user: "user",
+            id: "event-id",
+            user: "user-id",
             createdAt: new Date(),
             updatedAt: new Date(),
             ...createEventModelStub,

@@ -1,7 +1,7 @@
 import type { Schema } from "../../../../validation/schema.ts";
 import type { DateUpdateModel } from "./model.ts";
 
-export const updateDateSchema: Schema<DateUpdateModel> = {
+export const dateUpdateSchema: Schema<DateUpdateModel> = {
     name: [
         { type: "str" },
         { type: "strMinLen", min: 1 },

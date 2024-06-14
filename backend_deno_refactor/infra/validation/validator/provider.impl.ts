@@ -1,5 +1,5 @@
-import type { ValidatorProvider } from "@ps/domain/validation/validator/provider.ts";
-import type { Validation } from "@ps/domain/validation/model.ts";
+import type { ValidatorProvider } from "../../../domain/validation/validator/provider.ts";
+import type { Validation } from "../../../domain/validation/model.ts";
 import { boolValidation } from "../validations/bool/validation.ts";
 import { dtValidation } from "../validations/dt/validation.ts";
 import { dtMinValidation } from "../validations/dtMin/validation.ts";
@@ -13,7 +13,7 @@ import { strMinLowerValidation } from "../validations/strMinLower/validation.ts"
 import { strMinUpperValidation } from "../validations/strMinUpper/validation.ts";
 import { strMinSpecialValidation } from "../validations/strMinSpecial/validation.ts";
 import { timeValidation } from "../validations/time/validation.ts";
-import { compareBiggerValidation } from "@ps/infra/validation/validations/compareBigger/validation.ts";
+import { compareBiggerValidation } from "../validations/compareBigger/validation.ts";
 
 export class ValidatorProviderImpl implements ValidatorProvider {
     public execute<Keys>(

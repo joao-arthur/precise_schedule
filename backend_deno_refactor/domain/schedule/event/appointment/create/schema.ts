@@ -1,7 +1,7 @@
 import type { Schema } from "../../../../validation/schema.ts";
 import type { AppointmentCreateModel } from "./model.ts";
 
-export const createAppointmentSchema: Schema<AppointmentCreateModel> = {
+export const appointmentCreateSchema: Schema<AppointmentCreateModel> = {
     name: [
         { type: "str" },
         { type: "strMinLen", min: 1 },

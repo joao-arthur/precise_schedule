@@ -1,7 +1,7 @@
 import { assertEquals } from "@std/assert/assert-equals";
+import { ok } from "../../../lang/result.ts";
 import { eventStub } from "../model._stub.ts";
 import { EventFindRepositoryStub } from "./repository._stub.ts";
-import { ok } from "../../../lang/result.ts";
 
 Deno.test("EventFindRepositoryStub", async () => {
     assertEquals(

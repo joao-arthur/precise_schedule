@@ -1,7 +1,7 @@
 import type { Schema } from "../../../../validation/schema.ts";
 import type { PartyCreateModel } from "./model.ts";
 
-export const createPartySchema: Schema<PartyCreateModel> = {
+export const partyCreateSchema: Schema<PartyCreateModel> = {
     name: [
         { type: "str" },
         { type: "strMinLen", min: 1 },

@@ -6,7 +6,7 @@ Deno.test("UserCreateFactoryImpl", () => {
     assertEquals(
         buildUser(userCreateModelStub, "id"),
         {
-            id: "id",
+            id: "iser-id",
             createdAt: new Date(),
             updatedAt: new Date(),
             ...userCreateModelStub,

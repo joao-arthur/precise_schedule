@@ -9,6 +9,6 @@ export type EventFindRepository = {
     ) => Promise<Result<readonly Event[], RepositoryError>>;
     readonly findByUserAndId: (
         userId: User["id"],
-        id: Event["id"],
+        eventId: Event["id"],
     ) => Promise<Result<Event | undefined, RepositoryError>>;
 };

@@ -7,7 +7,7 @@ Deno.test("buildUser", () => {
     assertEquals(
         buildUser(userUpdateModelStub, userStub),
         {
-            id: "id",
+            id: userStub.id,
             createdAt: userStub.createdAt,
             updatedAt: new Date(),
             ...userUpdateModelStub,

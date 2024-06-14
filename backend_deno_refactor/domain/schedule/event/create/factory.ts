@@ -4,11 +4,11 @@ import type { EventCreateModel } from "./model.ts";
 
 export function buildEvent(
     event: EventCreateModel,
-    id: Event["id"],
+    eventId: Event["id"],
     userId: User["id"],
 ): Event {
     return {
-        id,
+        id: eventId,
         name: event.name,
         day: event.day,
         begin: event.begin,
