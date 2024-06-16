@@ -13,15 +13,9 @@ export type Result<Data, E> =
     | Err<E>;
 
 export function ok<Data>(data: Data): Ok<Data> {
-    return {
-        type: "ok",
-        data,
-    };
+    return { type: "ok", data };
 }
 
 export function err<E extends Error>(error: E): Err<E> {
-    return {
-        type: "err",
-        error,
-    };
+    return { type: "err", error };
 }
