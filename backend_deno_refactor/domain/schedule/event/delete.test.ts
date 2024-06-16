@@ -1,13 +1,13 @@
 import { assertEquals } from "@std/assert/assert-equals";
 import { ok } from "../../../lang/result.ts";
-import { eventStub } from "../model._stub.ts";
-import { EventDeleteRepositoryStub } from "./repo._stub.ts";
-import { eventDelete } from "./service.ts";
+import { eventStub } from "../model.stub.ts";
+import { EventDeleteRepositoryStub } from "./repo.stub.ts";
+import { eventDelete } from "./delete.ts";
 
 Deno.test("eventDelete", async () => {
     assertEquals(
         await eventDelete(
-            new EventDeleteRepositoryStub(),
+            new EventRepo(),
             eventStub.user,
             eventStub.id,
         ),

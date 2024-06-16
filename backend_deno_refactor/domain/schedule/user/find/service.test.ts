@@ -1,7 +1,7 @@
 import { assertEquals } from "@std/assert/assert-equals";
-import { userStub } from "../model._stub.ts";
-import { userFindModelStub } from "./model._stub.ts";
-import { UserFindRepositoryStub } from "./repo._stub.ts";
+import { userStub } from "../model.stub.ts";
+import { userFindModelStub } from "./model.stub.ts";
+import { UserFindRepositoryStub } from "./repo.stub.ts";
 import { UserNotFound } from "./error.userNotFound.ts";
 import { userFindByCredentials, userFindById, userFindByIdMapped } from "./service.ts";
 import { err, ok } from "../../../lang/result.ts";

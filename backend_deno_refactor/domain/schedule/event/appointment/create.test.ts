@@ -1,8 +1,7 @@
 import type { AppointmentCreateModel } from "./create.ts";
 import { assertEquals } from "@std/assert/assert-equals";
 import { ok } from "../../../lang/result.ts";
-import { ValidatorStub } from "../../../validation/validator/service._stub.ts";
-import { eventStub } from "../model._stub.ts";
+import { eventStub } from "../model.stub.ts";
 import { appointmentCreate, appointmentCreateToEventCreate } from "./create.ts";
 
 const appointmentCreateModelStub: AppointmentCreateModel = {
@@ -27,7 +26,6 @@ Deno.test("appointmentCreateToEventCreate", () => {
 Deno.test("appointmentCreate", async () => {
     assertEquals(
         await appointmentCreate(
-            new ValidatorStub(),
             eventStub.user,
             appointmentCreateModelStub,
         ),

@@ -1,5 +1,5 @@
 import { assertEquals } from "@std/assert/assert-equals";
-import { IdGeneratorRandom } from "./random.adapter.ts";
+import { IdGeneratorRandom } from "./id.random.adapter.ts";
 
 Deno.test("IdGeneratorRandom", () => {
     const idGenerator = new IdGeneratorRandom();

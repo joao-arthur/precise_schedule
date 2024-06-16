@@ -1,5 +1,5 @@
 import { assertEquals } from "@std/assert/assert-equals";
-import { UserUpdateRepositoryStub } from "./repo._stub.ts";
+import { UserUpdateRepositoryStub } from "./repo.stub.ts";
 import { ok } from "../../../lang/result.ts";
 
 Deno.test("UserUpdateRepositoryStub", async () => {

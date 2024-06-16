@@ -1,8 +1,7 @@
 import type { PartyCreateModel } from "./create.ts";
 import { assertEquals } from "@std/assert/assert-equals";
 import { ok } from "../../../lang/result.ts";
-import { ValidatorStub } from "../../../validation/validator/service._stub.ts";
-import { eventStub } from "../model._stub.ts";
+import { eventStub } from "../model.stub.ts";
 import { partyCreate, partyCreateToEventCreate } from "./create.ts";
 
 const partyCreateModelStub: PartyCreateModel = {
@@ -27,7 +26,6 @@ Deno.test("partyCreateToEventCreate", () => {
 Deno.test("partyCreate", async () => {
     assertEquals(
         await partyCreate(
-            new ValidatorStub(),
             eventStub.user,
             partyCreateModelStub,
         ),

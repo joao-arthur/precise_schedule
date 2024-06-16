@@ -1,8 +1,7 @@
 import type { DateCreateModel } from "./create.ts";
 import { assertEquals } from "@std/assert/assert-equals";
 import { ok } from "../../../lang/result.ts";
-import { ValidatorStub } from "../../../validation/validator/service._stub.ts";
-import { eventStub } from "../model._stub.ts";
+import { eventStub } from "../model.stub.ts";
 import { dateCreate, dateCreateToEventCreate } from "./create.ts";
 
 const dateCreateModelStub: DateCreateModel = {
@@ -27,7 +26,6 @@ Deno.test("dateCreateToEventCreate", () => {
 Deno.test("dateCreate", async () => {
     assertEquals(
         await dateCreate(
-            new ValidatorStub(),
             eventStub.user,
             dateCreateModelStub,
         ),

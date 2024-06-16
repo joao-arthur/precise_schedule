@@ -1,12 +1,12 @@
 import type { Result } from "../../../lang/result.ts";
 import type { RepositoryError } from "../../../repository/RepositoryError.ts";
-import type { ValidationError } from "../../../validation/ValidationError.ts";
-import type { ValidatorService } from "../../../validation/validator/service.ts";
+import type { ValidationError } from "../../../validation/validate.ts";
 import type { Schema } from "../../../validation/schema.ts";
 import type { User } from "../../user/model.ts";
-import type { EventCreateModel } from "../create/model.ts";
+import type { EventCreateModel } from "../create.ts";
 import type { Event } from "../model.ts";
-import { eventCreate } from "../create/service.ts";
+import { validateSchema } from "../../../validation/validate.ts";
+import { eventCreate } from "../create.ts";
 
 export type AppointmentCreateModel = {
     readonly name: Event["name"];
@@ -59,14 +59,13 @@ type AppointmentCreateErrors =
     | ValidationError;
 
 export function appointmentCreate(
-    validator: ValidatorService,
     userId: User["id"],
     event: AppointmentCreateModel,
 ): Promise<Result<Event, AppointmentCreateErrors>> {
-    const validationResult = validator.validate(event, appointmentCreateSchema);
-    if (validationResult.type === "err") {
-        return Promise.resolve(validationResult);
+    const schemaValidation = validateSchema(appointmentCreateSchema, event);
+    if (schemaValidation.type === "err") {
+        return Promise.resolve(schemaValidation);
     }
     const builtEvent = appointmentCreateToEventCreate(event);
-    return eventCreate(repo, idGenerator, userId, builtEvent);
+    return eventCreate(repo, idGenerator, builtEvent, userId);
 }

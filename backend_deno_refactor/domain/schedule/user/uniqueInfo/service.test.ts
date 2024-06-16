@@ -1,9 +1,9 @@
 import type { User } from "../model.ts";
 import { assertEquals } from "@std/assert/assert-equals";
 import { err, ok } from "../../../lang/result.ts";
-import { userStub } from "../model._stub.ts";
-import { UserUniqueInfoRepositoryStub } from "./repo._stub.ts";
-import { uniqueInfoModelStub } from "./model._stub.ts";
+import { userStub } from "../model.stub.ts";
+import { UserUniqueInfoRepositoryStub } from "./repo.stub.ts";
+import { uniqueInfoModelStub } from "./model.stub.ts";
 import { EmailAlreadyRegistered } from "./error.emailAlreadyRegistered.ts";
 import { UsernameAlreadyRegistered } from "./error.usernameAlreadyRegistered.ts";
 import { userUniqueInfoValidateExisting, userUniqueInfoValidateNew } from "./service.ts";

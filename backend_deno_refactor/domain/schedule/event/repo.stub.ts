@@ -10,7 +10,7 @@ export function eventRepoStubBuild(
         cCreate: () => Promise.resolve(ok(undefined)),
         cUpdate: () => Promise.resolve(ok(undefined)),
         cReadByUser: () => Promise.resolve(ok(readByUser)),
-        cReadByUserAndId: () => Promise.resolve(ok(readByUserAndId)),
+        cReadByUserAndEventId: () => Promise.resolve(ok(readByUserAndId)),
         cDelete: () => Promise.resolve(ok(undefined)),
     };
 }

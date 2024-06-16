@@ -1,6 +1,6 @@
 import type { Result } from "../../../lang/result.ts";
 import type { RepositoryError } from "../../../repository/RepositoryError.ts";
-import type { UserUniqueInfoRepository } from "./repo.ts";
+import type { UserRepo } from "./repo.ts";
 import type { User } from "../model.ts";
 import type { UserUniqueInfoModel } from "./model.ts";
 import { err, ok } from "../../../lang/result.ts";
@@ -13,7 +13,7 @@ type UserUniqueInfoErrors =
     | EmailAlreadyRegistered;
 
 export async function userUniqueInfoValidateNew(
-    repo: UserUniqueInfoRepository,
+    repo: UserRepo,
     user: UserUniqueInfoModel,
 ): Promise<Result<void, UserUniqueInfoErrors>> {
     const countUsername = await repo.countUsername(user.username);
@@ -34,7 +34,7 @@ export async function userUniqueInfoValidateNew(
 }
 
 export async function userUniqueInfoValidateExisting(
-    repo: UserUniqueInfoRepository,
+    repo: UserRepo,
     user: UserUniqueInfoModel,
     oldUser: User,
 ): Promise<Result<void, UserUniqueInfoErrors>> {

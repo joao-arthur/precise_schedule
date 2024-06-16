@@ -9,6 +9,9 @@ export type EventRepo = {
     readonly cCreate: (event: Event) => Op<void>;
     readonly cUpdate: (event: Event) => Op<void>;
     readonly cReadByUser: (userId: User["id"]) => Op<readonly Event[]>;
-    readonly cReadByUserAndId: (userId: User["id"], eventId: Event["id"]) => Op<Event | undefined>;
+    readonly cReadByUserAndEventId: (
+        userId: User["id"],
+        eventId: Event["id"],
+    ) => Op<Event | undefined>;
     readonly cDelete: (eventId: Event["id"]) => Op<void>;
 };

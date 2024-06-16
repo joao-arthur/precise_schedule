@@ -1,8 +1,7 @@
 import type { DateUpdateModel } from "./update.ts";
 import { assertEquals } from "@std/assert/assert-equals";
 import { ok } from "../../../lang/result.ts";
-import { ValidatorStub } from "../../../validation/validator/service._stub.ts";
-import { eventStub } from "../model._stub.ts";
+import { eventStub } from "../model.stub.ts";
 import { dateUpdate, dateUpdateToEventUpdate } from "./update.ts";
 
 const dateUpdateModelStub: DateUpdateModel = {
@@ -27,7 +26,6 @@ Deno.test("dateUpdateToEventUpdate", () => {
 Deno.test("dateUpdate", async () => {
     assertEquals(
         await dateUpdate(
-            new ValidatorStub(),
             eventStub.user,
             eventStub.id,
             dateUpdateModelStub,

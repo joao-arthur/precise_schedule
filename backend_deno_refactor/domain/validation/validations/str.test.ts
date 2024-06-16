@@ -1,8 +1,8 @@
-import type { StrVal} from './str.ts';
+import type { StrVal } from "./str.ts";
 import { assertEquals } from "@std/assert/assert-equals";
-import { StrValidationError, strValidation } from './str.ts';
+import { strValidation, StrValidationError } from "./str.ts";
 
-const v:StrVal = { type: "str" };
+const v: StrVal = { type: "str" };
 
 Deno.test("strValidation valid", () => {
     assertEquals(strValidation(v, ""), undefined);

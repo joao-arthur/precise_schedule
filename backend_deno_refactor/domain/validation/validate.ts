@@ -67,7 +67,7 @@ function execute<Keys>(
     }
 }
 
-export function validate<Keys>(
+export function validateSchema<Keys>(
     schema: Schema<Keys>,
     validated: Keys | undefined | null,
 ): Result<void, ValidationError> {

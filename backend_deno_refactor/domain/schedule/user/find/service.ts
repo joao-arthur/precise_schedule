@@ -2,7 +2,7 @@ import type { Result } from "../../../lang/result.ts";
 import type { RepositoryError } from "../../../repository/RepositoryError.ts";
 import type { User } from "../model.ts";
 import type { UserFindModel } from "./model.ts";
-import type { UserFindRepository } from "./repo.ts";
+import type { UserRepo } from "./repo.ts";
 import { err, ok } from "../../../lang/result.ts";
 import { buildUserFind } from "./factory.ts";
 import { UserNotFound } from "./error.userNotFound.ts";
@@ -12,7 +12,7 @@ export type UserFindErrors =
     | UserNotFound;
 
 export async function userFindById(
-    repo: UserFindRepository,
+    repo: UserRepo,
     id: User["id"],
 ): Promise<Result<User, UserFindErrors>> {
     const foundUserResult = await repo.findById(id);
@@ -26,7 +26,7 @@ export async function userFindById(
 }
 
 export async function userFindByIdMapped(
-    repo: UserFindRepository,
+    repo: UserRepo,
     id: User["id"],
 ): Promise<Result<UserFindModel, UserFindErrors>> {
     const foundUserResult = await repo.findById(id);
@@ -41,7 +41,7 @@ export async function userFindByIdMapped(
 }
 
 export async function userFindByCredentials(
-    repo: UserFindRepository,
+    repo: UserRepo,
     username: User["username"],
     password: User["password"],
 ): Promise<Result<User, UserFindErrors>> {

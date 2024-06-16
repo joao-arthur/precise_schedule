@@ -1,8 +1,8 @@
-import type {TimeVal} from './time.ts';
+import type { TimeVal } from "./time.ts";
 import { assertEquals } from "@std/assert/assert-equals";
-import {TimeValidationError, timeValidation} from './time.ts';
+import { timeValidation, TimeValidationError } from "./time.ts";
 
-const v:TimeVal = { type: "time" };
+const v: TimeVal = { type: "time" };
 
 Deno.test("timeValidation valid", () => {
     assertEquals(timeValidation(v, "10:00"), undefined);

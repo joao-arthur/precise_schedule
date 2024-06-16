@@ -1,6 +1,6 @@
 import { assertEquals } from "@std/assert/assert-equals";
-import { userStub } from "../model._stub.ts";
-import { userUpdateModelStub } from "./model._stub.ts";
+import { userStub } from "../model.stub.ts";
+import { userUpdateModelStub } from "./model.stub.ts";
 import { buildUser } from "./factory.ts";
 
 Deno.test("buildUser", () => {

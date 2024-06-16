@@ -1,6 +1,6 @@
-import type {StrMinUpperVal} from './strMinUpper.ts';
+import type { StrMinUpperVal } from "./strMinUpper.ts";
 import { assertEquals } from "@std/assert/assert-equals";
-import {StrMinUpperValidationError, strMinUpperValidation} from './strMinUpper.ts';
+import { strMinUpperValidation, StrMinUpperValidationError } from "./strMinUpper.ts";
 
 const v: StrMinUpperVal = { type: "strMinUpper", min: 1 };
 

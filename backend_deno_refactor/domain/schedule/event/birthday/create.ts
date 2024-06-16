@@ -1,12 +1,12 @@
 import type { Result } from "../../../lang/result.ts";
 import type { RepositoryError } from "../../../repository/RepositoryError.ts";
-import type { ValidationError } from "../../../validation/ValidationError.ts";
-import type { ValidatorService } from "../../../validation/validator/service.ts";
+import type { ValidationError } from "../../../validation/validate.ts";
 import type { Schema } from "../../../validation/schema.ts";
 import type { User } from "../../user/model.ts";
-import type { EventCreateModel } from "../create/model.ts";
+import type { EventCreateModel } from "../create.ts";
 import type { Event } from "../model.ts";
-import { eventCreate } from "../create/service.ts";
+import { validateSchema } from "../../../validation/validate.ts";
+import { eventCreate } from "../create.ts";
 
 export type BirthdayCreateModel = {
     readonly name: Event["name"];
@@ -42,14 +42,13 @@ type BirthdayCreateErrors =
     | ValidationError;
 
 export function birthdayCreate(
-    validator: ValidatorService,
     userId: User["id"],
     event: BirthdayCreateModel,
 ): Promise<Result<Event, BirthdayCreateErrors>> {
-    const validationResult = validator.validate(event, birthdayCreateSchema);
-    if (validationResult.type === "err") {
-        return Promise.resolve(validationResult);
+    const schemaValidation = validateSchema(birthdayCreateSchema, event);
+    if (schemaValidation.type === "err") {
+        return Promise.resolve(schemaValidation);
     }
     const builtEvent = birthdayCreateToEventCreate(event);
-    return eventCreate(repo, idGenerator, userId, builtEvent);
+    return eventCreate(repo, idGenerator, builtEvent, userId);
 }

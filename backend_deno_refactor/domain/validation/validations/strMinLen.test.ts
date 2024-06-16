@@ -1,4 +1,4 @@
-import type {StrMinLenVal } from "./strMinLen.ts";
+import type { StrMinLenVal } from "./strMinLen.ts";
 import { assertEquals } from "@std/assert/assert-equals";
 import { strMinLenValidation, StrMinLenValidationError } from "./strMinLen.ts";
 

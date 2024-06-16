@@ -1,7 +1,7 @@
 import { assertEquals } from "@std/assert/assert-equals";
 import { ok } from "../../../lang/result.ts";
-import { userStub } from "../model._stub.ts";
-import { UserFindRepositoryStub } from "./repo._stub.ts";
+import { userStub } from "../model.stub.ts";
+import { UserFindRepositoryStub } from "./repo.stub.ts";
 
 Deno.test("UserFindRepositoryStub", async () => {
     assertEquals(

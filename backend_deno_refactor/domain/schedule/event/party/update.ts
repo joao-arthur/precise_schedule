@@ -1,13 +1,13 @@
 import type { Result } from "../../../lang/result.ts";
 import type { RepositoryError } from "../../../repository/RepositoryError.ts";
-import type { ValidationError } from "../../../validation/ValidationError.ts";
-import type { ValidatorService } from "../../../validation/validator/service.ts";
+import type { ValidationError } from "../../../validation/validate.ts";
 import type { Schema } from "../../../validation/schema.ts";
 import type { User } from "../../user/model.ts";
 import type { EventNotFound } from "../find/error.eventNotFound.ts";
 import type { EventUpdateModel } from "../update/model.ts";
 import type { Event } from "../model.ts";
-import { eventUpdate } from "../update/service.ts";
+import { validateSchema } from "../../../validation/validate.ts";
+import { eventUpdate } from "../update.ts";
 
 export type PartyUpdateModel = {
     readonly name: Event["name"];
@@ -53,14 +53,13 @@ type PartyUpdateErrors =
     | EventNotFound;
 
 export function partyUpdate(
-    validator: ValidatorService,
     userId: User["id"],
     eventId: Event["id"],
     event: PartyUpdateModel,
 ): Promise<Result<Event, PartyUpdateErrors>> {
-    const validationResult = validator.validate(event, partyUpdateSchema);
-    if (validationResult.type === "err") {
-        return Promise.resolve(validationResult);
+    const schemaValidation = validateSchema(partyUpdateSchema, event);
+    if (schemaValidation.type === "err") {
+        return Promise.resolve(schemaValidation);
     }
     const builtEvent = partyUpdateToEventUpdate(event);
     return eventUpdate(repo, userId, eventId, builtEvent);
