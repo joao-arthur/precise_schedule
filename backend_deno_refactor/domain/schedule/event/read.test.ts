@@ -1,6 +1,6 @@
 import { assertEquals } from "@std/assert/assert-equals";
 import { err, ok } from "../../lang/result.ts";
-import { eventRepoDataStubBuild } from "./repo.stub.ts";
+import { eventRepoDataStubBuild, eventRepoEmptyStubBuild } from "./repo.stub.ts";
 import { appointmentInfoStub, appointmentStub } from "./appointment/model.stub.ts";
 import {
     eventInfoReadMany,
@@ -17,7 +17,7 @@ Deno.test("eventToEventFind", () => {
 
 Deno.test("eventReadMany", async () => {
     assertEquals(
-        await eventReadMany(eventRepoDataStubBuild([], undefined), "user-id"),
+        await eventReadMany(eventRepoEmptyStubBuild(), "user-id"),
         ok([]),
     );
     assertEquals(
@@ -28,7 +28,7 @@ Deno.test("eventReadMany", async () => {
 
 Deno.test("eventReadOne", async () => {
     assertEquals(
-        await eventReadOne(eventRepoDataStubBuild([], undefined), "user-id", "event-id"),
+        await eventReadOne(eventRepoEmptyStubBuild(), "user-id", "event-id"),
         err(new EventNotFound()),
     );
     assertEquals(
@@ -39,7 +39,7 @@ Deno.test("eventReadOne", async () => {
 
 Deno.test("eventInfoReadMany", async () => {
     assertEquals(
-        await eventInfoReadMany(eventRepoDataStubBuild([], undefined), "user-id"),
+        await eventInfoReadMany(eventRepoEmptyStubBuild(), "user-id"),
         ok([]),
     );
     assertEquals(
@@ -50,7 +50,7 @@ Deno.test("eventInfoReadMany", async () => {
 
 Deno.test("eventInfoReadOne", async () => {
     assertEquals(
-        await eventInfoReadOne(eventRepoDataStubBuild([], undefined), "user-id", "event-id"),
+        await eventInfoReadOne(eventRepoEmptyStubBuild(), "user-id", "event-id"),
         err(new EventNotFound()),
     );
     assertEquals(

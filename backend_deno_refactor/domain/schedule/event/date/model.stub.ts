@@ -6,31 +6,14 @@ import type { DateCreate } from "./create.ts";
 import type { DateUpdate } from "./update.ts";
 
 export const dateCreateStub: DateCreate = {
-    name: "name",
-    day: "2025-06-24",
-    begin: "08:00",
-    end: "18:00",
-};
-
-export const dateUpdateStub: DateUpdate = {
-    name: "name",
+    name: "date Jullia",
     day: "2025-06-24",
     begin: "08:00",
     end: "18:00",
 };
 
 export const dateEventCreateStub: EventCreate = {
-    name: "name",
-    day: "2025-06-24",
-    begin: "08:00",
-    end: "18:00",
-    category: "DATE",
-    frequency: undefined,
-    weekendRepeat: false,
-};
-
-export const dateEventUpdateStub: EventUpdate = {
-    name: "name",
+    name: "date Jullia",
     day: "2025-06-24",
     begin: "08:00",
     end: "18:00",
@@ -41,7 +24,7 @@ export const dateEventUpdateStub: EventUpdate = {
 
 export const dateStub: Event = {
     id: "date-id",
-    name: "name",
+    name: "date Jullia",
     day: "2025-06-24",
     begin: "08:00",
     end: "18:00",
@@ -55,11 +38,42 @@ export const dateStub: Event = {
 
 export const dateInfoStub: EventInfo = {
     id: "date-id",
-    name: "name",
+    name: "date Jullia",
     day: "2025-06-24",
     begin: "08:00",
     end: "18:00",
     category: "DATE",
     frequency: undefined,
     weekendRepeat: false,
+};
+
+export const dateUpdateStub: DateUpdate = {
+    name: "date Jullia",
+    day: "2025-07-27",
+    begin: "08:00",
+    end: "18:00",
+};
+
+export const dateEventUpdateStub: EventUpdate = {
+    name: "date Jullia",
+    day: "2025-07-27",
+    begin: "08:00",
+    end: "18:00",
+    category: "DATE",
+    frequency: undefined,
+    weekendRepeat: false,
+};
+
+export const dateUpdatedStub: Event = {
+    id: "date-id",
+    name: "date Jullia",
+    day: "2025-07-27",
+    begin: "08:00",
+    end: "18:00",
+    category: "DATE",
+    frequency: undefined,
+    weekendRepeat: false,
+    user: "user-id",
+    createdAt: new Date("2024-06-16T19:16:12.327Z"),
+    updatedAt: new Date("2025-07-18T15:43:12.377Z"),
 };

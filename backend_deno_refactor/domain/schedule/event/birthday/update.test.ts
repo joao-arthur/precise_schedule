@@ -1,35 +1,31 @@
-import type { BirthdayUpdate } from "./update.ts";
 import { assertEquals } from "@std/assert/assert-equals";
 import { ok } from "../../../lang/result.ts";
-import { eventStub } from "../model.stub.ts";
+import { dateGeneratorStubBuild } from "../../../generator/date.stub.ts";
+import {
+    birthdayEventUpdateStub,
+    birthdayStub,
+    birthdayUpdatedStub,
+    birthdayUpdateStub,
+} from "./model.stub.ts";
+import { eventRepoDataStubBuild } from "../repo.stub.ts";
 import { birthdayUpdate, birthdayUpdateToEventUpdate } from "./update.ts";
-
-const birthdayUpdateModelStub: BirthdayUpdate = {
-    name: "name",
-    day: "2025-06-24",
-};
 
 Deno.test("birthdayUpdateToEventUpdate", () => {
     assertEquals(
-        birthdayUpdateToEventUpdate(birthdayUpdateModelStub),
-        {
-            begin: "00:00",
-            end: "23:59",
-            category: "BIRTHDAY",
-            frequency: "1Y",
-            weekendRepeat: true,
-            ...birthdayUpdateModelStub,
-        },
+        birthdayUpdateToEventUpdate(birthdayUpdateStub),
+        birthdayEventUpdateStub,
     );
 });
 
 Deno.test("birthdayUpdate", async () => {
     assertEquals(
         await birthdayUpdate(
-            eventStub.user,
-            eventStub.id,
-            birthdayUpdateModelStub,
+            eventRepoDataStubBuild([], birthdayStub),
+            dateGeneratorStubBuild(new Date("2025-07-18T15:43:12.377Z")),
+            "user-id",
+            "birthday-id",
+            birthdayUpdateStub,
         ),
-        ok(eventStub),
+        ok(birthdayUpdatedStub),
     );
 });

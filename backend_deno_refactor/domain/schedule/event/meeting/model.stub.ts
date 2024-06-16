@@ -6,16 +6,7 @@ import type { MeetingCreate } from "./create.ts";
 import type { MeetingUpdate } from "./update.ts";
 
 export const meetingCreateStub: MeetingCreate = {
-    name: "name",
-    day: "2025-06-24",
-    begin: "08:00",
-    end: "18:00",
-    frequency: "1W",
-    weekendRepeat: true,
-};
-
-export const meetingUpdateStub: MeetingUpdate = {
-    name: "name",
+    name: "HR and you",
     day: "2025-06-24",
     begin: "08:00",
     end: "18:00",
@@ -24,17 +15,7 @@ export const meetingUpdateStub: MeetingUpdate = {
 };
 
 export const meetingEventCreateStub: EventCreate = {
-    name: "name",
-    day: "2025-06-24",
-    begin: "08:00",
-    end: "18:00",
-    category: "MEETING",
-    frequency: "1W",
-    weekendRepeat: true,
-};
-
-export const meetingEventUpdateStub: EventUpdate = {
-    name: "name",
+    name: "HR and you",
     day: "2025-06-24",
     begin: "08:00",
     end: "18:00",
@@ -45,7 +26,7 @@ export const meetingEventUpdateStub: EventUpdate = {
 
 export const meetingStub: Event = {
     id: "meeting-id",
-    name: "name",
+    name: "HR and you",
     day: "2025-06-24",
     begin: "08:00",
     end: "18:00",
@@ -59,11 +40,44 @@ export const meetingStub: Event = {
 
 export const meetingInfoStub: EventInfo = {
     id: "meeting-id",
-    name: "name",
+    name: "HR and you",
     day: "2025-06-24",
     begin: "08:00",
     end: "18:00",
     category: "MEETING",
     frequency: "1W",
     weekendRepeat: true,
+};
+
+export const meetingUpdateStub: MeetingUpdate = {
+    name: "HR and you",
+    day: "2025-07-27",
+    begin: "09:30",
+    end: "13:00",
+    frequency: "1W",
+    weekendRepeat: true,
+};
+
+export const meetingEventUpdateStub: EventUpdate = {
+    name: "HR and you",
+    day: "2025-07-27",
+    begin: "09:30",
+    end: "13:00",
+    category: "MEETING",
+    frequency: "1W",
+    weekendRepeat: true,
+};
+
+export const meetingUpdatedStub: Event = {
+    id: "meeting-id",
+    name: "HR and you",
+    day: "2025-07-27",
+    begin: "09:30",
+    end: "13:00",
+    category: "MEETING",
+    frequency: "1W",
+    weekendRepeat: true,
+    user: "user-id",
+    createdAt: new Date("2024-06-16T19:16:12.327Z"),
+    updatedAt: new Date("2025-07-18T15:43:12.377Z"),
 };

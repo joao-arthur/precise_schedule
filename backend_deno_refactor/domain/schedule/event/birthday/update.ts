@@ -1,10 +1,12 @@
 import type { Result } from "../../../lang/result.ts";
+import type { DateGenerator } from "../../../generator/date.ts";
 import type { RepoError } from "../../../repository/repo.ts";
 import type { ValidationError } from "../../../validation/validate.ts";
 import type { Schema } from "../../../validation/schema.ts";
 import type { User } from "../../user/model.ts";
-import type { EventNotFound } from "../find/error.eventNotFound.ts";
-import type { EventUpdate } from "../update/model.ts";
+import type { EventNotFound } from "../read.ts";
+import type { EventRepo } from "../repo.ts";
+import type { EventUpdate } from "../update.ts";
 import type { Event } from "../model.ts";
 import { validateSchema } from "../../../validation/validate.ts";
 import { eventUpdate } from "../update.ts";
@@ -44,6 +46,8 @@ type BirthdayUpdateErrors =
     | EventNotFound;
 
 export function birthdayUpdate(
+    repo: EventRepo,
+    dateGenerator: DateGenerator,
     userId: User["id"],
     eventId: Event["id"],
     event: BirthdayUpdate,
@@ -53,5 +57,5 @@ export function birthdayUpdate(
         return Promise.resolve(schemaValidation);
     }
     const builtEvent = birthdayUpdateToEventUpdate(event);
-    return eventUpdate(repo, userId, eventId, builtEvent);
+    return eventUpdate(repo, dateGenerator, userId, eventId, builtEvent);
 }

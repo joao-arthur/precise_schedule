@@ -1,35 +1,31 @@
-import type { PartyUpdate } from "./update.ts";
 import { assertEquals } from "@std/assert/assert-equals";
 import { ok } from "../../../lang/result.ts";
-import { eventStub } from "../model.stub.ts";
+import { dateGeneratorStubBuild } from "../../../generator/date.stub.ts";
+import {
+    partyEventUpdateStub,
+    partyStub,
+    partyUpdatedStub,
+    partyUpdateStub,
+} from "./model.stub.ts";
+import { eventRepoDataStubBuild } from "../repo.stub.ts";
 import { partyUpdate, partyUpdateToEventUpdate } from "./update.ts";
-
-const partyUpdateModelStub: PartyUpdate = {
-    name: "name",
-    day: "2025-06-24",
-    begin: "08:00",
-    end: "18:00",
-};
 
 Deno.test("partyUpdateToEventUpdate", () => {
     assertEquals(
-        partyUpdateToEventUpdate(partyUpdateModelStub),
-        {
-            category: "PARTY",
-            frequency: undefined,
-            weekendRepeat: false,
-            ...partyUpdateModelStub,
-        },
+        partyUpdateToEventUpdate(partyUpdateStub),
+        partyEventUpdateStub,
     );
 });
 
 Deno.test("partyUpdate", async () => {
     assertEquals(
         await partyUpdate(
-            eventStub.user,
-            eventStub.id,
-            partyUpdateModelStub,
+            eventRepoDataStubBuild([], partyStub),
+            dateGeneratorStubBuild(new Date("2025-07-18T15:43:12.377Z")),
+            "user-id",
+            "party-id",
+            partyUpdateStub,
         ),
-        ok(eventStub),
+        ok(partyUpdatedStub),
     );
 });

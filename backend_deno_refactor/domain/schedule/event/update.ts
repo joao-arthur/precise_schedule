@@ -1,4 +1,5 @@
 import type { Result } from "../../lang/result.ts";
+import type { DateGenerator } from "../../generator/date.ts";
 import type { RepoError } from "../../repository/repo.ts";
 import type { User } from "../user/model.ts";
 import type { EventNotFound } from "./read.ts";
@@ -39,6 +40,7 @@ type EventUpdateErrors =
 
 export async function eventUpdate(
     repo: EventRepo,
+    dateGenerator: DateGenerator,
     userId: User["id"],
     eventId: Event["id"],
     event: EventUpdate,
@@ -47,7 +49,8 @@ export async function eventUpdate(
     if (existingEventResult.type === "err") {
         return existingEventResult;
     }
-    const builtEvent = eventUpdateToEvent(event, existingEventResult.data);
+    const now = dateGenerator.gen();
+    const builtEvent = eventUpdateToEvent(event, existingEventResult.data, now);
     const updateResult = await repo.cUpdate(builtEvent);
     if (updateResult.type === "err") {
         return updateResult;

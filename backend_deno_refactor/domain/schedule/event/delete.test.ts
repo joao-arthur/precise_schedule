@@ -6,11 +6,7 @@ import { eventDelete } from "./delete.ts";
 
 Deno.test("eventDelete", async () => {
     assertEquals(
-        await eventDelete(
-            eventRepoDataStubBuild([], appointmentStub),
-            "user-id",
-            "event-id",
-        ),
+        await eventDelete(eventRepoDataStubBuild([], appointmentStub), "user-id", "appointment-id"),
         ok(undefined),
     );
 });
