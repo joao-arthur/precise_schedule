@@ -1,5 +1,5 @@
 import type { Result } from "../../../lang/result.ts";
-import type { RepositoryError } from "../../../repository/RepositoryError.ts";
+import type { RepoError } from "../../../repository/repo.ts";
 import type { User } from "../model.ts";
 import type { UserFindModel } from "./model.ts";
 import type { UserRepo } from "./repo.ts";
@@ -8,7 +8,7 @@ import { buildUserFind } from "./factory.ts";
 import { UserNotFound } from "./error.userNotFound.ts";
 
 export type UserFindErrors =
-    | RepositoryError
+    | RepoError
     | UserNotFound;
 
 export async function userFindById(

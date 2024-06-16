@@ -1,12 +1,13 @@
 import type { IdGenerator } from "../../generator/id.ts";
-import type { RepositoryError } from "../../repository/RepositoryError.ts";
+import type { DateGenerator } from "../../generator/date.ts";
+import type { RepoError } from "../../repository/repo.ts";
 import type { Result } from "../../lang/result.ts";
 import type { User } from "../user/model.ts";
 import type { EventRepo } from "./repo.ts";
 import type { Event } from "./model.ts";
 import { ok } from "../../lang/result.ts";
 
-export type EventCreateModel = {
+export type EventCreate = {
     readonly name: Event["name"];
     readonly day: Event["day"];
     readonly begin: Event["begin"];
@@ -17,9 +18,10 @@ export type EventCreateModel = {
 };
 
 export function eventCreateToEvent(
-    event: EventCreateModel,
+    event: EventCreate,
     eventId: Event["id"],
     userId: User["id"],
+    now: Date,
 ): Event {
     return {
         id: eventId,
@@ -31,21 +33,23 @@ export function eventCreateToEvent(
         frequency: event.frequency,
         weekendRepeat: event.weekendRepeat,
         user: userId,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: now,
+        updatedAt: now,
     };
 }
 
-type EventCreateErrors = RepositoryError;
+type EventCreateErrors = RepoError;
 
 export async function eventCreate(
     repo: EventRepo,
     idGenerator: IdGenerator,
-    event: EventCreateModel,
+    dateGenerator: DateGenerator,
+    event: EventCreate,
     userId: User["id"],
 ): Promise<Result<Event, EventCreateErrors>> {
-    const eventId = idGenerator.generate();
-    const builtEvent = eventCreateToEvent(event, eventId, userId);
+    const eventId = idGenerator.gen();
+    const now = dateGenerator.gen();
+    const builtEvent = eventCreateToEvent(event, eventId, userId, now);
     const createResult = await repo.cCreate(builtEvent);
     if (createResult.type === "err") {
         return createResult;

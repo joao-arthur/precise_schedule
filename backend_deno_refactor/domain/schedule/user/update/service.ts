@@ -1,5 +1,5 @@
 import type { Result } from "../../../lang/result.ts";
-import type { RepositoryError } from "../../../repository/RepositoryError.ts";
+import type { RepoError } from "../../../repository/repo.ts";
 import type { ValidationError } from "../../../validation/validate.ts";
 import type { UserNotFound } from "../find/error.userNotFound.ts";
 import type { UsernameAlreadyRegistered } from "../uniqueInfo/error.usernameAlreadyRegistered.ts";
@@ -14,7 +14,7 @@ import { buildUser } from "./factory.ts";
 import { userUpdateSchema } from "./schema.ts";
 
 type UserUpdateErrors =
-    | RepositoryError
+    | RepoError
     | ValidationError
     | UserNotFound
     | UsernameAlreadyRegistered

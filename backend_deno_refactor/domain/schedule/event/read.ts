@@ -1,5 +1,5 @@
 import type { Result } from "../../lang/result.ts";
-import type { RepositoryError } from "../../repository/RepositoryError.ts";
+import type { RepoError } from "../../repository/repo.ts";
 import type { User } from "../user/model.ts";
 import type { EventRepo } from "./repo.ts";
 import type { Event } from "./model.ts";
@@ -11,7 +11,7 @@ export class EventNotFound extends Error {
     }
 }
 
-export type EventFindModel = {
+export type EventInfo = {
     readonly id: Event["id"];
     readonly name: Event["name"];
     readonly day: Event["day"];
@@ -22,7 +22,7 @@ export type EventFindModel = {
     readonly weekendRepeat: Event["weekendRepeat"];
 };
 
-export function eventToEventFind(event: Event): EventFindModel {
+export function eventToEventFind(event: Event): EventInfo {
     return {
         id: event.id,
         name: event.name,
@@ -35,34 +35,22 @@ export function eventToEventFind(event: Event): EventFindModel {
     };
 }
 
-type FindByUserErrors = RepositoryError;
-type FindByUserAndIdErrors = RepositoryError | EventNotFound;
+type ReadByUserErrors = RepoError;
+type ReadByUserAndIdErrors = RepoError | EventNotFound;
 
-export function eventReadByUser(
+export function eventReadMany(
     repo: EventRepo,
     userId: User["id"],
-): Promise<Result<readonly Event[], FindByUserErrors>> {
-    return repo.cReadByUser(userId);
+): Promise<Result<readonly Event[], ReadByUserErrors>> {
+    return repo.cReadMany(userId);
 }
 
-export async function eventReadByUserMapped(
-    repo: EventRepo,
-    userId: User["id"],
-): Promise<Result<readonly EventFindModel[], FindByUserErrors>> {
-    const foundUsersResult = await repo.cReadByUser(userId);
-    if (foundUsersResult.type === "err") {
-        return foundUsersResult;
-    }
-    const mapped = foundUsersResult.data.map(eventToEventFind);
-    return ok(mapped);
-}
-
-export async function eventReadByUserAndId(
+export async function eventReadOne(
     repo: EventRepo,
     userId: User["id"],
     eventId: Event["id"],
-): Promise<Result<Event, FindByUserAndIdErrors>> {
-    const maybeEventResult = await repo.cReadByUserAndEventId(userId, eventId);
+): Promise<Result<Event, ReadByUserAndIdErrors>> {
+    const maybeEventResult = await repo.cReadOne(userId, eventId);
     if (maybeEventResult.type === "err") {
         return maybeEventResult;
     }
@@ -72,18 +60,27 @@ export async function eventReadByUserAndId(
     return ok(maybeEventResult.data);
 }
 
-export async function eventReadByUserAndIdMapped(
+export async function eventInfoReadMany(
+    repo: EventRepo,
+    userId: User["id"],
+): Promise<Result<readonly EventInfo[], ReadByUserErrors>> {
+    const readResult = await eventReadMany(repo, userId);
+    if (readResult.type === "err") {
+        return readResult;
+    }
+    const mapped = readResult.data.map(eventToEventFind);
+    return ok(mapped);
+}
+
+export async function eventInfoReadOne(
     repo: EventRepo,
     userId: User["id"],
     eventId: Event["id"],
-): Promise<Result<EventFindModel, FindByUserAndIdErrors>> {
-    const maybeEventResult = await repo.cReadByUserAndEventId(userId, eventId);
-    if (maybeEventResult.type === "err") {
-        return maybeEventResult;
+): Promise<Result<EventInfo, ReadByUserAndIdErrors>> {
+    const readResult = await eventReadOne(repo, userId, eventId);
+    if (readResult.type === "err") {
+        return readResult;
     }
-    if (maybeEventResult.data === undefined) {
-        return err(new EventNotFound());
-    }
-    const builtEvent = eventToEventFind(maybeEventResult.data);
+    const builtEvent = eventToEventFind(readResult.data);
     return ok(builtEvent);
 }

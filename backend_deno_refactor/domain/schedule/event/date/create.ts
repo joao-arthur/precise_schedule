@@ -1,21 +1,24 @@
 import type { Result } from "../../../lang/result.ts";
-import type { RepositoryError } from "../../../repository/RepositoryError.ts";
+import type { IdGenerator } from "../../../generator/id.ts";
+import type { DateGenerator } from "../../../generator/date.ts";
+import type { RepoError } from "../../../repository/repo.ts";
 import type { ValidationError } from "../../../validation/validate.ts";
 import type { Schema } from "../../../validation/schema.ts";
 import type { User } from "../../user/model.ts";
-import type { EventCreateModel } from "../create.ts";
+import type { EventRepo } from "../repo.ts";
+import type { EventCreate } from "../create.ts";
 import type { Event } from "../model.ts";
 import { validateSchema } from "../../../validation/validate.ts";
 import { eventCreate } from "../create.ts";
 
-export type DateCreateModel = {
+export type DateCreate = {
     readonly name: Event["name"];
     readonly day: Event["day"];
     readonly begin: Event["begin"];
     readonly end: Event["end"];
 };
 
-const dateCreateSchema: Schema<DateCreateModel> = {
+const dateCreateSchema: Schema<DateCreate> = {
     name: [
         { type: "str" },
         { type: "strMinLen", min: 1 },
@@ -34,7 +37,7 @@ const dateCreateSchema: Schema<DateCreateModel> = {
     ],
 };
 
-export function dateCreateToEventCreate(event: DateCreateModel): EventCreateModel {
+export function dateCreateToEventCreate(event: DateCreate): EventCreate {
     return {
         name: event.name,
         day: event.day,
@@ -47,17 +50,20 @@ export function dateCreateToEventCreate(event: DateCreateModel): EventCreateMode
 }
 
 type DateCreateErrors =
-    | RepositoryError
+    | RepoError
     | ValidationError;
 
 export function dateCreate(
+    repo: EventRepo,
+    idGenerator: IdGenerator,
+    dateGenerator: DateGenerator,
     userId: User["id"],
-    event: DateCreateModel,
+    event: DateCreate,
 ): Promise<Result<Event, DateCreateErrors>> {
     const schemaValidation = validateSchema(dateCreateSchema, event);
     if (schemaValidation.type === "err") {
         return Promise.resolve(schemaValidation);
     }
     const builtEvent = dateCreateToEventCreate(event);
-    return eventCreate(repo, idGenerator, builtEvent, userId);
+    return eventCreate(repo, idGenerator, dateGenerator, builtEvent, userId);
 }

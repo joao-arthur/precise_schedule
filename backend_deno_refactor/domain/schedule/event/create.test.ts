@@ -1,45 +1,32 @@
-import type { EventCreateModel } from "./create.ts";
 import { assertEquals } from "@std/assert/assert-equals";
 import { ok } from "../../lang/result.ts";
-import { IdGeneratorStub } from "../../generator/id.stub.ts";
-import { eventStub } from "./model.stub.ts";
+import { idGeneratorStubBuild } from "../../generator/id.stub.ts";
+import { dateGeneratorStubBuild } from "../../generator/date.stub.ts";
+import { eventRepoEmptyStubBuild } from "./repo.stub.ts";
 import { eventCreate, eventCreateToEvent } from "./create.ts";
-
-const createEventModelStub: EventCreateModel = {
-    name: "name",
-    day: "2023-06-24",
-    begin: "08:00",
-    end: "18:00",
-    category: "APPOINTMENT",
-    frequency: undefined,
-    weekendRepeat: false,
-};
+import { appointmentEventCreateStub, appointmentStub } from "./appointment/model.stub.ts";
 
 Deno.test("eventCreateToEvent", () => {
     assertEquals(
         eventCreateToEvent(
-            createEventModelStub,
+            appointmentEventCreateStub,
             "event-id",
             "user-id",
+            new Date("2024-06-16T19:16:12.327Z"),
         ),
-        {
-            id: "event-id",
-            user: "user-id",
-            createdAt: new Date(),
-            updatedAt: new Date(),
-            ...createEventModelStub,
-        },
+        appointmentStub,
     );
 });
 
 Deno.test("eventCreate", async () => {
     assertEquals(
         await eventCreate(
-            new EventRepo(),
-            new IdGeneratorStub("event-id"),
-            createEventModelStub,
+            eventRepoEmptyStubBuild(),
+            idGeneratorStubBuild("event-id"),
+            dateGeneratorStubBuild(new Date("2024-06-16T19:16:12.327Z")),
+            appointmentEventCreateStub,
             "user-id",
         ),
-        ok(eventStub),
+        ok(appointmentStub),
     );
 });

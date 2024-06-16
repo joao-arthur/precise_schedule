@@ -1,15 +1,15 @@
 import type { Result } from "../../../lang/result.ts";
-import type { RepositoryError } from "../../../repository/RepositoryError.ts";
+import type { RepoError } from "../../../repository/repo.ts";
 import type { ValidationError } from "../../../validation/validate.ts";
 import type { Schema } from "../../../validation/schema.ts";
 import type { User } from "../../user/model.ts";
 import type { EventNotFound } from "../find/error.eventNotFound.ts";
-import type { EventUpdateModel } from "../update/model.ts";
+import type { EventUpdate } from "../update/model.ts";
 import type { Event } from "../model.ts";
 import { validateSchema } from "../../../validation/validate.ts";
 import { eventUpdate } from "../update.ts";
 
-export type AppointmentUpdateModel = {
+export type AppointmentUpdate = {
     readonly name: Event["name"];
     readonly day: Event["day"];
     readonly begin: Event["begin"];
@@ -18,7 +18,7 @@ export type AppointmentUpdateModel = {
     readonly weekendRepeat: Event["weekendRepeat"];
 };
 
-const appointmentUpdateSchema: Schema<AppointmentUpdateModel> = {
+const appointmentUpdateSchema: Schema<AppointmentUpdate> = {
     name: [
         { type: "str" },
         { type: "strMinLen", min: 1 },
@@ -43,7 +43,7 @@ const appointmentUpdateSchema: Schema<AppointmentUpdateModel> = {
     ],
 };
 
-export function appointmentUpdateToEventUpdate(event: AppointmentUpdateModel): EventUpdateModel {
+export function appointmentUpdateToEventUpdate(event: AppointmentUpdate): EventUpdate {
     return {
         name: event.name,
         day: event.day,
@@ -56,14 +56,14 @@ export function appointmentUpdateToEventUpdate(event: AppointmentUpdateModel): E
 }
 
 type AppointmentUpdateErrors =
-    | RepositoryError
+    | RepoError
     | ValidationError
     | EventNotFound;
 
 export function appointmentUpdate(
     userId: User["id"],
     eventId: Event["id"],
-    event: AppointmentUpdateModel,
+    event: AppointmentUpdate,
 ): Promise<Result<Event, AppointmentUpdateErrors>> {
     const schemaValidation = validateSchema(appointmentUpdateSchema, event);
     if (schemaValidation.type === "err") {

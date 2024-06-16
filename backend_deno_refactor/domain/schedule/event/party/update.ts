@@ -1,22 +1,22 @@
 import type { Result } from "../../../lang/result.ts";
-import type { RepositoryError } from "../../../repository/RepositoryError.ts";
+import type { RepoError } from "../../../repository/repo.ts";
 import type { ValidationError } from "../../../validation/validate.ts";
 import type { Schema } from "../../../validation/schema.ts";
 import type { User } from "../../user/model.ts";
 import type { EventNotFound } from "../find/error.eventNotFound.ts";
-import type { EventUpdateModel } from "../update/model.ts";
+import type { EventUpdate } from "../update/model.ts";
 import type { Event } from "../model.ts";
 import { validateSchema } from "../../../validation/validate.ts";
 import { eventUpdate } from "../update.ts";
 
-export type PartyUpdateModel = {
+export type PartyUpdate = {
     readonly name: Event["name"];
     readonly day: Event["day"];
     readonly begin: Event["begin"];
     readonly end: Event["end"];
 };
 
-export const partyUpdateSchema: Schema<PartyUpdateModel> = {
+export const partyUpdateSchema: Schema<PartyUpdate> = {
     name: [
         { type: "str" },
         { type: "strMinLen", min: 1 },
@@ -35,7 +35,7 @@ export const partyUpdateSchema: Schema<PartyUpdateModel> = {
     ],
 };
 
-export function partyUpdateToEventUpdate(event: PartyUpdateModel): EventUpdateModel {
+export function partyUpdateToEventUpdate(event: PartyUpdate): EventUpdate {
     return {
         name: event.name,
         day: event.day,
@@ -48,14 +48,14 @@ export function partyUpdateToEventUpdate(event: PartyUpdateModel): EventUpdateMo
 }
 
 type PartyUpdateErrors =
-    | RepositoryError
+    | RepoError
     | ValidationError
     | EventNotFound;
 
 export function partyUpdate(
     userId: User["id"],
     eventId: Event["id"],
-    event: PartyUpdateModel,
+    event: PartyUpdate,
 ): Promise<Result<Event, PartyUpdateErrors>> {
     const schemaValidation = validateSchema(partyUpdateSchema, event);
     if (schemaValidation.type === "err") {

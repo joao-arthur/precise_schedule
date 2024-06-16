@@ -1,13 +1,13 @@
 import type { Result } from "../../lang/result.ts";
-import type { RepositoryError } from "../../repository/RepositoryError.ts";
+import type { RepoError } from "../../repository/repo.ts";
 import type { User } from "../user/model.ts";
 import type { EventNotFound } from "./read.ts";
 import type { EventRepo } from "./repo.ts";
 import type { Event } from "./model.ts";
 import { ok } from "../../lang/result.ts";
-import { eventReadByUserAndId } from "./read.ts";
+import { eventReadOne } from "./read.ts";
 
-export type EventUpdateModel = {
+export type EventUpdate = {
     readonly name: Event["name"];
     readonly day: Event["day"];
     readonly begin: Event["begin"];
@@ -17,7 +17,7 @@ export type EventUpdateModel = {
     readonly weekendRepeat: Event["weekendRepeat"];
 };
 
-export function eventUpdateToEvent(event: EventUpdateModel, existingEvent: Event): Event {
+export function eventUpdateToEvent(event: EventUpdate, existingEvent: Event, now: Date): Event {
     return {
         id: existingEvent.id,
         name: event.name,
@@ -29,21 +29,21 @@ export function eventUpdateToEvent(event: EventUpdateModel, existingEvent: Event
         weekendRepeat: event.weekendRepeat,
         user: existingEvent.user,
         createdAt: existingEvent.createdAt,
-        updatedAt: new Date(),
+        updatedAt: now,
     };
 }
 
 type EventUpdateErrors =
-    | RepositoryError
+    | RepoError
     | EventNotFound;
 
 export async function eventUpdate(
     repo: EventRepo,
     userId: User["id"],
     eventId: Event["id"],
-    event: EventUpdateModel,
+    event: EventUpdate,
 ): Promise<Result<Event, EventUpdateErrors>> {
-    const existingEventResult = await eventReadByUserAndId(repo, userId, eventId);
+    const existingEventResult = await eventReadOne(repo, userId, eventId);
     if (existingEventResult.type === "err") {
         return existingEventResult;
     }

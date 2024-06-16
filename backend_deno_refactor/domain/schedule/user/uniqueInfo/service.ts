@@ -1,5 +1,5 @@
 import type { Result } from "../../../lang/result.ts";
-import type { RepositoryError } from "../../../repository/RepositoryError.ts";
+import type { RepoError } from "../../../repository/repo.ts";
 import type { UserRepo } from "./repo.ts";
 import type { User } from "../model.ts";
 import type { UserUniqueInfoModel } from "./model.ts";
@@ -8,7 +8,7 @@ import { EmailAlreadyRegistered } from "./error.emailAlreadyRegistered.ts";
 import { UsernameAlreadyRegistered } from "./error.usernameAlreadyRegistered.ts";
 
 type UserUniqueInfoErrors =
-    | RepositoryError
+    | RepoError
     | UsernameAlreadyRegistered
     | EmailAlreadyRegistered;
 

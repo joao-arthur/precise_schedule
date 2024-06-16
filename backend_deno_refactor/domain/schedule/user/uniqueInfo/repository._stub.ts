@@ -1,5 +1,5 @@
 import type { Result } from "../../../lang/result.ts";
-import type { RepositoryError } from "../../../repository/RepositoryError.ts";
+import type { RepoError } from "../../../repository/repo.ts";
 import type { UserRepo } from "./repo.ts";
 import { ok } from "../../../lang/result.ts";
 
@@ -9,11 +9,11 @@ export class UserUniqueInfoRepositoryStub implements UserRepo {
         private readonly numEmail: number,
     ) {}
 
-    public countUsername(): Promise<Result<number, RepositoryError>> {
+    public countUsername(): Promise<Result<number, RepoError>> {
         return Promise.resolve(ok(this.numUsername));
     }
 
-    public countEmail(): Promise<Result<number, RepositoryError>> {
+    public countEmail(): Promise<Result<number, RepoError>> {
         return Promise.resolve(ok(this.numEmail));
     }
 }

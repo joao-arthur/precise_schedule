@@ -1,22 +1,22 @@
 import type { Result } from "../../../lang/result.ts";
-import type { RepositoryError } from "../../../repository/RepositoryError.ts";
+import type { RepoError } from "../../../repository/repo.ts";
 import type { ValidationError } from "../../../validation/validate.ts";
 import type { Schema } from "../../../validation/schema.ts";
 import type { User } from "../../user/model.ts";
 import type { EventNotFound } from "../find/error.eventNotFound.ts";
-import type { EventUpdateModel } from "../update/model.ts";
+import type { EventUpdate } from "../update/model.ts";
 import type { Event } from "../model.ts";
 import { validateSchema } from "../../../validation/validate.ts";
 import { eventUpdate } from "../update.ts";
 
-export type DateUpdateModel = {
+export type DateUpdate = {
     readonly name: Event["name"];
     readonly day: Event["day"];
     readonly begin: Event["begin"];
     readonly end: Event["end"];
 };
 
-const dateUpdateSchema: Schema<DateUpdateModel> = {
+const dateUpdateSchema: Schema<DateUpdate> = {
     name: [
         { type: "str" },
         { type: "strMinLen", min: 1 },
@@ -35,7 +35,7 @@ const dateUpdateSchema: Schema<DateUpdateModel> = {
     ],
 };
 
-export function dateUpdateToEventUpdate(event: DateUpdateModel): EventUpdateModel {
+export function dateUpdateToEventUpdate(event: DateUpdate): EventUpdate {
     return {
         name: event.name,
         day: event.day,
@@ -48,14 +48,14 @@ export function dateUpdateToEventUpdate(event: DateUpdateModel): EventUpdateMode
 }
 
 type DateUpdateErrors =
-    | RepositoryError
+    | RepoError
     | ValidationError
     | EventNotFound;
 
 export function dateUpdate(
     userId: User["id"],
     eventId: Event["id"],
-    event: DateUpdateModel,
+    event: DateUpdate,
 ): Promise<Result<Event, DateUpdateErrors>> {
     const schemaValidation = validateSchema(dateUpdateSchema, event);
     if (schemaValidation.type === "err") {

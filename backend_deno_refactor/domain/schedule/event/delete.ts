@@ -1,14 +1,14 @@
 import type { Result } from "../../lang/result.ts";
-import type { RepositoryError } from "../../repository/RepositoryError.ts";
+import type { RepoError } from "../../repository/repo.ts";
 import type { EventNotFound } from "./read.ts";
 import type { User } from "../user/model.ts";
 import type { EventRepo } from "./repo.ts";
 import type { Event } from "./model.ts";
 import { ok } from "../../lang/result.ts";
-import { eventReadByUserAndId } from "./read.ts";
+import { eventReadOne } from "./read.ts";
 
 type EventDeleteErrors =
-    | RepositoryError
+    | RepoError
     | EventNotFound;
 
 export async function eventDelete(
@@ -16,7 +16,7 @@ export async function eventDelete(
     userId: User["id"],
     eventId: Event["id"],
 ): Promise<Result<void, EventDeleteErrors>> {
-    const existingEventResult = await eventReadByUserAndId(repo, userId, eventId);
+    const existingEventResult = await eventReadOne(repo, userId, eventId);
     if (existingEventResult.type === "err") {
         return existingEventResult;
     }

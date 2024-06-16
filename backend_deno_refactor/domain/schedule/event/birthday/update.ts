@@ -1,20 +1,20 @@
 import type { Result } from "../../../lang/result.ts";
-import type { RepositoryError } from "../../../repository/RepositoryError.ts";
+import type { RepoError } from "../../../repository/repo.ts";
 import type { ValidationError } from "../../../validation/validate.ts";
 import type { Schema } from "../../../validation/schema.ts";
 import type { User } from "../../user/model.ts";
 import type { EventNotFound } from "../find/error.eventNotFound.ts";
-import type { EventUpdateModel } from "../update/model.ts";
+import type { EventUpdate } from "../update/model.ts";
 import type { Event } from "../model.ts";
 import { validateSchema } from "../../../validation/validate.ts";
 import { eventUpdate } from "../update.ts";
 
-export type BirthdayUpdateModel = {
+export type BirthdayUpdate = {
     readonly name: Event["name"];
     readonly day: Event["day"];
 };
 
-const birthdayUpdateSchema: Schema<BirthdayUpdateModel> = {
+const birthdayUpdateSchema: Schema<BirthdayUpdate> = {
     name: [
         { type: "str" },
         { type: "strMinLen", min: 1 },
@@ -26,7 +26,7 @@ const birthdayUpdateSchema: Schema<BirthdayUpdateModel> = {
     ],
 };
 
-export function birthdayUpdateToEventUpdate(event: BirthdayUpdateModel): EventUpdateModel {
+export function birthdayUpdateToEventUpdate(event: BirthdayUpdate): EventUpdate {
     return {
         name: event.name,
         day: event.day,
@@ -39,14 +39,14 @@ export function birthdayUpdateToEventUpdate(event: BirthdayUpdateModel): EventUp
 }
 
 type BirthdayUpdateErrors =
-    | RepositoryError
+    | RepoError
     | ValidationError
     | EventNotFound;
 
 export function birthdayUpdate(
     userId: User["id"],
     eventId: Event["id"],
-    event: BirthdayUpdateModel,
+    event: BirthdayUpdate,
 ): Promise<Result<Event, BirthdayUpdateErrors>> {
     const schemaValidation = validateSchema(birthdayUpdateSchema, event);
     if (schemaValidation.type === "err") {

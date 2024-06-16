@@ -1,7 +1,7 @@
 import type { IdGenerator } from "../../generator/id.ts";
 import type { Result } from "../../lang/result.ts";
 import type { Schema } from "../../validation/schema.ts";
-import type { RepositoryError } from "../../repository/RepositoryError.ts";
+import type { RepoError } from "../../repository/repo.ts";
 import type { ValidationError } from "../../validation/ValidationError.ts";
 import type { Session } from "../../session/model.ts";
 import type { SessionCreateService } from "../../session/create.ts";
@@ -66,7 +66,7 @@ export function buildUser(
 }
 
 type UserCreateErrors =
-    | RepositoryError
+    | RepoError
     | ValidationError
     | UsernameAlreadyRegistered
     | EmailAlreadyRegistered;
@@ -85,7 +85,7 @@ export async function userCreate(
     if (validationInfoResult.type === "err") {
         return validationInfoResult;
     }
-    const id = idGenerator.generate();
+    const id = idGenerator.gen();
     const builtUser = buildUser(user, id);
     const createUserResult = await repo.create(builtUser);
     if (createUserResult.type === "err") {

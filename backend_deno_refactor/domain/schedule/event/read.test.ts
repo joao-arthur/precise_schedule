@@ -1,112 +1,60 @@
-import { EventFindModel } from "./read.ts";
 import { assertEquals } from "@std/assert/assert-equals";
-import { err, ok } from "../../../lang/result.ts";
-import { eventStub } from "../model.stub.ts";
-import { EventFindRepositoryStub } from "./repo.stub.ts";
-import { EventNotFound } from "./error.eventNotFound.ts";
+import { err, ok } from "../../lang/result.ts";
+import { eventRepoDataStubBuild } from "./repo.stub.ts";
+import { appointmentInfoStub, appointmentStub } from "./appointment/model.stub.ts";
 import {
-    eventReadByUser,
-    eventReadByUserAndId,
-    eventReadByUserAndIdMapped,
-    eventReadByUserMapped,
+    eventInfoReadMany,
+    eventInfoReadOne,
+    EventNotFound,
+    eventReadMany,
+    eventReadOne,
     eventToEventFind,
 } from "./read.ts";
 
-const eventFindModelStub: EventFindModel = {
-    id: "event-id",
-    name: "name",
-    day: "2023-06-24",
-    begin: "08:00",
-    end: "18:00",
-    category: "APPOINTMENT",
-    frequency: undefined,
-    weekendRepeat: false,
-};
-
 Deno.test("eventToEventFind", () => {
-    assertEquals(
-        eventToEventFind(eventStub),
-        {
-            id: eventStub.id,
-            name: eventStub.name,
-            day: eventStub.day,
-            begin: eventStub.begin,
-            end: eventStub.end,
-            category: eventStub.category,
-            frequency: eventStub.frequency,
-            weekendRepeat: eventStub.weekendRepeat,
-        },
-    );
+    assertEquals(eventToEventFind(appointmentStub), appointmentInfoStub);
 });
 
-Deno.test("eventReadByUser", async () => {
+Deno.test("eventReadMany", async () => {
     assertEquals(
-        await eventReadByUser(
-            new EventRepo(undefined),
-            eventStub.user,
-        ),
+        await eventReadMany(eventRepoDataStubBuild([], undefined), "user-id"),
         ok([]),
     );
     assertEquals(
-        await eventReadByUser(
-            new EventRepo(eventStub),
-            eventStub.user,
-        ),
-        ok([eventStub]),
+        await eventReadMany(eventRepoDataStubBuild([appointmentStub], undefined), "user-id"),
+        ok([appointmentStub]),
     );
 });
 
-Deno.test("eventReadByUserMapped", async () => {
+Deno.test("eventReadOne", async () => {
     assertEquals(
-        await eventReadByUserMapped(
-            new EventRepo(undefined),
-            eventStub.user,
-        ),
+        await eventReadOne(eventRepoDataStubBuild([], undefined), "user-id", "event-id"),
+        err(new EventNotFound()),
+    );
+    assertEquals(
+        await eventReadOne(eventRepoDataStubBuild([], appointmentStub), "user-id", "event-id"),
+        ok(appointmentStub),
+    );
+});
+
+Deno.test("eventInfoReadMany", async () => {
+    assertEquals(
+        await eventInfoReadMany(eventRepoDataStubBuild([], undefined), "user-id"),
         ok([]),
     );
     assertEquals(
-        await eventReadByUserMapped(
-            new EventRepo(eventStub),
-            eventStub.user,
-        ),
-        ok([eventFindModelStub]),
+        await eventInfoReadMany(eventRepoDataStubBuild([appointmentStub], undefined), "user-id"),
+        ok([appointmentInfoStub]),
     );
 });
 
-Deno.test("eventReadByUserAndId", async () => {
+Deno.test("eventInfoReadOne", async () => {
     assertEquals(
-        await eventReadByUserAndId(
-            new EventRepo(undefined),
-            eventStub.user,
-            eventStub.id,
-        ),
+        await eventInfoReadOne(eventRepoDataStubBuild([], undefined), "user-id", "event-id"),
         err(new EventNotFound()),
     );
     assertEquals(
-        await eventReadByUserAndId(
-            new EventRepo(eventStub),
-            eventStub.user,
-            eventStub.id,
-        ),
-        ok(eventStub),
-    );
-});
-
-Deno.test("eventReadByUserAndIdMapped", async () => {
-    assertEquals(
-        await eventReadByUserAndIdMapped(
-            new EventRepo(undefined),
-            eventStub.user,
-            eventStub.id,
-        ),
-        err(new EventNotFound()),
-    );
-    assertEquals(
-        await eventReadByUserAndIdMapped(
-            new EventRepo(eventStub),
-            eventStub.user,
-            eventStub.id,
-        ),
-        ok(eventFindModelStub),
+        await eventInfoReadOne(eventRepoDataStubBuild([], appointmentStub), "user-id", "event-id"),
+        ok(appointmentInfoStub),
     );
 });

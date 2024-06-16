@@ -1,5 +1,5 @@
 import type { Result } from "../lang/result.ts";
-import type { Schema, Validation } from "./types.ts";
+import type { Schema, Validation } from "./schema.ts";
 import { err, ok } from "../lang/result.ts";
 import { boolValidation } from "./validations/bool.ts";
 import { dtValidation } from "./validations/dt.ts";

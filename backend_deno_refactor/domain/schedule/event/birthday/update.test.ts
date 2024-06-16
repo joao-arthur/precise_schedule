@@ -1,12 +1,12 @@
-import type { BirthdayUpdateModel } from "./update.ts";
+import type { BirthdayUpdate } from "./update.ts";
 import { assertEquals } from "@std/assert/assert-equals";
 import { ok } from "../../../lang/result.ts";
 import { eventStub } from "../model.stub.ts";
 import { birthdayUpdate, birthdayUpdateToEventUpdate } from "./update.ts";
 
-const birthdayUpdateModelStub: BirthdayUpdateModel = {
+const birthdayUpdateModelStub: BirthdayUpdate = {
     name: "name",
-    day: "2023-06-24",
+    day: "2025-06-24",
 };
 
 Deno.test("birthdayUpdateToEventUpdate", () => {
@@ -17,7 +17,7 @@ Deno.test("birthdayUpdateToEventUpdate", () => {
             end: "23:59",
             category: "BIRTHDAY",
             frequency: "1Y",
-            weekendRepeat: false,
+            weekendRepeat: true,
             ...birthdayUpdateModelStub,
         },
     );

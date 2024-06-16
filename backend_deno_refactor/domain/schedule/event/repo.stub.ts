@@ -1,16 +1,37 @@
 import type { Event } from "./model.ts";
-import { ok } from "../../lang/result.ts";
-import { EventRepo } from "./repo.ts";
+import type { EventRepo } from "./repo.ts";
+import { RepoError } from "../../repository/repo.ts";
+import { err, ok } from "../../lang/result.ts";
 
-export function eventRepoStubBuild(
-    readByUser: Event[],
-    readByUserAndId: Event | undefined,
+export function eventRepoDataStubBuild(
+    many: Event[],
+    one: Event | undefined,
 ): EventRepo {
     return {
         cCreate: () => Promise.resolve(ok(undefined)),
         cUpdate: () => Promise.resolve(ok(undefined)),
-        cReadByUser: () => Promise.resolve(ok(readByUser)),
-        cReadByUserAndEventId: () => Promise.resolve(ok(readByUserAndId)),
+        cReadMany: () => Promise.resolve(ok(many)),
+        cReadOne: () => Promise.resolve(ok(one)),
         cDelete: () => Promise.resolve(ok(undefined)),
+    };
+}
+
+export function eventRepoEmptyStubBuild(): EventRepo {
+    return {
+        cCreate: () => Promise.resolve(ok(undefined)),
+        cUpdate: () => Promise.resolve(ok(undefined)),
+        cReadMany: () => Promise.resolve(ok([])),
+        cReadOne: () => Promise.resolve(ok(undefined)),
+        cDelete: () => Promise.resolve(ok(undefined)),
+    };
+}
+
+export function eventRepoErrStubBuild(): EventRepo {
+    return {
+        cCreate: () => Promise.resolve(err(new RepoError())),
+        cUpdate: () => Promise.resolve(err(new RepoError())),
+        cReadMany: () => Promise.resolve(err(new RepoError())),
+        cReadOne: () => Promise.resolve(err(new RepoError())),
+        cDelete: () => Promise.resolve(err(new RepoError())),
     };
 }

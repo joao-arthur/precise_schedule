@@ -1,12 +1,12 @@
-import type { DateUpdateModel } from "./update.ts";
+import type { DateUpdate } from "./update.ts";
 import { assertEquals } from "@std/assert/assert-equals";
 import { ok } from "../../../lang/result.ts";
 import { eventStub } from "../model.stub.ts";
 import { dateUpdate, dateUpdateToEventUpdate } from "./update.ts";
 
-const dateUpdateModelStub: DateUpdateModel = {
+const dateUpdateModelStub: DateUpdate = {
     name: "name",
-    day: "2023-06-24",
+    day: "2025-06-24",
     begin: "08:00",
     end: "18:00",
 };

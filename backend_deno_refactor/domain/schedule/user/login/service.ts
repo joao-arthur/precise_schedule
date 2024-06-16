@@ -1,6 +1,6 @@
 import type { Result } from "../../../lang/result.ts";
 import type { Schema } from "../../../validation/schema.ts";
-import type { RepositoryError } from "../../../repository/RepositoryError.ts";
+import type { RepoError } from "../../../repository/repo.ts";
 import type { ValidationError } from "../../../validation/validate.ts";
 import type { UserNotFound } from "../find/error.userNotFound.ts";
 import type { Session } from "../../../session/model.ts";
@@ -31,7 +31,7 @@ const userLoginSchema: Schema<UserLoginModel> = {
 };
 
 export type UserLoginErrors =
-    | RepositoryError
+    | RepoError
     | ValidationError
     | UserNotFound;
 

@@ -1,15 +1,15 @@
 import type { Result } from "../../../lang/result.ts";
-import type { RepositoryError } from "../../../repository/RepositoryError.ts";
+import type { RepoError } from "../../../repository/repo.ts";
 import type { ValidationError } from "../../../validation/validate.ts";
 import type { Schema } from "../../../validation/schema.ts";
 import type { User } from "../../user/model.ts";
 import type { EventNotFound } from "../find/error.eventNotFound.ts";
-import type { EventUpdateModel } from "../update/model.ts";
+import type { EventUpdate } from "../update/model.ts";
 import type { Event } from "../model.ts";
 import { validateSchema } from "../../../validation/validate.ts";
 import { eventUpdate } from "../update.ts";
 
-export type MeetingUpdateModel = {
+export type MeetingUpdate = {
     readonly name: Event["name"];
     readonly day: Event["day"];
     readonly begin: Event["begin"];
@@ -18,7 +18,7 @@ export type MeetingUpdateModel = {
     readonly weekendRepeat: Event["weekendRepeat"];
 };
 
-export const meetingUpdateSchema: Schema<MeetingUpdateModel> = {
+export const meetingUpdateSchema: Schema<MeetingUpdate> = {
     name: [
         { type: "str" },
         { type: "strMinLen", min: 1 },
@@ -43,7 +43,7 @@ export const meetingUpdateSchema: Schema<MeetingUpdateModel> = {
     ],
 };
 
-export function meetingUpdateToEventUpdate(event: MeetingUpdateModel): EventUpdateModel {
+export function meetingUpdateToEventUpdate(event: MeetingUpdate): EventUpdate {
     return {
         name: event.name,
         day: event.day,
@@ -56,14 +56,14 @@ export function meetingUpdateToEventUpdate(event: MeetingUpdateModel): EventUpda
 }
 
 type MeetingUpdateErrors =
-    | RepositoryError
+    | RepoError
     | ValidationError
     | EventNotFound;
 
 export function meetingUpdate(
     userId: User["id"],
     eventId: Event["id"],
-    event: MeetingUpdateModel,
+    event: MeetingUpdate,
 ): Promise<Result<Event, MeetingUpdateErrors>> {
     const schemaValidation = validateSchema(meetingUpdateSchema, event);
     if (schemaValidation.type === "err") {

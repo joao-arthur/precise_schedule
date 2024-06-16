@@ -1,34 +1,31 @@
-import type { AppointmentCreateModel } from "./create.ts";
 import { assertEquals } from "@std/assert/assert-equals";
 import { ok } from "../../../lang/result.ts";
-import { eventStub } from "../model.stub.ts";
+import { idGeneratorStubBuild } from "../../../generator/id.stub.ts";
+import { dateGeneratorStubBuild } from "../../../generator/date.stub.ts";
+import { eventRepoEmptyStubBuild } from "../repo.stub.ts";
+import {
+    appointmentCreateStub,
+    appointmentEventCreateStub,
+    appointmentStub,
+} from "./model.stub.ts";
 import { appointmentCreate, appointmentCreateToEventCreate } from "./create.ts";
-
-const appointmentCreateModelStub: AppointmentCreateModel = {
-    name: "name",
-    day: "2023-06-24",
-    begin: "08:00",
-    end: "18:00",
-    frequency: undefined,
-    weekendRepeat: false,
-};
 
 Deno.test("appointmentCreateToEventCreate", () => {
     assertEquals(
-        appointmentCreateToEventCreate(appointmentCreateModelStub),
-        {
-            category: "APPOINTMENT",
-            ...appointmentCreateModelStub,
-        },
+        appointmentCreateToEventCreate(appointmentCreateStub),
+        appointmentEventCreateStub,
     );
 });
 
 Deno.test("appointmentCreate", async () => {
     assertEquals(
         await appointmentCreate(
-            eventStub.user,
-            appointmentCreateModelStub,
+            eventRepoEmptyStubBuild(),
+            idGeneratorStubBuild("appointment-id"),
+            dateGeneratorStubBuild(new Date("2024-06-16T19:16:12.327Z")),
+            "user-id",
+            appointmentCreateStub,
         ),
-        ok(eventStub),
+        ok(appointmentStub),
     );
 });

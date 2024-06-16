@@ -1,14 +1,17 @@
 import type { Result } from "../../../lang/result.ts";
-import type { RepositoryError } from "../../../repository/RepositoryError.ts";
+import type { IdGenerator } from "../../../generator/id.ts";
+import type { DateGenerator } from "../../../generator/date.ts";
+import type { RepoError } from "../../../repository/repo.ts";
 import type { ValidationError } from "../../../validation/validate.ts";
 import type { Schema } from "../../../validation/schema.ts";
 import type { User } from "../../user/model.ts";
-import type { EventCreateModel } from "../create.ts";
+import type { EventRepo } from "../repo.ts";
+import type { EventCreate } from "../create.ts";
 import type { Event } from "../model.ts";
 import { validateSchema } from "../../../validation/validate.ts";
 import { eventCreate } from "../create.ts";
 
-export type AppointmentCreateModel = {
+export type AppointmentCreate = {
     readonly name: Event["name"];
     readonly day: Event["day"];
     readonly begin: Event["begin"];
@@ -17,7 +20,7 @@ export type AppointmentCreateModel = {
     readonly weekendRepeat: Event["weekendRepeat"];
 };
 
-const appointmentCreateSchema: Schema<AppointmentCreateModel> = {
+const appointmentCreateSchema: Schema<AppointmentCreate> = {
     name: [
         { type: "str" },
         { type: "strMinLen", min: 1 },
@@ -42,7 +45,7 @@ const appointmentCreateSchema: Schema<AppointmentCreateModel> = {
     ],
 };
 
-export function appointmentCreateToEventCreate(event: AppointmentCreateModel): EventCreateModel {
+export function appointmentCreateToEventCreate(event: AppointmentCreate): EventCreate {
     return {
         name: event.name,
         day: event.day,
@@ -55,17 +58,20 @@ export function appointmentCreateToEventCreate(event: AppointmentCreateModel): E
 }
 
 type AppointmentCreateErrors =
-    | RepositoryError
+    | RepoError
     | ValidationError;
 
 export function appointmentCreate(
+    repo: EventRepo,
+    idGenerator: IdGenerator,
+    dateGenerator: DateGenerator,
     userId: User["id"],
-    event: AppointmentCreateModel,
+    event: AppointmentCreate,
 ): Promise<Result<Event, AppointmentCreateErrors>> {
     const schemaValidation = validateSchema(appointmentCreateSchema, event);
     if (schemaValidation.type === "err") {
         return Promise.resolve(schemaValidation);
     }
     const builtEvent = appointmentCreateToEventCreate(event);
-    return eventCreate(repo, idGenerator, builtEvent, userId);
+    return eventCreate(repo, idGenerator, dateGenerator, builtEvent, userId);
 }

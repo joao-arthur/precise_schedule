@@ -1,12 +1,12 @@
-import type { AppointmentUpdateModel } from "./update.ts";
+import type { AppointmentUpdate } from "./update.ts";
 import { assertEquals } from "@std/assert/assert-equals";
 import { ok } from "../../../lang/result.ts";
 import { eventStub } from "../model.stub.ts";
 import { appointmentUpdate, appointmentUpdateToEventUpdate } from "./update.ts";
 
-const appointmentUpdateModelStub: AppointmentUpdateModel = {
+const appointmentUpdateModelStub: AppointmentUpdate = {
     name: "name",
-    day: "2023-06-24",
+    day: "2025-06-24",
     begin: "08:00",
     end: "18:00",
     frequency: undefined,
