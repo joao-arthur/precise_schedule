@@ -1,10 +1,17 @@
-import type { UserCreateRepository } from "./create/repository.ts";
-import type { UserUpdateRepository } from "./update/repository.ts";
-import type { UserFindRepository } from "./find/repository.ts";
-import type { UserUniqueInfoRepository } from "./uniqueInfo/repository.ts";
+import type { Result } from "../../lang/result.ts";
+import type { RepositoryError } from "../../repository/RepositoryError.ts";
+import type { User } from "./model.ts";
 
-export type UserRepository =
-    & UserCreateRepository
-    & UserUpdateRepository
-    & UserFindRepository
-    & UserUniqueInfoRepository;
+type Op<Data> = Promise<Result<Data, RepositoryError>>;
+
+export type UserRepo = {
+    readonly cCreate: (user: User) => Op<void>;
+    readonly cUpdate: (user: User) => Op<void>;
+    readonly cFindById: (id: User["id"]) => Op<User | undefined>;
+    readonly cFindByCredentials: (
+        username: User["username"],
+        password: User["password"],
+    ) => Op<User | undefined>;
+    readonly cCountUsername: (username: User["username"]) => Op<number>;
+    readonly cCountEmail: (email: User["email"]) => Op<number>;
+};

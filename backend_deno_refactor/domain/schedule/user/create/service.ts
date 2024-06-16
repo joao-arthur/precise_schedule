@@ -8,19 +8,19 @@ import type { ValidatorService } from "../../../validation/validator/service.ts"
 import type { Session } from "../../../session/model.ts";
 import type { SessionCreateService } from "../../../session/create/service.ts";
 import type { UserCreateModel } from "./model.ts";
-import type { UserCreateRepository } from "./repository.ts";
+import type { UserCreateRepository } from "./repo.ts";
 import { userUniqueInfoValidateNew } from "../uniqueInfo/service.ts";
 import { buildUser } from "./factory.ts";
 import { userCreateSchema } from "./schema.ts";
 
-export type UserCreateErrors =
+type UserCreateErrors =
     | RepositoryError
     | ValidationError
     | UsernameAlreadyRegistered
     | EmailAlreadyRegistered;
 
 export async function userCreate(
-    repository: UserCreateRepository,
+    repo: UserCreateRepository,
     idGenerator: IdGenerator,
     sessionCreateService: SessionCreateService,
     validator: ValidatorService,
@@ -30,13 +30,13 @@ export async function userCreate(
     if (validationResult.type === "err") {
         return validationResult;
     }
-    const validationInfoResult = await userUniqueInfoValidateNew(repository, user);
+    const validationInfoResult = await userUniqueInfoValidateNew(repo, user);
     if (validationInfoResult.type === "err") {
         return validationInfoResult;
     }
     const id = idGenerator.generate();
     const builtUser = buildUser(user, id);
-    const createUserResult = await repository.create(builtUser);
+    const createUserResult = await repo.create(builtUser);
     if (createUserResult.type === "err") {
         return createUserResult;
     }

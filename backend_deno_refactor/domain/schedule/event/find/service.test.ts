@@ -1,7 +1,7 @@
 import { assertEquals } from "@std/assert/assert-equals";
 import { err, ok } from "../../../lang/result.ts";
 import { eventStub } from "../model._stub.ts";
-import { EventFindRepositoryStub } from "./repository._stub.ts";
+import { EventFindRepositoryStub } from "./repo._stub.ts";
 import { EventNotFound } from "./error.eventNotFound.ts";
 import { eventFindModelStub } from "./model._stub.ts";
 import {

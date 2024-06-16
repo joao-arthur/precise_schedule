@@ -1,6 +1,6 @@
 import type { Result } from "../../../lang/result.ts";
 import type { RepositoryError } from "../../../repository/RepositoryError.ts";
-import type { UserUniqueInfoRepository } from "./repository.ts";
+import type { UserUniqueInfoRepository } from "./repo.ts";
 import type { User } from "../model.ts";
 import type { UserUniqueInfoModel } from "./model.ts";
 import { err, ok } from "../../../lang/result.ts";
@@ -13,17 +13,17 @@ type UserUniqueInfoErrors =
     | EmailAlreadyRegistered;
 
 export async function userUniqueInfoValidateNew(
-    repository: UserUniqueInfoRepository,
+    repo: UserUniqueInfoRepository,
     user: UserUniqueInfoModel,
 ): Promise<Result<void, UserUniqueInfoErrors>> {
-    const countUsername = await repository.countUsername(user.username);
+    const countUsername = await repo.countUsername(user.username);
     if (countUsername.type === "err") {
         return countUsername;
     }
     if (countUsername.data > 0) {
         return err(new UsernameAlreadyRegistered());
     }
-    const countEmail = await repository.countEmail(user.email);
+    const countEmail = await repo.countEmail(user.email);
     if (countEmail.type === "err") {
         return countEmail;
     }
@@ -34,18 +34,18 @@ export async function userUniqueInfoValidateNew(
 }
 
 export async function userUniqueInfoValidateExisting(
-    repository: UserUniqueInfoRepository,
+    repo: UserUniqueInfoRepository,
     user: UserUniqueInfoModel,
     oldUser: User,
 ): Promise<Result<void, UserUniqueInfoErrors>> {
-    const countUsername = await repository.countUsername(user.username);
+    const countUsername = await repo.countUsername(user.username);
     if (countUsername.type === "err") {
         return countUsername;
     }
     if (countUsername.data > 0 && user.username !== oldUser.username) {
         return err(new UsernameAlreadyRegistered());
     }
-    const countEmail = await repository.countEmail(user.email);
+    const countEmail = await repo.countEmail(user.email);
     if (countEmail.type === "err") {
         return countEmail;
     }

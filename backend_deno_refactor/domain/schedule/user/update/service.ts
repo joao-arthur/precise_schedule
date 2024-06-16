@@ -7,7 +7,7 @@ import type { EmailAlreadyRegistered } from "../uniqueInfo/error.emailAlreadyReg
 import type { ValidatorService } from "../../../validation/validator/service.ts";
 import type { User } from "../model.ts";
 import type { UserUpdateModel } from "./model.ts";
-import type { UserUpdateRepository } from "./repository.ts";
+import type { UserUpdateRepository } from "./repo.ts";
 import { ok } from "../../../lang/result.ts";
 import { userUniqueInfoValidateExisting } from "../uniqueInfo/service.ts";
 import { buildUser } from "./factory.ts";
@@ -21,7 +21,7 @@ type UserUpdateErrors =
     | EmailAlreadyRegistered;
 
 export async function userUpdate(
-    repository: UserUpdateRepository,
+    repo: UserUpdateRepository,
     validator: ValidatorService,
     id: User["id"],
     user: UserUpdateModel,
@@ -35,7 +35,7 @@ export async function userUpdate(
         return existingUser;
     }
     const existingResult = await userUniqueInfoValidateExisting(
-        repository,
+        repo,
         user,
         existingUser.data,
     );
@@ -43,7 +43,7 @@ export async function userUpdate(
         return existingResult;
     }
     const builtUser = buildUser(user, existingUser.data);
-    const updateResult = await repository.update(builtUser);
+    const updateResult = await repo.update(builtUser);
     if (updateResult.type === "err") {
         return updateResult;
     }

@@ -1,6 +1,6 @@
 import type { Result } from "../../../lang/result.ts";
 import type { RepositoryError } from "../../../repository/RepositoryError.ts";
-import type { UserUpdateRepository } from "./repository.ts";
+import type { UserUpdateRepository } from "./repo.ts";
 import { ok } from "../../../lang/result.ts";
 
 export class UserUpdateRepositoryStub implements UserUpdateRepository {
