@@ -1,15 +1,16 @@
-import type { UserLogin } from "@ps/domain/schedule/user/login/model.ts";
-import type { UserLoginService } from "@ps/domain/schedule/user/login/service.ts";
-import type { HTTPRequest } from "../../../http/request/model.ts";
-import type { HTTPResponse } from "../../../http/response/model.ts";
-import type { UserLoginController } from "./controller.ts";
-import { ok } from "../../../http/response/ok/builder.ts";
+import type { UserLogin } from "../../../domain/schedule/user/login.ts";
+import type { UserRepo } from "../../../domain/schedule/user/repo.ts";
+import type { SessionCreateService } from "../../../domain/session/create.ts";
+import type { HTTPRequest } from "../../http/request.ts";
+import type { HTTPResponse } from "../../http/response.ts";
+import { userLoginService } from "../../../domain/schedule/user/login.ts";
+import { ok } from "../../http/response.ts";
 
-export class UserLoginControllerImpl implements UserLoginController {
-    constructor(private readonly userLoginService: UserLoginService) { }
-
-    public async handle(req: HTTPRequest<UserLogin>): Promise<HTTPResponse> {
-        const result = await this.userLoginService.userLogin(req.body);
-        return ok(result);
-    }
+export async function userLoginController(
+    repo: UserRepo,
+    sessionCreate: SessionCreateService,
+    req: HTTPRequest<UserLogin>,
+): Promise<HTTPResponse> {
+    const result = await userLoginService(repo, sessionCreate, req.body);
+    return ok(result);
 }

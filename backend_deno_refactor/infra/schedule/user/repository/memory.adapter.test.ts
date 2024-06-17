@@ -1,5 +1,5 @@
 import { assertEquals } from "@std/assert/assert-equals";
-import { userStub } from "@ps/domain/schedule/user/model._stub.ts";
+import { userStub } from "../../../domain/schedule/user/model.stub.ts";
 import { UserRepositoryMemory } from "./memory.adapter.ts";
 
 Deno.test("UserRepositoryMemory", async () => {

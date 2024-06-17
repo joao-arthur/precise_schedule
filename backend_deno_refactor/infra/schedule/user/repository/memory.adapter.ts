@@ -1,8 +1,8 @@
-import type { Result } from "@ps/domain/lang/result.ts";
-import type { RepositoryError } from "@ps/domain/repository/RepositoryError.ts";
-import type { User } from "@ps/domain/schedule/user/model.ts";
-import type { UserRepository } from "@ps/domain/schedule/user/repository.ts";
-import { ok } from "@ps/domain/lang/result.ts";
+import type { Result } from "../../../domain/lang/result.ts";
+import type { RepositoryError } from "../../../domain/repository/RepositoryError.ts";
+import type { User } from "../../../../domain/schedule/user/model.ts";
+import type { UserRepository } from "../../../domain/schedule/user/repository.ts";
+import { ok } from "../../../domain/lang/result.ts";
 
 export class UserRepositoryMemory implements UserRepository {
     private readonly users: User[] = [];

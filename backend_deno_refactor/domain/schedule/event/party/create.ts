@@ -53,7 +53,7 @@ type PartyCreateErrors =
     | RepoError
     | ValidationError;
 
-export function partyCreate(
+export function partyCreateService(
     repo: EventRepo,
     idGenerator: IdGenerator,
     dateGenerator: DateGenerator,

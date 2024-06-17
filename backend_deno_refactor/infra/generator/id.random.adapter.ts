@@ -1,4 +1,4 @@
-import type { IdGenerator } from "@ps/domain/generator/id/service.ts";
+import type { IdGenerator } from "../../../domain/generator/id/service.ts";
 
 export class IdGeneratorRandom implements IdGenerator {
     private static LENGTH = 64;

@@ -5,7 +5,7 @@ import { dateGeneratorStubBuild } from "../../generator/date.stub.ts";
 import { sessionStub } from "../../session/model.stub.ts";
 import { userRepoEmptyStubBuild } from "./repo.stub.ts";
 import { userCreateStub, userStub } from "./model.stub.ts";
-import { userCreate, userCreateToUser } from "./create.ts";
+import { userCreateService, userCreateToUser } from "./create.ts";
 import { sessionCreateStubBuild } from "../../session/create.stub.ts";
 
 Deno.test("userCreateToUser", () => {
@@ -15,9 +15,9 @@ Deno.test("userCreateToUser", () => {
     );
 });
 
-Deno.test("userCreate", async () => {
+Deno.test("userCreateService", async () => {
     assertEquals(
-        await userCreate(
+        await userCreateService(
             userRepoEmptyStubBuild(),
             idGeneratorStubBuild("user-id"),
             dateGeneratorStubBuild(new Date("2023-03-02T19:16:12.327Z")),

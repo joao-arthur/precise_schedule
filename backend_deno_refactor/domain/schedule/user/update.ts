@@ -74,7 +74,7 @@ type UserUpdateErrors =
     | UsernameAlreadyRegistered
     | EmailAlreadyRegistered;
 
-export async function userUpdate(
+export async function userUpdateService(
     repo: UserRepo,
     dateGenerator: DateGenerator,
     id: User["id"],

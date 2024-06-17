@@ -1,15 +1,12 @@
 import { assertEquals } from "@std/assert/assert-equals";
-import { UserLoginServiceStub } from "@ps/domain/schedule/user/login/service._stub.ts";
-import { sessionStub } from "@ps/domain/session/model._stub.ts";
-import { httpRequestBodyStub } from "../../../http/request/model._stub.ts";
-import { ok } from "../../../http/response/ok/builder.ts";
-import { UserLoginControllerImpl } from "./controller.impl.ts";
+import { sessionStub } from "../../../domain/session/model.stub.ts";
+import { httpRequestBodyStub } from "../../../http/request/model.stub.ts";
+import { ok } from "../../../http/response.ts";
+import { UserLoginControllerImpl } from "./controller.ts";
 
 Deno.test("UserLoginControllerImpl", async () => {
     assertEquals(
-        await new UserLoginControllerImpl(
-            new UserLoginServiceStub(sessionStub),
-        ).handle(httpRequestBodyStub),
+        await new UserLoginControllerImpl().handle(httpRequestBodyStub),
         ok(sessionStub),
     );
 });

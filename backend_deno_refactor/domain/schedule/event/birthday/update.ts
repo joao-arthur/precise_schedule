@@ -45,7 +45,7 @@ type BirthdayUpdateErrors =
     | ValidationError
     | EventNotFound;
 
-export function birthdayUpdate(
+export function birthdayUpdateService(
     repo: EventRepo,
     dateGenerator: DateGenerator,
     userId: User["id"],

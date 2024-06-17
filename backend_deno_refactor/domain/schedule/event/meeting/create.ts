@@ -61,7 +61,7 @@ type MeetingCreateErrors =
     | RepoError
     | ValidationError;
 
-export function meetingCreate(
+export function meetingCreateService(
     repo: EventRepo,
     idGenerator: IdGenerator,
     dateGenerator: DateGenerator,

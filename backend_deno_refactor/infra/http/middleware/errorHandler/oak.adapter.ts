@@ -3,7 +3,7 @@ import { ErrorHandlerMiddlewareImpl } from "@ps/application/http/middleware/erro
 import { makeResult } from "../../makeResult.ts";
 
 export class ErrorHandlerMiddlewareOakAdapter {
-    public async handle(ctx: Context, next: Next): Promise<void> {
+    export async function handle(ctx: Context, next: Next): Promise<void> {
         try {
             await next();
         } catch (error) {

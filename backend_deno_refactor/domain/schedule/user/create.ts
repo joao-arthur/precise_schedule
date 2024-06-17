@@ -73,7 +73,7 @@ type UserCreateErrors =
     | UsernameAlreadyRegistered
     | EmailAlreadyRegistered;
 
-export async function userCreate(
+export async function userCreateService(
     repo: UserRepo,
     idGenerator: IdGenerator,
     dateGenerator: DateGenerator,

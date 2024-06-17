@@ -14,7 +14,7 @@ import { key } from "../key.ts";
 export class SessionCreateServiceJWTAdapter implements SessionCreateService {
     private static EXP_SEC = 60 * 60 * 2;
 
-    public async create(userId: User["id"]): Promise<Result<Session, SessionCreateErrors>> {
+    export async function create(userId: User["id"]): Promise<Result<Session, SessionCreateErrors>> {
         const payload: SessionPayload = {
             exp: getNumericDate(
                 SessionCreateServiceJWTAdapter.EXP_SEC,

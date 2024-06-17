@@ -1,19 +1,26 @@
-import type { User } from "@ps/domain/schedule/user/model.ts";
-import type { MeetingCreateModel } from "@ps/domain/schedule/event/meeting/create/model.ts";
-import type { MeetingCreateService } from "@ps/domain/schedule/event/meeting/create/service.ts";
-import type { HTTPRequest } from "../../../../http/request/model.ts";
-import type { HTTPResponse } from "../../../../http/response/model.ts";
-import type { MeetingCreateController } from "./controller.ts";
-import { created } from "../../../../http/response/created/builder.ts";
+import type { IdGenerator } from "../../../../domain/generator/id.ts";
+import type { DateGenerator } from "../../../../domain/generator/date.ts";
+import type { User } from "../../../../domain/schedule/user/model.ts";
+import type { EventRepo } from "../../../../domain/schedule/event/repo.ts";
+import type { MeetingCreate } from "../../../../domain/schedule/event/meeting/create.ts";
+import type { HTTPRequest } from "../../../http/request.ts";
+import type { HTTPResponse } from "../../../http/response.ts";
+import { meetingCreateService } from "../../../../domain/schedule/event/meeting/create.ts";
+import { created } from "../../../http/response.ts";
 
-export class MeetingCreateControllerImpl implements MeetingCreateController {
-    constructor(private readonly meetingCreateService: MeetingCreateService) { }
-
-    public async handle(
-        userId: User["id"],
-        req: HTTPRequest<MeetingCreateModel>,
-    ): Promise<HTTPResponse> {
-        const result = await this.meetingCreateService.create(userId, req.body);
-        return created(result);
-    }
+export async function meetingCreateController(
+    repo: EventRepo,
+    idGenerator: IdGenerator,
+    dateGenerator: DateGenerator,
+    userId: User["id"],
+    req: HTTPRequest<MeetingCreate>,
+): Promise<HTTPResponse> {
+    const result = await meetingCreateService(
+        repo,
+        idGenerator,
+        dateGenerator,
+        userId,
+        req.body,
+    );
+    return created(result);
 }

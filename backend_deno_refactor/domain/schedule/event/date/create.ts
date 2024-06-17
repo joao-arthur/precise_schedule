@@ -53,7 +53,7 @@ type DateCreateErrors =
     | RepoError
     | ValidationError;
 
-export function dateCreate(
+export function dateCreateService(
     repo: EventRepo,
     idGenerator: IdGenerator,
     dateGenerator: DateGenerator,

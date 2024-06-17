@@ -62,7 +62,7 @@ type MeetingUpdateErrors =
     | ValidationError
     | EventNotFound;
 
-export function meetingUpdate(
+export function meetingUpdateService(
     repo: EventRepo,
     dateGenerator: DateGenerator,
     userId: User["id"],

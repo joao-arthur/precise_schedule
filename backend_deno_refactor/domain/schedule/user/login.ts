@@ -37,7 +37,7 @@ type UserLoginErrors =
     | ValidationError
     | UserNotFound;
 
-export async function userLogin(
+export async function userLoginService(
     repo: UserRepo,
     sessionCreateService: SessionCreateService,
     user: UserLogin,

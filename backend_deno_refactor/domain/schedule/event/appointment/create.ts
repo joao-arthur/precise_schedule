@@ -61,7 +61,7 @@ type AppointmentCreateErrors =
     | RepoError
     | ValidationError;
 
-export function appointmentCreate(
+export function appointmentCreateService(
     repo: EventRepo,
     idGenerator: IdGenerator,
     dateGenerator: DateGenerator,

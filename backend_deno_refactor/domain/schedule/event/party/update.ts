@@ -54,7 +54,7 @@ type PartyUpdateErrors =
     | ValidationError
     | EventNotFound;
 
-export function partyUpdate(
+export function partyUpdateService(
     repo: EventRepo,
     dateGenerator: DateGenerator,
     userId: User["id"],

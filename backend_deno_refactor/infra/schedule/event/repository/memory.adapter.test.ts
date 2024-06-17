@@ -1,5 +1,5 @@
 import { assertEquals } from "@std/assert/assert-equals";
-import { eventStub } from "@ps/domain/schedule/event/model._stub.ts";
+import { eventStub } from "../../../domain/schedule/event/model.stub.ts";
 import { EventRepositoryMemory } from "./memory.adapter.ts";
 
 Deno.test("EventRepositoryMemory", async () => {

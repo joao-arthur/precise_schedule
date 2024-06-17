@@ -44,7 +44,7 @@ type BirthdayCreateErrors =
     | RepoError
     | ValidationError;
 
-export function birthdayCreate(
+export function birthdayCreateService(
     repo: EventRepo,
     idGenerator: IdGenerator,
     dateGenerator: DateGenerator,

@@ -3,7 +3,7 @@ import { ok } from "../../../lang/result.ts";
 import { dateGeneratorStubBuild } from "../../../generator/date.stub.ts";
 import { dateEventUpdateStub, dateStub, dateUpdatedStub, dateUpdateStub } from "./model.stub.ts";
 import { eventRepoStubBuild } from "../repo.stub.ts";
-import { dateUpdate, dateUpdateToEventUpdate } from "./update.ts";
+import { dateUpdateService, dateUpdateToEventUpdate } from "./update.ts";
 
 Deno.test("dateUpdateToEventUpdate", () => {
     assertEquals(
@@ -12,9 +12,9 @@ Deno.test("dateUpdateToEventUpdate", () => {
     );
 });
 
-Deno.test("dateUpdate", async () => {
+Deno.test("dateUpdateService", async () => {
     assertEquals(
-        await dateUpdate(
+        await dateUpdateService(
             eventRepoStubBuild([], dateStub),
             dateGeneratorStubBuild(new Date("2025-07-18T15:43:12.377Z")),
             "user-id",

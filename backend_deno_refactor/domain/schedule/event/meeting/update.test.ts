@@ -8,7 +8,7 @@ import {
     meetingUpdateStub,
 } from "./model.stub.ts";
 import { eventRepoStubBuild } from "../repo.stub.ts";
-import { meetingUpdate, meetingUpdateToEventUpdate } from "./update.ts";
+import { meetingUpdateService, meetingUpdateToEventUpdate } from "./update.ts";
 
 Deno.test("meetingUpdateToEventUpdate", () => {
     assertEquals(
@@ -17,9 +17,9 @@ Deno.test("meetingUpdateToEventUpdate", () => {
     );
 });
 
-Deno.test("meetingUpdate", async () => {
+Deno.test("meetingUpdateService", async () => {
     assertEquals(
-        await meetingUpdate(
+        await meetingUpdateService(
             eventRepoStubBuild([], meetingStub),
             dateGeneratorStubBuild(new Date("2025-07-18T15:43:12.377Z")),
             "user-id",

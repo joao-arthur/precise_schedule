@@ -1,19 +1,26 @@
-import type { User } from "@ps/domain/schedule/user/model.ts";
-import type { DateCreateModel } from "@ps/domain/schedule/event/date/create/model.ts";
-import type { DateCreateService } from "@ps/domain/schedule/event/date/create/service.ts";
-import type { HTTPRequest } from "../../../../http/request/model.ts";
-import type { HTTPResponse } from "../../../../http/response/model.ts";
-import type { DateCreateController } from "./controller.ts";
-import { created } from "../../../../http/response/created/builder.ts";
+import type { IdGenerator } from "../../../../domain/generator/id.ts";
+import type { DateGenerator } from "../../../../domain/generator/date.ts";
+import type { User } from "../../../../domain/schedule/user/model.ts";
+import type { EventRepo } from "../../../../domain/schedule/event/repo.ts";
+import type { DateCreate } from "../../../../domain/schedule/event/date/create.ts";
+import type { HTTPRequest } from "../../../http/request.ts";
+import type { HTTPResponse } from "../../../http/response.ts";
+import { dateCreateService } from "../../../../domain/schedule/event/date/create.ts";
+import { created } from "../../../http/response.ts";
 
-export class DateCreateControllerImpl implements DateCreateController {
-    constructor(private readonly dateCreateService: DateCreateService) { }
-
-    public async handle(
-        userId: User["id"],
-        req: HTTPRequest<DateCreateModel>,
-    ): Promise<HTTPResponse> {
-        const result = await this.dateCreateService.create(userId, req.body);
-        return created(result);
-    }
+export async function dateCreateController(
+    repo: EventRepo,
+    idGenerator: IdGenerator,
+    dateGenerator: DateGenerator,
+    userId: User["id"],
+    req: HTTPRequest<DateCreate>,
+): Promise<HTTPResponse> {
+    const result = await dateCreateService(
+        repo,
+        idGenerator,
+        dateGenerator,
+        userId,
+        req.body,
+    );
+    return created(result);
 }

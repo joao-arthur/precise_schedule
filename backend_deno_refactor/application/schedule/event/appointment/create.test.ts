@@ -1,15 +1,12 @@
 import { assertEquals } from "@std/assert/assert-equals";
-import { eventStub } from "@ps/domain/schedule/event/model._stub.ts";
-import { AppointmentCreateServiceStub } from "@ps/domain/schedule/event/appointment/create/service._stub.ts";
-import { created } from "../../../../http/response/created/builder.ts";
-import { httpRequestBodyStub } from "../../../../http/request/model._stub.ts";
-import { AppointmentCreateControllerImpl } from "./controller.impl.ts";
+import { eventStub } from "../../domain/schedule/event/model.stub.ts";
+import { created } from "../../../http/response.ts";
+import { httpRequestBodyStub } from "../../http/request/model.stub.ts";
+import { appointmentCreateController } from "./controller.ts";
 
-Deno.test("AppointmentCreateControllerImpl", async () => {
+Deno.test("appointmentCreateController", async () => {
     assertEquals(
-        await new AppointmentCreateControllerImpl(
-            new AppointmentCreateServiceStub(eventStub),
-        ).handle(eventStub.user, httpRequestBodyStub),
+        await appointmentCreateController(eventStub.user, httpRequestBodyStub),
         created(eventStub),
     );
 });

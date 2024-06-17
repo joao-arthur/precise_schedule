@@ -62,7 +62,7 @@ type AppointmentUpdateErrors =
     | ValidationError
     | EventNotFound;
 
-export function appointmentUpdate(
+export function appointmentUpdateService(
     repo: EventRepo,
     dateGenerator: DateGenerator,
     userId: User["id"],

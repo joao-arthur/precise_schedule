@@ -54,7 +54,7 @@ type DateUpdateErrors =
     | ValidationError
     | EventNotFound;
 
-export function dateUpdate(
+export function dateUpdateService(
     repo: EventRepo,
     dateGenerator: DateGenerator,
     userId: User["id"],

@@ -1,20 +1,24 @@
-import type { User } from "@ps/domain/schedule/user/model.ts";
-import type { PartyUpdateModel } from "@ps/domain/schedule/event/party/update/model.ts";
-import type { PartyUpdateService } from "@ps/domain/schedule/event/party/update/service.ts";
-import type { HTTPRequest } from "../../../../http/request/model.ts";
-import type { HTTPResponse } from "../../../../http/response/model.ts";
-import type { IdParam } from "../../../../http/IdParam.ts";
-import type { PartyUpdateController } from "./controller.ts";
-import { noContent } from "../../../../http/response/noContent/builder.ts";
+import type { DateGenerator } from "../../../../domain/generator/date.ts";
+import type { User } from "../../../../domain/schedule/user/model.ts";
+import type { EventRepo } from "../../../../domain/schedule/event/repo.ts";
+import type { PartyUpdate } from "../../../../domain/schedule/event/party/update.ts";
+import type { HTTPRequest, IdParam } from "../../../http/request.ts";
+import type { HTTPResponse } from "../../../http/response.ts";
+import { partyUpdateService } from "../../../../domain/schedule/event/party/update.ts";
+import { noContent } from "../../../http/response.ts";
 
-export class PartyUpdateControllerImpl implements PartyUpdateController {
-    constructor(private readonly partyUpdateService: PartyUpdateService) { }
-
-    public async handle(
-        userId: User["id"],
-        req: HTTPRequest<PartyUpdateModel, IdParam>,
-    ): Promise<HTTPResponse> {
-        await this.partyUpdateService.update(userId, req.params.id, req.body);
-        return noContent();
-    }
+export async function partyUpdateController(
+    repo: EventRepo,
+    dateGenerator: DateGenerator,
+    userId: User["id"],
+    req: HTTPRequest<PartyUpdate, IdParam>,
+): Promise<HTTPResponse> {
+    const result = await partyUpdateService(
+        repo,
+        dateGenerator,
+        userId,
+        req.params.id,
+        req.body,
+    );
+    return noContent();
 }

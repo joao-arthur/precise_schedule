@@ -1,7 +1,7 @@
-import type { UserRepository } from "@ps/domain/schedule/user/repository.ts";
+import type { UserRepository } from "../../../domain/schedule/user/repository.ts";
 import { Context, Next } from "oak/mod.ts";
-import { ValidateUserSessionServiceImpl } from "@ps/domain/userSession/service.impl.ts";
-import { UserFindServiceImpl } from "@ps/domain/schedule/user/find/service.impl.ts";
+import { ValidateUserSessionServiceImpl } from "../../../domain/userSession/service.impl.ts";
+import { UserFindServiceImpl } from "../../../domain/schedule/user/find/service.impl.ts";
 import { SessionMiddlewareImpl } from "@ps/application/http/middleware/session/middleware.impl.ts";
 import { SessionFromRequestServiceImpl } from "@ps/application/http/sessionFromRequest/service.impl.ts";
 import { DecodeSessionServiceJWTAdapter } from "../../../session/decode/jwt.adapter.ts";
@@ -9,7 +9,7 @@ import { DecodeSessionServiceJWTAdapter } from "../../../session/decode/jwt.adap
 export class SessionMiddlewareOakAdapter {
     constructor(private readonly repository: UserRepository) {}
 
-    public async handle(ctx: Context, next: Next): Promise<void> {
+    export async function handle(ctx: Context, next: Next): Promise<void> {
         const req = ctx.request;
         const isUserLogin = req.method === "POST" && req.url.pathname === "/user/login";
         const isUserRegister = req.method === "POST" && req.url.pathname === "/user";

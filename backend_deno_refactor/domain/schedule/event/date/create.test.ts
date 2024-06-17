@@ -4,7 +4,7 @@ import { idGeneratorStubBuild } from "../../../generator/id.stub.ts";
 import { dateGeneratorStubBuild } from "../../../generator/date.stub.ts";
 import { eventRepoEmptyStubBuild } from "../repo.stub.ts";
 import { dateCreateStub, dateEventCreateStub, dateStub } from "./model.stub.ts";
-import { dateCreate, dateCreateToEventCreate } from "./create.ts";
+import { dateCreateService, dateCreateToEventCreate } from "./create.ts";
 
 Deno.test("dateCreateToEventCreate", () => {
     assertEquals(
@@ -13,9 +13,9 @@ Deno.test("dateCreateToEventCreate", () => {
     );
 });
 
-Deno.test("dateCreate", async () => {
+Deno.test("dateCreateService", async () => {
     assertEquals(
-        await dateCreate(
+        await dateCreateService(
             eventRepoEmptyStubBuild(),
             idGeneratorStubBuild("date-id"),
             dateGeneratorStubBuild(new Date("2024-06-16T19:16:12.327Z")),

@@ -4,11 +4,11 @@ import { sessionCreateStubBuild } from "../../session/create.stub.ts";
 import { ok } from "../../lang/result.ts";
 import { userLoginStub } from "./model.stub.ts";
 import { userRepoUserStubBuild } from "./repo.stub.ts";
-import { userLogin } from "./login.ts";
+import { userLoginService } from "./login.ts";
 
-Deno.test("userLogin", async () => {
+Deno.test("userLoginService", async () => {
     assertEquals(
-        await userLogin(
+        await userLoginService(
             userRepoUserStubBuild(),
             sessionCreateStubBuild(sessionStub),
             userLoginStub,

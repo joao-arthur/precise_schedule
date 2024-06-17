@@ -1,19 +1,26 @@
-import type { User } from "@ps/domain/schedule/user/model.ts";
-import type { AppointmentCreateModel } from "@ps/domain/schedule/event/appointment/create/model.ts";
-import type { AppointmentCreateService } from "@ps/domain/schedule/event/appointment/create/service.ts";
-import type { HTTPRequest } from "../../../../http/request/model.ts";
-import type { HTTPResponse } from "../../../../http/response/model.ts";
-import type { AppointmentCreateController } from "./controller.ts";
-import { created } from "../../../../http/response/created/builder.ts";
+import type { IdGenerator } from "../../../../domain/generator/id.ts";
+import type { DateGenerator } from "../../../../domain/generator/date.ts";
+import type { User } from "../../../../domain/schedule/user/model.ts";
+import type { EventRepo } from "../../../../domain/schedule/event/repo.ts";
+import type { AppointmentCreate } from "../../../../domain/schedule/event/appointment/create.ts";
+import type { HTTPRequest } from "../../../http/request.ts";
+import type { HTTPResponse } from "../../../http/response.ts";
+import { appointmentCreateService } from "../../../../domain/schedule/event/appointment/create.ts";
+import { created } from "../../../http/response.ts";
 
-export class AppointmentCreateControllerImpl implements AppointmentCreateController {
-    constructor(private readonly appointmentCreateService: AppointmentCreateService) { }
-
-    public async handle(
-        userId: User["id"],
-        req: HTTPRequest<AppointmentCreateModel>,
-    ): Promise<HTTPResponse> {
-        const result = await this.appointmentCreateService.create(userId, req.body);
-        return created(result);
-    }
+export async function appointmentCreateController(
+    repo: EventRepo,
+    idGenerator: IdGenerator,
+    dateGenerator: DateGenerator,
+    userId: User["id"],
+    req: HTTPRequest<AppointmentCreate>,
+): Promise<HTTPResponse> {
+    const result = await appointmentCreateService(
+        repo,
+        idGenerator,
+        dateGenerator,
+        userId,
+        req.body,
+    );
+    return created(result);
 }
