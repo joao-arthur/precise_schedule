@@ -1,6 +1,6 @@
-import type { Result } from "../../lang/result.ts";
-import type { User } from "../../schedule/user/model.ts";
-import type { Session } from "../model.ts";
+import type { Result } from "../lang/result.ts";
+import type { User } from "../schedule/user/model.ts";
+import type { Session } from "./model.ts";
 
 export class SessionCreateError extends Error {
     constructor() {

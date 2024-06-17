@@ -26,14 +26,14 @@ export function userInfoBuild(user: User): UserInfo {
     };
 }
 
-export type UserFindErrors =
+type UserReadErrors =
     | RepoError
     | UserNotFound;
 
 export async function userReadById(
     repo: UserRepo,
     id: User["id"],
-): Promise<Result<User, UserFindErrors>> {
+): Promise<Result<User, UserReadErrors>> {
     const foundUserResult = await repo.cReadById(id);
     if (foundUserResult.type === "err") {
         return foundUserResult;
@@ -48,7 +48,7 @@ export async function userReadByCredentials(
     repo: UserRepo,
     username: User["username"],
     password: User["password"],
-): Promise<Result<User, UserFindErrors>> {
+): Promise<Result<User, UserReadErrors>> {
     const foundUserResult = await repo.cReadByCredentials(username, password);
     if (foundUserResult.type === "err") {
         return foundUserResult;
@@ -62,7 +62,7 @@ export async function userReadByCredentials(
 export async function userInfoReadById(
     repo: UserRepo,
     id: User["id"],
-): Promise<Result<UserInfo, UserFindErrors>> {
+): Promise<Result<UserInfo, UserReadErrors>> {
     const foundUserResult = await userReadById(repo, id);
     if (foundUserResult.type === "err") {
         return foundUserResult;

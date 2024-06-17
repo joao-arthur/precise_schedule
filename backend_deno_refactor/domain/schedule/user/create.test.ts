@@ -6,7 +6,7 @@ import { sessionStub } from "../../session/model.stub.ts";
 import { userRepoEmptyStubBuild } from "./repo.stub.ts";
 import { userCreateStub, userStub } from "./model.stub.ts";
 import { userCreate, userCreateToUser } from "./create.ts";
-import { sessionCreateStubBuild } from "../../session/create/service.stub.ts";
+import { sessionCreateStubBuild } from "../../session/create.stub.ts";
 
 Deno.test("userCreateToUser", () => {
     assertEquals(

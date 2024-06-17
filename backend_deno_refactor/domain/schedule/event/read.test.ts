@@ -8,11 +8,11 @@ import {
     EventNotFound,
     eventReadMany,
     eventReadOne,
-    eventToEventFind,
+    eventToEventInfo,
 } from "./read.ts";
 
-Deno.test("eventToEventFind", () => {
-    assertEquals(eventToEventFind(appointmentStub), appointmentInfoStub);
+Deno.test("eventToEventInfo", () => {
+    assertEquals(eventToEventInfo(appointmentStub), appointmentInfoStub);
 });
 
 Deno.test("eventReadMany", async () => {

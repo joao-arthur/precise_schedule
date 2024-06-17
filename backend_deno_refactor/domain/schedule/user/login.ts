@@ -3,7 +3,7 @@ import type { Schema } from "../../validation/schema.ts";
 import type { RepoError } from "../../repository/repo.ts";
 import type { ValidationError } from "../../validation/validate.ts";
 import type { Session } from "../../session/model.ts";
-import type { SessionCreateService } from "../../session/create/service.ts";
+import type { SessionCreateService } from "../../session/create.ts";
 import type { UserRepo } from "./repo.ts";
 import type { User } from "./model.ts";
 import type { UserNotFound } from "./read.ts";
@@ -32,7 +32,7 @@ const userLoginSchema: Schema<UserLogin> = {
     ],
 };
 
-export type UserLoginErrors =
+type UserLoginErrors =
     | RepoError
     | ValidationError
     | UserNotFound;

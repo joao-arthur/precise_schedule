@@ -22,7 +22,7 @@ export type EventInfo = {
     readonly weekendRepeat: Event["weekendRepeat"];
 };
 
-export function eventToEventFind(event: Event): EventInfo {
+export function eventToEventInfo(event: Event): EventInfo {
     return {
         id: event.id,
         name: event.name,
@@ -68,7 +68,7 @@ export async function eventInfoReadMany(
     if (readResult.type === "err") {
         return readResult;
     }
-    const mapped = readResult.data.map(eventToEventFind);
+    const mapped = readResult.data.map(eventToEventInfo);
     return ok(mapped);
 }
 
@@ -81,6 +81,6 @@ export async function eventInfoReadOne(
     if (readResult.type === "err") {
         return readResult;
     }
-    const builtEvent = eventToEventFind(readResult.data);
+    const builtEvent = eventToEventInfo(readResult.data);
     return ok(builtEvent);
 }

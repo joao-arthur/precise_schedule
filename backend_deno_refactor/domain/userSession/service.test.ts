@@ -1,17 +1,18 @@
 import { assertEquals } from "@std/assert/assert-equals";
 import { ok } from "../lang/result.ts";
-import { userFindModelStub } from "../schedule/user/find/model.stub.ts";
 import { userStub } from "../schedule/user/model.stub.ts";
-import { DecodeSessionServiceStub } from "../session/decode/service.stub.ts";
+import { decodeSessionStubBuild } from "../session/decode.stub.ts";
 import { sessionStub } from "../session/model.stub.ts";
-import { ValidateUserSessionServiceImpl } from "./service.ts";
+import { validateSession } from "./service.ts";
+import { userRepoStubBuild } from "../schedule/user/repo.stub.ts";
 
-Deno.test("ValidateUserSessionServiceImpl", async () => {
+Deno.test("validateSession", async () => {
     assertEquals(
-        await new ValidateUserSessionServiceImpl(
-            new UserFindServiceStub(userStub, userFindModelStub),
-            new DecodeSessionServiceStub(userStub.id),
-        ).validate(sessionStub),
+        await validateSession(
+            userRepoStubBuild(userStub, 0, 0),
+            decodeSessionStubBuild(userStub.id),
+            sessionStub,
+        ),
         ok(undefined),
     );
 });
