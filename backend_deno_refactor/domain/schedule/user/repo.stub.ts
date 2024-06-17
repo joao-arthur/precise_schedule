@@ -1,18 +1,28 @@
-import type { User } from "./model.ts";
 import type { UserRepo } from "./repo.ts";
 import { RepoError } from "../../repository/repo.ts";
 import { err, ok } from "../../lang/result.ts";
+import { userStub } from "./model.stub.ts";
 
-export function userRepoStubBuild(
-    user: User,
+export function userRepoUserStubBuild(): UserRepo {
+    return {
+        cCreate: () => Promise.resolve(ok(undefined)),
+        cUpdate: () => Promise.resolve(ok(undefined)),
+        cReadById: () => Promise.resolve(ok(userStub)),
+        cReadByCredentials: () => Promise.resolve(ok(userStub)),
+        cCountUsername: () => Promise.resolve(ok(0)),
+        cCountEmail: () => Promise.resolve(ok(0)),
+    };
+}
+
+export function userRepoCountStubBuild(
     countUsername: number,
     countEmail: number,
 ): UserRepo {
     return {
         cCreate: () => Promise.resolve(ok(undefined)),
         cUpdate: () => Promise.resolve(ok(undefined)),
-        cReadById: () => Promise.resolve(ok(user)),
-        cReadByCredentials: () => Promise.resolve(ok(user)),
+        cReadById: () => Promise.resolve(ok(undefined)),
+        cReadByCredentials: () => Promise.resolve(ok(undefined)),
         cCountUsername: () => Promise.resolve(ok(countUsername)),
         cCountEmail: () => Promise.resolve(ok(countEmail)),
     };

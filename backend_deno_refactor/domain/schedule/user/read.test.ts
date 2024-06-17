@@ -1,5 +1,5 @@
 import { assertEquals } from "@std/assert/assert-equals";
-import { userRepoEmptyStubBuild, userRepoStubBuild } from "./repo.stub.ts";
+import { userRepoEmptyStubBuild, userRepoUserStubBuild } from "./repo.stub.ts";
 import { err, ok } from "../../lang/result.ts";
 import { userInfoStub, userStub } from "./model.stub.ts";
 import {
@@ -28,7 +28,7 @@ Deno.test("userReadById", async () => {
         err(new UserNotFound()),
     );
     assertEquals(
-        await userReadById(userRepoStubBuild(userStub, 0, 0), "appointment-id"),
+        await userReadById(userRepoUserStubBuild(), "appointment-id"),
         ok(userStub),
     );
 });
@@ -39,7 +39,7 @@ Deno.test("userReadByCredentials", async () => {
         err(new UserNotFound()),
     );
     assertEquals(
-        await userReadByCredentials(userRepoStubBuild(userStub, 0, 0), "username", "password"),
+        await userReadByCredentials(userRepoUserStubBuild(), "username", "password"),
         ok(userStub),
     );
 });
@@ -50,7 +50,7 @@ Deno.test("userInfoReadById", async () => {
         err(new UserNotFound()),
     );
     assertEquals(
-        await userInfoReadById(userRepoStubBuild(userStub, 0, 0), "appointment-id"),
+        await userInfoReadById(userRepoUserStubBuild(), "appointment-id"),
         ok(userInfoStub),
     );
 });
