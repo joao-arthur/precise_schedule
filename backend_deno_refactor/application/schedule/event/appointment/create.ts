@@ -7,7 +7,7 @@ import type { AppointmentCreateController } from "./controller.ts";
 import { created } from "../../../../http/response/created/builder.ts";
 
 export class AppointmentCreateControllerImpl implements AppointmentCreateController {
-    constructor(private readonly appointmentCreateService: AppointmentCreateService) {}
+    constructor(private readonly appointmentCreateService: AppointmentCreateService) { }
 
     public async handle(
         userId: User["id"],

@@ -7,7 +7,7 @@ import type { BirthdayCreateController } from "./controller.ts";
 import { created } from "../../../../http/response/created/builder.ts";
 
 export class BirthdayCreateControllerImpl implements BirthdayCreateController {
-    constructor(private readonly birthdayCreateService: BirthdayCreateService) {}
+    constructor(private readonly birthdayCreateService: BirthdayCreateService) { }
 
     public async handle(
         userId: User["id"],

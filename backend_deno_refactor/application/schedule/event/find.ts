@@ -8,7 +8,7 @@ import { ok } from "../../../http/response/ok/builder.ts";
 import { badRequest } from "../../../http/response/badRequest/builder.ts";
 
 export class EventFindControllerImpl implements EventFindController {
-    constructor(private readonly eventFindService: EventFindService) {}
+    constructor(private readonly eventFindService: EventFindService) { }
 
     public async handle(
         userId: User["id"],

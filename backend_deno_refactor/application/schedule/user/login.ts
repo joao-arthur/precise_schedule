@@ -6,7 +6,7 @@ import type { UserLoginController } from "./controller.ts";
 import { ok } from "../../../http/response/ok/builder.ts";
 
 export class UserLoginControllerImpl implements UserLoginController {
-    constructor(private readonly userLoginService: UserLoginService) {}
+    constructor(private readonly userLoginService: UserLoginService) { }
 
     public async handle(req: HTTPRequest<UserLogin>): Promise<HTTPResponse> {
         const result = await this.userLoginService.userLogin(req.body);

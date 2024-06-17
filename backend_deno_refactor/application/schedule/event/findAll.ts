@@ -5,7 +5,7 @@ import type { FindAllEventController } from "./controller.ts";
 import { ok } from "../../../http/response/ok/builder.ts";
 
 export class FindAllEventControllerImpl implements FindAllEventController {
-    constructor(private readonly eventFindService: EventFindService) {}
+    constructor(private readonly eventFindService: EventFindService) { }
 
     public async handle(
         userId: User["id"],

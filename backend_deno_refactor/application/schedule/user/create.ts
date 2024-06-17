@@ -6,7 +6,7 @@ import type { UserCreateController } from "./controller.ts";
 import { ok } from "../../../http/response/ok/builder.ts";
 
 export class UserCreateControllerImpl implements UserCreateController {
-    constructor(private readonly userCreateService: UserCreateService) {}
+    constructor(private readonly userCreateService: UserCreateService) { }
 
     public async handle(req: HTTPRequest<UserCreate>): Promise<HTTPResponse> {
         const result = await this.userCreateService.create(req.body);

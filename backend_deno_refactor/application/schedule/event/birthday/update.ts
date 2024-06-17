@@ -8,7 +8,7 @@ import type { BirthdayUpdateController } from "./controller.ts";
 import { noContent } from "../../../../http/response/noContent/builder.ts";
 
 export class BirthdayUpdateControllerImpl implements BirthdayUpdateController {
-    constructor(private readonly birthdayUpdateService: BirthdayUpdateService) {}
+    constructor(private readonly birthdayUpdateService: BirthdayUpdateService) { }
 
     public async handle(
         userId: User["id"],

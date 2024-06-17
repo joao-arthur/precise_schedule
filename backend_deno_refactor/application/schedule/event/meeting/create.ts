@@ -7,7 +7,7 @@ import type { MeetingCreateController } from "./controller.ts";
 import { created } from "../../../../http/response/created/builder.ts";
 
 export class MeetingCreateControllerImpl implements MeetingCreateController {
-    constructor(private readonly meetingCreateService: MeetingCreateService) {}
+    constructor(private readonly meetingCreateService: MeetingCreateService) { }
 
     public async handle(
         userId: User["id"],

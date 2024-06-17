@@ -8,7 +8,7 @@ import type { MeetingUpdateController } from "./controller.ts";
 import { noContent } from "../../../../http/response/noContent/builder.ts";
 
 export class MeetingUpdateControllerImpl implements MeetingUpdateController {
-    constructor(private readonly meetingUpdateService: MeetingUpdateService) {}
+    constructor(private readonly meetingUpdateService: MeetingUpdateService) { }
 
     public async handle(
         userId: User["id"],

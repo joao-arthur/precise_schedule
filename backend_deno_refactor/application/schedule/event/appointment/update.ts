@@ -8,7 +8,7 @@ import type { AppointmentUpdateController } from "./controller.ts";
 import { noContent } from "../../../../http/response/noContent/builder.ts";
 
 export class AppointmentUpdateControllerImpl implements AppointmentUpdateController {
-    constructor(private readonly appointmentUpdateService: AppointmentUpdateService) {}
+    constructor(private readonly appointmentUpdateService: AppointmentUpdateService) { }
 
     public async handle(
         userId: User["id"],

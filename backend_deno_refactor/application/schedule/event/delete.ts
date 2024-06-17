@@ -7,7 +7,7 @@ import type { EventDeleteController } from "./controller.ts";
 import { noContent } from "../../../http/response/noContent/builder.ts";
 
 export class EventDeleteControllerImpl implements EventDeleteController {
-    constructor(private readonly eventDeleteService: EventDeleteService) {}
+    constructor(private readonly eventDeleteService: EventDeleteService) { }
 
     public async handle(
         userId: User["id"],

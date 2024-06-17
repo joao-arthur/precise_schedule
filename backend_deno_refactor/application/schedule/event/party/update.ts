@@ -8,7 +8,7 @@ import type { PartyUpdateController } from "./controller.ts";
 import { noContent } from "../../../../http/response/noContent/builder.ts";
 
 export class PartyUpdateControllerImpl implements PartyUpdateController {
-    constructor(private readonly partyUpdateService: PartyUpdateService) {}
+    constructor(private readonly partyUpdateService: PartyUpdateService) { }
 
     public async handle(
         userId: User["id"],

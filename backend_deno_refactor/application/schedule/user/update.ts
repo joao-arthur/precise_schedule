@@ -7,7 +7,7 @@ import type { UserUpdateController } from "./controller.ts";
 import { noContent } from "../../../http/response/noContent/builder.ts";
 
 export class UserUpdateControllerImpl implements UserUpdateController {
-    constructor(private readonly userUpdateService: UserUpdateService) {}
+    constructor(private readonly userUpdateService: UserUpdateService) { }
 
     public async handle(
         userId: User["id"],

@@ -7,7 +7,7 @@ import type { PartyCreateController } from "./controller.ts";
 import { created } from "../../../../http/response/created/builder.ts";
 
 export class PartyCreateControllerImpl implements PartyCreateController {
-    constructor(private readonly partyCreateService: PartyCreateService) {}
+    constructor(private readonly partyCreateService: PartyCreateService) { }
 
     public async handle(
         userId: User["id"],

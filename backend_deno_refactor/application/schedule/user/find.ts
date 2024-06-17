@@ -6,7 +6,7 @@ import { ok } from "../../../http/response/ok/builder.ts";
 import { badRequest } from "../../../http/response/badRequest/builder.ts";
 
 export class UserFindControllerImpl implements UserFindController {
-    constructor(private readonly userFindService: UserFindService) {}
+    constructor(private readonly userFindService: UserFindService) { }
 
     public async handle(userId: User["id"]): Promise<HTTPResponse> {
         const result = await this.userFindService.findByIdMapped(userId);

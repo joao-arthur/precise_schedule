@@ -7,7 +7,7 @@ import type { DateCreateController } from "./controller.ts";
 import { created } from "../../../../http/response/created/builder.ts";
 
 export class DateCreateControllerImpl implements DateCreateController {
-    constructor(private readonly dateCreateService: DateCreateService) {}
+    constructor(private readonly dateCreateService: DateCreateService) { }
 
     public async handle(
         userId: User["id"],

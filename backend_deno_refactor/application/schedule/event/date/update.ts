@@ -8,7 +8,7 @@ import type { DateUpdateController } from "./controller.ts";
 import { noContent } from "../../../../http/response/noContent/builder.ts";
 
 export class DateUpdateControllerImpl implements DateUpdateController {
-    constructor(private readonly dateUpdateService: DateUpdateService) {}
+    constructor(private readonly dateUpdateService: DateUpdateService) { }
 
     public async handle(
         userId: User["id"],
