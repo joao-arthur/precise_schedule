@@ -3,7 +3,7 @@ import type { EventRepo } from "./repo.ts";
 import { RepoError } from "../../repository/repo.ts";
 import { err, ok } from "../../lang/result.ts";
 
-export function eventRepoDataStubBuild(
+export function eventRepoStubBuild(
     many: Event[],
     one: Event | undefined,
 ): EventRepo {

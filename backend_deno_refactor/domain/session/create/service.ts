@@ -1,7 +1,12 @@
 import type { Result } from "../../lang/result.ts";
 import type { User } from "../../schedule/user/model.ts";
 import type { Session } from "../model.ts";
-import type { SessionCreateError } from "./error.ts";
+
+export class SessionCreateError extends Error {
+    constructor() {
+        super("It was not possible to create your session!");
+    }
+}
 
 export type SessionCreateErrors = SessionCreateError;
 

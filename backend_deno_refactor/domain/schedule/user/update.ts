@@ -1,18 +1,18 @@
 import type { Result } from "../../lang/result.ts";
-import type { IdGenerator } from "../../generator/id.ts";
-import type { DateGenerator } from "../../generator/date.ts";
-import type { Schema } from "../../validation/schema.ts";
 import type { RepoError } from "../../repository/repo.ts";
+import type { Schema } from "../../validation/schema.ts";
 import type { ValidationError } from "../../validation/validate.ts";
-import type { Session } from "../../session/model.ts";
-import type { SessionCreateService } from "../../session/create/service.ts";
+import type { DateGenerator } from "../../generator/date.ts";
+import type { UserNotFound } from "./read.ts";
 import type { EmailAlreadyRegistered, UsernameAlreadyRegistered } from "./uniqueInfo.ts";
 import type { UserRepo } from "./repo.ts";
 import type { User } from "./model.ts";
+import { ok } from "../../lang/result.ts";
 import { validateSchema } from "../../validation/validate.ts";
-import { userNewValidateUnique } from "./uniqueInfo.ts";
+import { userExistingValidateUnique } from "./uniqueInfo.ts";
+import { userReadById } from "./read.ts";
 
-export type UserCreate = {
+export type UserUpdate = {
     readonly email: User["email"];
     readonly firstName: User["firstName"];
     readonly birthdate: User["birthdate"];
@@ -20,7 +20,7 @@ export type UserCreate = {
     readonly password: User["password"];
 };
 
-export const userCreateSchema: Schema<UserCreate> = {
+export const userUpdateSchema: Schema<UserUpdate> = {
     firstName: [
         { type: "str" },
         { type: "strMinLen", min: 1 },
@@ -50,50 +50,53 @@ export const userCreateSchema: Schema<UserCreate> = {
     ],
 };
 
-export function userCreateToUser(
-    user: UserCreate,
-    id: User["id"],
+export function userUpdateToUser(
+    user: UserUpdate,
+    existingUser: User,
     now: Date,
 ): User {
     return {
-        id,
+        id: existingUser.id,
         email: user.email,
         firstName: user.firstName,
         birthdate: user.birthdate,
         username: user.username,
         password: user.password,
-        createdAt: now,
+        createdAt: existingUser.createdAt,
         updatedAt: now,
     };
 }
 
-type UserCreateErrors =
+type UserUpdateErrors =
     | RepoError
     | ValidationError
+    | UserNotFound
     | UsernameAlreadyRegistered
     | EmailAlreadyRegistered;
 
-export async function userCreate(
+export async function userUpdate(
     repo: UserRepo,
-    idGenerator: IdGenerator,
     dateGenerator: DateGenerator,
-    sessionCreateService: SessionCreateService,
-    user: UserCreate,
-): Promise<Result<Session, UserCreateErrors>> {
-    const schemaValidation = validateSchema(userCreateSchema, user);
+    id: User["id"],
+    user: UserUpdate,
+): Promise<Result<User, UserUpdateErrors>> {
+    const schemaValidation = validateSchema(userUpdateSchema, user);
     if (schemaValidation.type === "err") {
         return schemaValidation;
     }
-    const validationInfoResult = await userNewValidateUnique(repo, user);
-    if (validationInfoResult.type === "err") {
-        return validationInfoResult;
+    const existingUser = await userReadById(repo, id);
+    if (existingUser.type === "err") {
+        return existingUser;
     }
-    const id = idGenerator.gen();
+    const existingResult = await userExistingValidateUnique(repo, user, existingUser.data);
+    if (existingResult.type === "err") {
+        return existingResult;
+    }
     const now = dateGenerator.gen();
-    const builtUser = userCreateToUser(user, id, now);
-    const createUserResult = await repo.cCreate(builtUser);
-    if (createUserResult.type === "err") {
-        return createUserResult;
+    const builtUser = userUpdateToUser(user, existingUser.data, now);
+    const updateResult = await repo.cUpdate(builtUser);
+    if (updateResult.type === "err") {
+        return updateResult;
     }
-    return sessionCreateService.create(builtUser.id);
+    return ok(builtUser);
 }

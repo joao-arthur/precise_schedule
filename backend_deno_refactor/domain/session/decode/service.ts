@@ -6,7 +6,5 @@ import type { InvalidSessionError } from "../../session/invalid/error.ts";
 export type DecodeSessionErrors = InvalidSessionError;
 
 export type DecodeSessionService = {
-    readonly decode: (
-        session: Session,
-    ) => Promise<Result<User["id"], DecodeSessionErrors>>;
+    readonly decode: (session: Session) => Promise<Result<User["id"], DecodeSessionErrors>>;
 };

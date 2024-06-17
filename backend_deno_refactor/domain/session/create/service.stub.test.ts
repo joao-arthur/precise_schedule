@@ -1,14 +1,11 @@
 import { assertEquals } from "@std/assert/assert-equals";
 import { ok } from "../../lang/result.ts";
-import { SessionCreateServiceStub } from "./service.stub.ts";
+import { sessionCreateStubBuild } from "./service.stub.ts";
 import { sessionStub } from "../model.stub.ts";
 
-Deno.test("SessionCreateServiceStub", async () => {
-    const sessionCreateServiceStub = new SessionCreateServiceStub(
-        sessionStub,
-    );
+Deno.test("sessionCreateStubBuild", async () => {
     assertEquals(
-        await sessionCreateServiceStub.create(),
+        await sessionCreateStubBuild(sessionStub).create("user-id"),
         ok(sessionStub),
     );
 });
