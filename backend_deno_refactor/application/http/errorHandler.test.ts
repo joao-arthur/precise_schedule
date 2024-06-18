@@ -6,10 +6,12 @@ import { badRequest, internalServerError, unauthorized } from "./response.ts";
 import { errorHandler } from "./errorHandler.ts";
 
 Deno.test("errorHandler", () => {
-    const validation = new ValidationError({ ping: ["pong"] });
-    const invalidSession = new InvalidSessionError();
-    const repo = new RepoError();
-    assertEquals(errorHandler(validation), badRequest({ validation: { ping: ["pong"] } }));
-    assertEquals(errorHandler(invalidSession), unauthorized());
-    assertEquals(errorHandler(repo), internalServerError());
+    assertEquals(
+        errorHandler(
+            new ValidationError({ ping: ["pong"] }),
+        ),
+        badRequest({ validation: { ping: ["pong"] } }),
+    );
+    assertEquals(errorHandler(new InvalidSessionError()), unauthorized());
+    assertEquals(errorHandler(new RepoError()), internalServerError());
 });
