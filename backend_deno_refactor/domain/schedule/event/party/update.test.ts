@@ -7,7 +7,7 @@ import {
     partyUpdatedStub,
     partyUpdateStub,
 } from "./model.stub.ts";
-import { eventRepoStubBuild } from "../repo.stub.ts";
+import { eventRepoOneStubBuild } from "../repo.stub.ts";
 import { partyUpdateService, partyUpdateToEventUpdate } from "./update.ts";
 
 Deno.test("partyUpdateToEventUpdate", () => {
@@ -20,7 +20,7 @@ Deno.test("partyUpdateToEventUpdate", () => {
 Deno.test("partyUpdateService", async () => {
     assertEquals(
         await partyUpdateService(
-            eventRepoStubBuild([], partyStub),
+            eventRepoOneStubBuild(partyStub),
             dateGeneratorStubBuild(new Date("2025-07-18T15:43:12.377Z")),
             "user-id",
             "party-id",

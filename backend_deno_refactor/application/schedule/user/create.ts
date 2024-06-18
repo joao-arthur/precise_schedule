@@ -7,6 +7,7 @@ import type { HTTPRequest } from "../../http/request.ts";
 import type { HTTPResponse } from "../../http/response.ts";
 import { userCreateService } from "../../../domain/schedule/user/create.ts";
 import { ok } from "../../http/response.ts";
+import { errorHandler } from "../../http/errorHandler.ts";
 
 export async function userCreateController(
     repo: UserRepo,
@@ -22,5 +23,10 @@ export async function userCreateController(
         sessionCreate,
         req.body,
     );
-    return ok(result);
+    switch (result.type) {
+        case "ok":
+            return ok(result.data);
+        case "err":
+            return errorHandler(result.error);
+    }
 }

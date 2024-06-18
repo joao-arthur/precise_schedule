@@ -9,7 +9,7 @@ import { SessionPayload } from "../SessionPayload.ts";
 import { key } from "../key.ts";
 
 export class DecodeSessionServiceJWTAdapter implements DecodeSessionService {
-    export async function decode(
+    public async decode(
         session: Session,
     ): Promise<Result<User["id"], InvalidSessionError>> {
         try {

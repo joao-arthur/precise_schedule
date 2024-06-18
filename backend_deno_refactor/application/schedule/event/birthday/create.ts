@@ -6,6 +6,7 @@ import type { BirthdayCreate } from "../../../../domain/schedule/event/birthday/
 import type { HTTPRequest } from "../../../http/request.ts";
 import type { HTTPResponse } from "../../../http/response.ts";
 import { birthdayCreateService } from "../../../../domain/schedule/event/birthday/create.ts";
+import { errorHandler } from "../../../http/errorHandler.ts";
 import { created } from "../../../http/response.ts";
 
 export async function birthdayCreateController(
@@ -22,5 +23,10 @@ export async function birthdayCreateController(
         userId,
         req.body,
     );
-    return created(result);
+    switch (result.type) {
+        case "ok":
+            return created(result.data);
+        case "err":
+            return errorHandler(result.error);
+    }
 }

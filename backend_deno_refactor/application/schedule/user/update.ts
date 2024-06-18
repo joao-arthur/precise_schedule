@@ -5,6 +5,7 @@ import type { UserUpdate } from "../../../domain/schedule/user/update.ts";
 import type { HTTPRequest } from "../../http/request.ts";
 import type { HTTPResponse } from "../../http/response.ts";
 import { userUpdateService } from "../../../domain/schedule/user/update.ts";
+import { errorHandler } from "../../http/errorHandler.ts";
 import { noContent } from "../../http/response.ts";
 
 export async function userUpdateController(
@@ -13,6 +14,11 @@ export async function userUpdateController(
     userId: User["id"],
     req: HTTPRequest<UserUpdate>,
 ): Promise<HTTPResponse> {
-    await userUpdateService(repo, dateGenerator, userId, req.body);
-    return noContent();
+    const result = await userUpdateService(repo, dateGenerator, userId, req.body);
+    switch (result.type) {
+        case "ok":
+            return noContent();
+        case "err":
+            return errorHandler(result.error);
+    }
 }

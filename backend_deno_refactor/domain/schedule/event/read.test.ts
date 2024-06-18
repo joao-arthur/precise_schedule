@@ -1,10 +1,14 @@
 import { assertEquals } from "@std/assert/assert-equals";
 import { err, ok } from "../../lang/result.ts";
-import { eventRepoEmptyStubBuild, eventRepoStubBuild } from "./repo.stub.ts";
+import {
+    eventRepoEmptyStubBuild,
+    eventRepoManyStubBuild,
+    eventRepoOneStubBuild,
+} from "./repo.stub.ts";
 import { appointmentInfoStub, appointmentStub } from "./appointment/model.stub.ts";
 import {
-    eventInfoReadMany,
-    eventInfoReadOne,
+    eventInfoReadManyService,
+    eventInfoReadOneService,
     EventNotFound,
     eventReadMany,
     eventReadOne,
@@ -21,7 +25,7 @@ Deno.test("eventReadMany", async () => {
         ok([]),
     );
     assertEquals(
-        await eventReadMany(eventRepoStubBuild([appointmentStub], undefined), "user-id"),
+        await eventReadMany(eventRepoManyStubBuild([appointmentStub]), "user-id"),
         ok([appointmentStub]),
     );
 });
@@ -32,29 +36,33 @@ Deno.test("eventReadOne", async () => {
         err(new EventNotFound()),
     );
     assertEquals(
-        await eventReadOne(eventRepoStubBuild([], appointmentStub), "user-id", "event-id"),
+        await eventReadOne(eventRepoOneStubBuild(appointmentStub), "user-id", "event-id"),
         ok(appointmentStub),
     );
 });
 
-Deno.test("eventInfoReadMany", async () => {
+Deno.test("eventInfoReadManyService", async () => {
     assertEquals(
-        await eventInfoReadMany(eventRepoEmptyStubBuild(), "user-id"),
+        await eventInfoReadManyService(eventRepoEmptyStubBuild(), "user-id"),
         ok([]),
     );
     assertEquals(
-        await eventInfoReadMany(eventRepoStubBuild([appointmentStub], undefined), "user-id"),
+        await eventInfoReadManyService(eventRepoManyStubBuild([appointmentStub]), "user-id"),
         ok([appointmentInfoStub]),
     );
 });
 
-Deno.test("eventInfoReadOne", async () => {
+Deno.test("eventInfoReadOneService", async () => {
     assertEquals(
-        await eventInfoReadOne(eventRepoEmptyStubBuild(), "user-id", "event-id"),
+        await eventInfoReadOneService(eventRepoEmptyStubBuild(), "user-id", "event-id"),
         err(new EventNotFound()),
     );
     assertEquals(
-        await eventInfoReadOne(eventRepoStubBuild([], appointmentStub), "user-id", "event-id"),
+        await eventInfoReadOneService(
+            eventRepoOneStubBuild(appointmentStub),
+            "user-id",
+            "event-id",
+        ),
         ok(appointmentInfoStub),
     );
 });

@@ -1,12 +1,15 @@
 import { assertEquals } from "@std/assert/assert-equals";
-import { userStub } from "../../../domain/schedule/user/model.stub.ts";
-import { userFindModelStub } from "../../../domain/schedule/user/find/model.stub.ts";
-import { ok } from "../../../http/response.ts";
-import { UserFindControllerImpl } from "./controller.ts";
+import { userInfoStub } from "../../../domain/schedule/user/model.stub.ts";
+import { ok } from "../../http/response.ts";
+import { userInfoReadByIdController } from "./read.ts";
+import { userRepoUserStubBuild } from "../../../domain/schedule/user/repo.stub.ts";
 
-Deno.test("UserFindControllerImpl", async () => {
+Deno.test("userInfoReadByIdController", async () => {
     assertEquals(
-        await new UserFindControllerImpl().handle(userStub.id),
-        ok(userFindModelStub),
+        await userInfoReadByIdController(
+            userRepoUserStubBuild(),
+            "user-id",
+        ),
+        ok(userInfoStub),
     );
 });

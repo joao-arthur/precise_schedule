@@ -1,12 +1,19 @@
 import { assertEquals } from "@std/assert/assert-equals";
-import { userStub } from "../../../domain/schedule/user/model.stub.ts";
-import { httpRequestBodyStub } from "../../http/request/model.stub.ts";
-import { noContent } from "../../../http/response/noContent/builder.ts";
-import { UserUpdateControllerImpl } from "./controller.ts";
+import { userUpdateStub } from "../../../domain/schedule/user/model.stub.ts";
+import { requestBuild } from "../../http/request.stub.ts";
+import { noContent } from "../../http/response.ts";
+import { userUpdateController } from "./update.ts";
+import { userRepoUserStubBuild } from "../../../domain/schedule/user/repo.stub.ts";
+import { dateGeneratorStubBuild } from "../../../domain/generator/date.stub.ts";
 
-Deno.test("UserUpdateControllerImpl", async () => {
+Deno.test("userUpdateController", async () => {
     assertEquals(
-        await new UserUpdateControllerImpl().handle(userStub.id, httpRequestBodyStub),
+        await userUpdateController(
+            userRepoUserStubBuild(),
+            dateGeneratorStubBuild(new Date("2024-06-17T20:53:37.173Z")),
+            "user-id",
+            requestBuild(userUpdateStub, {}),
+        ),
         noContent(),
     );
 });

@@ -9,7 +9,7 @@ import { DecodeSessionServiceJWTAdapter } from "../../../session/decode/jwt.adap
 export class SessionMiddlewareOakAdapter {
     constructor(private readonly repository: UserRepository) {}
 
-    export async function handle(ctx: Context, next: Next): Promise<void> {
+    public async handle(ctx: Context, next: Next): Promise<void> {
         const req = ctx.request;
         const isUserLogin = req.method === "POST" && req.url.pathname === "/user/login";
         const isUserRegister = req.method === "POST" && req.url.pathname === "/user";

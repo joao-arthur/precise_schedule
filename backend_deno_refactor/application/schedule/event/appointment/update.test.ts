@@ -1,12 +1,22 @@
 import { assertEquals } from "@std/assert/assert-equals";
-import { eventStub } from "../../../domain/schedule/event/model.stub.ts";
+import { dateGeneratorStubBuild } from "../../../../domain/generator/date.stub.ts";
+import {
+    appointmentStub,
+    appointmentUpdateStub,
+} from "../../../../domain/schedule/event/appointment/model.stub.ts";
 import { noContent } from "../../../http/response.ts";
-import { httpRequestFullStub } from "../../../../http/request/model.stub.ts";
-import { AppointmentUpdateControllerImpl } from "./controller.ts";
+import { requestBuild } from "../../../http/request.stub.ts";
+import { appointmentUpdateController } from "./update.ts";
+import { eventRepoOneStubBuild } from "../../../../domain/schedule/event/repo.stub.ts";
 
-Deno.test("AppointmentUpdateControllerImpl", async () => {
+Deno.test("appointmentUpdateController", async () => {
     assertEquals(
-        await new AppointmentUpdateControllerImpl().handle(eventStub.user, httpRequestFullStub),
+        await appointmentUpdateController(
+            eventRepoOneStubBuild(appointmentStub),
+            dateGeneratorStubBuild(new Date("2025-07-18T15:43:12.377Z")),
+            "user-id",
+            requestBuild(appointmentUpdateStub, { id: "appointment-id" }),
+        ),
         noContent(),
     );
 });

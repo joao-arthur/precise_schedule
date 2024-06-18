@@ -1,9 +1,7 @@
 import type { Session } from "../../domain/session/model.ts";
-import type { HTTPHeaders, HTTPRequest } from "./request.ts";
+import type { HTTPRequest } from "./request.ts";
 
-export function sessionFromRequest(
-    req: HTTPRequest<undefined, undefined, HTTPHeaders>,
-): Partial<Session> {
+export function sessionFromRequest(req: HTTPRequest): Partial<Session> {
     return {
         token: req.headers.authorization?.replace("Bearer ", ""),
     };

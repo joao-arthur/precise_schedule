@@ -6,6 +6,7 @@ import type { MeetingCreate } from "../../../../domain/schedule/event/meeting/cr
 import type { HTTPRequest } from "../../../http/request.ts";
 import type { HTTPResponse } from "../../../http/response.ts";
 import { meetingCreateService } from "../../../../domain/schedule/event/meeting/create.ts";
+import { errorHandler } from "../../../http/errorHandler.ts";
 import { created } from "../../../http/response.ts";
 
 export async function meetingCreateController(
@@ -22,5 +23,10 @@ export async function meetingCreateController(
         userId,
         req.body,
     );
-    return created(result);
+    switch (result.type) {
+        case "ok":
+            return created(result.data);
+        case "err":
+            return errorHandler(result.error);
+    }
 }

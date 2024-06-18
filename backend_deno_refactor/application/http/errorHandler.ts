@@ -3,7 +3,7 @@ import { ValidationError } from "../../domain/validation/validate.ts";
 import { InvalidSessionError } from "../../domain/session/decode.ts";
 import { badRequest, internalServerError, unauthorized } from "./response.ts";
 
-export function errorMiddleware(error: unknown): HTTPResponse {
+export function errorHandler(error: Error): HTTPResponse {
     if (error instanceof ValidationError) {
         return badRequest({ validation: error.result });
     }

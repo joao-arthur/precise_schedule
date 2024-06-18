@@ -60,7 +60,7 @@ export async function eventReadOne(
     return ok(maybeEventResult.data);
 }
 
-export async function eventInfoReadMany(
+export async function eventInfoReadManyService(
     repo: EventRepo,
     userId: User["id"],
 ): Promise<Result<readonly EventInfo[], ReadByUserErrors>> {
@@ -72,7 +72,7 @@ export async function eventInfoReadMany(
     return ok(mapped);
 }
 
-export async function eventInfoReadOne(
+export async function eventInfoReadOneService(
     repo: EventRepo,
     userId: User["id"],
     eventId: Event["id"],

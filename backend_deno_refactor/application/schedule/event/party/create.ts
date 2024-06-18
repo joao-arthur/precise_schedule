@@ -6,6 +6,7 @@ import type { PartyCreate } from "../../../../domain/schedule/event/party/create
 import type { HTTPRequest } from "../../../http/request.ts";
 import type { HTTPResponse } from "../../../http/response.ts";
 import { partyCreateService } from "../../../../domain/schedule/event/party/create.ts";
+import { errorHandler } from "../../../http/errorHandler.ts";
 import { created } from "../../../http/response.ts";
 
 export async function partyCreateController(
@@ -22,5 +23,10 @@ export async function partyCreateController(
         userId,
         req.body,
     );
-    return created(result);
+    switch (result.type) {
+        case "ok":
+            return created(result.data);
+        case "err":
+            return errorHandler(result.error);
+    }
 }

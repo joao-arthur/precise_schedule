@@ -7,7 +7,7 @@ import {
     birthdayUpdatedStub,
     birthdayUpdateStub,
 } from "./model.stub.ts";
-import { eventRepoStubBuild } from "../repo.stub.ts";
+import { eventRepoOneStubBuild } from "../repo.stub.ts";
 import { birthdayUpdateService, birthdayUpdateToEventUpdate } from "./update.ts";
 
 Deno.test("birthdayUpdateToEventUpdate", () => {
@@ -20,7 +20,7 @@ Deno.test("birthdayUpdateToEventUpdate", () => {
 Deno.test("birthdayUpdateService", async () => {
     assertEquals(
         await birthdayUpdateService(
-            eventRepoStubBuild([], birthdayStub),
+            eventRepoOneStubBuild(birthdayStub),
             dateGeneratorStubBuild(new Date("2025-07-18T15:43:12.377Z")),
             "user-id",
             "birthday-id",

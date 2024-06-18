@@ -59,7 +59,7 @@ export async function userReadByCredentials(
     return ok(foundUserResult.data);
 }
 
-export async function userInfoReadById(
+export async function userInfoReadByIdService(
     repo: UserRepo,
     id: User["id"],
 ): Promise<Result<UserInfo, UserReadErrors>> {

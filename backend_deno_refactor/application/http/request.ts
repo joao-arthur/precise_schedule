@@ -1,16 +1,13 @@
-export type HTTPRequest<
-    Body = undefined,
-    Params = undefined,
-    HTTPHeaders = undefined,
-> =
-    & (Body extends undefined ? Record<never, never> : { readonly body: Body })
-    & (Params extends undefined ? Record<never, never> : { readonly params: Params })
-    & (HTTPHeaders extends undefined ? Record<never, never> : { readonly headers: HTTPHeaders });
-
-export type IdParam = {
-    readonly id: string;
+export type HTTPParams = {
+    readonly id?: string | undefined | null;
 };
 
 export type HTTPHeaders = {
     readonly authorization?: string | undefined | null;
+};
+
+export type HTTPRequest<Body = undefined, Params = HTTPParams, Headers = HTTPHeaders> = {
+    readonly body: Body;
+    readonly params: Params;
+    readonly headers: Headers;
 };

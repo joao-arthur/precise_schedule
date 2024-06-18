@@ -6,6 +6,7 @@ import type { DateCreate } from "../../../../domain/schedule/event/date/create.t
 import type { HTTPRequest } from "../../../http/request.ts";
 import type { HTTPResponse } from "../../../http/response.ts";
 import { dateCreateService } from "../../../../domain/schedule/event/date/create.ts";
+import { errorHandler } from "../../../http/errorHandler.ts";
 import { created } from "../../../http/response.ts";
 
 export async function dateCreateController(
@@ -22,5 +23,10 @@ export async function dateCreateController(
         userId,
         req.body,
     );
-    return created(result);
+    switch (result.type) {
+        case "ok":
+            return created(result.data);
+        case "err":
+            return errorHandler(result.error);
+    }
 }

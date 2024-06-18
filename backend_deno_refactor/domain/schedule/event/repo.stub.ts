@@ -3,14 +3,21 @@ import type { EventRepo } from "./repo.ts";
 import { RepoError } from "../../repository/repo.ts";
 import { err, ok } from "../../lang/result.ts";
 
-export function eventRepoStubBuild(
-    many: Event[],
-    one: Event | undefined,
-): EventRepo {
+export function eventRepoManyStubBuild(many: Event[]): EventRepo {
     return {
         cCreate: () => Promise.resolve(ok(undefined)),
         cUpdate: () => Promise.resolve(ok(undefined)),
         cReadMany: () => Promise.resolve(ok(many)),
+        cReadOne: () => Promise.resolve(ok(undefined)),
+        cDelete: () => Promise.resolve(ok(undefined)),
+    };
+}
+
+export function eventRepoOneStubBuild(one: Event): EventRepo {
+    return {
+        cCreate: () => Promise.resolve(ok(undefined)),
+        cUpdate: () => Promise.resolve(ok(undefined)),
+        cReadMany: () => Promise.resolve(ok([])),
         cReadOne: () => Promise.resolve(ok(one)),
         cDelete: () => Promise.resolve(ok(undefined)),
     };

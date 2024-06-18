@@ -4,7 +4,7 @@ import { err, ok } from "../../lang/result.ts";
 import { userInfoStub, userStub } from "./model.stub.ts";
 import {
     userInfoBuild,
-    userInfoReadById,
+    userInfoReadByIdService,
     UserNotFound,
     userReadByCredentials,
     userReadById,
@@ -44,13 +44,13 @@ Deno.test("userReadByCredentials", async () => {
     );
 });
 
-Deno.test("userInfoReadById", async () => {
+Deno.test("userInfoReadByIdService", async () => {
     assertEquals(
-        await userInfoReadById(userRepoEmptyStubBuild(), "appointment-id"),
+        await userInfoReadByIdService(userRepoEmptyStubBuild(), "appointment-id"),
         err(new UserNotFound()),
     );
     assertEquals(
-        await userInfoReadById(userRepoUserStubBuild(), "appointment-id"),
+        await userInfoReadByIdService(userRepoUserStubBuild(), "appointment-id"),
         ok(userInfoStub),
     );
 });
