@@ -1,7 +1,7 @@
 import { assertEquals } from "@std/assert/assert-equals";
 import { ValidationError } from "../../domain/validation/validate.ts";
 import { SessionDecodeError } from "../../domain/session/service.ts";
-import { RepoError } from "../../domain/repository/repo.ts";
+import { RepoError } from "../../domain/repo.ts";
 import { badRequest, internalServerError, unauthorized } from "./response.ts";
 import { errorHandler } from "./errorHandler.ts";
 

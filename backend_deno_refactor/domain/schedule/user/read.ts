@@ -1,10 +1,11 @@
 import type { Result } from "../../lang/result.ts";
-import type { RepoError } from "../../repository/repo.ts";
+import type { RepoError } from "../../repo.ts";
 import type { UserRepo } from "./repo.ts";
 import type { User } from "./model.ts";
 import { err, ok } from "../../lang/result.ts";
+import { BusinessError } from "../../general.ts";
 
-export class UserNotFound extends Error {
+export class UserNotFound extends BusinessError {
     constructor() {
         super("The user was not found!");
     }

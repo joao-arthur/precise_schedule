@@ -1,11 +1,12 @@
 import type { Result } from "../../lang/result.ts";
-import type { RepoError } from "../../repository/repo.ts";
+import type { RepoError } from "../../repo.ts";
 import type { User } from "../user/model.ts";
 import type { EventRepo } from "./repo.ts";
 import type { Event } from "./model.ts";
 import { err, ok } from "../../lang/result.ts";
+import { BusinessError } from "../../general.ts";
 
-export class EventNotFound extends Error {
+export class EventNotFound extends BusinessError {
     constructor() {
         super("The event was not found!");
     }

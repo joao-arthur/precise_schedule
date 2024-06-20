@@ -1,5 +1,5 @@
 import type { UserRepo } from "./repo.ts";
-import { RepoError } from "../../repository/repo.ts";
+import { RepoError } from "../../repo.ts";
 import { err, ok } from "../../lang/result.ts";
 import { userStub } from "./model.stub.ts";
 

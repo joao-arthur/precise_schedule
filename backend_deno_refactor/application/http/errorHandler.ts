@@ -7,6 +7,9 @@ export function errorHandler(error: Error): HTTPResponse {
     if (error instanceof ValidationError) {
         return badRequest({ validation: error.result });
     }
+    if (error instanceof BusinessError) {
+        return badRequest({ message: error.message });
+    }
     if (error instanceof SessionDecodeError) {
         return unauthorized();
     }

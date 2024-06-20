@@ -1,6 +1,6 @@
 import type { Event } from "./model.ts";
 import type { EventRepo } from "./repo.ts";
-import { RepoError } from "../../repository/repo.ts";
+import { RepoError } from "../../repo.ts";
 import { err, ok } from "../../lang/result.ts";
 
 export function eventRepoManyStubBuild(many: Event[]): EventRepo {

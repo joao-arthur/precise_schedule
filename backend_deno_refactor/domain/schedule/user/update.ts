@@ -1,5 +1,5 @@
 import type { Result } from "../../lang/result.ts";
-import type { RepoError } from "../../repository/repo.ts";
+import type { RepoError } from "../../repo.ts";
 import type { Schema } from "../../validation/schema.ts";
 import type { ValidationError } from "../../validation/validate.ts";
 import type { DateGenerator } from "../../generator/date.ts";

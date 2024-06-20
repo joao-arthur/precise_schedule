@@ -1,5 +1,5 @@
 import type { Result } from "../../lang/result.ts";
-import type { RepoError } from "../../repository/repo.ts";
+import type { RepoError } from "../../repo.ts";
 import type { EventNotFound } from "./read.ts";
 import type { User } from "../user/model.ts";
 import type { EventRepo } from "./repo.ts";

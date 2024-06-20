@@ -1,4 +1,4 @@
-import type { Op } from "../../repository/repo.ts";
+import type { Op } from "../../repo.ts";
 import type { User } from "./model.ts";
 
 export type UserRepo = {

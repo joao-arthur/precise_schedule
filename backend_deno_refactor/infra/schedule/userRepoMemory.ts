@@ -1,5 +1,5 @@
 import type { Result } from "../../domain/lang/result.ts";
-import type { RepoError } from "../../domain/repository/repo.ts";
+import type { RepoError } from "../../domain/repo.ts";
 import type { User } from "../../domain/schedule/user/model.ts";
 import type { UserRepo } from "../../domain/schedule/user/repo.ts";
 import { ok } from "../../domain/lang/result.ts";

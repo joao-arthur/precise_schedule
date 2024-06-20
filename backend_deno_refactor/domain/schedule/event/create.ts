@@ -1,6 +1,6 @@
 import type { IdGenerator } from "../../generator/id.ts";
 import type { DateGenerator } from "../../generator/date.ts";
-import type { RepoError } from "../../repository/repo.ts";
+import type { RepoError } from "../../repo.ts";
 import type { Result } from "../../lang/result.ts";
 import type { User } from "../user/model.ts";
 import type { EventRepo } from "./repo.ts";

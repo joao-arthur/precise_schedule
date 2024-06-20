@@ -1,6 +1,6 @@
 import { assertEquals } from "@std/assert/assert-equals";
 import { err, ok } from "../../lang/result.ts";
-import { RepoError } from "../../repository/repo.ts";
+import { RepoError } from "../../repo.ts";
 import { appointmentStub } from "./appointment/model.stub.ts";
 import {
     eventRepoEmptyStubBuild,

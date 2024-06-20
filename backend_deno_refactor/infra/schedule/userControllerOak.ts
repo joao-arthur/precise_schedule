@@ -49,7 +49,7 @@ export function userControllerOak(
         })
         .post("/user/login", async (ctx) => {
             const body = await bodyBuild<UserLogin>(ctx);
-            const req = { body, params: {}, headers: {} };
+            const req = reqBuild(body, {}, {});
             const res = await userLoginController(repo, sessionService, req);
             resultBuild(res, ctx);
         });

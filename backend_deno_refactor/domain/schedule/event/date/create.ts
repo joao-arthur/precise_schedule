@@ -1,7 +1,7 @@
 import type { Result } from "../../../lang/result.ts";
 import type { IdGenerator } from "../../../generator/id.ts";
 import type { DateGenerator } from "../../../generator/date.ts";
-import type { RepoError } from "../../../repository/repo.ts";
+import type { RepoError } from "../../../repo.ts";
 import type { ValidationError } from "../../../validation/validate.ts";
 import type { Schema } from "../../../validation/schema.ts";
 import type { User } from "../../user/model.ts";
