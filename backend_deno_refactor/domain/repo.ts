@@ -1,4 +1,4 @@
-import type { Result } from "../lang/result.ts";
+import type { Result } from "./lang/result.ts";
 
 export class RepoError extends Error {
     constructor() {

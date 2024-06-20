@@ -16,28 +16,18 @@ import { reqBuild } from "../../application/http/request.ts";
 import {
     appointmentCreateController,
     appointmentUpdateController,
-} from "../../application/schedule/event/appointment.ts";
-import {
     birthdayCreateController,
     birthdayUpdateController,
-} from "../../application/schedule/event/birthday.ts";
-import {
-    meetingCreateController,
-    meetingUpdateController,
-} from "../../application/schedule/event/meeting.ts";
-import {
-    partyCreateController,
-    partyUpdateController,
-} from "../../application/schedule/event/party.ts";
-import {
     dateCreateController,
     dateUpdateController,
-} from "../../application/schedule/event/date.ts";
-import {
+    meetingCreateController,
+    meetingUpdateController,
+    partyCreateController,
+    partyUpdateController,
     eventDeleteController,
     eventInfoReadManyController,
     eventInfoReadOneController,
-} from "../../application/schedule/event/event.ts";
+} from "../../application/schedule/event.ts";
 import { bodyBuild, paramsBuild, resultBuild, userIdBuild } from "../http/httpOak.ts";
 
 export function eventControllerOak(
