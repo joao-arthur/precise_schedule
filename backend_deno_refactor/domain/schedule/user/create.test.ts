@@ -2,11 +2,11 @@ import { assertEquals } from "@std/assert/assert-equals";
 import { ok } from "../../lang/result.ts";
 import { idGeneratorStubBuild } from "../../generator/id.stub.ts";
 import { dateGeneratorStubBuild } from "../../generator/date.stub.ts";
-import { sessionStub } from "../../session/model.stub.ts";
+import { session } from "../../session/service.stub.ts";
 import { userRepoEmptyStubBuild } from "./repo.stub.ts";
 import { userCreateStub, userStub } from "./model.stub.ts";
 import { userCreateService, userCreateToUser } from "./create.ts";
-import { sessionCreateStubBuild } from "../../session/create.stub.ts";
+import { sessionStubBuild } from "../../session/service.stub.ts";
 
 Deno.test("userCreateToUser", () => {
     assertEquals(
@@ -21,9 +21,9 @@ Deno.test("userCreateService", async () => {
             userRepoEmptyStubBuild(),
             idGeneratorStubBuild("user-id"),
             dateGeneratorStubBuild(new Date("2023-03-02T19:16:12.327Z")),
-            sessionCreateStubBuild(sessionStub),
+            sessionStubBuild(session, "user-id"),
             userCreateStub,
         ),
-        ok(sessionStub),
+        ok(session),
     );
 });

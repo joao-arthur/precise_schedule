@@ -1,4 +1,4 @@
-import type { Session } from "../../domain/session/model.ts";
+import type { Session } from "../../domain/session/service.ts";
 import type { HTTPRequest } from "./request.ts";
 
 export function sessionFromRequest(req: HTTPRequest): Partial<Session> {

@@ -1,25 +1,25 @@
 import type { Result } from "../lang/result.ts";
-import type { Session } from "../session/model.ts";
+import type { Session } from "../session/service.ts";
 import type { UserRepo } from "../schedule/user/repo.ts";
-import type { DecodeSessionService } from "../session/decode.ts";
+import type { SessionService } from "../session/service.ts";
 import { err, ok } from "../lang/result.ts";
 import { userReadById } from "../schedule/user/read.ts";
-import { InvalidSessionError } from "../session/decode.ts";
+import { SessionDecodeError } from "../session/service.ts";
 
-type UserSessionErrors = InvalidSessionError;
+type UserSessionErrors = SessionDecodeError;
 
 export async function validateSession(
     repo: UserRepo,
-    decodeSessionService: DecodeSessionService,
+    sessionService: SessionService,
     session: Session,
 ): Promise<Result<void, UserSessionErrors>> {
-    const userIdResult = await decodeSessionService.decode(session);
+    const userIdResult = await sessionService.decode(session);
     if (userIdResult.type === "err") {
         return userIdResult;
     }
     const userResult = await userReadById(repo, userIdResult.data);
     if (userResult.type === "err") {
-        return err(new InvalidSessionError());
+        return err(new SessionDecodeError());
     }
     return ok(undefined);
 }

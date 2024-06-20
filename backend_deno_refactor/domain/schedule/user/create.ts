@@ -4,8 +4,8 @@ import type { DateGenerator } from "../../generator/date.ts";
 import type { Schema } from "../../validation/schema.ts";
 import type { RepoError } from "../../repository/repo.ts";
 import type { ValidationError } from "../../validation/validate.ts";
-import type { Session } from "../../session/model.ts";
-import type { SessionCreateService } from "../../session/create.ts";
+import type { Session } from "../../session/service.ts";
+import type { SessionService } from "../../session/service.ts";
 import type { EmailAlreadyRegistered, UsernameAlreadyRegistered } from "./uniqueInfo.ts";
 import type { UserRepo } from "./repo.ts";
 import type { User } from "./model.ts";
@@ -77,7 +77,7 @@ export async function userCreateService(
     repo: UserRepo,
     idGenerator: IdGenerator,
     dateGenerator: DateGenerator,
-    sessionCreateService: SessionCreateService,
+    sessionService: SessionService,
     user: UserCreate,
 ): Promise<Result<Session, UserCreateErrors>> {
     const schemaValidation = validateSchema(userCreateSchema, user);
@@ -95,5 +95,5 @@ export async function userCreateService(
     if (createUserResult.type === "err") {
         return createUserResult;
     }
-    return sessionCreateService.create(builtUser.id);
+    return sessionService.create(builtUser.id);
 }

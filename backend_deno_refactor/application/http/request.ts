@@ -11,3 +11,11 @@ export type HTTPRequest<Body = undefined, Params = HTTPParams, Headers = HTTPHea
     readonly params: Params;
     readonly headers: Headers;
 };
+
+export function reqBuild<
+    Body = undefined,
+    Params = HTTPParams,
+    Headers = HTTPHeaders,
+>(body: Body, params: Params, headers: Headers): HTTPRequest<Body, Params, Headers> {
+    return { body, params, headers };
+}

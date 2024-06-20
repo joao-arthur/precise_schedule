@@ -1,27 +1,27 @@
 import { assertEquals } from "@std/assert/assert-equals";
-import { InvalidSessionError } from "../../domain/session/decode.ts";
+import { SessionDecodeError } from "../../domain/session/service.ts";
 import { err, ok } from "../../domain/lang/result.ts";
-import { sessionMiddleware } from "./middleware.session.ts";
+import { sessionMiddleware } from "./sessionMiddleware.ts";
 import {
     userRepoEmptyStubBuild,
     userRepoUserStubBuild,
 } from "../../domain/schedule/user/repo.stub.ts";
-import { decodeSessionStubBuild } from "../../domain/session/decode.stub.ts";
+import { session, sessionStubBuild } from "../../domain/session/service.stub.ts";
 import { requestEmpty, requestHeaders } from "./request.stub.ts";
 
 Deno.test("sessionMiddleware", async () => {
     assertEquals(
         await sessionMiddleware(
             userRepoUserStubBuild(),
-            decodeSessionStubBuild("user-id"),
+            sessionStubBuild(session, "user-id"),
             requestEmpty,
         ),
-        err(new InvalidSessionError()),
+        err(new SessionDecodeError()),
     );
     assertEquals(
         await sessionMiddleware(
             userRepoUserStubBuild(),
-            decodeSessionStubBuild("user-id"),
+            sessionStubBuild(session, "user-id"),
             requestHeaders,
         ),
         ok(undefined),
@@ -29,9 +29,9 @@ Deno.test("sessionMiddleware", async () => {
     assertEquals(
         await sessionMiddleware(
             userRepoEmptyStubBuild(),
-            decodeSessionStubBuild("user-id"),
+            sessionStubBuild(session, "user-id"),
             requestHeaders,
         ),
-        err(new InvalidSessionError()),
+        err(new SessionDecodeError()),
     );
 });

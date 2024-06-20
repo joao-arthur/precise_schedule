@@ -1,44 +1,37 @@
 import { Application, Router } from "oak/mod.ts";
 import { oakCors } from "cors/mod.ts";
-import { IdGeneratorRandom } from "@ps/infra/generator/id/random.adapter.ts";
-import { ValidatorServiceImpl } from "../../../domain/validation/validator/service.impl.ts";
-import { ValidatorProviderImpl } from "@ps/infra/validation/validator/provider.impl.ts";
-import { UserRepositoryMemory } from "@ps/infra/schedule/user/repository/memory.adapter.ts";
-import { EventRepositoryMemory } from "@ps/infra/schedule/event/repository/memory.adapter.ts";
-import { UserControllerOakAdapter } from "@ps/infra/schedule/user/controller/oak.adapter.ts";
-import { EventControllerOakAdapter } from "@ps/infra/schedule/event/controller/oak.adapter.ts";
-import { SessionMiddlewareOakAdapter } from "@ps/infra/http/middleware/session/oak.adapter.ts";
-import { ErrorHandlerMiddlewareOakAdapter } from "@ps/infra/http/middleware/errorHandler/oak.adapter.ts";
 
-const idGenerator = new IdGeneratorRandom();
-const validator = new ValidatorServiceImpl(new ValidatorProviderImpl());
+import { idGeneratorRandom } from "../infra/generator/idGeneratorRandom.ts";
+import { dateGeneratorNow } from "../infra/generator/dateGeneratorNow.ts";
 
-const userRepository = new UserRepositoryMemory();
-const userControllerAdapter = new UserControllerOakAdapter(idGenerator, validator, userRepository);
+import { userRepoMemory } from "../infra/schedule/userRepoMemory.ts";
+import { eventRepoMemory } from "../infra/schedule/eventRepoMemory.ts";
 
-const eventRepository = new EventRepositoryMemory();
-const eventControllerAdapter = new EventControllerOakAdapter(
-    idGenerator,
-    validator,
-    eventRepository,
-);
+import { userControllerOak } from "../infra/schedule/userControllerOak.ts";
+import { eventControllerOak } from "../infra/schedule/eventControllerOak.ts";
+import { sessionMiddlewareOak } from "../infra/http/sessionMiddlewareOak.ts";
+import { sessionJWT } from "../infra/session/sessionJWT.ts";
+
+const idGenerator = idGeneratorRandom();
+const dateGenerator = dateGeneratorNow();
+
+const userRepo = userRepoMemory();
+const eventRepo = eventRepoMemory();
 
 const app = new Application();
 const router = new Router();
 
-userControllerAdapter.initRoutes(router);
-eventControllerAdapter.initRoutes(router);
+const sessionService = sessionJWT();
 
-const errorHandlerMiddleware = new ErrorHandlerMiddlewareOakAdapter();
-const sessionMiddleware = new SessionMiddlewareOakAdapter(userRepository);
+userControllerOak(userRepo, idGenerator, dateGenerator, sessionService, router);
+eventControllerOak(eventRepo, idGenerator, dateGenerator, router);
 
 app.use(oakCors({ origin: "http://localhost:3000" }));
+
 app.use(async (ctx, next) => {
-    await errorHandlerMiddleware.handle(ctx, next);
+    await sessionMiddlewareOak(userRepo, ctx, next);
 });
-app.use(async (ctx, next) => {
-    await sessionMiddleware.handle(ctx, next);
-});
+
 app.use(router.routes());
 app.use(router.allowedMethods());
 

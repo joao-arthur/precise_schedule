@@ -1,8 +1,8 @@
 import { assertEquals } from "@std/assert/assert-equals";
 import { idGeneratorStubBuild } from "../../domain/generator/id.stub.ts";
 import { dateGeneratorStubBuild } from "../../domain/generator/date.stub.ts";
-import { sessionStub } from "../../domain/session/model.stub.ts";
-import { sessionCreateStubBuild } from "../../domain/session/create.stub.ts";
+import { session } from "../../domain/session/service.stub.ts";
+import { sessionStubBuild } from "../../domain/session/service.stub.ts";
 import {
     userCreateStub,
     userInfoStub,
@@ -28,10 +28,10 @@ Deno.test("userCreateController", async () => {
             userRepoEmptyStubBuild(),
             idGeneratorStubBuild("user-id"),
             dateGeneratorStubBuild(new Date("2023-03-02T19:16:12.327Z")),
-            sessionCreateStubBuild(sessionStub),
+            sessionStubBuild(session, "user-id"),
             requestBuild(userCreateStub, {}),
         ),
-        ok(sessionStub),
+        ok(session),
     );
 });
 
@@ -51,10 +51,10 @@ Deno.test("UserLoginController", async () => {
     assertEquals(
         await userLoginController(
             userRepoUserStubBuild(),
-            sessionCreateStubBuild(sessionStub),
+            sessionStubBuild(session, "user-id"),
             requestBuild(userLoginStub, {}),
         ),
-        ok(sessionStub),
+        ok(session),
     );
 });
 

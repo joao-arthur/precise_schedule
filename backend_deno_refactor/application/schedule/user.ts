@@ -1,6 +1,6 @@
 import type { IdGenerator } from "../../domain/generator/id.ts";
 import type { DateGenerator } from "../../domain/generator/date.ts";
-import type { SessionCreateService } from "../../domain/session/create.ts";
+import type { SessionService } from "../../domain/session/service.ts";
 import type { User } from "../../domain/schedule/user/model.ts";
 import type { UserCreate } from "../../domain/schedule/user/create.ts";
 import type { UserUpdate } from "../../domain/schedule/user/update.ts";
@@ -19,14 +19,14 @@ export async function userCreateController(
     repo: UserRepo,
     idGenerator: IdGenerator,
     dateGenerator: DateGenerator,
-    sessionCreate: SessionCreateService,
+    sessionService: SessionService,
     req: HTTPRequest<UserCreate>,
 ): Promise<HTTPResponse> {
     const result = await userCreateService(
         repo,
         idGenerator,
         dateGenerator,
-        sessionCreate,
+        sessionService,
         req.body,
     );
     switch (result.type) {
@@ -54,10 +54,10 @@ export async function userUpdateController(
 
 export async function userLoginController(
     repo: UserRepo,
-    sessionCreate: SessionCreateService,
+    sessionService: SessionService,
     req: HTTPRequest<UserLogin>,
 ): Promise<HTTPResponse> {
-    const result = await userLoginService(repo, sessionCreate, req.body);
+    const result = await userLoginService(repo, sessionService, req.body);
     switch (result.type) {
         case "ok":
             return ok(result.data);
