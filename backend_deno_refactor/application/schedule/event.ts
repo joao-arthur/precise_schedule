@@ -32,7 +32,7 @@ import { partyUpdateService } from "../../domain/schedule/event/party/update.ts"
 import { errorHandler } from "../http/errorHandler.ts";
 import { created, noContent, ok } from "../http/response.ts";
 
-export async function eventDeleteController(
+export async function eventDeleteEndpoint(
     repo: EventRepo,
     userId: User["id"],
     req: HTTPRequest,
@@ -46,7 +46,7 @@ export async function eventDeleteController(
     }
 }
 
-export async function eventInfoReadManyController(
+export async function eventInfoReadManyEndpoint(
     repo: EventRepo,
     userId: User["id"],
 ): Promise<HTTPResponse> {
@@ -59,7 +59,7 @@ export async function eventInfoReadManyController(
     }
 }
 
-export async function eventInfoReadOneController(
+export async function eventInfoReadOneEndpoint(
     repo: EventRepo,
     userId: User["id"],
     req: HTTPRequest,
@@ -73,7 +73,7 @@ export async function eventInfoReadOneController(
     }
 }
 
-export async function appointmentCreateController(
+export async function appointmentCreateEndpoint(
     repo: EventRepo,
     idGenerator: IdGenerator,
     dateGenerator: DateGenerator,
@@ -95,7 +95,7 @@ export async function appointmentCreateController(
     }
 }
 
-export async function appointmentUpdateController(
+export async function appointmentUpdateEndpoint(
     repo: EventRepo,
     dateGenerator: DateGenerator,
     userId: User["id"],
@@ -116,7 +116,7 @@ export async function appointmentUpdateController(
     }
 }
 
-export async function birthdayCreateController(
+export async function birthdayCreateEndpoint(
     repo: EventRepo,
     idGenerator: IdGenerator,
     dateGenerator: DateGenerator,
@@ -132,7 +132,7 @@ export async function birthdayCreateController(
     }
 }
 
-export async function birthdayUpdateController(
+export async function birthdayUpdateEndpoint(
     repo: EventRepo,
     dateGenerator: DateGenerator,
     userId: User["id"],
@@ -153,7 +153,7 @@ export async function birthdayUpdateController(
     }
 }
 
-export async function dateCreateController(
+export async function dateCreateEndpoint(
     repo: EventRepo,
     idGenerator: IdGenerator,
     dateGenerator: DateGenerator,
@@ -169,7 +169,7 @@ export async function dateCreateController(
     }
 }
 
-export async function dateUpdateController(
+export async function dateUpdateEndpoint(
     repo: EventRepo,
     dateGenerator: DateGenerator,
     userId: User["id"],
@@ -184,7 +184,7 @@ export async function dateUpdateController(
     }
 }
 
-export async function meetingCreateController(
+export async function meetingCreateEndpoint(
     repo: EventRepo,
     idGenerator: IdGenerator,
     dateGenerator: DateGenerator,
@@ -200,7 +200,7 @@ export async function meetingCreateController(
     }
 }
 
-export async function meetingUpdateController(
+export async function meetingUpdateEndpoint(
     repo: EventRepo,
     dateGenerator: DateGenerator,
     userId: User["id"],
@@ -221,7 +221,7 @@ export async function meetingUpdateController(
     }
 }
 
-export async function partyCreateController(
+export async function partyCreateEndpoint(
     repo: EventRepo,
     idGenerator: IdGenerator,
     dateGenerator: DateGenerator,
@@ -237,7 +237,7 @@ export async function partyCreateController(
     }
 }
 
-export async function partyUpdateController(
+export async function partyUpdateEndpoint(
     repo: EventRepo,
     dateGenerator: DateGenerator,
     userId: User["id"],

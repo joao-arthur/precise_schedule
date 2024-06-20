@@ -8,10 +8,10 @@ import type { UserUpdate } from "../../domain/schedule/user/update.ts";
 import type { UserLogin } from "../../domain/schedule/user/login.ts";
 import { reqBuild } from "../../application/http/request.ts";
 import {
-    userCreateController,
-    userInfoReadByIdController,
-    userLoginController,
-    userUpdateController,
+    userCreateEndpoint,
+    userInfoReadByIdEndpoint,
+    userLoginEndpoint,
+    userUpdateEndpoint,
 } from "../../application/schedule/user.ts";
 import { bodyBuild, resultBuild, userIdBuild } from "../http/httpOak.ts";
 
@@ -26,7 +26,7 @@ export function userControllerOak(
         .post("/user", async (ctx) => {
             const body = await bodyBuild<UserCreate>(ctx);
             const req = reqBuild(body, {}, {});
-            const res = await userCreateController(
+            const res = await userCreateEndpoint(
                 repo,
                 idGenerator,
                 dateGenerator,
@@ -39,18 +39,18 @@ export function userControllerOak(
             const userId = await userIdBuild(ctx);
             const body = await bodyBuild<UserUpdate>(ctx);
             const req = reqBuild(body, {}, {});
-            const res = await userUpdateController(repo, dateGenerator, userId, req);
+            const res = await userUpdateEndpoint(repo, dateGenerator, userId, req);
             resultBuild(res, ctx);
         })
         .get("/user", async (ctx) => {
             const userId = await userIdBuild(ctx);
-            const res = await userInfoReadByIdController(repo, userId);
+            const res = await userInfoReadByIdEndpoint(repo, userId);
             resultBuild(res, ctx);
         })
         .post("/user/login", async (ctx) => {
             const body = await bodyBuild<UserLogin>(ctx);
             const req = reqBuild(body, {}, {});
-            const res = await userLoginController(repo, sessionService, req);
+            const res = await userLoginEndpoint(repo, sessionService, req);
             resultBuild(res, ctx);
         });
 }

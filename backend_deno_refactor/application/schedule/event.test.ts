@@ -35,24 +35,24 @@ import {
 import { created, noContent, ok } from "../http/response.ts";
 import { requestBuild } from "../http/request.stub.ts";
 import {
-    appointmentCreateController,
-    appointmentUpdateController,
-    birthdayCreateController,
-    birthdayUpdateController,
-    dateCreateController,
-    dateUpdateController,
-    eventDeleteController,
-    eventInfoReadManyController,
-    eventInfoReadOneController,
-    meetingCreateController,
-    meetingUpdateController,
-    partyCreateController,
-    partyUpdateController,
+    appointmentCreateEndpoint,
+    appointmentUpdateEndpoint,
+    birthdayCreateEndpoint,
+    birthdayUpdateEndpoint,
+    dateCreateEndpoint,
+    dateUpdateEndpoint,
+    eventDeleteEndpoint,
+    eventInfoReadManyEndpoint,
+    eventInfoReadOneEndpoint,
+    meetingCreateEndpoint,
+    meetingUpdateEndpoint,
+    partyCreateEndpoint,
+    partyUpdateEndpoint,
 } from "./event.ts";
 
-Deno.test("eventDeleteController", async () => {
+Deno.test("eventDeleteEndpoint", async () => {
     assertEquals(
-        await eventDeleteController(
+        await eventDeleteEndpoint(
             eventRepoOneStubBuild(appointmentStub),
             "user-id",
             requestBuild(undefined, { id: "appointment-id" }),
@@ -61,9 +61,9 @@ Deno.test("eventDeleteController", async () => {
     );
 });
 
-Deno.test("eventInfoReadManyController", async () => {
+Deno.test("eventInfoReadManyEndpoint", async () => {
     assertEquals(
-        await eventInfoReadManyController(
+        await eventInfoReadManyEndpoint(
             eventRepoManyStubBuild([appointmentStub]),
             "user-id",
         ),
@@ -71,9 +71,9 @@ Deno.test("eventInfoReadManyController", async () => {
     );
 });
 
-Deno.test("eventInfoReadOneController", async () => {
+Deno.test("eventInfoReadOneEndpoint", async () => {
     assertEquals(
-        await eventInfoReadOneController(
+        await eventInfoReadOneEndpoint(
             eventRepoOneStubBuild(appointmentStub),
             "user-id",
             requestBuild(undefined, { id: "appointment-id" }),
@@ -82,9 +82,9 @@ Deno.test("eventInfoReadOneController", async () => {
     );
 });
 
-Deno.test("appointmentCreateController", async () => {
+Deno.test("appointmentCreateEndpoint", async () => {
     assertEquals(
-        await appointmentCreateController(
+        await appointmentCreateEndpoint(
             eventRepoEmptyStubBuild(),
             idGeneratorStubBuild("appointment-id"),
             dateGeneratorStubBuild(new Date("2024-06-16T19:16:12.327Z")),
@@ -95,9 +95,9 @@ Deno.test("appointmentCreateController", async () => {
     );
 });
 
-Deno.test("appointmentUpdateController", async () => {
+Deno.test("appointmentUpdateEndpoint", async () => {
     assertEquals(
-        await appointmentUpdateController(
+        await appointmentUpdateEndpoint(
             eventRepoOneStubBuild(appointmentStub),
             dateGeneratorStubBuild(new Date("2025-07-18T15:43:12.377Z")),
             "user-id",
@@ -107,9 +107,9 @@ Deno.test("appointmentUpdateController", async () => {
     );
 });
 
-Deno.test("birthdayCreateController", async () => {
+Deno.test("birthdayCreateEndpoint", async () => {
     assertEquals(
-        await birthdayCreateController(
+        await birthdayCreateEndpoint(
             eventRepoEmptyStubBuild(),
             idGeneratorStubBuild("birthday-id"),
             dateGeneratorStubBuild(new Date("2024-06-16T19:16:12.327Z")),
@@ -120,9 +120,9 @@ Deno.test("birthdayCreateController", async () => {
     );
 });
 
-Deno.test("birthdayUpdateController", async () => {
+Deno.test("birthdayUpdateEndpoint", async () => {
     assertEquals(
-        await birthdayUpdateController(
+        await birthdayUpdateEndpoint(
             eventRepoOneStubBuild(birthdayStub),
             dateGeneratorStubBuild(new Date("2025-07-18T15:43:12.377Z")),
             "user-id",
@@ -132,9 +132,9 @@ Deno.test("birthdayUpdateController", async () => {
     );
 });
 
-Deno.test("dateCreateController", async () => {
+Deno.test("dateCreateEndpoint", async () => {
     assertEquals(
-        await dateCreateController(
+        await dateCreateEndpoint(
             eventRepoEmptyStubBuild(),
             idGeneratorStubBuild("date-id"),
             dateGeneratorStubBuild(new Date("2024-06-16T19:16:12.327Z")),
@@ -145,9 +145,9 @@ Deno.test("dateCreateController", async () => {
     );
 });
 
-Deno.test("dateUpdateController", async () => {
+Deno.test("dateUpdateEndpoint", async () => {
     assertEquals(
-        await dateUpdateController(
+        await dateUpdateEndpoint(
             eventRepoOneStubBuild(dateStub),
             dateGeneratorStubBuild(new Date("2025-07-18T15:43:12.377Z")),
             "user-id",
@@ -157,9 +157,9 @@ Deno.test("dateUpdateController", async () => {
     );
 });
 
-Deno.test("meetingCreateController", async () => {
+Deno.test("meetingCreateEndpoint", async () => {
     assertEquals(
-        await meetingCreateController(
+        await meetingCreateEndpoint(
             eventRepoEmptyStubBuild(),
             idGeneratorStubBuild("meeting-id"),
             dateGeneratorStubBuild(new Date("2024-06-16T19:16:12.327Z")),
@@ -170,9 +170,9 @@ Deno.test("meetingCreateController", async () => {
     );
 });
 
-Deno.test("meetingUpdateController", async () => {
+Deno.test("meetingUpdateEndpoint", async () => {
     assertEquals(
-        await meetingUpdateController(
+        await meetingUpdateEndpoint(
             eventRepoOneStubBuild(meetingStub),
             dateGeneratorStubBuild(new Date("2025-07-18T15:43:12.377Z")),
             "user-id",
@@ -182,9 +182,9 @@ Deno.test("meetingUpdateController", async () => {
     );
 });
 
-Deno.test("partyCreateController", async () => {
+Deno.test("partyCreateEndpoint", async () => {
     assertEquals(
-        await partyCreateController(
+        await partyCreateEndpoint(
             eventRepoEmptyStubBuild(),
             idGeneratorStubBuild("party-id"),
             dateGeneratorStubBuild(new Date("2024-06-16T19:16:12.327Z")),
@@ -195,9 +195,9 @@ Deno.test("partyCreateController", async () => {
     );
 });
 
-Deno.test("partyUpdateController", async () => {
+Deno.test("partyUpdateEndpoint", async () => {
     assertEquals(
-        await partyUpdateController(
+        await partyUpdateEndpoint(
             eventRepoOneStubBuild(partyStub),
             dateGeneratorStubBuild(new Date("2025-07-18T15:43:12.377Z")),
             "user-id",

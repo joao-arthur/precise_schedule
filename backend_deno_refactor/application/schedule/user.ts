@@ -15,7 +15,7 @@ import { userLoginService } from "../../domain/schedule/user/login.ts";
 import { noContent, ok } from "../http/response.ts";
 import { errorHandler } from "../http/errorHandler.ts";
 
-export async function userCreateController(
+export async function userCreateEndpoint(
     repo: UserRepo,
     idGenerator: IdGenerator,
     dateGenerator: DateGenerator,
@@ -37,7 +37,7 @@ export async function userCreateController(
     }
 }
 
-export async function userUpdateController(
+export async function userUpdateEndpoint(
     repo: UserRepo,
     dateGenerator: DateGenerator,
     userId: User["id"],
@@ -52,7 +52,7 @@ export async function userUpdateController(
     }
 }
 
-export async function userLoginController(
+export async function userLoginEndpoint(
     repo: UserRepo,
     sessionService: SessionService,
     req: HTTPRequest<UserLogin>,
@@ -66,7 +66,7 @@ export async function userLoginController(
     }
 }
 
-export async function userInfoReadByIdController(
+export async function userInfoReadByIdEndpoint(
     repo: UserRepo,
     userId: User["id"],
 ): Promise<HTTPResponse> {

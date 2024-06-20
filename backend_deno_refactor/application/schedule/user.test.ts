@@ -16,15 +16,15 @@ import {
 import { noContent, ok } from "../http/response.ts";
 import { requestBuild } from "../http/request.stub.ts";
 import {
-    userCreateController,
-    userInfoReadByIdController,
-    userLoginController,
-    userUpdateController,
+    userCreateEndpoint,
+    userInfoReadByIdEndpoint,
+    userLoginEndpoint,
+    userUpdateEndpoint,
 } from "./user.ts";
 
-Deno.test("userCreateController", async () => {
+Deno.test("userCreateEndpoint", async () => {
     assertEquals(
-        await userCreateController(
+        await userCreateEndpoint(
             userRepoEmptyStubBuild(),
             idGeneratorStubBuild("user-id"),
             dateGeneratorStubBuild(new Date("2023-03-02T19:16:12.327Z")),
@@ -35,9 +35,9 @@ Deno.test("userCreateController", async () => {
     );
 });
 
-Deno.test("userUpdateController", async () => {
+Deno.test("userUpdateEndpoint", async () => {
     assertEquals(
-        await userUpdateController(
+        await userUpdateEndpoint(
             userRepoUserStubBuild(),
             dateGeneratorStubBuild(new Date("2024-06-17T20:53:37.173Z")),
             "user-id",
@@ -47,9 +47,9 @@ Deno.test("userUpdateController", async () => {
     );
 });
 
-Deno.test("UserLoginController", async () => {
+Deno.test("UserLoginEndpoint", async () => {
     assertEquals(
-        await userLoginController(
+        await userLoginEndpoint(
             userRepoUserStubBuild(),
             sessionStubBuild(session, "user-id"),
             requestBuild(userLoginStub, {}),
@@ -58,9 +58,9 @@ Deno.test("UserLoginController", async () => {
     );
 });
 
-Deno.test("userInfoReadByIdController", async () => {
+Deno.test("userInfoReadByIdEndpoint", async () => {
     assertEquals(
-        await userInfoReadByIdController(
+        await userInfoReadByIdEndpoint(
             userRepoUserStubBuild(),
             "user-id",
         ),

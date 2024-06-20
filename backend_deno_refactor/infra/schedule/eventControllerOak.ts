@@ -14,19 +14,19 @@ import type { PartyCreate } from "../../domain/schedule/event/party/create.ts";
 import type { PartyUpdate } from "../../domain/schedule/event/party/update.ts";
 import { reqBuild } from "../../application/http/request.ts";
 import {
-    appointmentCreateController,
-    appointmentUpdateController,
-    birthdayCreateController,
-    birthdayUpdateController,
-    dateCreateController,
-    dateUpdateController,
-    meetingCreateController,
-    meetingUpdateController,
-    partyCreateController,
-    partyUpdateController,
-    eventDeleteController,
-    eventInfoReadManyController,
-    eventInfoReadOneController,
+    appointmentCreateEndpoint,
+    appointmentUpdateEndpoint,
+    birthdayCreateEndpoint,
+    birthdayUpdateEndpoint,
+    dateCreateEndpoint,
+    dateUpdateEndpoint,
+    eventDeleteEndpoint,
+    eventInfoReadManyEndpoint,
+    eventInfoReadOneEndpoint,
+    meetingCreateEndpoint,
+    meetingUpdateEndpoint,
+    partyCreateEndpoint,
+    partyUpdateEndpoint,
 } from "../../application/schedule/event.ts";
 import { bodyBuild, paramsBuild, resultBuild, userIdBuild } from "../http/httpOak.ts";
 
@@ -41,26 +41,26 @@ export function eventControllerOak(
             const userId = await userIdBuild(ctx);
             const params = await paramsBuild(ctx);
             const req = reqBuild(undefined, params, {});
-            const res = await eventInfoReadOneController(repo, userId, req);
+            const res = await eventInfoReadOneEndpoint(repo, userId, req);
             resultBuild(res, ctx);
         })
         .get("/event", async (ctx) => {
             const userId = await userIdBuild(ctx);
-            const res = await eventInfoReadManyController(repo, userId);
+            const res = await eventInfoReadManyEndpoint(repo, userId);
             resultBuild(res, ctx);
         })
         .delete("/event/:id", async (ctx) => {
             const userId = await userIdBuild(ctx);
             const params = await paramsBuild(ctx);
             const req = reqBuild(undefined, params, {});
-            const res = await eventDeleteController(repo, userId, req);
+            const res = await eventDeleteEndpoint(repo, userId, req);
             resultBuild(res, ctx);
         })
         .post("/event/APPOINTMENT", async (ctx) => {
             const userId = await userIdBuild(ctx);
             const body = await bodyBuild<AppointmentCreate>(ctx);
             const req = reqBuild(body, {}, {});
-            const res = await appointmentCreateController(
+            const res = await appointmentCreateEndpoint(
                 repo,
                 idGenerator,
                 dateGenerator,
@@ -73,7 +73,7 @@ export function eventControllerOak(
             const userId = await userIdBuild(ctx);
             const body = await bodyBuild<BirthdayCreate>(ctx);
             const req = reqBuild(body, {}, {});
-            const res = await birthdayCreateController(
+            const res = await birthdayCreateEndpoint(
                 repo,
                 idGenerator,
                 dateGenerator,
@@ -86,14 +86,14 @@ export function eventControllerOak(
             const userId = await userIdBuild(ctx);
             const body = await bodyBuild<DateCreate>(ctx);
             const req = reqBuild(body, {}, {});
-            const res = await dateCreateController(repo, idGenerator, dateGenerator, userId, req);
+            const res = await dateCreateEndpoint(repo, idGenerator, dateGenerator, userId, req);
             resultBuild(res, ctx);
         })
         .post("/event/MEETING", async (ctx) => {
             const userId = await userIdBuild(ctx);
             const body = await bodyBuild<MeetingCreate>(ctx);
             const req = reqBuild(body, {}, {});
-            const res = await meetingCreateController(
+            const res = await meetingCreateEndpoint(
                 repo,
                 idGenerator,
                 dateGenerator,
@@ -106,7 +106,7 @@ export function eventControllerOak(
             const userId = await userIdBuild(ctx);
             const body = await bodyBuild<PartyCreate>(ctx);
             const req = reqBuild(body, {}, {});
-            const res = await partyCreateController(repo, idGenerator, dateGenerator, userId, req);
+            const res = await partyCreateEndpoint(repo, idGenerator, dateGenerator, userId, req);
             resultBuild(res, ctx);
         })
         .put("/event/APPOINTMENT/:id", async (ctx) => {
@@ -114,7 +114,7 @@ export function eventControllerOak(
             const body = await bodyBuild<AppointmentUpdate>(ctx);
             const params = await paramsBuild(ctx);
             const req = reqBuild(body, params, {});
-            const res = await appointmentUpdateController(repo, dateGenerator, userId, req);
+            const res = await appointmentUpdateEndpoint(repo, dateGenerator, userId, req);
             resultBuild(res, ctx);
         })
         .put("/event/BIRTHDAY/:id", async (ctx) => {
@@ -122,7 +122,7 @@ export function eventControllerOak(
             const body = await bodyBuild<BirthdayUpdate>(ctx);
             const params = await paramsBuild(ctx);
             const req = reqBuild(body, params, {});
-            const res = await birthdayUpdateController(repo, dateGenerator, userId, req);
+            const res = await birthdayUpdateEndpoint(repo, dateGenerator, userId, req);
             resultBuild(res, ctx);
         })
         .put("/event/DATE/:id", async (ctx) => {
@@ -130,7 +130,7 @@ export function eventControllerOak(
             const body = await bodyBuild<DateUpdate>(ctx);
             const params = await paramsBuild(ctx);
             const req = reqBuild(body, params, {});
-            const res = await dateUpdateController(repo, dateGenerator, userId, req);
+            const res = await dateUpdateEndpoint(repo, dateGenerator, userId, req);
             resultBuild(res, ctx);
         })
         .put("/event/MEETING/:id", async (ctx) => {
@@ -138,7 +138,7 @@ export function eventControllerOak(
             const body = await bodyBuild<MeetingUpdate>(ctx);
             const params = await paramsBuild(ctx);
             const req = reqBuild(body, params, {});
-            const res = await meetingUpdateController(repo, dateGenerator, userId, req);
+            const res = await meetingUpdateEndpoint(repo, dateGenerator, userId, req);
             resultBuild(res, ctx);
         })
         .put("/event/PARTY/:id", async (ctx) => {
@@ -146,7 +146,7 @@ export function eventControllerOak(
             const body = await bodyBuild<PartyUpdate>(ctx);
             const params = await paramsBuild(ctx);
             const req = reqBuild(body, params, {});
-            const res = await partyUpdateController(repo, dateGenerator, userId, req);
+            const res = await partyUpdateEndpoint(repo, dateGenerator, userId, req);
             resultBuild(res, ctx);
         });
 }
