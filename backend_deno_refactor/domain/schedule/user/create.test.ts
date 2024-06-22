@@ -1,7 +1,7 @@
 import { assertEquals } from "@std/assert/assert-equals";
 import { ok } from "../../lang/result.ts";
-import { idGeneratorStubBuild } from "../../generator/id.stub.ts";
-import { dateGeneratorStubBuild } from "../../generator/date.stub.ts";
+import { idGeneratorStubBuild } from "../../generator.stub.ts";
+import { dateGeneratorStubBuild } from "../../generator.stub.ts";
 import { session } from "../../session/service.stub.ts";
 import { userRepoEmptyStubBuild } from "./repo.stub.ts";
 import { userCreateStub, userStub } from "./model.stub.ts";

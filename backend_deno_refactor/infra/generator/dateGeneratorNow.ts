@@ -1,4 +1,4 @@
-import type { DateGenerator } from "../../domain/generator/date.ts";
+import type { DateGenerator } from "../../domain/generator.ts";
 
 export function dateGeneratorNow(): DateGenerator {
     return {

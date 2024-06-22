@@ -1,7 +1,7 @@
 import type { Router } from "oak/mod.ts";
 import type { UserRepo } from "../../domain/schedule/user/repo.ts";
-import type { IdGenerator } from "../../domain/generator/id.ts";
-import type { DateGenerator } from "../../domain/generator/date.ts";
+import type { IdGenerator } from "../../domain/generator.ts";
+import type { DateGenerator } from "../../domain/generator.ts";
 import type { SessionService } from "../../domain/session/service.ts";
 import type { UserCreate } from "../../domain/schedule/user/create.ts";
 import type { UserUpdate } from "../../domain/schedule/user/update.ts";

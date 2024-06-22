@@ -1,4 +1,4 @@
-import type { IdGenerator } from "../../domain/generator/id.ts";
+import type { IdGenerator } from "../../domain/generator.ts";
 
 const LENGTH = 64;
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";

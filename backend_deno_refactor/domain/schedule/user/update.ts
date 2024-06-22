@@ -2,7 +2,7 @@ import type { Result } from "../../lang/result.ts";
 import type { RepoErr } from "../../repo.ts";
 import type { Schema } from "../../validation/schema.ts";
 import type { ValidationErr } from "../../validation/validate.ts";
-import type { DateGenerator } from "../../generator/date.ts";
+import type { DateGenerator } from "../../generator.ts";
 import type { UserNotFound } from "./read.ts";
 import type { EmailAlreadyRegistered, UsernameAlreadyRegistered } from "./uniqueInfo.ts";
 import type { UserRepo } from "./repo.ts";

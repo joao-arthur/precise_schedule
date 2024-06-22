@@ -1,6 +1,6 @@
 import { assertEquals } from "@std/assert/assert-equals";
 import { ok } from "../../../lang/result.ts";
-import { dateGeneratorStubBuild } from "../../../generator/date.stub.ts";
+import { dateGeneratorStubBuild } from "../../../generator.stub.ts";
 import {
     meetingEventUpdateStub,
     meetingStub,

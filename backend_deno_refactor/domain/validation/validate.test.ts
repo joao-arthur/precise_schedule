@@ -2,7 +2,7 @@ import { assertEquals } from "@std/assert/assert-equals";
 import { err, ok } from "../lang/result.ts";
 import { validateSchema, ValidationErr } from "./validate.ts";
 
-Deno.test("Validate", () => {
+Deno.test("validateSchema", () => {
     assertEquals(
         validateSchema(
             { dt: [{ type: "dt" }], time: [{ type: "time" }] },

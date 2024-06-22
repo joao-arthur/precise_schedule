@@ -1,6 +1,6 @@
 import type { Result } from "../../../lang/result.ts";
-import type { IdGenerator } from "../../../generator/id.ts";
-import type { DateGenerator } from "../../../generator/date.ts";
+import type { IdGenerator } from "../../../generator.ts";
+import type { DateGenerator } from "../../../generator.ts";
 import type { RepoErr } from "../../../repo.ts";
 import type { ValidationErr } from "../../../validation/validate.ts";
 import type { Schema } from "../../../validation/schema.ts";

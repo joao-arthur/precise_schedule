@@ -1,5 +1,5 @@
-import type { IdGenerator } from "../../generator/id.ts";
-import type { DateGenerator } from "../../generator/date.ts";
+import type { IdGenerator } from "../../generator.ts";
+import type { DateGenerator } from "../../generator.ts";
 import type { RepoErr } from "../../repo.ts";
 import type { Result } from "../../lang/result.ts";
 import type { User } from "../user/model.ts";

@@ -3,7 +3,7 @@ import { ok } from "../../lang/result.ts";
 import { userRepoUserStubBuild } from "./repo.stub.ts";
 import { userStub, userUpdatedStub, userUpdateStub } from "./model.stub.ts";
 import { userUpdateService, userUpdateToUser } from "./update.ts";
-import { dateGeneratorStubBuild } from "../../generator/date.stub.ts";
+import { dateGeneratorStubBuild } from "../../generator.stub.ts";
 
 Deno.test("userUpdateToUser", () => {
     assertEquals(

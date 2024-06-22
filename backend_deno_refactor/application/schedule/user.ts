@@ -1,5 +1,5 @@
-import type { IdGenerator } from "../../domain/generator/id.ts";
-import type { DateGenerator } from "../../domain/generator/date.ts";
+import type { IdGenerator } from "../../domain/generator.ts";
+import type { DateGenerator } from "../../domain/generator.ts";
 import type { SessionService } from "../../domain/session/service.ts";
 import type { User } from "../../domain/schedule/user/model.ts";
 import type { UserCreate } from "../../domain/schedule/user/create.ts";
