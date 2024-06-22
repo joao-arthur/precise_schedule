@@ -1,12 +1,12 @@
 import type { Result } from "../../lang/result.ts";
-import type { RepoError } from "../../repo.ts";
+import type { RepoErr } from "../../repo.ts";
 import type { User } from "../user/model.ts";
 import type { EventRepo } from "./repo.ts";
 import type { Event } from "./model.ts";
 import { err, ok } from "../../lang/result.ts";
-import { BusinessError } from "../../general.ts";
+import { BusinessErr } from "../../general.ts";
 
-export class EventNotFound extends BusinessError {
+export class EventNotFound extends BusinessErr {
     constructor() {
         super("The event was not found!");
     }
@@ -36,8 +36,8 @@ export function eventToEventInfo(event: Event): EventInfo {
     };
 }
 
-type ReadByUserErrors = RepoError;
-type ReadByUserAndIdErrors = RepoError | EventNotFound;
+type ReadByUserErrors = RepoErr;
+type ReadByUserAndIdErrors = RepoErr | EventNotFound;
 
 export function eventReadMany(
     repo: EventRepo,

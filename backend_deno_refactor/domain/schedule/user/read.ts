@@ -1,11 +1,11 @@
 import type { Result } from "../../lang/result.ts";
-import type { RepoError } from "../../repo.ts";
+import type { RepoErr } from "../../repo.ts";
 import type { UserRepo } from "./repo.ts";
 import type { User } from "./model.ts";
 import { err, ok } from "../../lang/result.ts";
-import { BusinessError } from "../../general.ts";
+import { BusinessErr } from "../../general.ts";
 
-export class UserNotFound extends BusinessError {
+export class UserNotFound extends BusinessErr {
     constructor() {
         super("The user was not found!");
     }
@@ -28,7 +28,7 @@ export function userInfoBuild(user: User): UserInfo {
 }
 
 type UserReadErrors =
-    | RepoError
+    | RepoErr
     | UserNotFound;
 
 export async function userReadById(

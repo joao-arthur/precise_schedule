@@ -1,7 +1,7 @@
 import type { Result } from "../../../lang/result.ts";
 import type { DateGenerator } from "../../../generator/date.ts";
-import type { RepoError } from "../../../repo.ts";
-import type { ValidationError } from "../../../validation/validate.ts";
+import type { RepoErr } from "../../../repo.ts";
+import type { ValidationErr } from "../../../validation/validate.ts";
 import type { Schema } from "../../../validation/schema.ts";
 import type { User } from "../../user/model.ts";
 import type { EventNotFound } from "../read.ts";
@@ -18,7 +18,7 @@ export type PartyUpdate = {
     readonly end: Event["end"];
 };
 
-export const partyUpdateSchema: Schema<PartyUpdate> = {
+const partyUpdateSchema: Schema<PartyUpdate> = {
     name: [
         { type: "str" },
         { type: "strMinLen", min: 1 },
@@ -33,7 +33,7 @@ export const partyUpdateSchema: Schema<PartyUpdate> = {
     ],
     end: [
         { type: "time" },
-        { type: "compareBigger", field: "begin" },
+        { type: "gt", field: "begin" },
     ],
 };
 
@@ -50,8 +50,8 @@ export function partyUpdateToEventUpdate(event: PartyUpdate): EventUpdate {
 }
 
 type PartyUpdateErrors =
-    | RepoError
-    | ValidationError
+    | RepoErr
+    | ValidationErr
     | EventNotFound;
 
 export function partyUpdateService(

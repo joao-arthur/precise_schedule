@@ -1,17 +1,17 @@
 import type { HTTPResponse } from "./response.ts";
-import { ValidationError } from "../../domain/validation/validate.ts";
-import { SessionDecodeError } from "../../domain/session/service.ts";
-import { BusinessError } from "../../domain/general.ts";
+import { ValidationErr } from "../../domain/validation/validate.ts";
+import { SessionDecodeErr } from "../../domain/session/service.ts";
+import { BusinessErr } from "../../domain/general.ts";
 import { badRequest, internalServerError, unauthorized } from "./response.ts";
 
 export function errorHandler(error: Error): HTTPResponse {
-    if (error instanceof ValidationError) {
+    if (error instanceof ValidationErr) {
         return badRequest({ validation: error.result });
     }
-    if (error instanceof BusinessError) {
+    if (error instanceof BusinessErr) {
         return badRequest({ message: error.message });
     }
-    if (error instanceof SessionDecodeError) {
+    if (error instanceof SessionDecodeErr) {
         return unauthorized();
     }
     return internalServerError();

@@ -1,7 +1,7 @@
 import type { Result } from "../../../lang/result.ts";
 import type { DateGenerator } from "../../../generator/date.ts";
-import type { RepoError } from "../../../repo.ts";
-import type { ValidationError } from "../../../validation/validate.ts";
+import type { RepoErr } from "../../../repo.ts";
+import type { ValidationErr } from "../../../validation/validate.ts";
 import type { Schema } from "../../../validation/schema.ts";
 import type { User } from "../../user/model.ts";
 import type { EventNotFound } from "../read.ts";
@@ -33,7 +33,7 @@ const dateUpdateSchema: Schema<DateUpdate> = {
     ],
     end: [
         { type: "time" },
-        { type: "compareBigger", field: "begin" },
+        { type: "gt", field: "begin" },
     ],
 };
 
@@ -50,8 +50,8 @@ export function dateUpdateToEventUpdate(event: DateUpdate): EventUpdate {
 }
 
 type DateUpdateErrors =
-    | RepoError
-    | ValidationError
+    | RepoErr
+    | ValidationErr
     | EventNotFound;
 
 export function dateUpdateService(

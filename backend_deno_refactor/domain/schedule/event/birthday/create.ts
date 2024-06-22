@@ -1,8 +1,8 @@
 import type { Result } from "../../../lang/result.ts";
 import type { IdGenerator } from "../../../generator/id.ts";
 import type { DateGenerator } from "../../../generator/date.ts";
-import type { RepoError } from "../../../repo.ts";
-import type { ValidationError } from "../../../validation/validate.ts";
+import type { RepoErr } from "../../../repo.ts";
+import type { ValidationErr } from "../../../validation/validate.ts";
 import type { Schema } from "../../../validation/schema.ts";
 import type { User } from "../../user/model.ts";
 import type { EventRepo } from "../repo.ts";
@@ -41,8 +41,8 @@ export function birthdayCreateToEventCreate(event: BirthdayCreate): EventCreate 
 }
 
 type BirthdayCreateErrors =
-    | RepoError
-    | ValidationError;
+    | RepoErr
+    | ValidationErr;
 
 export function birthdayCreateService(
     repo: EventRepo,

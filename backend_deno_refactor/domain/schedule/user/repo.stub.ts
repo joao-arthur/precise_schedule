@@ -1,5 +1,5 @@
 import type { UserRepo } from "./repo.ts";
-import { RepoError } from "../../repo.ts";
+import { RepoErr } from "../../repo.ts";
 import { err, ok } from "../../lang/result.ts";
 import { userStub } from "./model.stub.ts";
 
@@ -41,11 +41,11 @@ export function userRepoEmptyStubBuild(): UserRepo {
 
 export function userRepoErrStubBuild(): UserRepo {
     return {
-        cCreate: () => Promise.resolve(err(new RepoError())),
-        cUpdate: () => Promise.resolve(err(new RepoError())),
-        cReadById: () => Promise.resolve(err(new RepoError())),
-        cReadByCredentials: () => Promise.resolve(err(new RepoError())),
-        cCountUsername: () => Promise.resolve(err(new RepoError())),
-        cCountEmail: () => Promise.resolve(err(new RepoError())),
+        cCreate: () => Promise.resolve(err(new RepoErr())),
+        cUpdate: () => Promise.resolve(err(new RepoErr())),
+        cReadById: () => Promise.resolve(err(new RepoErr())),
+        cReadByCredentials: () => Promise.resolve(err(new RepoErr())),
+        cCountUsername: () => Promise.resolve(err(new RepoErr())),
+        cCountEmail: () => Promise.resolve(err(new RepoErr())),
     };
 }

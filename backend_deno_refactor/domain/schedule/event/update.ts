@@ -1,6 +1,6 @@
 import type { Result } from "../../lang/result.ts";
 import type { DateGenerator } from "../../generator/date.ts";
-import type { RepoError } from "../../repo.ts";
+import type { RepoErr } from "../../repo.ts";
 import type { User } from "../user/model.ts";
 import type { EventNotFound } from "./read.ts";
 import type { EventRepo } from "./repo.ts";
@@ -35,7 +35,7 @@ export function eventUpdateToEvent(event: EventUpdate, existingEvent: Event, now
 }
 
 type EventUpdateErrors =
-    | RepoError
+    | RepoErr
     | EventNotFound;
 
 export async function eventUpdate(

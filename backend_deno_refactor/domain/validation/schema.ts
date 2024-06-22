@@ -1,33 +1,33 @@
-import type { BoolVal } from "./validations/bool.ts";
-import type { DtVal } from "./validations/dt.ts";
-import type { DtMinVal } from "./validations/dtMin.ts";
-import type { EmailVal } from "./validations/email.ts";
-import type { EnumVal } from "./validations/enum.ts";
-import type { StrVal } from "./validations/str.ts";
-import type { StrMaxLenVal } from "./validations/strMaxLen.ts";
-import type { StrMinLenVal } from "./validations/strMinLen.ts";
-import type { StrMinNumVal } from "./validations/strMinNum.ts";
-import type { StrMinLowerVal } from "./validations/strMinLower.ts";
-import type { StrMinUpperVal } from "./validations/strMinUpper.ts";
-import type { StrMinSpecialVal } from "./validations/strMinSpecial.ts";
-import type { TimeVal } from "./validations/time.ts";
-import type { CompareBiggerVal } from "./validations/compareBigger.ts";
+import type { BoolV } from "./validations.ts";
+import type { DtV } from "./validations.ts";
+import type { DtMinV } from "./validations.ts";
+import type { EmailV } from "./validations.ts";
+import type { EnumV } from "./validations.ts";
+import type { StrV } from "./validations.ts";
+import type { StrMaxLenV } from "./validations.ts";
+import type { StrMinLenV } from "./validations.ts";
+import type { StrMinNumV } from "./validations.ts";
+import type { StrMinLowerV } from "./validations.ts";
+import type { StrMinUpperV } from "./validations.ts";
+import type { StrMinSpecialV } from "./validations.ts";
+import type { TimeV } from "./validations.ts";
+import type { GTV } from "./validations.ts";
 
 export type Validation =
-    | BoolVal
-    | DtVal
-    | DtMinVal
-    | EmailVal
-    | EnumVal
-    | StrVal
-    | StrMaxLenVal
-    | StrMinLenVal
-    | StrMinNumVal
-    | StrMinLowerVal
-    | StrMinUpperVal
-    | StrMinSpecialVal
-    | TimeVal
-    | CompareBiggerVal;
+    | BoolV
+    | DtV
+    | DtMinV
+    | EmailV
+    | EnumV
+    | StrV
+    | StrMaxLenV
+    | StrMinLenV
+    | StrMinNumV
+    | StrMinLowerV
+    | StrMinUpperV
+    | StrMinSpecialV
+    | TimeV
+    | GTV;
 
 export type Schema<Keys> = {
     readonly [key in keyof Keys]: readonly Validation[];

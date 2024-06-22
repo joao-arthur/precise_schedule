@@ -4,7 +4,7 @@ import type { SessionService } from "../../domain/session/service.ts";
 import { verify } from "djwt/mod.ts";
 import { err, ok } from "../../domain/lang/result.ts";
 import { create, getNumericDate } from "djwt/mod.ts";
-import { SessionCreateError, SessionDecodeError } from "../../domain/session/service.ts";
+import { SessionCreateErr, SessionDecodeErr } from "../../domain/session/service.ts";
 
 export type SessionPayload = {
     readonly exp: number;
@@ -34,7 +34,7 @@ export function sessionJWT(): SessionService {
                 );
                 return ok({ token });
             } catch {
-                return err(new SessionCreateError());
+                return err(new SessionCreateErr());
             }
         },
         decode: async (session: Session) => {
@@ -43,7 +43,7 @@ export function sessionJWT(): SessionService {
                 const userId = (payload as SessionPayload).userId;
                 return ok(userId);
             } catch {
-                return err(new SessionDecodeError());
+                return err(new SessionDecodeErr());
             }
         },
     };

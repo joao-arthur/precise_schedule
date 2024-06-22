@@ -1,17 +1,17 @@
 import type { Result } from "../../lang/result.ts";
-import type { RepoError } from "../../repo.ts";
+import type { RepoErr } from "../../repo.ts";
 import type { UserRepo } from "./repo.ts";
 import type { User } from "./model.ts";
 import { err, ok } from "../../lang/result.ts";
-import { BusinessError } from "../../general.ts";
+import { BusinessErr } from "../../general.ts";
 
-export class UsernameAlreadyRegistered extends BusinessError {
+export class UsernameAlreadyRegistered extends BusinessErr {
     constructor() {
         super("This username is already taken, please choose another one!");
     }
 }
 
-export class EmailAlreadyRegistered extends BusinessError {
+export class EmailAlreadyRegistered extends BusinessErr {
     constructor() {
         super("This e-mail is already registered, please use another one!");
     }
@@ -23,7 +23,7 @@ export type UserUniqueInfo = {
 };
 
 type UserUniqueInfoErrors =
-    | RepoError
+    | RepoErr
     | UsernameAlreadyRegistered
     | EmailAlreadyRegistered;
 

@@ -4,9 +4,9 @@ import type { UserRepo } from "../schedule/user/repo.ts";
 import type { SessionService } from "../session/service.ts";
 import { err, ok } from "../lang/result.ts";
 import { userReadById } from "../schedule/user/read.ts";
-import { SessionDecodeError } from "../session/service.ts";
+import { SessionDecodeErr } from "../session/service.ts";
 
-type UserSessionErrors = SessionDecodeError;
+type UserSessionErrors = SessionDecodeErr;
 
 export async function validateSession(
     repo: UserRepo,
@@ -19,7 +19,7 @@ export async function validateSession(
     }
     const userResult = await userReadById(repo, userIdResult.data);
     if (userResult.type === "err") {
-        return err(new SessionDecodeError());
+        return err(new SessionDecodeErr());
     }
     return ok(undefined);
 }

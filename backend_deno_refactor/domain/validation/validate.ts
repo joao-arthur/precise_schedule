@@ -1,26 +1,26 @@
 import type { Result } from "../lang/result.ts";
 import type { Schema, Validation } from "./schema.ts";
 import { err, ok } from "../lang/result.ts";
-import { boolValidation } from "./validations/bool.ts";
-import { dtValidation } from "./validations/dt.ts";
-import { dtMinValidation } from "./validations/dtMin.ts";
-import { emailValidation } from "./validations/email.ts";
-import { enumValidation } from "./validations/enum.ts";
-import { strValidation } from "./validations/str.ts";
-import { strMaxLenValidation } from "./validations/strMaxLen.ts";
-import { strMinLenValidation } from "./validations/strMinLen.ts";
-import { strMinNumValidation } from "./validations/strMinNum.ts";
-import { strMinLowerValidation } from "./validations/strMinLower.ts";
-import { strMinUpperValidation } from "./validations/strMinUpper.ts";
-import { strMinSpecialValidation } from "./validations/strMinSpecial.ts";
-import { timeValidation } from "./validations/time.ts";
-import { compareBiggerValidation } from "./validations/compareBigger.ts";
+import { boolV } from "./validations.ts";
+import { dtV } from "./validations.ts";
+import { dtMinV } from "./validations.ts";
+import { emailV } from "./validations.ts";
+import { enumV } from "./validations.ts";
+import { strV } from "./validations.ts";
+import { strMaxLenV } from "./validations.ts";
+import { strMinLenV } from "./validations.ts";
+import { strMinNumV } from "./validations.ts";
+import { strMinLowerV } from "./validations.ts";
+import { strMinUpperV } from "./validations.ts";
+import { strMinSpecialV } from "./validations.ts";
+import { timeV } from "./validations.ts";
+import { gtV } from "./validations.ts";
 
 type ValidationResult = {
     readonly [k: string]: readonly string[];
 };
 
-export class ValidationError extends Error {
+export class ValidationErr extends Error {
     constructor(public readonly result: ValidationResult) {
         super();
     }
@@ -33,33 +33,33 @@ function execute<Keys>(
 ): Error | undefined {
     switch (validation.type) {
         case "bool":
-            return boolValidation(validation, validated?.[key]);
+            return boolV(validation, validated?.[key]);
         case "dt":
-            return dtValidation(validation, validated?.[key]);
+            return dtV(validation, validated?.[key]);
         case "dtMin":
-            return dtMinValidation(validation, validated?.[key]);
+            return dtMinV(validation, validated?.[key]);
         case "email":
-            return emailValidation(validation, validated?.[key]);
+            return emailV(validation, validated?.[key]);
         case "enum":
-            return enumValidation(validation, validated?.[key]);
+            return enumV(validation, validated?.[key]);
         case "str":
-            return strValidation(validation, validated?.[key]);
+            return strV(validation, validated?.[key]);
         case "strMaxLen":
-            return strMaxLenValidation(validation, validated?.[key]);
+            return strMaxLenV(validation, validated?.[key]);
         case "strMinLen":
-            return strMinLenValidation(validation, validated?.[key]);
+            return strMinLenV(validation, validated?.[key]);
         case "strMinNum":
-            return strMinNumValidation(validation, validated?.[key]);
+            return strMinNumV(validation, validated?.[key]);
         case "strMinLower":
-            return strMinLowerValidation(validation, validated?.[key]);
+            return strMinLowerV(validation, validated?.[key]);
         case "strMinUpper":
-            return strMinUpperValidation(validation, validated?.[key]);
+            return strMinUpperV(validation, validated?.[key]);
         case "strMinSpecial":
-            return strMinSpecialValidation(validation, validated?.[key]);
+            return strMinSpecialV(validation, validated?.[key]);
         case "time":
-            return timeValidation(validation, validated?.[key]);
-        case "compareBigger":
-            return compareBiggerValidation(
+            return timeV(validation, validated?.[key]);
+        case "gt":
+            return gtV(
                 validation,
                 validated?.[key],
                 validated?.[validation.field as keyof Keys],
@@ -70,7 +70,7 @@ function execute<Keys>(
 export function validateSchema<Keys>(
     schema: Schema<Keys>,
     validated: Keys | undefined | null,
-): Result<void, ValidationError> {
+): Result<void, ValidationErr> {
     const entries = Object.entries<readonly Validation[]>(schema);
     const result = entries
         .map(([key, validations]) => [
@@ -85,5 +85,5 @@ export function validateSchema<Keys>(
         return ok(undefined);
     }
     const obj: ValidationResult = Object.fromEntries(result);
-    return err(new ValidationError(obj));
+    return err(new ValidationErr(obj));
 }

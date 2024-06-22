@@ -1,5 +1,5 @@
 import { assertEquals } from "@std/assert/assert-equals";
-import { SessionDecodeError } from "../../domain/session/service.ts";
+import { SessionDecodeErr } from "../../domain/session/service.ts";
 import { err, ok } from "../../domain/lang/result.ts";
 import { sessionMiddleware } from "./sessionMiddleware.ts";
 import {
@@ -16,7 +16,7 @@ Deno.test("sessionMiddleware", async () => {
             sessionStubBuild(session, "user-id"),
             requestEmpty,
         ),
-        err(new SessionDecodeError()),
+        err(new SessionDecodeErr()),
     );
     assertEquals(
         await sessionMiddleware(
@@ -32,6 +32,6 @@ Deno.test("sessionMiddleware", async () => {
             sessionStubBuild(session, "user-id"),
             requestHeaders,
         ),
-        err(new SessionDecodeError()),
+        err(new SessionDecodeErr()),
     );
 });

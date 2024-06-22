@@ -1,6 +1,6 @@
 import { assertEquals } from "@std/assert/assert-equals";
 import { err, ok } from "../../lang/result.ts";
-import { RepoError } from "../../repo.ts";
+import { RepoErr } from "../../repo.ts";
 import { userStub } from "./model.stub.ts";
 import {
     userRepoCountStubBuild,
@@ -41,10 +41,10 @@ Deno.test("userRepoEmptyStubBuild", async () => {
 
 Deno.test("userRepoErrStubBuild", async () => {
     const repo = userRepoErrStubBuild();
-    assertEquals(await repo.cCreate(userStub), err(new RepoError()));
-    assertEquals(await repo.cUpdate(userStub), err(new RepoError()));
-    assertEquals(await repo.cReadById("user-id"), err(new RepoError()));
-    assertEquals(await repo.cReadByCredentials("username", "password"), err(new RepoError()));
-    assertEquals(await repo.cCountUsername("username"), err(new RepoError()));
-    assertEquals(await repo.cCountEmail("user@gmail.com"), err(new RepoError()));
+    assertEquals(await repo.cCreate(userStub), err(new RepoErr()));
+    assertEquals(await repo.cUpdate(userStub), err(new RepoErr()));
+    assertEquals(await repo.cReadById("user-id"), err(new RepoErr()));
+    assertEquals(await repo.cReadByCredentials("username", "password"), err(new RepoErr()));
+    assertEquals(await repo.cCountUsername("username"), err(new RepoErr()));
+    assertEquals(await repo.cCountEmail("user@gmail.com"), err(new RepoErr()));
 });

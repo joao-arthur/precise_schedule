@@ -1,4 +1,4 @@
-export class BusinessError extends Error {
+export class BusinessErr extends Error {
     constructor(message: string) {
         super(message);
     }

@@ -1,9 +1,9 @@
 import type { Result } from "./lang/result.ts";
 
-export class RepoError extends Error {
+export class RepoErr extends Error {
     constructor() {
         super("There was an error querying the data!");
     }
 }
 
-export type Op<Data> = Promise<Result<Data, RepoError>>;
+export type Op<Data> = Promise<Result<Data, RepoErr>>;

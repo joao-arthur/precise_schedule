@@ -1,7 +1,7 @@
 import type { Result } from "../../../lang/result.ts";
 import type { DateGenerator } from "../../../generator/date.ts";
-import type { RepoError } from "../../../repo.ts";
-import type { ValidationError } from "../../../validation/validate.ts";
+import type { RepoErr } from "../../../repo.ts";
+import type { ValidationErr } from "../../../validation/validate.ts";
 import type { Schema } from "../../../validation/schema.ts";
 import type { User } from "../../user/model.ts";
 import type { EventNotFound } from "../read.ts";
@@ -35,7 +35,7 @@ const appointmentUpdateSchema: Schema<AppointmentUpdate> = {
     ],
     end: [
         { type: "time" },
-        { type: "compareBigger", field: "begin" },
+        { type: "gt", field: "begin" },
     ],
     frequency: [
         { type: "enum", values: ["1D", "2D", "1W", "1M", "3M", "6M", "1Y", "2Y", undefined] },
@@ -58,8 +58,8 @@ export function appointmentUpdateToEventUpdate(event: AppointmentUpdate): EventU
 }
 
 type AppointmentUpdateErrors =
-    | RepoError
-    | ValidationError
+    | RepoErr
+    | ValidationErr
     | EventNotFound;
 
 export function appointmentUpdateService(

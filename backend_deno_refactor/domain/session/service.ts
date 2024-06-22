@@ -5,19 +5,19 @@ export type Session = {
     readonly token: string;
 };
 
-export class SessionCreateError extends Error {
+export class SessionCreateErr extends Error {
     constructor() {
         super("It was not possible to create your session!");
     }
 }
 
-export class SessionDecodeError extends Error {
+export class SessionDecodeErr extends Error {
     constructor() {
         super("Your session is not valid!");
     }
 }
 
 export type SessionService = {
-    readonly create: (userId: User["id"]) => Promise<Result<Session, SessionCreateError>>;
-    readonly decode: (session: Session) => Promise<Result<User["id"], SessionDecodeError>>;
+    readonly create: (userId: User["id"]) => Promise<Result<Session, SessionCreateErr>>;
+    readonly decode: (session: Session) => Promise<Result<User["id"], SessionDecodeErr>>;
 };

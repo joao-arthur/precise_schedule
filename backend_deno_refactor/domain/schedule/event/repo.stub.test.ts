@@ -1,6 +1,6 @@
 import { assertEquals } from "@std/assert/assert-equals";
 import { err, ok } from "../../lang/result.ts";
-import { RepoError } from "../../repo.ts";
+import { RepoErr } from "../../repo.ts";
 import { appointmentStub } from "./appointment/model.stub.ts";
 import {
     eventRepoEmptyStubBuild,
@@ -38,9 +38,9 @@ Deno.test("eventRepoEmptyStubBuild", async () => {
 
 Deno.test("eventRepoErrStubBuild", async () => {
     const repo = eventRepoErrStubBuild();
-    assertEquals(await repo.cCreate(appointmentStub), err(new RepoError()));
-    assertEquals(await repo.cUpdate(appointmentStub), err(new RepoError()));
-    assertEquals(await repo.cReadMany("user-id"), err(new RepoError()));
-    assertEquals(await repo.cReadOne("user-id", "user-id"), err(new RepoError()));
-    assertEquals(await repo.cDelete("event-id"), err(new RepoError()));
+    assertEquals(await repo.cCreate(appointmentStub), err(new RepoErr()));
+    assertEquals(await repo.cUpdate(appointmentStub), err(new RepoErr()));
+    assertEquals(await repo.cReadMany("user-id"), err(new RepoErr()));
+    assertEquals(await repo.cReadOne("user-id", "user-id"), err(new RepoErr()));
+    assertEquals(await repo.cDelete("event-id"), err(new RepoErr()));
 });

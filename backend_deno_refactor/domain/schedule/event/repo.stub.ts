@@ -1,6 +1,6 @@
 import type { Event } from "./model.ts";
 import type { EventRepo } from "./repo.ts";
-import { RepoError } from "../../repo.ts";
+import { RepoErr } from "../../repo.ts";
 import { err, ok } from "../../lang/result.ts";
 
 export function eventRepoManyStubBuild(many: Event[]): EventRepo {
@@ -35,10 +35,10 @@ export function eventRepoEmptyStubBuild(): EventRepo {
 
 export function eventRepoErrStubBuild(): EventRepo {
     return {
-        cCreate: () => Promise.resolve(err(new RepoError())),
-        cUpdate: () => Promise.resolve(err(new RepoError())),
-        cReadMany: () => Promise.resolve(err(new RepoError())),
-        cReadOne: () => Promise.resolve(err(new RepoError())),
-        cDelete: () => Promise.resolve(err(new RepoError())),
+        cCreate: () => Promise.resolve(err(new RepoErr())),
+        cUpdate: () => Promise.resolve(err(new RepoErr())),
+        cReadMany: () => Promise.resolve(err(new RepoErr())),
+        cReadOne: () => Promise.resolve(err(new RepoErr())),
+        cDelete: () => Promise.resolve(err(new RepoErr())),
     };
 }

@@ -1,6 +1,6 @@
 import { assertEquals } from "@std/assert/assert-equals";
 import { err, ok } from "../lang/result.ts";
-import { validateSchema, ValidationError } from "./validate.ts";
+import { validateSchema, ValidationErr } from "./validate.ts";
 
 Deno.test("Validate", () => {
     assertEquals(
@@ -9,7 +9,7 @@ Deno.test("Validate", () => {
             null as unknown,
         ),
         err(
-            new ValidationError({
+            new ValidationErr({
                 dt: ["must be a date in the format YYYY-MM-DD"],
                 time: ["must be a time in the format HH:mm"],
             }),
@@ -21,7 +21,7 @@ Deno.test("Validate", () => {
             { a: undefined, b: undefined },
         ),
         err(
-            new ValidationError({
+            new ValidationErr({
                 a: ["must be a string"],
                 b: ["must be a date in the format YYYY-MM-DD"],
             }),
