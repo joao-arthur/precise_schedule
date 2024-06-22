@@ -1,4 +1,4 @@
-import { assertEquals } from "std/testing/asserts.ts";
+import { assertEquals } from "@std/assert/assert-equals";
 import { createBirthdayEvent } from "../../../domain/schedule/event/event.birthday.create.endpoint.ts";
 import { updateBirthdayEvent } from "../../../domain/schedule/event/event.birthday.update.endpoint.ts";
 import { deleteEvent } from "../../../domain/schedule/event/event.delete.endpoint.ts";
