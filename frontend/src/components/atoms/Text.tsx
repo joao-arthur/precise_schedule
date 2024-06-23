@@ -5,6 +5,7 @@ type props = {
     readonly children: ReactNode;
     readonly disabled?: boolean;
     readonly selectable?: boolean;
+    readonly bold?: boolean;
     readonly size?:
         | "xs"
         | "sm"
@@ -12,10 +13,10 @@ type props = {
         | "xl"
         | "2xl"
         | "3xl";
-    readonly color?: "white";
+    readonly color?: "white" | "prm";
 };
 
-export function Text({ children, disabled, selectable, size, color }: props) {
+export function Text({ children, disabled, selectable, bold, size, color }: props) {
     return (
         <span
             className={cl(
@@ -23,6 +24,7 @@ export function Text({ children, disabled, selectable, size, color }: props) {
                 "text-ellipsis whitespace-nowrap overflow-hidden",
                 selectable ? "" : "select-none",
                 {
+                    "font-bold": bold,
                     "text-xs": size === "xs",
                     "text-sm": size === "sm",
                     "text-lg": size === "lg",
@@ -32,6 +34,7 @@ export function Text({ children, disabled, selectable, size, color }: props) {
                 },
                 {
                     "text-white": color === "white",
+                    "text-prm": color === "prm",
                     "text-drk-dk dark:text-pastel-gray": !color,
                     "text-gray-500 dark:text-gray-500": disabled === true,
                 },

@@ -22,6 +22,7 @@ export function PrimaryButton(
                 "text-white",
                 "bg-prm hover:bg-prm-dk active:bg-prm-dk2",
                 "dark:bg-prm-dk dark:hover:bg-prm-dk2 dark:active:bg-prm-dk3",
+                "flex flex-row items-center justify-center gap-x-4",
             )}
         >
             {children}

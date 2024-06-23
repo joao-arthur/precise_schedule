@@ -5,9 +5,11 @@ import {
     BiChevronRight,
     BiInfoCircle,
     BiPencil,
+    BiSolidParty,
     BiTrash,
     BiX,
 } from "react-icons/bi";
+import { FaCakeCandles, FaChampagneGlasses, FaMapPin, FaUserTie } from "react-icons/fa6";
 import { cl } from "@/lib/cl";
 
 export type IconName =
@@ -18,7 +20,12 @@ export type IconName =
     | "info"
     | "pencil"
     | "trash"
-    | "calendar-plus";
+    | "calendar-plus"
+    | "appointment"
+    | "birthday"
+    | "meeting"
+    | "date"
+    | "party";
 
 export type IconSize = 6 | 9 | 14 | 20;
 
@@ -46,6 +53,7 @@ export function Icon({ name, color = "prm", colorDark = "prm", size = 6 }: props
             "fill-red-500": color === "red",
             "fill-green-600": color === "green",
             "fill-prm": color === "prm",
+            "text-drk-dk dark:text-pastel-gray": !color,
         },
         {
             "dark:fill-white": colorDark === "white",
@@ -74,5 +82,15 @@ export function Icon({ name, color = "prm", colorDark = "prm", size = 6 }: props
             return <BiTrash {...props} />;
         case "calendar-plus":
             return <BiCalendarPlus {...props} />;
+        case "appointment":
+            return <FaMapPin {...props} />;
+        case "birthday":
+            return <FaCakeCandles {...props} />;
+        case "date":
+            return <FaChampagneGlasses {...props} />;
+        case "meeting":
+            return <FaUserTie {...props} />;
+        case "party":
+            return <BiSolidParty {...props} />;
     }
 }

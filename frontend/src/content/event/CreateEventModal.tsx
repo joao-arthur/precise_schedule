@@ -1,6 +1,7 @@
 import type { Event } from "frontend_core";
 import { useState } from "react";
 import { Button } from "@/components/atoms/button/Button";
+import { Icon } from "@/components/atoms/Icon";
 import { Modal } from "@/components/molecules/Modal";
 import { CreateEvent } from "./CreateEvent";
 
@@ -29,6 +30,7 @@ export function CreateEventModal({ date, visible, onClose }: props) {
                             onClose();
                         }}
                     >
+                        <Icon name="appointment" color="white" colorDark="white" />
                         Appointment
                     </Button>
                     <Button
@@ -37,6 +39,7 @@ export function CreateEventModal({ date, visible, onClose }: props) {
                             onClose();
                         }}
                     >
+                        <Icon name="birthday" color="white" colorDark="white" />
                         Birthday
                     </Button>
                     <Button
@@ -45,6 +48,7 @@ export function CreateEventModal({ date, visible, onClose }: props) {
                             onClose();
                         }}
                     >
+                        <Icon name="date" color="white" colorDark="white" />
                         Date
                     </Button>
                     <Button
@@ -53,6 +57,7 @@ export function CreateEventModal({ date, visible, onClose }: props) {
                             onClose();
                         }}
                     >
+                        <Icon name="meeting" color="white" colorDark="white" />
                         Meeting
                     </Button>
                     <Button
@@ -61,6 +66,7 @@ export function CreateEventModal({ date, visible, onClose }: props) {
                             onClose();
                         }}
                     >
+                        <Icon name="party" color="white" colorDark="white" />
                         Party
                     </Button>
                 </div>

@@ -31,6 +31,7 @@ export function ModalComponent({
                 className={cl(
                     "flex flex-col absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2",
                     "bg-pastel-gray dark:bg-drk rounded overflow-hidden",
+                    "shadow-md",
                     isMobile ? "w-full h-full" : "w-120 max-w-4/5",
                 )}
             >

@@ -35,7 +35,7 @@ export function SidebarContent({ date, close }: props) {
                 )}
             >
                 <div className="text-center">
-                    <Text size="3xl">
+                    <Text bold size="3xl" color="prm">
                         {fmt(date)}
                     </Text>
                 </div>
@@ -47,7 +47,13 @@ export function SidebarContent({ date, close }: props) {
                         color="prm"
                         size={9}
                     />
-                    <TransparentButtonIcon onClick={close} icon="x" size={9} />
+                    <TransparentButtonIcon
+                        onClick={close}
+                        title="Close sidebar"
+                        icon="x"
+                        size={9}
+                        color="red"
+                    />
                 </div>
             </div>
             <div className={cl("flex-1 m-1 overflow-auto", { "w-screen": isMobile })}>

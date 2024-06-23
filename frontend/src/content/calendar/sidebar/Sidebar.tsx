@@ -7,7 +7,6 @@ import { useCalendar } from "@/features/calendar/useCalendar";
 import { SidebarContent } from "./SidebarContent";
 
 const sidebarMachine = createMachine({
-    predictableActionArguments: true,
     id: "sidebar",
     initial: "closed",
     states: {
@@ -37,7 +36,7 @@ export function Sidebar() {
                 break;
             case "closing":
                 timeoutId.current = window.setTimeout(
-                    () => send("close"),
+                    () => send({ type: "close" }),
                     150,
                 );
                 break;
@@ -50,8 +49,8 @@ export function Sidebar() {
     useEffect(() => {
         if (selectedDate) {
             setDate(selectedDate);
-            if (state.value !== "opened") send("open");
-        } else send("close");
+            if (state.value !== "opened") send({ type: "open" });
+        } else send({ type: "close" });
     }, [selectedDate]);
 
     return (
@@ -59,6 +58,7 @@ export function Sidebar() {
             className={cl(
                 "z-10 overflow-hidden flex flex-0-auto",
                 "bg-gray-100 dark:bg-drk-dk2",
+                "shadow-lg",
                 "transition-all duration-100",
                 {
                     "w-100 border-l border-gray-300 dark:border-gray-500": selectedDate &&
