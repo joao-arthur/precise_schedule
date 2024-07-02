@@ -8,3 +8,11 @@ pub struct User<'a> {
     pub created_at: &'a str,
     pub updated_at: &'a str,
 }
+
+impl UserCreate {
+
+}
+
+impl UserUpdateFn {
+    
+}
