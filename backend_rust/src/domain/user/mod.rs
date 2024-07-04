@@ -1,6 +1,4 @@
-use std::boxed::Box;
-
-use crate::domain::database::DB;
+//use crate::domain::database::DB;
 use crate::domain::generator::{DateGen, IdGen};
 
 #[derive(Debug, PartialEq)]
@@ -54,21 +52,21 @@ fn user_create(
     Ok(user)
 }
 
-struct UserCreateServiceImpl {
-    id_gen: Box<dyn IdGen>,
-    date_gen: Box<dyn DateGen>,
+pub struct UserCreateServiceImpl<'a> {
+    id_gen: &'a dyn IdGen,
+    date_gen: &'a dyn DateGen,
 }
 
-impl UserCreateService for UserCreateServiceImpl {
+impl UserCreateService for UserCreateServiceImpl<'_> {
     fn create(&self, user_create_model: UserCreateModel) -> Result<User, UserCreateError> {
-        user_create(self.id_gen.as_ref(), self.date_gen.as_ref(), user_create_model)
+        user_create(self.id_gen, self.date_gen, user_create_model)
     }
 }
 
 #[cfg(test)]
 mod user_create_test {
     use super::*;
-    use crate::domain::generator::{IdGenStub, DateGenStub};
+    use crate::domain::generator::test::{DateGenStub, IdGenStub};
 
     #[test]
     fn test_user_from_create_model() {
@@ -120,8 +118,8 @@ mod user_create_test {
         };
         assert_eq!(
             user_create(
-                Box::new(IdGenStub("user_id".to_owned())),
-                Box::new(DateGenStub("2024-07-03T22:49:51.279Z".to_owned())),
+                &IdGenStub("user_id".to_owned()),
+                &DateGenStub("2024-07-03T22:49:51.279Z".to_owned()),
                 user_create_model
             ),
             Ok(user)

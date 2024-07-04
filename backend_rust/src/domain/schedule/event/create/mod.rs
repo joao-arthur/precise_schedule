@@ -3,17 +3,17 @@ use super::model::EventCategory;
 use super::model::EventFrequency;
 
 #[derive(Debug, PartialEq)]
-pub struct EventCreateModel<'a> {
-    pub name: &'a str,
-    pub day: &'a str,
-    pub begin: &'a str,
-    pub end: &'a str,
+pub struct EventCreateModel {
+    pub name: String,
+    pub day: String,
+    pub begin: String,
+    pub end: String,
     pub category: EventCategory,
     pub frequency: Option<EventFrequency>,
     pub weekend_repeat: Option<bool>,
 }
 
-pub fn build_event<'a>(event: EventCreateModel<'a>, id: &'a str, user: &'a str) -> Event<'a> {
+pub fn build_event(event: EventCreateModel, id: String, user: String) -> Event {
     Event {
         id,
         name: event.name,
@@ -24,15 +24,14 @@ pub fn build_event<'a>(event: EventCreateModel<'a>, id: &'a str, user: &'a str) 
         frequency: event.frequency,
         weekend_repeat: event.weekend_repeat,
         user,
-        created_at: "",
-        updated_at: "",
+        created_at: "".to_owned(),
+        updated_at: "".to_owned(),
     }
 }
 
 #[cfg(test)]
-mod event_create_test {
-    use super::build_event;
-    use super::EventCreateModel;
+mod test {
+    use super::*;
     use crate::domain::schedule::event::model::Event;
     use crate::domain::schedule::event::model::EventCategory;
     use crate::domain::schedule::event::model::EventFrequency;
@@ -40,26 +39,26 @@ mod event_create_test {
     #[test]
     fn test_build_event() {
         let create_event = EventCreateModel {
-            name: "Party",
-            day: "2024-03-31",
-            begin: "18:00",
-            end: "22:00",
+            name: "Party".to_owned(),
+            day: "2024-03-31".to_owned(),
+            begin: "18:00".to_owned(),
+            end: "22:00".to_owned(),
             category: EventCategory::Appointment,
             frequency: Some(EventFrequency::D2),
             weekend_repeat: Some(true),
         };
         let event = Event {
-            id: "12ab-34cd",
-            name: "Party",
-            day: "2024-03-31",
-            begin: "18:00",
-            end: "22:00",
+            id: "12ab-34cd".to_owned(),
+            name: "Party".to_owned(),
+            day: "2024-03-31".to_owned(),
+            begin: "18:00".to_owned(),
+            end: "22:00".to_owned(),
             category: EventCategory::Appointment,
             frequency: Some(EventFrequency::D2),
             weekend_repeat: Some(true),
-            user: "ab12-cd34",
-            created_at: "",
-            updated_at: "",
+            user: "ab12-cd34".to_owned(),
+            created_at: "".to_owned(),
+            updated_at: "".to_owned(),
         };
         assert_eq!(build_event(create_event, "12ab-34cd", "ab12-cd34"), event);
     }

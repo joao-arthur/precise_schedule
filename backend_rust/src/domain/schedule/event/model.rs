@@ -5,6 +5,7 @@ pub enum EventCategory {
     Date,
     Meeting,
     Party,
+    Travel,
 }
 
 #[derive(Debug, PartialEq)]
@@ -36,23 +37,23 @@ impl EventFrequency {
 }
 
 #[derive(Debug, PartialEq)]
-pub struct Event<'a> {
-    pub id: &'a str,
-    pub name: &'a str,
-    pub day: &'a str,
-    pub begin: &'a str,
-    pub end: &'a str,
+pub struct Event {
+    pub id: String,
+    pub name: String,
+    pub day: String,
+    pub begin: String,
+    pub end: String,
     pub category: EventCategory,
     pub frequency: Option<EventFrequency>,
     pub weekend_repeat: Option<bool>,
-    pub user: &'a str,
-    pub created_at: &'a str,
-    pub updated_at: &'a str,
+    pub user: String,
+    pub created_at: String,
+    pub updated_at: String,
 }
 
 #[cfg(test)]
-mod event_model_test {
-    use super::EventFrequency;
+mod test {
+    use super::*;
 
     #[test]
     fn test_event_frenquency_parse() {

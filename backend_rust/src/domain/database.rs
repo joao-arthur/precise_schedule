@@ -15,17 +15,17 @@ pub trait DB {
     //fn d(&self, ent: String) -> Result<(), DBErr>;
 }
 
-pub struct DBStub(Result<(), DBErr>);
-
-impl DB for DBStub {
-    fn c(&self, _: String) -> Result<(), DBErr> {
-        self.0.clone()
-    }
-}
-
 #[cfg(test)]
-mod db_test {
+pub mod test {
     use super::*;
+
+    pub struct DBStub(Result<(), DBErr>);
+
+    impl DB for DBStub {
+        fn c(&self, _: String) -> Result<(), DBErr> {
+            self.0.clone()
+        }
+    }
 
     #[test]
     fn test_db_stub() {

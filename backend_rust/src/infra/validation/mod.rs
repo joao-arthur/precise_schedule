@@ -75,11 +75,8 @@ pub fn str_max_len_v(v: StrMaxLenV, value: Value) -> Result<(), StrMaxLenErr> {
     }
 }
 
-
-
-
 #[cfg(test)]
-mod validation_test {
+mod test {
     use super::*;
     use std::collections::HashMap;
 

@@ -6,12 +6,12 @@ use rocket::serde::Serialize;
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(crate = "rocket::serde")]
-pub struct AppointmentCreateModel<'a> {
-    pub name: &'a str,
-    pub day: &'a str,
-    pub begin: &'a str,
-    pub end: &'a str,
-    pub frequency: Option<&'a str>,
+pub struct AppointmentCreateModel {
+    pub name: String,
+    pub day: String,
+    pub begin: String,
+    pub end: String,
+    pub frequency: Option<String>,
     pub weekend_repeat: Option<bool>,
 }
 
@@ -32,9 +32,8 @@ pub fn build_event_create(event: AppointmentCreateModel) -> EventCreateModel {
 }
 
 #[cfg(test)]
-mod appointment_create_test {
-    use super::build_event_create;
-    use super::AppointmentCreateModel;
+mod test {
+    use super::*;
     use crate::domain::schedule::event::create::EventCreateModel;
     use crate::domain::schedule::event::model::EventCategory;
     use crate::domain::schedule::event::model::EventFrequency;
@@ -42,18 +41,18 @@ mod appointment_create_test {
     #[test]
     fn test_build_event_create() {
         let appointment = AppointmentCreateModel {
-            name: "Party",
-            day: "2024-03-31",
-            begin: "18:00",
-            end: "22:00",
+            name: "Party".to_owned(),
+            day: "2024-03-31".to_owned(),
+            begin: "18:00".to_owned(),
+            end: "22:00".to_owned(),
             frequency: Some("2D"),
             weekend_repeat: Some(true),
         };
         let create_event = EventCreateModel {
-            name: "Party",
-            day: "2024-03-31",
-            begin: "18:00",
-            end: "22:00",
+            name: "Party".to_owned(),
+            day: "2024-03-31".to_owned(),
+            begin: "18:00".to_owned(),
+            end: "22:00".to_owned(),
             category: EventCategory::Appointment,
             frequency: Some(EventFrequency::D2),
             weekend_repeat: Some(true),
