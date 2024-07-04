@@ -1,23 +1,44 @@
-pub trait IdGenerator {
-    fn generate(&self) -> String;
+pub trait IdGen {
+    fn gen(&self) -> String;
 }
 
-pub struct IdGeneratorStub(String);
+pub struct IdGenStub(pub String);
 
-impl IdGenerator for IdGeneratorStub {
-    fn generate(&self) -> String {
+impl IdGen for IdGenStub {
+    fn gen(&self) -> String {
+        self.0.clone()
+    }
+}
+
+pub trait DateGen {
+    fn gen(&self) -> String;
+}
+
+pub struct DateGenStub(pub String);
+
+impl DateGen for DateGenStub {
+    fn gen(&self) -> String {
         self.0.clone()
     }
 }
 
 #[cfg(test)]
-mod id_generator_test {
+mod generator_test {
     use super::*;
 
     #[test]
-    fn test_stub() {
-        let id_generator_stub = IdGeneratorStub(String::from("example"));
-        let generated_id = id_generator_stub.generate();
-        assert_eq!(generated_id, String::from("example"));
+    fn test_id_gen_stub() {
+        assert_eq!(
+            IdGenStub("example".to_string()).gen(),
+            "example".to_string()
+        );
+    }
+
+    #[test]
+    fn test_date_gen_stub() {
+        assert_eq!(
+            DateGenStub("2024-07-03T22:49:51.279Z".to_string()).gen(),
+            "2024-07-03T22:49:51.279Z".to_string()
+        );
     }
 }
