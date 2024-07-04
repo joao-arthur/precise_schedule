@@ -1,4 +1,6 @@
-use crate::domain::generator::{DateGen, IdGen};
+pub mod create;
+
+use super::database::DBErr;
 
 #[derive(Debug, PartialEq)]
 pub struct User {
@@ -18,75 +20,23 @@ pub struct UserCred {
 }
 
 pub trait UserRepo {
-    fn c(User) -> Result<(), DBErr>;
-    fn u(User) -> Result<(), DBErr>;
-    fn rById()-> Result<(), DBErr>;
-    fn rByCred(UserCred)-> Result<(), DBErr>;
-    fn countUsernane(String)-> Result<i32, DBErr>;
-    fn countEmail(String)    -> Result<i32, DBErr>;
-};
-
+    fn c(&self, user: &User) -> Result<(), DBErr>;
+    fn u(&self, user: &User) -> Result<(), DBErr>;
+    fn r_by_id(&self, id: String) -> Result<(), DBErr>;
+    fn r_by_cred(&self, cred: &UserCred) -> Result<(), DBErr>;
+    fn count_username(&self, username: String) -> Result<i32, DBErr>;
+    fn count_email(&self, email: String) -> Result<i32, DBErr>;
+}
 
 #[cfg(test)]
-mod user_create_test {
+pub mod test {
     use super::*;
-    use crate::domain::generator::test::{DateGenStub, IdGenStub};
 
-    #[test]
-    fn test_user_from_create_model() {
-        let user_create_model = UserCreateModel {
-            email: "email".to_owned(),
-            first_name: "first_name".to_owned(),
-            birthdate: "birthdate".to_owned(),
-            username: "username".to_owned(),
-            password: "password".to_owned(),
-        };
-        let user = User {
-            id: "user_id".to_owned(),
-            email: "email".to_owned(),
-            first_name: "first_name".to_owned(),
-            birthdate: "birthdate".to_owned(),
-            username: "username".to_owned(),
-            password: "password".to_owned(),
-            created_at: "2024-07-03T22:49:51.279Z".to_owned(),
-            updated_at: "2024-07-03T22:49:51.279Z".to_owned(),
-        };
-        assert_eq!(
-            user_from_create_model(
-                user_create_model,
-                "user_id".to_owned(),
-                "2024-07-03T22:49:51.279Z".to_owned()
-            ),
-            user
-        );
-    }
+    pub struct IdGenStub(pub String);
 
-    #[test]
-    fn test_user_create() {
-        let user_create_model = UserCreateModel {
-            email: "email".to_owned(),
-            first_name: "first_name".to_owned(),
-            birthdate: "birthdate".to_owned(),
-            username: "username".to_owned(),
-            password: "password".to_owned(),
-        };
-        let user = User {
-            id: "user_id".to_owned(),
-            email: "email".to_owned(),
-            first_name: "first_name".to_owned(),
-            birthdate: "birthdate".to_owned(),
-            username: "username".to_owned(),
-            password: "password".to_owned(),
-            created_at: "2024-07-03T22:49:51.279Z".to_owned(),
-            updated_at: "2024-07-03T22:49:51.279Z".to_owned(),
-        };
-        assert_eq!(
-            user_create(
-                &IdGenStub("user_id".to_owned()),
-                &DateGenStub("2024-07-03T22:49:51.279Z".to_owned()),
-                user_create_model
-            ),
-            Ok(user)
-        );
+    impl IdGen for IdGenStub {
+        fn gen(&self) -> String {
+            self.0.clone()
+        }
     }
 }
