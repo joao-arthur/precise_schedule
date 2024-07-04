@@ -31,25 +31,25 @@ pub enum V {
 }
 
 #[derive(PartialEq, Debug)]
-pub struct ReqErr {}
+pub struct ReqErr;
 
 #[derive(PartialEq, Debug)]
-pub struct IntErr {}
+pub struct IntErr;
 
 #[derive(PartialEq, Debug)]
-pub struct StrErr {}
+pub struct StrErr;
 
 #[derive(PartialEq, Debug)]
-pub struct IntMinErr {}
+pub struct IntMinErr;
 
 #[derive(PartialEq, Debug)]
-pub struct IntMaxErr {}
+pub struct IntMaxErr;
 
 #[derive(PartialEq, Debug)]
-pub struct StrMinLenErr {}
+pub struct StrMinLenErr;
 
 #[derive(PartialEq, Debug)]
-pub struct StrMaxLenErr {}
+pub struct StrMaxLenErr;
 
 pub enum Value {
     Bool(bool),

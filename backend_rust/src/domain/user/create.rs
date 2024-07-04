@@ -1,31 +1,57 @@
 use crate::domain::generator::{DateGen, IdGen};
 
-#[derive(Debug, PartialEq)]
-pub struct User {
-    pub id: String,
+pub struct UserCreateModel {
+    pub email: String,
     pub first_name: String,
     pub birthdate: String,
-    pub email: String,
-    pub username: String,
-    pub created_at: String,
-    pub password: String,
-    pub updated_at: String,
-}
-
-pub struct UserCred {
     pub username: String,
     pub password: String,
 }
 
-pub trait UserRepo {
-    fn c(User) -> Result<(), DBErr>;
-    fn u(User) -> Result<(), DBErr>;
-    fn rById()-> Result<(), DBErr>;
-    fn rByCred(UserCred)-> Result<(), DBErr>;
-    fn countUsernane(String)-> Result<i32, DBErr>;
-    fn countEmail(String)    -> Result<i32, DBErr>;
-};
+#[derive(PartialEq, Debug)]
+pub struct UserCreateError;
 
+pub trait UserCreateService {
+    fn create(&self, user_create_model: UserCreateModel) -> Result<User, UserCreateError>;
+}
+
+fn user_from_create_model(user: UserCreateModel, id: String, created_at: String) -> User {
+    User {
+        id,
+        first_name: user.first_name,
+        birthdate: user.birthdate,
+        email: user.email,
+        username: user.username,
+        password: user.password,
+        created_at: created_at.clone(),
+        updated_at: created_at,
+    }
+}
+
+fn user_create(
+    repo: &dyn UserRepo,
+    id_gen: &dyn IdGen,
+    date_gen: &dyn DateGen,
+    user_create_model: UserCreateModel,
+) -> Result<User, UserCreateError> {
+    let id = id_gen.gen();
+    let date = date_gen.gen();
+    let user = user_from_create_model(user_create_model, id, date);
+    repo.c(user).mapErr(||)?;
+    Ok(user)
+}
+
+pub struct UserCreateServiceImpl<'a> {
+    repo: &'a dyn UserRepo,
+    id_gen: &'a dyn IdGen,
+    date_gen: &'a dyn DateGen,
+}
+
+impl UserCreateService for UserCreateServiceImpl<'_> {
+    fn create(&self, user_create_model: UserCreateModel) -> Result<User, UserCreateError> {
+        user_create(self.repo, self.id_gen, self.date_gen, user_create_model)
+    }
+}
 
 #[cfg(test)]
 mod user_create_test {
