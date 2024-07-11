@@ -13,7 +13,6 @@ fn build_create_schema() -> Schema<'static> {
     )])
 }
 
-
 //import type { Schema } from "../../../../validation/schema.ts";
 //import type { BirthdayUpdateModel } from "./model.ts";
 //

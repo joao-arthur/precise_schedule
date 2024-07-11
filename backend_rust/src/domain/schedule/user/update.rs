@@ -1,8 +1,8 @@
+use super::User;
+use crate::domain::database::DBErr;
 use crate::domain::generator::{DateGen, IdGen};
 
-use super::{User, UserRepo};
-
-pub struct UserCreateModel {
+pub struct UserUModel {
     pub email: String,
     pub first_name: String,
     pub birthdate: String,
@@ -10,50 +10,53 @@ pub struct UserCreateModel {
     pub password: String,
 }
 
-pub trait UserCreateRepo {}
-
-#[derive(PartialEq, Debug)]
-pub struct UserCreateErr;
-
-pub trait UserCreateService {
-    fn create(&self, user_create_model: UserCreateModel) -> Result<User, UserCreateErr>;
+pub trait UserURepo {
+    fn u(&self, user: &User) -> Result<(), DBErr>;
 }
 
-fn user_from_create_model(user: UserCreateModel, id: String, created_at: String) -> User {
+#[derive(PartialEq, Debug)]
+pub enum UserUErr {
+    DBErr(DBErr),
+}
+
+pub trait UserUService {
+    fn u(&self, model: UserUModel) -> Result<User, UserUErr>;
+}
+
+fn user_from_u(model: UserUModel, user: User, updated_at: String) -> User {
     User {
-        id,
-        first_name: user.first_name,
-        birthdate: user.birthdate,
-        email: user.email,
-        username: user.username,
-        password: user.password,
-        created_at: created_at.clone(),
-        updated_at: created_at,
+        id: user.id,
+        first_name: model.first_name,
+        birthdate: model.birthdate,
+        email: model.email,
+        username: model.username,
+        password: model.password,
+        created_at: user.created_at,
+        updated_at,
     }
 }
 
-fn user_create(
-    repo: &dyn UserRepo,
+fn user_u(
+    repo: &dyn UserURepo,
     id_gen: &dyn IdGen,
     date_gen: &dyn DateGen,
-    user_create_model: UserCreateModel,
-) -> Result<User, UserCreateErr> {
-    let id = id_gen.gen();
+    model: UserUModel,
+) -> Result<User, UserUErr> {
     let date = date_gen.gen();
-    let user = user_from_create_model(user_create_model, id, date);
-    repo.c(&user).map_err(|_| UserCreateErr {})?;
+    let user = user_from_u(model, id, date);
+    repo.u(&user).map_err(|e| UserUErr::DBErr(e))?;
     Ok(user)
 }
 
-pub struct UserCreateServiceImpl<'a> {
-    repo: &'a dyn UserRepo,
+pub struct UserUServiceImpl<'a> {
+    repo: &'a dyn UserURepo,
     id_gen: &'a dyn IdGen,
     date_gen: &'a dyn DateGen,
 }
 
-impl UserCreateService for UserCreateServiceImpl<'_> {
-    fn create(&self, user_create_model: UserCreateModel) -> Result<User, UserCreateErr> {
-        user_create(self.repo, self.id_gen, self.date_gen, user_create_model)
+impl UserUService for UserUServiceImpl<'_> {
+    fn u(&self, user_create_model: UserUModel) -> Result<User, UserUErr> {
+        user_u(self.repo, self.id_gen, self.date_gen, user_create_model)
     }
 }
 
@@ -62,9 +65,17 @@ mod test {
     use super::*;
     use crate::domain::generator::test::{DateGenStub, IdGenStub};
 
+    pub struct UserCRepoStub(Result<(), DBErr>);
+
+    impl UserURepo for UserCRepoStub {
+        fn u(&self, _: &User) -> Result<(), DBErr> {
+            self.0.clone()
+        }
+    }
+
     #[test]
-    fn test_user_from_create_model() {
-        let user_create_model = UserCreateModel {
+    fn test_user_from_c() {
+        let user_u_model = UserUModel {
             email: "email".to_owned(),
             first_name: "first_name".to_owned(),
             birthdate: "birthdate".to_owned(),
@@ -82,8 +93,8 @@ mod test {
             updated_at: "2024-07-03T22:49:51.279Z".to_owned(),
         };
         assert_eq!(
-            user_from_create_model(
-                user_create_model,
+            user_from_u(
+                user_u_model,
                 "user_id".to_owned(),
                 "2024-07-03T22:49:51.279Z".to_owned()
             ),
@@ -93,7 +104,7 @@ mod test {
 
     #[test]
     fn test_user_create() {
-        let user_create_model = UserCreateModel {
+        let user_u_model = UserUModel {
             email: "email".to_owned(),
             first_name: "first_name".to_owned(),
             birthdate: "birthdate".to_owned(),
@@ -111,10 +122,11 @@ mod test {
             updated_at: "2024-07-03T22:49:51.279Z".to_owned(),
         };
         assert_eq!(
-            user_create(
-                &Db & IdGenStub("user_id".to_owned()),
+            user_u(
+                &UserCRepoStub(Ok(())),
+                &IdGenStub("user_id".to_owned()),
                 &DateGenStub("2024-07-03T22:49:51.279Z".to_owned()),
-                user_create_model
+                user_u_model
             ),
             Ok(user)
         );
