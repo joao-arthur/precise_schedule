@@ -1,4 +1,3 @@
-export * from "./date/mod.js";
-
-export * from "./calendar/mod.js";
-export * from "./event/mod.js";
+export * from "./date.js";
+export * from "./calendar.js";
+export * from "./event.js";
