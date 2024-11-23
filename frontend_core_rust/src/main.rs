@@ -1,4 +1,5 @@
 use chrono::{Datelike, Days, Months, NaiveDate, TimeDelta};
+use std::fmt;
 
 #[derive(Debug, PartialEq)]
 pub enum Period {
@@ -13,7 +14,31 @@ pub enum Period {
 }
 
 #[derive(Debug, PartialEq)]
-pub struct Date(u16, u8, u8);
+pub struct Date {
+    pub y: u16,
+    pub m: u8,
+    pub d: u8,
+}
+
+impl fmt::Display for Date {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{:04}-{:02}-{:02}", self.y, self.m, self.d)
+    }
+}
+
+impl Date {
+    pub fn from(y: u16, m: u8, d: u8) -> Self {
+        Date { y, m, d }
+    }
+}
+
+#[derive(Debug, PartialEq)]
+pub struct DateInterval {
+    pub d: u32,
+    pub w: u32,
+    pub m: u16,
+    pub y: u16,
+}
 
 #[derive(Debug, PartialEq)]
 pub struct Event {
@@ -27,35 +52,54 @@ impl Event {
     }
 }
 
+fn interval_between(a: Date, b: Date) -> DateInterval {
+    let mut y = b.y - a.y;
+    if y > 0 && ((b.m < a.m) || (b.m == a.m && b.d < a.d)) {
+        y -= 1;
+    }
+    let mut m = (y as i16 * 12 + (b.m as i16 - a.m as i16)) as u16;
+    if m > 0 && (b.m == a.m && b.d < a.d) {
+        m -= 1;
+    }
+    let a_naive_date = NaiveDate::from_ymd_opt(i32::from(a.y), u32::from(a.m), u32::from(a.d)).unwrap();
+    let b_naive_date = NaiveDate::from_ymd_opt(i32::from(b.y), u32::from(b.m), u32::from(b.d)).unwrap();
+    let diff = b_naive_date - a_naive_date;
+    let d = diff.num_days();
+    let w = diff.num_days() / 7;
+
+    DateInterval {d: d as u32, w: w as u32, m, y}
+}
+
+/*
 pub fn closest_rep(evt: Event, date: Date) -> Option<Date> {
     let base_date = NaiveDate::from_ymd_opt(i32::from(evt.dt.0), u32::from(evt.dt.1), u32::from(evt.dt.2)).unwrap();
-    let date = NaiveDate::from_ymd_opt(i32::from(date.0), u32::from(date.1), u32::from(date.2)).unwrap();
-    
-    if date < base_date {
+    let future_date = NaiveDate::from_ymd_opt(i32::from(date.0), u32::from(date.1), u32::from(date.2)).unwrap();
+
+    if future_date < base_date {
         return None
     }
-    if date == base_date {
-        return Some(
-            Date(
-                base_date.year() as u16,
-                base_date.month0() as u8 +1,
-                base_date.day0() as u8+1
-            )
-        );
+    if future_date == base_date {
+        return Some(evt.dt);
     }
 
-    let diff = date - base_date;
+    let mut y = date.0 - evt.dt.0;
+    if y > 0 && ((date.1 < evt.dt.1) || (date.1 == evt.dt.1 && date.2 < evt.dt.2)) {
+        y -= 1;
+    }
+    let mut m = (y as i16 * 12 + (date.1 as i16 - evt.dt.1 as i16)) as u16;
+    if m > 0 && (date.1 == evt.dt.1 && date.2 < evt.dt.2) {
+        m -= 1;
+    }
 
+    let diff = future_date - base_date;
+    let d = diff.num_days();
+    let w = diff.num_days()  / 7;
 
-    let d = diff.num_days() -1;
-    let w = (diff.num_days() -1) / 7;
-    let m = ((diff.num_days() -1) / 30) -1;
-    let y = ((diff.num_days()-1) / 365) -1;
-    println!("evt {} date {} num_days {} | d {} w {} m {} y {}", base_date, date,diff.num_days(), d, w, m, y);
-    
+    println!("freq {:?} evt {} date {} num_days {} | d {} w {} m {} y {}",evt.freq, base_date, future_date,diff.num_days(), d, w, m, y);
+
     let res = match evt.freq {
-        Some(Period::D1) => Some(date - Days::new(1)),
-        Some(Period::D2) => Some(date - Days::new((d % 2) as u64)),
+        Some(Period::D1) => Some(future_date),
+        Some(Period::D2) => Some(future_date - Days::new((d % 2) as u64)),
         Some(Period::W1) => Some(base_date + TimeDelta::try_weeks(w).unwrap()),
         Some(Period::M1) => Some(base_date + Months::new(m as u32)),
         Some(Period::M3) => Some(base_date + Months::new((m - (m % 3)) as u32)),
@@ -70,7 +114,7 @@ pub fn closest_rep(evt: Event, date: Date) -> Option<Date> {
         None => None,
     }
 }
-/*
+
 pub fn rep(evt: Event, i = 1) -> Option<Date> {
     match (evt.freq) {
         Period::D1 => evt.add({ days: 1 * i })
@@ -127,23 +171,28 @@ pub fn rep_in_period(evt: Event, begin: string, end: string) -> Vec<Date> {
     return res;
 }*/
 
-fn main() {
-
-}
+fn main() {}
 
 #[cfg(test)]
 mod test {
     use super::*;
 
     #[test]
-    fn test_event() {
-        assert_eq!(
-            Event::from(Date(2024, 11, 22), Period::M6),
-            Event { dt: Date(2024, 11, 22), freq: Some(Period::M6) }
-        );
+    fn test_date() {
+        let dt = Date::from(876, 7, 4);
+        assert_eq!(dt, Date { y: 876, m: 7, d: 4 });
+        assert_eq!(format!("{dt}"), "0876-07-04");
     }
 
     #[test]
+    fn test_event() {
+        assert_eq!(
+            Event::from(Date::from(2024, 11, 22), Period::M6),
+            Event { dt: Date { y: 2024, m: 11, d: 22 }, freq: Some(Period::M6) }
+        );
+    }
+
+    /*#[test]
     fn test_closest_rep_none() {
         assert_eq!(closest_rep(Event { dt: Date(2000, 01, 01), freq: None }, Date(2023, 08, 01)), None);
     }
@@ -202,7 +251,7 @@ mod test {
         assert_eq!(closest_rep(Event::from(Date(2000, 01, 01), Period::D1), Date(2023, 08, 03)), Some(Date(2023, 08, 03)));
         assert_eq!(closest_rep(Event::from(Date(2000, 01, 01), Period::D1), Date(2023, 08, 04)), Some(Date(2023, 08, 04)));
     }
-    
+
     #[test]
     fn test_closest_rep_2d() {
         assert_eq!(closest_rep(Event::from(Date(2023, 06, 01), Period::D2), Date(2023, 06, 02)), Some(Date(2023, 06, 01)));
@@ -210,7 +259,7 @@ mod test {
         assert_eq!(closest_rep(Event::from(Date(2023, 06, 01), Period::D2), Date(2023, 06, 04)), Some(Date(2023, 06, 03)));
         assert_eq!(closest_rep(Event::from(Date(2023, 06, 01), Period::D2), Date(2023, 06, 05)), Some(Date(2023, 06, 05)));
     }
-    
+
     #[test]
     fn test_closest_rep_1w() {
         assert_eq!(closest_rep(Event::from(Date(2023, 07, 03), Period::W1), Date(2023, 07, 09)), Some(Date(2023, 07, 03)));
@@ -218,7 +267,7 @@ mod test {
         assert_eq!(closest_rep(Event::from(Date(2023, 07, 03), Period::W1), Date(2023, 07, 11)), Some(Date(2023, 07, 10)));
         assert_eq!(closest_rep(Event::from(Date(2023, 07, 03), Period::W1), Date(2023, 07, 12)), Some(Date(2023, 07, 10)));
     }
-    
+
     #[test]
     fn test_closest_rep_1m() {
         assert_eq!(closest_rep(Event::from(Date(2019, 01, 03), Period::M1), Date(2023, 03, 02)), Some(Date(2023, 02, 03)));
@@ -226,7 +275,7 @@ mod test {
         assert_eq!(closest_rep(Event::from(Date(2019, 01, 03), Period::M1), Date(2023, 03, 04)), Some(Date(2023, 03, 03)));
         assert_eq!(closest_rep(Event::from(Date(2019, 01, 03), Period::M1), Date(2023, 03, 05)), Some(Date(2023, 03, 03)));
     }
-    
+
     #[test]
     fn test_closest_rep_3m() {
         assert_eq!(closest_rep(Event::from(Date(2019, 01, 03), Period::M3), Date(2023, 01, 02)), Some(Date(2022, 10, 03)));
@@ -234,7 +283,7 @@ mod test {
         assert_eq!(closest_rep(Event::from(Date(2019, 01, 03), Period::M3), Date(2023, 01, 04)), Some(Date(2023, 01, 03)));
         assert_eq!(closest_rep(Event::from(Date(2019, 01, 03), Period::M3), Date(2023, 01, 05)), Some(Date(2023, 01, 03)));
     }
-    
+
     #[test]
     fn test_closest_rep_6m() {
         assert_eq!(closest_rep(Event::from(Date(2019, 01, 03), Period::M6), Date(2023, 07, 02)), Some(Date(2023, 01, 03)));
@@ -242,7 +291,7 @@ mod test {
         assert_eq!(closest_rep(Event::from(Date(2019, 01, 03), Period::M6), Date(2023, 07, 04)), Some(Date(2023, 07, 03)));
         assert_eq!(closest_rep(Event::from(Date(2019, 01, 03), Period::M6), Date(2023, 07, 05)), Some(Date(2023, 07, 03)));
     }
-    
+
     #[test]
     fn test_closest_rep_1y() {
         assert_eq!(closest_rep(Event::from(Date(2019, 08, 08), Period::Y1), Date(2023, 08, 07)), Some(Date(2022, 08, 08)));
@@ -250,7 +299,7 @@ mod test {
         assert_eq!(closest_rep(Event::from(Date(2019, 08, 08), Period::Y1), Date(2023, 08, 09)), Some(Date(2023, 08, 08)));
         assert_eq!(closest_rep(Event::from(Date(2019, 08, 08), Period::Y1), Date(2023, 08, 10)), Some(Date(2023, 08, 08)));
     }
-    
+
     #[test]
     fn test_closest_rep_2y() {
         assert_eq!(closest_rep(Event::from(Date(2019, 08, 08), Period::Y2), Date(2023, 08, 07)), Some(Date(2021, 08, 08)));
@@ -259,7 +308,7 @@ mod test {
         assert_eq!(closest_rep(Event::from(Date(2019, 08, 08), Period::Y2), Date(2023, 08, 10)), Some(Date(2023, 08, 08)));
     }
 
-    /*#[test]
+    #[test]
     fn rep_1D() {
         assert_eq!(rep(Event::from(Date(1999, 12, 31), Period::D1)), Some(Date(2000, 01, 01)));
         assert_eq!(rep(Event::from(Date(2000, 01, 01), Period::D1)), Some(Date(2000, 01, 02)));
@@ -268,7 +317,7 @@ mod test {
         assert_eq!(rep(Event::from(Date(2021, 02, 28), Period::D1)), Some(Date(2021, 03, 01)));
         assert_eq!(rep(Event::from(Date(2021, 03, 01), Period::D1)), Some(Date(2021, 03, 02)));
     }
-    
+
     #[test]
     fn rep_2D() {
         assert_eq!(rep(Event::from(Date(1999, 12, 31), Period::D2)), Some(Date(2000, 01, 02)));
@@ -280,7 +329,7 @@ mod test {
         assert_eq!(rep(Event::from(Date(2021, 02, 28), Period::D2)), Some(Date(2021, 03, 02)));
         assert_eq!(rep(Event::from(Date(2021, 03, 01), Period::D2)), Some(Date(2021, 03, 03)));
     }
-    
+
     #[test]
     fn rep_1W() {
         assert_eq!(rep(Event::from(Date(1999, 12, 24), Period::W1)), Some(Date(1999, 12, 31)));
@@ -295,7 +344,7 @@ mod test {
         assert_eq!(rep(Event::from(Date(2021, 02, 23), Period::W1)), Some(Date(2021, 03, 02)));
         assert_eq!(rep(Event::from(Date(2021, 02, 24), Period::W1)), Some(Date(2021, 03, 03)));
     }
-    
+
     #[test]
     fn rep_1M() {
         assert_eq!(rep(Event::from(Date(2000, 01, 01), Period::M1)), Some(Date(2000, 02, 01)));
@@ -324,7 +373,7 @@ mod test {
         assert_eq!(rep(Event::from(Date(2020, 03, 31), Period::M3)), Some(Date(2020, 06, 30)));
         assert_eq!(rep(Event::from(Date(2020, 04, 30), Period::M3)), Some(Date(2020, 07, 30)));
     }
-    
+
     #[test]
     fn rep_6M() {
         assert_eq!(rep(Event::from(Date(1999, 08, 31), Period::M6)), Some(Date(2000, 02, 29)));
@@ -336,7 +385,7 @@ mod test {
         assert_eq!(rep(Event::from(Date(2020, 03, 31), Period::M6)), Some(Date(2020, 09, 30)));
         assert_eq!(rep(Event::from(Date(2020, 04, 30), Period::M6)), Some(Date(2020, 10, 30)));
     }
-    
+
     #[test]
     fn rep_1Y() {
         assert_eq!(rep(Event::from(Date(2000, 01, 01), Period::Y1)), Some(Date(2001, 01, 01)));
@@ -353,7 +402,7 @@ mod test {
         assert_eq!(rep(Event::from(Date(2020, 08, 31), Period::Y1)), Some(Date(2021, 08, 31)));
         assert_eq!(rep(Event::from(Date(2021, 08, 31), Period::Y1)), Some(Date(2022, 08, 31)));
     }
-    
+
     #[test]
     fn rep_2Y() {
         assert_eq!(rep(Event::from(Date(2000, 01, 01), Period::Y2)), Some(Date(2002, 01, 01)));
@@ -374,12 +423,12 @@ mod test {
         assert_eq!(rep(Event::from(Date(2020, 08, 31), Period::Y2)), Some(Date(2022, 08, 31)));
         assert_eq!(rep(Event::from(Date(2021, 08, 31), Period::Y2)), Some(Date(2023, 08, 31)));
     }
-    
+
     #[test]
     fn rep_none() {
         assert_eq!(rep(Event { dt: Date(2000, 01, 01), freq: None }), None);
     }
-    
+
     #[test]
     fn rep_in_period_1D() {
         assert_eq!(
@@ -436,7 +485,7 @@ mod test {
             ],
         );
     }
-    
+
     #[test]
     fn rep_in_period_2D() {
         assert_eq!(
@@ -471,7 +520,7 @@ mod test {
             ],
         );
     }
-    
+
     #[test]
     fn rep_in_period_1W() {
         assert_eq!(
@@ -492,7 +541,7 @@ mod test {
             ]
     );
     }
-    
+
     #[test]
     fn rep_in_period_1M() {
         assert_eq!(rep_in_period(Event { dt: Date(2023, 06, 10), freq: Some(Period::M1) }, Date(2023, 08, 01), Date(2023, 08, 31)), [Date(2023, 08, 10)],);
@@ -502,7 +551,7 @@ mod test {
         assert_eq!(rep_in_period(Event { dt: Date(2020, 01, 31), freq: Some(Period::M1) }, Date(2020, 02, 01), Date(2020, 02, 29)), [Date(2020, 02, 29)],);
         assert_eq!(rep_in_period(Event { dt: Date(2023, 08, 10), freq: Some(Period::M1) }, Date(2023, 08, 01), Date(2023, 08, 31)), [Date(2023, 08, 10)],);
     }
-    
+
     #[test]
     fn rep_in_period_3M() {
         assert_eq!(rep_in_period(Event { dt: Date(2020, 01, 28), freq: Some(Period::M3) }, Date(2020, 03, 01), Date(2020, 03, 31)), []);
@@ -512,7 +561,7 @@ mod test {
         assert_eq!(rep_in_period(Event { dt: Date(2020, 01, 31), freq: Some(Period::M3) }, Date(2020, 04, 01), Date(2020, 04, 30)),vec![Date(2020, 04, 30)],);
         assert_eq!(rep_in_period(Event { dt: Date(2020, 04, 10), freq: Some(Period::M3) }, Date(2020, 04, 01), Date(2020, 04, 30)),vec![Date(2020, 04, 10)],);
     }
-    
+
     #[test]
     fn rep_in_period_6M() {
         assert_eq!(rep_in_period(Event { dt: Date(2020, 01, 31), freq: Some(Period::M6) }, Date(2020, 03, 01), Date(2020, 03, 31)), []);
@@ -520,7 +569,7 @@ mod test {
         assert_eq!(rep_in_period(Event { dt: Date(2020, 07, 31), freq: Some(Period::M6) }, Date(2021, 01, 01), Date(2021, 01, 31)),vec![Date(2021, 01, 31)],);
         assert_eq!(rep_in_period(Event { dt: Date(2023, 06, 29), freq: Some(Period::M6) }, Date(2023, 06, 01), Date(2023, 06, 30)),vec![Date(2023, 06, 29)],);
     }
-    
+
     #[test]
     fn rep_in_period_1Y() {
         assert_eq!(rep_in_period(Event { dt: Date(2019, 02, 28), freq: Some(Period::Y1) }, Date(2020, 01, 01), Date(2020, 01, 31)), []);
@@ -530,20 +579,20 @@ mod test {
         assert_eq!(rep_in_period(Event { dt: Date(2022, 02, 28), freq: Some(Period::Y1) }, Date(2025, 02, 01), Date(2025, 02, 28)),vec![Date(2025, 02, 28)],);
         assert_eq!(rep_in_period(Event { dt: Date(2021, 11, 11), freq: Some(Period::Y1) }, Date(2021, 11, 01), Date(2021, 11, 30)),vec![Date(2021, 11, 11)],);
     }
-    
+
     #[test]
     fn rep_in_period_2Y() {
         assert_eq!(rep_in_period(Event { dt: Date(2020, 01, 31), freq: Some(Period::Y2) }, Date(2020, 07, 01), Date(2020, 07, 30)), []);
         assert_eq!(rep_in_period(Event { dt: Date(2020, 01, 31), freq: Some(Period::Y2) }, Date(2022, 01, 01), Date(2022, 01, 31)),vec![Date(2022, 01, 31)],);
         assert_eq!(rep_in_period(Event { dt: Date(2020, 07, 15), freq: Some(Period::Y2) }, Date(2020, 07, 01), Date(2021, 07, 31)),vec![Date(2020, 07, 15)],);
     }
-    
+
     #[test]
     fn rep_in_period_none() {
         assert_eq!(rep_in_period(Event { dt: Date(2000, 01, 01), freq: None }, Date(2023, 08, 01), Date(2023, 08, 31)),vec![]);
         assert_eq!(rep_in_period(Event { dt: Date(2023, 08, 22), freq: None }, Date(2023, 08, 01), Date(2023, 08, 31)),[Date(2023, 08, 22)],);
     }
-    
+
     #[test]
     fn rep_in_period_between_repetition() {
         assert_eq!(rep_in_period(Event { dt: Date(2008, 03, 01), freq: Some(Period::M3) }, Date(2008, 04, 01), Date(2008, 04, 30)), []);
@@ -551,7 +600,7 @@ mod test {
         assert_eq!(rep_in_period(Event { dt: Date(2010, 05, 01), freq: Some(Period::Y1) }, Date(2011, 04, 01), Date(2011, 04, 30)), []);
         assert_eq!(rep_in_period(Event { dt: Date(2011, 06, 01), freq: Some(Period::Y2) }, Date(2012, 06, 01), Date(2012, 06, 30)), []);
     }
-    
+
     #[test]
     fn rep_in_period_before_date() {
         assert_eq!(rep_in_period(Event { dt: Date(2000, 01, 01), freq: Some(Period::D1) }, Date(1999, 12, 01), Date(1999, 12, 31)), []);
@@ -563,7 +612,7 @@ mod test {
         assert_eq!(rep_in_period(Event { dt: Date(2010, 09, 01), freq: Some(Period::Y1) }, Date(2010, 08, 01), Date(2010, 08, 31)), []);
         assert_eq!(rep_in_period(Event { dt: Date(2011, 08, 01), freq: Some(Period::Y2) }, Date(2011, 07, 01), Date(2011, 07, 31)), []);
     }
-    
+
     #[test]
     fn rep_lazy_1d() {
         let it = rep_lazy(Event { dt: Date(2000, 01, 01), freq: Some(Period::D1) });
@@ -573,7 +622,7 @@ mod test {
         assert_eq!(it.next().value, Date(2000, 01, 05));
         assert_eq!(it.next().value, Date(2000, 01, 06));
     }
-    
+
     #[test]
     fn rep_lazy_1d() {
         let it = rep_lazy(Event { dt: Date(2020, 02, 27), freq: Some(Period::D1) });
@@ -582,7 +631,7 @@ mod test {
         assert_eq!(it.next().value, Date(2020, 03, 01));
         assert_eq!(it.next().value, Date(2020, 03, 02));
     }
-    
+
     #[test]
     fn rep_lazy_1d() {
         let it = rep_lazy(Event { dt: Date(2021, 02, 27), freq: Some(Period::D1) });
@@ -590,7 +639,7 @@ mod test {
         assert_eq!(it.next().value, Date(2021, 03, 01));
         assert_eq!(it.next().value, Date(2021, 03, 02));
     }
-    
+
     #[test]
     fn rep_lazy_2d() {
         let it = rep_lazy(Event { dt: Date(2000, 01, 01), freq: Some(Period::D2) });
@@ -600,20 +649,20 @@ mod test {
         assert_eq!(it.next().value, Date(2000, 01, 09));
         assert_eq!(it.next().value, Date(2000, 01, 11));
     }
-    
+
     #[test]
     fn rep_lazy_2d() {
         let it = rep_lazy(Event { dt: Date(2020, 02, 27), freq: Some(Period::D2) });
         assert_eq!(it.next().value, Date(2020, 02, 29));
         assert_eq!(it.next().value, Date(2020, 03, 02));
     }
-    
+
     #[test]
     fn rep_lazy_2d() {
         let it = rep_lazy(Event { dt: Date(2021, 02, 27), freq: Some(Period::D2) });
         assert_eq!(it.next().value, Date(2021, 03, 01));
     }
-    
+
     #[test]
     fn rep_lazy_1w() {
         let it = rep_lazy(Event { dt: Date(2000, 01, 01), freq: Some(Period::W1) });
@@ -623,21 +672,21 @@ mod test {
         assert_eq!(it.next().value, Date(2000, 01, 29));
         assert_eq!(it.next().value, Date(2000, 02, 05));
     }
-    
+
     #[test]
     fn rep_lazy_1w() {
         let it = rep_lazy(Event { dt: Date(2020, 02, 21), freq: Some(Period::W1) });
         assert_eq!(it.next().value, Date(2020, 02, 28));
         assert_eq!(it.next().value, Date(2020, 03, 06));
     }
-    
+
     #[test]
     fn rep_lazy_1w() {
         let it = rep_lazy(Event { dt: Date(2021, 02, 21), freq: Some(Period::W1) });
         assert_eq!(it.next().value, Date(2021, 02, 28));
         assert_eq!(it.next().value, Date(2021, 03, 07));
     }
-    
+
     #[test]
     fn rep_lazy_1m() {
         let it = rep_lazy(Event { dt: Date(2000, 01, 01), freq: Some(Period::M1) });
@@ -647,21 +696,21 @@ mod test {
         assert_eq!(it.next().value, Date(2000, 05, 01));
         assert_eq!(it.next().value, Date(2000, 06, 01));
     }
-    
+
     #[test]
     fn rep_lazy_1m() {
         let it = rep_lazy(Event { dt: Date(2020, 01, 31) , freq: Some(Period::M1) });
         assert_eq!(it.next().value, Date(2020, 02, 29));
         assert_eq!(it.next().value, Date(2020, 03, 31));
     }
-    
+
     #[test]
     fn rep_lazy_1m() {
         let it = rep_lazy(Event { dt: Date(2021, 01, 31) , freq: Some(Period::M1) });
         assert_eq!(it.next().value, Date(2021, 02, 28));
         assert_eq!(it.next().value, Date(2021, 03, 31));
     }
-    
+
     #[test]
     fn rep_lazy_3m() {
         let it = rep_lazy(Event { dt: Date(2000, 01, 01) , freq: Some(Period::M3) });
@@ -671,7 +720,7 @@ mod test {
         assert_eq!(it.next().value, Date(2001, 01, 01));
         assert_eq!(it.next().value, Date(2001, 04, 01));
     }
-    
+
     #[test]
     fn rep_lazy_3m() {
         let it = rep_lazy(Event { dt: Date(2019, 11, 30) , freq: Some(Period::M3) });
@@ -680,7 +729,7 @@ mod test {
         assert_eq!(it.next().value, Date(2020, 08, 30));
         assert_eq!(it.next().value, Date(2020, 11, 30));
     }
-    
+
     #[test]
     fn rep_lazy_6m() {
         let it = rep_lazy(Event { dt: Date(2000, 01, 01) , freq: Some(Period::M6) });
@@ -690,7 +739,7 @@ mod test {
         assert_eq!(it.next().value, Date(2002, 01, 01));
         assert_eq!(it.next().value, Date(2002, 07, 01));
     }
-    
+
     #[test]
     fn rep_lazy_6m() {
         let it = rep_lazy(Event { dt: Date(2019, 08, 31) , freq: Some(Period::M6) });
@@ -699,7 +748,7 @@ mod test {
         assert_eq!(it.next().value, Date(2021, 02, 28));
         assert_eq!(it.next().value, Date(2021, 08, 31));
     }
-    
+
     #[test]
     fn rep_lazy_1y() {
         let it = rep_lazy(Event { dt: Date(2000, 01, 01) , freq: Some(Period::Y1) });
@@ -709,7 +758,7 @@ mod test {
         assert_eq!(it.next().value, Date(2004, 01, 01));
         assert_eq!(it.next().value, Date(2005, 01, 01));
     }
-    
+
     #[test]
     fn rep_lazy_1y() {
         let it = rep_lazy(Event { dt: Date(2020, 02, 29) , freq: Some(Period::Y1) });
@@ -718,7 +767,7 @@ mod test {
         assert_eq!(it.next().value, Date(2023, 02, 28));
         assert_eq!(it.next().value, Date(2024, 02, 29));
     }
-    
+
     #[test]
     fn rep_lazy_2y() {
         let it = rep_lazy(Event { dt: Date(2000, 01, 01) , freq: Some(Period::Y2) });
@@ -728,14 +777,14 @@ mod test {
         assert_eq!(it.next().value, Date(2008, 01, 01));
         assert_eq!(it.next().value, Date(2010, 01, 01));
     }
-    
+
     #[test]
     fn rep_lazy_2y() {
         let it = rep_lazy(Event { dt: Date(2020, 02, 29) , freq: Some(Period::Y2) });
         assert_eq!(it.next().value, Date(2022, 02, 28));
         assert_eq!(it.next().value, Date(2024, 02, 29));
     }
-    
+
     #[test]
     fn rep_lazy_none() {
         let it = rep_lazy(Event { dt: Date(2000, 01, 01) , freq: None });
