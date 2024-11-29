@@ -1,6 +1,6 @@
 use std::{fmt, ops};
 
-use super::interval::{MonthIntv, YearIntv};
+use super::interval::{DayIntv, MonthIntv, WeekIntv, YearIntv};
 
 #[derive(Debug, PartialEq)]
 pub struct DtYear(pub u16);
@@ -80,72 +80,11 @@ impl Dt {
     }
 }
 
-/*
-impl ops::Add<DayIntv> for Dt {
-    type Output = Dt;
-
-    fn add(self, intv: DayIntv) -> Dt {
-        Dt { y, m, d }
-    }
-}
-impl ops::Sub<DayIntv> for Dt {
-    type Output = Dt;
-
-    fn sub(self, intv: DayIntv) -> Dt {
-        Dt { y, m, d }
-    }
-}
-
-impl ops::Add<WeekIntv> for Dt {
-    type Output = Dt;
-
-    fn add(self, intv: WeekIntv) -> Dt {
-        Dt { y, m, d }
-    }
-}
-
-impl ops::Sub<WeekIntv> for Dt {
-    type Output = Dt;
-
-    fn sub(self, intv: WeekIntv) -> Dt {
-        Dt { y, m, d }
-    }
-}
-*/
-
-impl ops::Add<MonthIntv> for Dt {
-    type Output = Dt;
-
-    fn add(self, intv: MonthIntv) -> Dt {
-        let sum_m = u16::from(self.y.0) * 12 + u16::from(self.m.to_u8()) - 1 + intv.0;
-        let y = sum_m / 12;
-        let m = sum_m - y * 12 + 1;
-
-        Dt { y: DtYear(y), m: DtMonth::from_u8(m as u8).unwrap(), d: self.d }
-    }
-}
-
-impl ops::Sub<MonthIntv> for Dt {
-    type Output = Dt;
-
-    fn sub(self, intv: MonthIntv) -> Dt {
-        let sum_m = u16::from(self.y.0) * 12 + u16::from(self.m.to_u8()) - 1;
-        if intv.0 > sum_m {
-            return Dt::from(0, 1, 1)
-        }
-        let sum_m = sum_m - intv.0;
-        let y = sum_m / 12;
-        let m = sum_m - y * 12 + 1;
-
-        Dt { y: DtYear(y), m: DtMonth::from_u8(m as u8).unwrap(), d: self.d }
-    }
-}
-
 impl ops::Add<YearIntv> for Dt {
     type Output = Dt;
 
     fn add(self, intv: YearIntv) -> Dt {
-        Dt { y: DtYear(self.y.0 + intv.0), m: self.m, d: self.d }
+        Dt::from(self.y.0 + intv.0, self.m.to_u8(), self.d.0)
     }
 }
 
@@ -156,8 +95,104 @@ impl ops::Sub<YearIntv> for Dt {
         if intv.0 > self.y.0 {
             Dt::from(0, 1, 1)
         } else {
-            Dt { y: DtYear(self.y.0 - intv.0), m: self.m, d: self.d }
+            Dt::from(self.y.0 - intv.0, self.m.to_u8(), self.d.0)
         }
+    }
+}
+
+impl ops::Add<MonthIntv> for Dt {
+    type Output = Dt;
+
+    fn add(self, intv: MonthIntv) -> Dt {
+        let mut new_m = u16::from(self.m.to_u8()) - 1 + intv.0;
+        let mut new_y = self.y.0;
+        while new_m > 11 {
+            new_y += 1;
+            new_m -= 12;
+        }
+        Dt::from(new_y, new_m as u8 + 1, self.d.0)
+    }
+}
+
+impl ops::Sub<MonthIntv> for Dt {
+    type Output = Dt;
+
+    fn sub(self, intv: MonthIntv) -> Dt {
+        let mut new_m = i32::from(self.m.to_u8()) - 1 - i32::from(intv.0);
+        let mut new_y = self.y.0;
+        while new_m < 0 {
+            if new_y == 0 {
+                return Dt::from(0, 1, 1);
+            }
+            new_y -= 1;
+            new_m += 12;
+        }
+        Dt::from(new_y, new_m as u8 + 1, self.d.0)
+    }
+}
+
+impl ops::Add<DayIntv> for Dt {
+    type Output = Dt;
+
+    fn add(self, intv: DayIntv) -> Dt {
+        let mut new_d = u32::from(self.d.0) - 1 + intv.0;
+        let mut new_m = self.m.to_u8() - 1;
+        let mut new_y = self.y.0;
+        let mut new_m_days =
+            u32::from(days_in_month(DtYear(new_y), DtMonth::from_u8(new_m as u8 + 1).unwrap()).0);
+        while new_d >= new_m_days {
+            new_m += 1;
+            new_d -= new_m_days;
+            if new_m > 11 {
+                new_y += 1;
+                new_m -= 12;
+            }
+            new_m_days = u32::from(
+                days_in_month(DtYear(new_y), DtMonth::from_u8(new_m as u8 + 1).unwrap()).0,
+            );
+        }
+        Dt::from(new_y, new_m as u8 + 1, new_d as u8 + 1)
+    }
+}
+
+impl ops::Sub<DayIntv> for Dt {
+    type Output = Dt;
+
+    fn sub(self, intv: DayIntv) -> Dt {
+        let mut new_d = i64::from(self.d.0) - 1 - i64::from(intv.0);
+        let mut new_m = i32::from(self.m.to_u8() - 1);
+        let mut new_y = self.y.0;
+        while new_d < 0 {
+            let new_m_days = i64::from(
+                days_in_month(DtYear(new_y), DtMonth::from_u8(new_m as u8 + 1).unwrap()).0,
+            );
+            new_m -= 1;
+            if new_m < 0 {
+                if new_y == 0 {
+                    return Dt::from(0, 1, 1);
+                }
+                new_y -= 1;
+                new_m += 12;
+            }
+            new_d += new_m_days;
+        }
+        Dt::from(new_y, new_m as u8 + 1, new_d as u8 + 1)
+    }
+}
+
+impl ops::Add<WeekIntv> for Dt {
+    type Output = Dt;
+
+    fn add(self, intv: WeekIntv) -> Dt {
+        self + DayIntv(intv.0 * 7)
+    }
+}
+
+impl ops::Sub<WeekIntv> for Dt {
+    type Output = Dt;
+
+    fn sub(self, intv: WeekIntv) -> Dt {
+        self - DayIntv(intv.0 * 7)
     }
 }
 
@@ -200,6 +235,17 @@ fn days_in_year(y: DtYear) -> u16 {
     } else {
         365
     }
+}
+
+fn leap_years_between(begin: DtYear, end: DtYear) -> u16 {
+    let mut acc: u16 = 0;
+    for y in begin.0..(end.0 + 1) {
+        let dt_year = DtYear(y);
+        if is_leap_year(dt_year) {
+            acc += 1;
+        }
+    }
+    acc
 }
 
 #[cfg(test)]
@@ -301,11 +347,61 @@ mod test {
     }
 
     #[test]
-    fn test_dt_sub_overflow() {
+    fn test_dt_add_day() {
+        assert_eq!(Dt::from(2020, 7, 4) + DayIntv(0), Dt::from(2020, 7, 4));
+        assert_eq!(Dt::from(2020, 7, 4) + DayIntv(1), Dt::from(2020, 7, 5));
+        assert_eq!(Dt::from(2020, 7, 4) + DayIntv(10), Dt::from(2020, 7, 14));
+        assert_eq!(Dt::from(2020, 7, 4) + DayIntv(20), Dt::from(2020, 7, 24));
+        assert_eq!(Dt::from(2020, 7, 4) + DayIntv(21), Dt::from(2020, 7, 25));
+        assert_eq!(Dt::from(2020, 7, 4) + DayIntv(22), Dt::from(2020, 7, 26));
+        assert_eq!(Dt::from(2020, 7, 4) + DayIntv(23), Dt::from(2020, 7, 27));
+        assert_eq!(Dt::from(2020, 7, 4) + DayIntv(24), Dt::from(2020, 7, 28));
+        assert_eq!(Dt::from(2020, 7, 4) + DayIntv(25), Dt::from(2020, 7, 29));
+        assert_eq!(Dt::from(2020, 7, 4) + DayIntv(26), Dt::from(2020, 7, 30));
+        assert_eq!(Dt::from(2020, 7, 4) + DayIntv(27), Dt::from(2020, 7, 31));
+        assert_eq!(Dt::from(2020, 7, 4) + DayIntv(28), Dt::from(2020, 8, 1));
+        assert_eq!(Dt::from(2020, 7, 4) + DayIntv(29), Dt::from(2020, 8, 2));
+        assert_eq!(Dt::from(2020, 7, 4) + DayIntv(30), Dt::from(2020, 8, 3));
+        assert_eq!(Dt::from(2020, 7, 4) + DayIntv(365), Dt::from(2021, 7, 4));
+        assert_eq!(Dt::from(2020, 7, 4) + DayIntv(365 * 2), Dt::from(2022, 7, 4));
+        assert_eq!(Dt::from(2020, 7, 4) + DayIntv(365 * 3), Dt::from(2023, 7, 4));
+        assert_eq!(Dt::from(2020, 7, 4) + DayIntv(365 * 4), Dt::from(2024, 7, 3));
+    }
+
+    #[test]
+    fn test_dt_sub_day() {
+        assert_eq!(Dt::from(2020, 7, 4) - DayIntv(0), Dt::from(2020, 7, 4));
+        assert_eq!(Dt::from(2020, 7, 5) - DayIntv(1), Dt::from(2020, 7, 4));
+        assert_eq!(Dt::from(2020, 7, 14) - DayIntv(10), Dt::from(2020, 7, 4));
+        assert_eq!(Dt::from(2020, 7, 24) - DayIntv(20), Dt::from(2020, 7, 4));
+        assert_eq!(Dt::from(2020, 7, 25) - DayIntv(21), Dt::from(2020, 7, 4));
+        assert_eq!(Dt::from(2020, 7, 26) - DayIntv(22), Dt::from(2020, 7, 4));
+        assert_eq!(Dt::from(2020, 7, 27) - DayIntv(23), Dt::from(2020, 7, 4));
+        assert_eq!(Dt::from(2020, 7, 28) - DayIntv(24), Dt::from(2020, 7, 4));
+        assert_eq!(Dt::from(2020, 7, 29) - DayIntv(25), Dt::from(2020, 7, 4));
+        assert_eq!(Dt::from(2020, 7, 30) - DayIntv(26), Dt::from(2020, 7, 4));
+        assert_eq!(Dt::from(2020, 7, 31) - DayIntv(27), Dt::from(2020, 7, 4));
+        assert_eq!(Dt::from(2020, 8, 1) - DayIntv(28), Dt::from(2020, 7, 4));
+        assert_eq!(Dt::from(2020, 8, 2) - DayIntv(29), Dt::from(2020, 7, 4));
+        assert_eq!(Dt::from(2020, 8, 3) - DayIntv(30), Dt::from(2020, 7, 4));
+        assert_eq!(Dt::from(2021, 7, 4) - DayIntv(365), Dt::from(2020, 7, 4));
+        assert_eq!(Dt::from(2022, 7, 4) - DayIntv(365 * 2), Dt::from(2020, 7, 4));
+        assert_eq!(Dt::from(2023, 7, 4) - DayIntv(365 * 3), Dt::from(2020, 7, 4));
+        assert_eq!(Dt::from(2024, 7, 3) - DayIntv(365 * 4), Dt::from(2020, 7, 4));
+    }
+
+    #[test]
+    fn test_dt_sub_y0() {
         assert_eq!(Dt::from(2024, 7, 4) - YearIntv(2024), Dt::from(0, 7, 4));
         assert_eq!(Dt::from(2024, 7, 4) - MonthIntv(2024 * 12), Dt::from(0, 7, 4));
+        assert_eq!(Dt::from(2024, 7, 4) - DayIntv(2024 * 365 + 491), Dt::from(0, 7, 4));
+    }
+
+    #[test]
+    fn test_dt_sub_overflow() {
         assert_eq!(Dt::from(2024, 7, 4) - YearIntv(2025), Dt::from(0, 1, 1));
         assert_eq!(Dt::from(2024, 7, 4) - MonthIntv(2025 * 12), Dt::from(0, 1, 1));
+        assert_eq!(Dt::from(2024, 7, 4) - DayIntv(2025 * 365 + 491), Dt::from(0, 1, 1));
     }
 
     #[test]
@@ -402,5 +498,40 @@ mod test {
         assert_eq!(days_in_year(DtYear(2001)), 365);
         assert_eq!(days_in_year(DtYear(2002)), 365);
         assert_eq!(days_in_year(DtYear(2003)), 365);
+    }
+
+    #[test]
+    fn test_leap_years_between_0() {
+        assert_eq!(leap_years_between(DtYear(1897), DtYear(1903)), 0);
+        assert_eq!(leap_years_between(DtYear(2001), DtYear(2001)), 0);
+        assert_eq!(leap_years_between(DtYear(2002), DtYear(2002)), 0);
+        assert_eq!(leap_years_between(DtYear(2003), DtYear(2003)), 0);
+        assert_eq!(leap_years_between(DtYear(2001), DtYear(2003)), 0);
+        assert_eq!(leap_years_between(DtYear(2002), DtYear(2003)), 0);
+        assert_eq!(leap_years_between(DtYear(2001), DtYear(2002)), 0);
+    }
+
+    #[test]
+    fn test_leap_years_between_1() {
+        assert_eq!(leap_years_between(DtYear(1897), DtYear(1904)), 1);
+        assert_eq!(leap_years_between(DtYear(1997), DtYear(2003)), 1);
+        assert_eq!(leap_years_between(DtYear(1997), DtYear(2000)), 1);
+        assert_eq!(leap_years_between(DtYear(2000), DtYear(2003)), 1);
+        assert_eq!(leap_years_between(DtYear(2003), DtYear(2007)), 1);
+        assert_eq!(leap_years_between(DtYear(2005), DtYear(2009)), 1);
+    }
+
+    #[test]
+    fn test_leap_years_between_2() {
+        assert_eq!(leap_years_between(DtYear(1896), DtYear(1904)), 2);
+        assert_eq!(leap_years_between(DtYear(1996), DtYear(2003)), 2);
+        assert_eq!(leap_years_between(DtYear(1997), DtYear(2004)), 2);
+        assert_eq!(leap_years_between(DtYear(2000), DtYear(2004)), 2);
+        assert_eq!(leap_years_between(DtYear(2004), DtYear(2008)), 2);
+    }
+
+    #[test]
+    fn test_leap_years_between() {
+        assert_eq!(leap_years_between(DtYear(2000), DtYear(2024)), 7);
     }
 }
