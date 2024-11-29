@@ -1,25 +1,19 @@
 #[derive(Debug, PartialEq)]
-pub struct Day(pub u32);
+pub struct DayIntv(pub u32);
 
 #[derive(Debug, PartialEq)]
-pub struct Week(pub u32);
+pub struct WeekIntv(pub u32);
 
 #[derive(Debug, PartialEq)]
-pub struct Month(pub u16);
+pub struct MonthIntv(pub u16);
 
 #[derive(Debug, PartialEq)]
-pub struct Year(pub u16);
+pub struct YearIntv(pub u16);
 
 #[derive(Debug, PartialEq)]
-struct Dt {
-    pub d: Day,
-    pub w: Week,
-    pub m: Month,
-    pub y: Year,
-}
-
-#[cfg(test)]
-mod test {
-    use super::*;
-
+struct DtIntv {
+    pub d: DayIntv,
+    pub w: WeekIntv,
+    pub m: MonthIntv,
+    pub y: YearIntv,
 }

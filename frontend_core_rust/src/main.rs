@@ -6,24 +6,7 @@ pub mod event;
 
 fn main() {}
 
-fn interval_between(a: Dt, b: Dt) -> DateInterval {
-    let mut y = b.y - a.y;
-    if y > 0 && ((b.m < a.m) || (b.m == a.m && b.d < a.d)) {
-        y -= 1;
-    }
-    let mut m = ((b.y as i16 * 12 + b.m as i16) - (a.y as i16 * 12 + a.m as i16)) as u16;
-    if m > 0 && b.d < a.d {
-        m -= 1;
-    }
-    let a_naive_date = NaiveDate::from_ymd_opt(i32::from(a.y), u32::from(a.m), u32::from(a.d)).unwrap();
-    let b_naive_date = NaiveDate::from_ymd_opt(i32::from(b.y), u32::from(b.m), u32::from(b.d)).unwrap();
-    let diff = b_naive_date - a_naive_date;
-    let d = diff.num_days();
-    let w = diff.num_days() / 7;
-
-    DateInterval { d: d as u32, w: w as u32, m, y }
-}
-
+/*
 pub fn closest_rep(evt: Evt, dt: Dt) -> Option<Dt> {
     if  dt.y < evt.dt.y {
         return None
@@ -691,4 +674,4 @@ mod test {
         );
     }
 }
-
+*/
