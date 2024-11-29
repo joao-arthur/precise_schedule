@@ -1,10 +1,10 @@
 use std::{fmt, ops};
 
 #[derive(Debug, PartialEq)]
-pub struct DateYear(pub u16);
+pub struct DtYear(pub u16);
 
 #[derive(Debug, PartialEq)]
-pub enum DateMonth {
+pub enum DtMonth {
     Jan,
     Feb,
     Mar,
@@ -19,130 +19,130 @@ pub enum DateMonth {
     Dec,
 }
 
-impl DateMonth {
+impl DtMonth {
     pub fn from_u8(m: u8) -> Option<Self> {
         match m {
-            1 => Some(DateMonth::Jan),
-            2 => Some(DateMonth::Feb),
-            3 => Some(DateMonth::Mar),
-            4 => Some(DateMonth::Apr),
-            5 => Some(DateMonth::May),
-            6 => Some(DateMonth::Jun),
-            7 => Some(DateMonth::Jul),
-            8 => Some(DateMonth::Aug),
-            9 => Some(DateMonth::Sep),
-            10 => Some(DateMonth::Oct),
-            11 => Some(DateMonth::Nov),
-            12 => Some(DateMonth::Dec),
+            1 => Some(DtMonth::Jan),
+            2 => Some(DtMonth::Feb),
+            3 => Some(DtMonth::Mar),
+            4 => Some(DtMonth::Apr),
+            5 => Some(DtMonth::May),
+            6 => Some(DtMonth::Jun),
+            7 => Some(DtMonth::Jul),
+            8 => Some(DtMonth::Aug),
+            9 => Some(DtMonth::Sep),
+            10 => Some(DtMonth::Oct),
+            11 => Some(DtMonth::Nov),
+            12 => Some(DtMonth::Dec),
             _ => None,
         }
     }
 
     pub fn to_u8(self: &Self) -> u8 {
         match self {
-            DateMonth::Jan => 1,
-            DateMonth::Feb => 2,
-            DateMonth::Mar => 3,
-            DateMonth::Apr => 4,
-            DateMonth::May => 5,
-            DateMonth::Jun => 6,
-            DateMonth::Jul => 7,
-            DateMonth::Aug => 8,
-            DateMonth::Sep => 9,
-            DateMonth::Oct => 10,
-            DateMonth::Nov => 11,
-            DateMonth::Dec => 12,
+            DtMonth::Jan => 1,
+            DtMonth::Feb => 2,
+            DtMonth::Mar => 3,
+            DtMonth::Apr => 4,
+            DtMonth::May => 5,
+            DtMonth::Jun => 6,
+            DtMonth::Jul => 7,
+            DtMonth::Aug => 8,
+            DtMonth::Sep => 9,
+            DtMonth::Oct => 10,
+            DtMonth::Nov => 11,
+            DtMonth::Dec => 12,
         }
     }
 }
 
 #[derive(Debug, PartialEq)]
-pub struct DateDay(pub u8);
+pub struct DtDay(pub u8);
 
 #[derive(Debug, PartialEq)]
-pub struct Date {
-    pub y: DateYear,
-    pub m: DateMonth,
-    pub d: DateDay,
+pub struct Dt {
+    pub y: DtYear,
+    pub m: DtMonth,
+    pub d: DtDay,
 }
 
-impl fmt::Display for Date {
+impl fmt::Display for Dt {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{:04}-{:02}-{:02}", self.y.0, self.m.to_u8(), self.d.0)
     }
 }
 
-impl Date {
+impl Dt {
     pub fn from(y: u16, m: u8, d: u8) -> Self {
-        Date { y: DateYear(y), m: DateMonth::from_u8(m).unwrap(), d: DateDay(d) }
+        Dt { y: DtYear(y), m: DtMonth::from_u8(m).unwrap(), d: DtDay(d) }
     }
 }
 
 /*
-impl ops::Add<DayIntv> for Date {
-    type Output = Date;
+impl ops::Add<DayIntv> for Dt {
+    type Output = Dt;
 
-    fn add(self, day: DayIntv) -> Date {
-        Date { y, m, d }
+    fn add(self, day: DayIntv) -> Dt {
+        Dt { y, m, d }
     }
 }
-impl ops::Sub<DayIntv> for Date {
-    type Output = Date;
+impl ops::Sub<DayIntv> for Dt {
+    type Output = Dt;
 
-    fn sub(self, day: DayIntv) -> Date {
-        Date { y, m, d }
-    }
-}
-
-impl ops::Add<WeekIntv> for Date {
-    type Output = Date;
-
-    fn add(self, week: WeekIntv) -> Date {
-        Date { y, m, d }
+    fn sub(self, day: DayIntv) -> Dt {
+        Dt { y, m, d }
     }
 }
 
-impl ops::Sub<WeekIntv> for Date {
-    type Output = Date;
+impl ops::Add<WeekIntv> for Dt {
+    type Output = Dt;
 
-    fn sub(self, week: WeekIntv) -> Date {
-        Date { y, m, d }
+    fn add(self, week: WeekIntv) -> Dt {
+        Dt { y, m, d }
     }
 }
 
-impl ops::Add<MonthIntv> for Date {
-    type Output = Date;
+impl ops::Sub<WeekIntv> for Dt {
+    type Output = Dt;
 
-    fn add(self, month: MonthIntv) -> Date {
-        Date { y, m, d }
+    fn sub(self, week: WeekIntv) -> Dt {
+        Dt { y, m, d }
     }
 }
 
-impl ops::Sub<MonthIntv> for Date {
-    type Output = Date;
+impl ops::Add<MonthIntv> for Dt {
+    type Output = Dt;
 
-    fn sub(self, month: MonthIntv) -> Date {
-        Date { y, m, d }
+    fn add(self, month: MonthIntv) -> Dt {
+        Dt { y, m, d }
     }
 }
 
-impl ops::Add<YearIntv> for Date {
-    type Output = Date;
+impl ops::Sub<MonthIntv> for Dt {
+    type Output = Dt;
 
-    fn add(self, year: YearIntv) -> Date {
-        Date { y, m, d }
+    fn sub(self, month: MonthIntv) -> Dt {
+        Dt { y, m, d }
     }
 }
 
-impl ops::Sub<YearIntv> for Date {
-    type Output = Date;
+impl ops::Add<YearIntv> for Dt {
+    type Output = Dt;
 
-    fn sub(self, year: YearIntv) -> Date {
-        Date { y, m, d }
+    fn add(self, year: YearIntv) -> Dt {
+        Dt { y, m, d }
+    }
+}
+
+impl ops::Sub<YearIntv> for Dt {
+    type Output = Dt;
+
+    fn sub(self, year: YearIntv) -> Dt {
+        Dt { y, m, d }
     }
 }*/
 
-fn is_leap_year(y: DateYear) -> bool {
+fn is_leap_year(y: DtYear) -> bool {
     if y.0 % 400 == 0 {
         return true;
     }
@@ -152,30 +152,30 @@ fn is_leap_year(y: DateYear) -> bool {
     return y.0 % 4 == 0;
 }
 
-fn month_days(y: DateYear, m: DateMonth) -> DateDay {
+fn month_days(y: DtYear, m: DtMonth) -> DtDay {
     match m {
-        DateMonth::Jan => DateDay(31),
-        DateMonth::Feb => {
+        DtMonth::Jan => DtDay(31),
+        DtMonth::Feb => {
             if is_leap_year(y) {
-                DateDay(29)
+                DtDay(29)
             } else {
-                DateDay(28)
+                DtDay(28)
             }
         }
-        DateMonth::Mar => DateDay(31),
-        DateMonth::Apr => DateDay(30),
-        DateMonth::May => DateDay(31),
-        DateMonth::Jun => DateDay(30),
-        DateMonth::Jul => DateDay(31),
-        DateMonth::Aug => DateDay(31),
-        DateMonth::Sep => DateDay(30),
-        DateMonth::Oct => DateDay(31),
-        DateMonth::Nov => DateDay(30),
-        DateMonth::Dec => DateDay(31),
+        DtMonth::Mar => DtDay(31),
+        DtMonth::Apr => DtDay(30),
+        DtMonth::May => DtDay(31),
+        DtMonth::Jun => DtDay(30),
+        DtMonth::Jul => DtDay(31),
+        DtMonth::Aug => DtDay(31),
+        DtMonth::Sep => DtDay(30),
+        DtMonth::Oct => DtDay(31),
+        DtMonth::Nov => DtDay(30),
+        DtMonth::Dec => DtDay(31),
     }
 }
 
-fn days_in_year(y: DateYear) -> u16 {
+fn days_in_year(y: DtYear) -> u16 {
     if is_leap_year(y) {
         366
     } else {
@@ -189,123 +189,123 @@ mod test {
 
     #[test]
     fn test_date_month() {
-        assert_eq!(DateMonth::from_u8(0), None);
-        assert_eq!(DateMonth::from_u8(1), Some(DateMonth::Jan));
-        assert_eq!(DateMonth::from_u8(2), Some(DateMonth::Feb));
-        assert_eq!(DateMonth::from_u8(3), Some(DateMonth::Mar));
-        assert_eq!(DateMonth::from_u8(4), Some(DateMonth::Apr));
-        assert_eq!(DateMonth::from_u8(5), Some(DateMonth::May));
-        assert_eq!(DateMonth::from_u8(6), Some(DateMonth::Jun));
-        assert_eq!(DateMonth::from_u8(7), Some(DateMonth::Jul));
-        assert_eq!(DateMonth::from_u8(8), Some(DateMonth::Aug));
-        assert_eq!(DateMonth::from_u8(9), Some(DateMonth::Sep));
-        assert_eq!(DateMonth::from_u8(10), Some(DateMonth::Oct));
-        assert_eq!(DateMonth::from_u8(11), Some(DateMonth::Nov));
-        assert_eq!(DateMonth::from_u8(12), Some(DateMonth::Dec));
-        assert_eq!(DateMonth::from_u8(13), None);
-        assert_eq!(DateMonth::from_u8(14), None);
+        assert_eq!(DtMonth::from_u8(0), None);
+        assert_eq!(DtMonth::from_u8(1), Some(DtMonth::Jan));
+        assert_eq!(DtMonth::from_u8(2), Some(DtMonth::Feb));
+        assert_eq!(DtMonth::from_u8(3), Some(DtMonth::Mar));
+        assert_eq!(DtMonth::from_u8(4), Some(DtMonth::Apr));
+        assert_eq!(DtMonth::from_u8(5), Some(DtMonth::May));
+        assert_eq!(DtMonth::from_u8(6), Some(DtMonth::Jun));
+        assert_eq!(DtMonth::from_u8(7), Some(DtMonth::Jul));
+        assert_eq!(DtMonth::from_u8(8), Some(DtMonth::Aug));
+        assert_eq!(DtMonth::from_u8(9), Some(DtMonth::Sep));
+        assert_eq!(DtMonth::from_u8(10), Some(DtMonth::Oct));
+        assert_eq!(DtMonth::from_u8(11), Some(DtMonth::Nov));
+        assert_eq!(DtMonth::from_u8(12), Some(DtMonth::Dec));
+        assert_eq!(DtMonth::from_u8(13), None);
+        assert_eq!(DtMonth::from_u8(14), None);
     }
 
     #[test]
     fn test_date() {
-        let dt = Date::from(876, 7, 4);
-        assert_eq!(dt, Date { y: DateYear(876), m: DateMonth::Jul, d: DateDay(4) });
+        let dt = Dt::from(876, 7, 4);
+        assert_eq!(dt, Dt { y: DtYear(876), m: DtMonth::Jul, d: DtDay(4) });
         assert_eq!(format!("{dt}"), "0876-07-04");
     }
 
     #[test]
     fn test_is_leap_year_divisable_by_four() {
-        assert_eq!(is_leap_year(DateYear(2004)), true);
-        assert_eq!(is_leap_year(DateYear(2008)), true);
-        assert_eq!(is_leap_year(DateYear(2012)), true);
-        assert_eq!(is_leap_year(DateYear(2016)), true);
-        assert_eq!(is_leap_year(DateYear(2020)), true);
-        assert_eq!(is_leap_year(DateYear(2024)), true);
+        assert_eq!(is_leap_year(DtYear(2004)), true);
+        assert_eq!(is_leap_year(DtYear(2008)), true);
+        assert_eq!(is_leap_year(DtYear(2012)), true);
+        assert_eq!(is_leap_year(DtYear(2016)), true);
+        assert_eq!(is_leap_year(DtYear(2020)), true);
+        assert_eq!(is_leap_year(DtYear(2024)), true);
     }
 
     #[test]
     fn test_is_leap_year_divisable_by_one_hundred() {
-        assert_eq!(is_leap_year(DateYear(1300)), false);
-        assert_eq!(is_leap_year(DateYear(1400)), false);
-        assert_eq!(is_leap_year(DateYear(1500)), false);
-        assert_eq!(is_leap_year(DateYear(1700)), false);
-        assert_eq!(is_leap_year(DateYear(1800)), false);
-        assert_eq!(is_leap_year(DateYear(1900)), false);
+        assert_eq!(is_leap_year(DtYear(1300)), false);
+        assert_eq!(is_leap_year(DtYear(1400)), false);
+        assert_eq!(is_leap_year(DtYear(1500)), false);
+        assert_eq!(is_leap_year(DtYear(1700)), false);
+        assert_eq!(is_leap_year(DtYear(1800)), false);
+        assert_eq!(is_leap_year(DtYear(1900)), false);
     }
 
     #[test]
     fn test_is_leap_year_divisable_by_four_hundred() {
-        assert_eq!(is_leap_year(DateYear(400)), true);
-        assert_eq!(is_leap_year(DateYear(800)), true);
-        assert_eq!(is_leap_year(DateYear(1200)), true);
-        assert_eq!(is_leap_year(DateYear(1600)), true);
-        assert_eq!(is_leap_year(DateYear(2000)), true);
+        assert_eq!(is_leap_year(DtYear(400)), true);
+        assert_eq!(is_leap_year(DtYear(800)), true);
+        assert_eq!(is_leap_year(DtYear(1200)), true);
+        assert_eq!(is_leap_year(DtYear(1600)), true);
+        assert_eq!(is_leap_year(DtYear(2000)), true);
     }
 
     #[test]
     fn test_is_leap_year_other_years() {
-        assert_eq!(is_leap_year(DateYear(1900)), false);
-        assert_eq!(is_leap_year(DateYear(1901)), false);
-        assert_eq!(is_leap_year(DateYear(1902)), false);
-        assert_eq!(is_leap_year(DateYear(1903)), false);
-        assert_eq!(is_leap_year(DateYear(2001)), false);
-        assert_eq!(is_leap_year(DateYear(2002)), false);
-        assert_eq!(is_leap_year(DateYear(2003)), false);
+        assert_eq!(is_leap_year(DtYear(1900)), false);
+        assert_eq!(is_leap_year(DtYear(1901)), false);
+        assert_eq!(is_leap_year(DtYear(1902)), false);
+        assert_eq!(is_leap_year(DtYear(1903)), false);
+        assert_eq!(is_leap_year(DtYear(2001)), false);
+        assert_eq!(is_leap_year(DtYear(2002)), false);
+        assert_eq!(is_leap_year(DtYear(2003)), false);
     }
 
     #[test]
     fn test_month_days_except_febrary() {
-        assert_eq!(month_days(DateYear(2000), DateMonth::Jan), DateDay(31));
-        assert_eq!(month_days(DateYear(2000), DateMonth::Mar), DateDay(31));
-        assert_eq!(month_days(DateYear(2000), DateMonth::Apr), DateDay(30));
-        assert_eq!(month_days(DateYear(2000), DateMonth::May), DateDay(31));
-        assert_eq!(month_days(DateYear(2000), DateMonth::Jun), DateDay(30));
-        assert_eq!(month_days(DateYear(2000), DateMonth::Jul), DateDay(31));
-        assert_eq!(month_days(DateYear(2000), DateMonth::Aug), DateDay(31));
-        assert_eq!(month_days(DateYear(2000), DateMonth::Sep), DateDay(30));
-        assert_eq!(month_days(DateYear(2000), DateMonth::Oct), DateDay(31));
-        assert_eq!(month_days(DateYear(2000), DateMonth::Nov), DateDay(30));
-        assert_eq!(month_days(DateYear(2000), DateMonth::Dec), DateDay(31));
+        assert_eq!(month_days(DtYear(2000), DtMonth::Jan), DtDay(31));
+        assert_eq!(month_days(DtYear(2000), DtMonth::Mar), DtDay(31));
+        assert_eq!(month_days(DtYear(2000), DtMonth::Apr), DtDay(30));
+        assert_eq!(month_days(DtYear(2000), DtMonth::May), DtDay(31));
+        assert_eq!(month_days(DtYear(2000), DtMonth::Jun), DtDay(30));
+        assert_eq!(month_days(DtYear(2000), DtMonth::Jul), DtDay(31));
+        assert_eq!(month_days(DtYear(2000), DtMonth::Aug), DtDay(31));
+        assert_eq!(month_days(DtYear(2000), DtMonth::Sep), DtDay(30));
+        assert_eq!(month_days(DtYear(2000), DtMonth::Oct), DtDay(31));
+        assert_eq!(month_days(DtYear(2000), DtMonth::Nov), DtDay(30));
+        assert_eq!(month_days(DtYear(2000), DtMonth::Dec), DtDay(31));
     }
 
     #[test]
     fn test_month_days_february() {
-        assert_eq!(month_days(DateYear(2000), DateMonth::Feb), DateDay(29));
-        assert_eq!(month_days(DateYear(2004), DateMonth::Feb), DateDay(29));
-        assert_eq!(month_days(DateYear(2008), DateMonth::Feb), DateDay(29));
-        assert_eq!(month_days(DateYear(1900), DateMonth::Feb), DateDay(28));
-        assert_eq!(month_days(DateYear(1901), DateMonth::Feb), DateDay(28));
-        assert_eq!(month_days(DateYear(2001), DateMonth::Feb), DateDay(28));
-        assert_eq!(month_days(DateYear(2002), DateMonth::Feb), DateDay(28));
+        assert_eq!(month_days(DtYear(2000), DtMonth::Feb), DtDay(29));
+        assert_eq!(month_days(DtYear(2004), DtMonth::Feb), DtDay(29));
+        assert_eq!(month_days(DtYear(2008), DtMonth::Feb), DtDay(29));
+        assert_eq!(month_days(DtYear(1900), DtMonth::Feb), DtDay(28));
+        assert_eq!(month_days(DtYear(1901), DtMonth::Feb), DtDay(28));
+        assert_eq!(month_days(DtYear(2001), DtMonth::Feb), DtDay(28));
+        assert_eq!(month_days(DtYear(2002), DtMonth::Feb), DtDay(28));
     }
 
     #[test]
     fn test_days_in_year() {
-        assert_eq!(days_in_year(DateYear(400)), 366);
-        assert_eq!(days_in_year(DateYear(800)), 366);
-        assert_eq!(days_in_year(DateYear(1200)), 366);
-        assert_eq!(days_in_year(DateYear(1600)), 366);
-        assert_eq!(days_in_year(DateYear(2000)), 366);
-        assert_eq!(days_in_year(DateYear(2004)), 366);
-        assert_eq!(days_in_year(DateYear(2008)), 366);
-        assert_eq!(days_in_year(DateYear(2012)), 366);
-        assert_eq!(days_in_year(DateYear(2016)), 366);
-        assert_eq!(days_in_year(DateYear(2020)), 366);
-        assert_eq!(days_in_year(DateYear(2024)), 366);
-        assert_eq!(days_in_year(DateYear(1300)), 365);
-        assert_eq!(days_in_year(DateYear(1400)), 365);
-        assert_eq!(days_in_year(DateYear(1500)), 365);
-        assert_eq!(days_in_year(DateYear(1700)), 365);
-        assert_eq!(days_in_year(DateYear(1800)), 365);
-        assert_eq!(days_in_year(DateYear(1900)), 365);
-        assert_eq!(days_in_year(DateYear(1900)), 365);
-        assert_eq!(days_in_year(DateYear(1901)), 365);
-        assert_eq!(days_in_year(DateYear(1902)), 365);
-        assert_eq!(days_in_year(DateYear(1903)), 365);
-        assert_eq!(days_in_year(DateYear(2001)), 365);
-        assert_eq!(days_in_year(DateYear(2002)), 365);
-        assert_eq!(days_in_year(DateYear(2001)), 365);
-        assert_eq!(days_in_year(DateYear(2002)), 365);
-        assert_eq!(days_in_year(DateYear(2003)), 365);
+        assert_eq!(days_in_year(DtYear(400)), 366);
+        assert_eq!(days_in_year(DtYear(800)), 366);
+        assert_eq!(days_in_year(DtYear(1200)), 366);
+        assert_eq!(days_in_year(DtYear(1600)), 366);
+        assert_eq!(days_in_year(DtYear(2000)), 366);
+        assert_eq!(days_in_year(DtYear(2004)), 366);
+        assert_eq!(days_in_year(DtYear(2008)), 366);
+        assert_eq!(days_in_year(DtYear(2012)), 366);
+        assert_eq!(days_in_year(DtYear(2016)), 366);
+        assert_eq!(days_in_year(DtYear(2020)), 366);
+        assert_eq!(days_in_year(DtYear(2024)), 366);
+        assert_eq!(days_in_year(DtYear(1300)), 365);
+        assert_eq!(days_in_year(DtYear(1400)), 365);
+        assert_eq!(days_in_year(DtYear(1500)), 365);
+        assert_eq!(days_in_year(DtYear(1700)), 365);
+        assert_eq!(days_in_year(DtYear(1800)), 365);
+        assert_eq!(days_in_year(DtYear(1900)), 365);
+        assert_eq!(days_in_year(DtYear(1900)), 365);
+        assert_eq!(days_in_year(DtYear(1901)), 365);
+        assert_eq!(days_in_year(DtYear(1902)), 365);
+        assert_eq!(days_in_year(DtYear(1903)), 365);
+        assert_eq!(days_in_year(DtYear(2001)), 365);
+        assert_eq!(days_in_year(DtYear(2002)), 365);
+        assert_eq!(days_in_year(DtYear(2001)), 365);
+        assert_eq!(days_in_year(DtYear(2002)), 365);
+        assert_eq!(days_in_year(DtYear(2003)), 365);
     }
 }
