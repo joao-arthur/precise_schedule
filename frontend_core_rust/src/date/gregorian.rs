@@ -163,9 +163,6 @@ impl ops::Sub<DayIntv> for Dt {
         let mut new_m = i32::from(self.m.to_u8() - 1);
         let mut new_y = self.y.0;
         while new_d < 0 {
-            let new_m_days = i64::from(
-                days_in_month(DtYear(new_y), DtMonth::from_u8(new_m as u8 + 1).unwrap()).0,
-            );
             new_m -= 1;
             if new_m < 0 {
                 if new_y == 0 {
@@ -174,6 +171,7 @@ impl ops::Sub<DayIntv> for Dt {
                 new_y -= 1;
                 new_m += 12;
             }
+            let new_m_days = i64::from(days_in_month(DtYear(new_y), DtMonth::from_u8(new_m as u8 + 1).unwrap()).0);
             new_d += new_m_days;
         }
         Dt::from(new_y, new_m as u8 + 1, new_d as u8 + 1)
@@ -239,11 +237,17 @@ fn days_in_year(y: DtYear) -> u16 {
 
 fn leap_years_between(begin: DtYear, end: DtYear) -> u16 {
     let mut acc: u16 = 0;
-    for y in begin.0..(end.0 + 1) {
+    let mut y = begin.0;
+    let rest = y % 4;
+    if rest != 0 {
+        y += 4 - y % 4;
+    }
+    while y <= end.0 {
         let dt_year = DtYear(y);
         if is_leap_year(dt_year) {
             acc += 1;
         }
+        y += 4;
     }
     acc
 }
@@ -347,6 +351,38 @@ mod test {
     }
 
     #[test]
+    fn test_dt_add_week() {
+        assert_eq!(Dt::from(2020, 7, 4) + WeekIntv(0), Dt::from(2020, 7, 4));
+        assert_eq!(Dt::from(2020, 7, 4) + WeekIntv(1), Dt::from(2020, 7, 11));
+        assert_eq!(Dt::from(2020, 7, 4) + WeekIntv(2), Dt::from(2020, 7, 18));
+        assert_eq!(Dt::from(2020, 7, 4) + WeekIntv(3), Dt::from(2020, 7, 25));
+        assert_eq!(Dt::from(2020, 7, 4) + WeekIntv(4), Dt::from(2020, 8, 1));
+        assert_eq!(Dt::from(2020, 7, 4) + WeekIntv(5), Dt::from(2020, 8, 8));
+        assert_eq!(Dt::from(2020, 7, 4) + WeekIntv(10), Dt::from(2020, 9, 12));
+        assert_eq!(Dt::from(2020, 7, 4) + WeekIntv(20), Dt::from(2020, 11, 21));
+        assert_eq!(Dt::from(2020, 7, 4) + WeekIntv(30), Dt::from(2021, 1, 30));
+        assert_eq!(Dt::from(2020, 7, 4) + WeekIntv(40), Dt::from(2021, 4, 10));
+        assert_eq!(Dt::from(2020, 7, 4) + WeekIntv(50), Dt::from(2021, 6, 19));
+        assert_eq!(Dt::from(2020, 7, 4) + WeekIntv(52), Dt::from(2021, 7, 3));
+    }
+
+    #[test]
+    fn test_dt_sub_week() {
+        assert_eq!(Dt::from(2020, 7, 4) - WeekIntv(0), Dt::from(2020, 7, 4));
+        assert_eq!(Dt::from(2020, 7, 11) - WeekIntv(1), Dt::from(2020, 7, 4));
+        assert_eq!(Dt::from(2020, 7, 18) - WeekIntv(2), Dt::from(2020, 7, 4));
+        assert_eq!(Dt::from(2020, 7, 25) - WeekIntv(3), Dt::from(2020, 7, 4));
+        assert_eq!(Dt::from(2020, 8, 1) - WeekIntv(4), Dt::from(2020, 7, 4));
+        assert_eq!(Dt::from(2020, 8, 8) - WeekIntv(5), Dt::from(2020, 7, 4));
+        assert_eq!(Dt::from(2020, 9, 12) - WeekIntv(10), Dt::from(2020, 7, 4));
+        assert_eq!(Dt::from(2020, 11, 21) - WeekIntv(20), Dt::from(2020, 7, 4));
+        assert_eq!(Dt::from(2021, 1, 30) - WeekIntv(30), Dt::from(2020, 7, 4));
+        assert_eq!(Dt::from(2021, 4, 10) - WeekIntv(40), Dt::from(2020, 7, 4));
+        assert_eq!(Dt::from(2021, 6, 19) - WeekIntv(50), Dt::from(2020, 7, 4));
+        assert_eq!(Dt::from(2021, 7, 3) - WeekIntv(52), Dt::from(2020, 7, 4));
+    }
+
+    #[test]
     fn test_dt_add_day() {
         assert_eq!(Dt::from(2020, 7, 4) + DayIntv(0), Dt::from(2020, 7, 4));
         assert_eq!(Dt::from(2020, 7, 4) + DayIntv(1), Dt::from(2020, 7, 5));
@@ -362,6 +398,9 @@ mod test {
         assert_eq!(Dt::from(2020, 7, 4) + DayIntv(28), Dt::from(2020, 8, 1));
         assert_eq!(Dt::from(2020, 7, 4) + DayIntv(29), Dt::from(2020, 8, 2));
         assert_eq!(Dt::from(2020, 7, 4) + DayIntv(30), Dt::from(2020, 8, 3));
+        assert_eq!(Dt::from(2020, 7, 4) + DayIntv(31), Dt::from(2020, 8, 4));
+        assert_eq!(Dt::from(2020, 7, 4) + DayIntv(62), Dt::from(2020, 9, 4));
+        assert_eq!(Dt::from(2020, 7, 4) + DayIntv(92), Dt::from(2020, 10, 4));
         assert_eq!(Dt::from(2020, 7, 4) + DayIntv(365), Dt::from(2021, 7, 4));
         assert_eq!(Dt::from(2020, 7, 4) + DayIntv(365 * 2), Dt::from(2022, 7, 4));
         assert_eq!(Dt::from(2020, 7, 4) + DayIntv(365 * 3), Dt::from(2023, 7, 4));
@@ -384,6 +423,9 @@ mod test {
         assert_eq!(Dt::from(2020, 8, 1) - DayIntv(28), Dt::from(2020, 7, 4));
         assert_eq!(Dt::from(2020, 8, 2) - DayIntv(29), Dt::from(2020, 7, 4));
         assert_eq!(Dt::from(2020, 8, 3) - DayIntv(30), Dt::from(2020, 7, 4));
+        assert_eq!(Dt::from(2020, 8, 4) - DayIntv(31), Dt::from(2020, 7, 4));
+        assert_eq!(Dt::from(2020, 9, 4) - DayIntv(62), Dt::from(2020, 7, 4));
+        assert_eq!(Dt::from(2020, 10, 4) - DayIntv(92), Dt::from(2020, 7, 4));
         assert_eq!(Dt::from(2021, 7, 4) - DayIntv(365), Dt::from(2020, 7, 4));
         assert_eq!(Dt::from(2022, 7, 4) - DayIntv(365 * 2), Dt::from(2020, 7, 4));
         assert_eq!(Dt::from(2023, 7, 4) - DayIntv(365 * 3), Dt::from(2020, 7, 4));
@@ -394,6 +436,7 @@ mod test {
     fn test_dt_sub_y0() {
         assert_eq!(Dt::from(2024, 7, 4) - YearIntv(2024), Dt::from(0, 7, 4));
         assert_eq!(Dt::from(2024, 7, 4) - MonthIntv(2024 * 12), Dt::from(0, 7, 4));
+        assert_eq!(Dt::from(2024, 7, 4) - WeekIntv((2024 * 52) + 359), Dt::from(0, 7, 6));
         assert_eq!(Dt::from(2024, 7, 4) - DayIntv(2024 * 365 + 491), Dt::from(0, 7, 4));
     }
 
@@ -401,6 +444,7 @@ mod test {
     fn test_dt_sub_overflow() {
         assert_eq!(Dt::from(2024, 7, 4) - YearIntv(2025), Dt::from(0, 1, 1));
         assert_eq!(Dt::from(2024, 7, 4) - MonthIntv(2025 * 12), Dt::from(0, 1, 1));
+        assert_eq!(Dt::from(2024, 7, 4) - WeekIntv((2025 * 52) + 500), Dt::from(0, 1, 1));
         assert_eq!(Dt::from(2024, 7, 4) - DayIntv(2025 * 365 + 491), Dt::from(0, 1, 1));
     }
 
