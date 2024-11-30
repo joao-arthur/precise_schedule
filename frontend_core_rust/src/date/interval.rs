@@ -1,19 +1,35 @@
 #[derive(Debug, PartialEq)]
-pub struct DayIntv(pub u32);
+pub struct Y(pub u16);
 
 #[derive(Debug, PartialEq)]
-pub struct WeekIntv(pub u32);
+pub struct M(pub u16);
 
 #[derive(Debug, PartialEq)]
-pub struct MonthIntv(pub u16);
+pub struct W(pub u32);
 
 #[derive(Debug, PartialEq)]
-pub struct YearIntv(pub u16);
+pub struct D(pub u32);
 
 #[derive(Debug, PartialEq)]
-pub struct DtIntv {
-    pub d: DayIntv,
-    pub w: WeekIntv,
-    pub m: MonthIntv,
-    pub y: YearIntv,
+pub struct Dt {
+    pub y: Y,
+    pub m: M,
+    pub w: W,
+    pub d: D,
+}
+
+impl Dt {
+    pub fn from(y: u16, m: u16, w: u32, d: u32) -> Self {
+        Dt { y: Y(y), m: M(m), w: W(w), d: D(d) }
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_dt_intv() {
+        assert_eq!(Dt::from(1, 14, 58, 393), Dt { y: Y(1), m: M(14), w: W(58), d: D(393) })
+    }
 }
