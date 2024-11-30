@@ -11,7 +11,7 @@ pub struct MonthIntv(pub u16);
 pub struct YearIntv(pub u16);
 
 #[derive(Debug, PartialEq)]
-struct DtIntv {
+pub struct DtIntv {
     pub d: DayIntv,
     pub w: WeekIntv,
     pub m: MonthIntv,
