@@ -29,6 +29,23 @@ pub fn build_event(event: EventCreateModel, id: String, user: String) -> Event {
     }
 }
 
+pub fn eventCreate(
+    repo: EventRepo,
+    id_gen: IdGen,
+    date_gen: DateGen,
+    event: EventCreate,
+    //userId: User["id"],
+) -> Result<Event, EventCreateErrors> {
+    let eventId = id_gen.gen();
+    let now = date_gen.gen();
+    let built_event = eventCreateToEvent(event, eventId, userId, now);
+    let create_result = repo.cCreate(built_event);
+    if (create_result.type === "err") {
+        return create_result;
+    }
+    return ok(built_event);
+}
+
 #[cfg(test)]
 mod test {
     use super::*;

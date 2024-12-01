@@ -1,11 +1,7 @@
 use crate::domain::schedule::event::create::EventCreateModel;
 use crate::domain::schedule::event::model::EventCategory;
 use crate::domain::schedule::event::model::EventFrequency;
-use rocket::serde::Deserialize;
-use rocket::serde::Serialize;
 
-#[derive(Serialize, Deserialize, Debug)]
-#[serde(crate = "rocket::serde")]
 pub struct AppointmentCreateModel {
     pub name: String,
     pub day: String,
@@ -30,6 +26,9 @@ pub fn build_event_create(event: AppointmentCreateModel) -> EventCreateModel {
         weekend_repeat: event.weekend_repeat,
     }
 }
+
+
+
 
 #[cfg(test)]
 mod test {

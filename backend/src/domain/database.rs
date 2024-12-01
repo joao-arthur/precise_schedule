@@ -11,8 +11,8 @@ impl fmt::Display for DBErr {
 
 pub trait DB {
     fn c(&self, ent: String) -> Result<(), DBErr>;
-    //fn u(&self, ent: String) -> Result<(), DBErr>;
-    //fn d(&self, ent: String) -> Result<(), DBErr>;
+    fn u(&self, ent: String) -> Result<(), DBErr>;
+    fn d(&self, ent: String) -> Result<(), DBErr>;
 }
 
 #[cfg(test)]
@@ -25,11 +25,21 @@ pub mod test {
         fn c(&self, _: String) -> Result<(), DBErr> {
             self.0.clone()
         }
+        fn u(&self, _: String) -> Result<(), DBErr> {
+            self.0.clone()
+        }
+        fn d(&self, _: String) -> Result<(), DBErr> {
+            self.0.clone()
+        }
     }
 
     #[test]
     fn test_db_stub() {
         assert_eq!(DBStub(Ok(())).c("".to_owned()), Ok(()));
         assert_eq!(DBStub(Err(DBErr)).c("".to_owned()), Err(DBErr));
+        assert_eq!(DBStub(Ok(())).u("".to_owned()), Ok(()));
+        assert_eq!(DBStub(Err(DBErr)).u("".to_owned()), Err(DBErr));
+        assert_eq!(DBStub(Ok(())).d("".to_owned()), Ok(()));
+        assert_eq!(DBStub(Err(DBErr)).d("".to_owned()), Err(DBErr));
     }
 }
