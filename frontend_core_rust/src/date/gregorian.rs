@@ -330,19 +330,12 @@ fn d_intv(a: &Dt, b: &Dt) -> interval::D {
 }
 
 pub fn intv_between(a: &Dt, b: &Dt) -> interval::Dt {
-    let mut y = b.y.0 - a.y.0;
-    if y > 0 && ((b.m.to_u8() < a.m.to_u8()) || (b.m.to_u8() == a.m.to_u8() && b.d.0 < a.d.0)) {
-        y -= 1;
+    interval::Dt {
+        y: y_intv(a, b),
+        m: m_intv(a, b),
+        w: w_intv(a, b),
+        d: d_intv(a, b)
     }
-    let b_m = b.y.0 as i16 * 12 + b.m.to_u8() as i16;
-    let a_m = a.y.0 as i16 * 12 + a.m.to_u8() as i16;
-    let mut m = (b_m - a_m).unsigned_abs();
-    if m > 0 && b.d.0 < a.d.0 {
-        m -= 1;
-    }
-    let d: u32 = 100;
-    let w: u32 = 100 / 7;
-    interval::Dt { y: interval::Y(y), m: interval::M(m), w: interval::W(w), d: interval::D(d) }
 }
 
 #[cfg(test)]
