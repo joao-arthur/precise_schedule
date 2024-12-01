@@ -1,7 +1,6 @@
 # PreciseSchedule
 
-My idea with this project was to apply my current knowledges into an
-[old project of mine](https://github.com/Joao-Arthur/curso_precise_schedule).
+A schedule system.
 
 ## Structure
 
