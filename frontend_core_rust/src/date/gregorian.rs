@@ -291,7 +291,7 @@ fn y_days_off_begin(dt: &Dt) -> interval::D {
 }
 
 fn y_intv(a: &Dt, b: &Dt) -> interval::Y {
-    let mut y = b.y.0 - a.y.0 ;
+    let mut y = b.y.0 - a.y.0;
     if y > 0 && ((b.m.to_u8() < a.m.to_u8()) || (b.m.to_u8() == a.m.to_u8() && b.d.0 < a.d.0)) {
         y -= 1;
     }
@@ -330,12 +330,7 @@ fn d_intv(a: &Dt, b: &Dt) -> interval::D {
 }
 
 pub fn intv_between(a: &Dt, b: &Dt) -> interval::Dt {
-    interval::Dt {
-        y: y_intv(a, b),
-        m: m_intv(a, b),
-        w: w_intv(a, b),
-        d: d_intv(a, b)
-    }
+    interval::Dt { y: y_intv(a, b), m: m_intv(a, b), w: w_intv(a, b), d: d_intv(a, b) }
 }
 
 #[cfg(test)]
