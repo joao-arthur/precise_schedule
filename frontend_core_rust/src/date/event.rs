@@ -34,7 +34,7 @@ impl DtEvt {
     }
 }
 
-pub fn closest_rep(evt: DtEvt, dt: Dt) -> Option<Dt> {
+fn closest_rep(evt: DtEvt, dt: Dt) -> Option<Dt> {
     if dt.y.0 < evt.dt.y.0 {
         return None;
     }
@@ -65,7 +65,7 @@ pub fn closest_rep(evt: DtEvt, dt: Dt) -> Option<Dt> {
     }
 }
 
-pub fn rep(evt: DtEvt, i: u16) -> Option<Dt> {
+fn rep(evt: DtEvt, i: u16) -> Option<Dt> {
     match evt.freq {
         Some(Freq::D1) => Some(evt.dt + interval::D(u32::from(1 * i))),
         Some(Freq::D2) => Some(evt.dt + interval::D(u32::from(2 * i))),
@@ -114,13 +114,18 @@ mod test {
     use super::*;
     #[test]
     fn test_event() {
-        assert_eq!(DtEvt::from(Dt::from(2024, 11, 22), Freq::M6),
-            DtEvt { dt: Dt { y: Y(2024), m: M::Nov, d: D(22) }, freq: Some(Freq::M6) });
+        assert_eq!(
+            DtEvt::from(Dt::from(2024, 11, 22), Freq::M6),
+            DtEvt { dt: Dt { y: Y(2024), m: M::Nov, d: D(22) }, freq: Some(Freq::M6) }
+        );
     }
 
     #[test]
     fn test_closest_rep_none() {
-        assert_eq!(closest_rep(DtEvt { dt: Dt::from(2000, 01, 01), freq: None }, Dt::from(2023, 08, 01)), None);
+        assert_eq!(
+            closest_rep(DtEvt { dt: Dt::from(2000, 01, 01), freq: None }, Dt::from(2023, 08, 01)),
+            None
+        );
     }
 
     #[test]
@@ -395,7 +400,8 @@ mod test {
                 Dt::from(2023, 08, 29),
                 Dt::from(2023, 08, 30),
                 Dt::from(2023, 08, 31),
-            ],);
+            ],
+        );
         assert_eq!(
             rep_between(
                 DtEvt::from(Dt::from(2023, 07, 20), Freq::D1),
@@ -415,7 +421,8 @@ mod test {
                 Dt::from(2023, 07, 29),
                 Dt::from(2023, 07, 30),
                 Dt::from(2023, 07, 31),
-            ],);
+            ],
+        );
     }
 
     #[test]
@@ -442,7 +449,8 @@ mod test {
                 Dt::from(2023, 08, 26),
                 Dt::from(2023, 08, 28),
                 Dt::from(2023, 08, 30),
-            ],);
+            ],
+        );
         assert_eq!(
             rep_between(
                 DtEvt::from(Dt::from(2023, 07, 20), Freq::D2),
@@ -456,7 +464,8 @@ mod test {
                 Dt::from(2023, 07, 26),
                 Dt::from(2023, 07, 28),
                 Dt::from(2023, 07, 30)
-            ],);
+            ],
+        );
     }
 
     #[test]
@@ -500,35 +509,40 @@ mod test {
                 Dt::from(2020, 02, 01),
                 Dt::from(2020, 02, 29)
             ),
-            [Dt::from(2020, 02, 28)]);
+            [Dt::from(2020, 02, 28)]
+        );
         assert_eq!(
             rep_between(
                 DtEvt::from(Dt::from(2020, 01, 29), Freq::M1),
                 Dt::from(2020, 02, 01),
                 Dt::from(2020, 02, 29)
             ),
-            [Dt::from(2020, 02, 29)]);
+            [Dt::from(2020, 02, 29)]
+        );
         assert_eq!(
             rep_between(
                 DtEvt::from(Dt::from(2020, 01, 30), Freq::M1),
                 Dt::from(2020, 02, 01),
                 Dt::from(2020, 02, 29)
             ),
-            [Dt::from(2020, 02, 29)]);
+            [Dt::from(2020, 02, 29)]
+        );
         assert_eq!(
             rep_between(
                 DtEvt::from(Dt::from(2020, 01, 31), Freq::M1),
                 Dt::from(2020, 02, 01),
                 Dt::from(2020, 02, 29)
             ),
-            [Dt::from(2020, 02, 29)]);
+            [Dt::from(2020, 02, 29)]
+        );
         assert_eq!(
             rep_between(
                 DtEvt::from(Dt::from(2023, 08, 10), Freq::M1),
                 Dt::from(2023, 08, 01),
                 Dt::from(2023, 08, 31)
             ),
-            [Dt::from(2023, 08, 10)]);
+            [Dt::from(2023, 08, 10)]
+        );
     }
 
     #[test]
@@ -539,42 +553,48 @@ mod test {
                 Dt::from(2020, 03, 01),
                 Dt::from(2020, 03, 31)
             ),
-            []);
+            []
+        );
         assert_eq!(
             rep_between(
                 DtEvt::from(Dt::from(2020, 01, 28), Freq::M3),
                 Dt::from(2020, 04, 01),
                 Dt::from(2020, 04, 30)
             ),
-            vec![Dt::from(2020, 04, 28)]);
+            vec![Dt::from(2020, 04, 28)]
+        );
         assert_eq!(
             rep_between(
                 DtEvt::from(Dt::from(2020, 01, 29), Freq::M3),
                 Dt::from(2020, 04, 01),
                 Dt::from(2020, 04, 30)
             ),
-            vec![Dt::from(2020, 04, 29)]);
+            vec![Dt::from(2020, 04, 29)]
+        );
         assert_eq!(
             rep_between(
                 DtEvt::from(Dt::from(2020, 01, 30), Freq::M3),
                 Dt::from(2020, 04, 01),
                 Dt::from(2020, 04, 30)
             ),
-            vec![Dt::from(2020, 04, 30)]);
+            vec![Dt::from(2020, 04, 30)]
+        );
         assert_eq!(
             rep_between(
                 DtEvt::from(Dt::from(2020, 01, 31), Freq::M3),
                 Dt::from(2020, 04, 01),
                 Dt::from(2020, 04, 30)
             ),
-            vec![Dt::from(2020, 04, 30)]);
+            vec![Dt::from(2020, 04, 30)]
+        );
         assert_eq!(
             rep_between(
                 DtEvt::from(Dt::from(2020, 04, 10), Freq::M3),
                 Dt::from(2020, 04, 01),
                 Dt::from(2020, 04, 30)
             ),
-            vec![Dt::from(2020, 04, 10)]);
+            vec![Dt::from(2020, 04, 10)]
+        );
     }
 
     #[test]
@@ -585,28 +605,32 @@ mod test {
                 Dt::from(2020, 03, 01),
                 Dt::from(2020, 03, 31)
             ),
-            []);
+            []
+        );
         assert_eq!(
             rep_between(
                 DtEvt::from(Dt::from(2020, 01, 31), Freq::M6),
                 Dt::from(2020, 07, 01),
                 Dt::from(2020, 07, 31)
             ),
-            vec![Dt::from(2020, 07, 31)]);
+            vec![Dt::from(2020, 07, 31)]
+        );
         assert_eq!(
             rep_between(
                 DtEvt::from(Dt::from(2020, 07, 31), Freq::M6),
                 Dt::from(2021, 01, 01),
                 Dt::from(2021, 01, 31)
             ),
-            vec![Dt::from(2021, 01, 31)]);
+            vec![Dt::from(2021, 01, 31)]
+        );
         assert_eq!(
             rep_between(
                 DtEvt::from(Dt::from(2023, 06, 29), Freq::M6),
                 Dt::from(2023, 06, 01),
                 Dt::from(2023, 06, 30)
             ),
-            vec![Dt::from(2023, 06, 29)]);
+            vec![Dt::from(2023, 06, 29)]
+        );
     }
 
     #[test]
@@ -617,42 +641,48 @@ mod test {
                 Dt::from(2020, 01, 01),
                 Dt::from(2020, 01, 31)
             ),
-            []);
+            []
+        );
         assert_eq!(
             rep_between(
                 DtEvt::from(Dt::from(2019, 02, 28), Freq::Y1),
                 Dt::from(2025, 02, 01),
                 Dt::from(2025, 02, 28)
             ),
-            vec![Dt::from(2025, 02, 28)]);
+            vec![Dt::from(2025, 02, 28)]
+        );
         assert_eq!(
             rep_between(
                 DtEvt::from(Dt::from(2020, 02, 29), Freq::Y1),
                 Dt::from(2025, 02, 01),
                 Dt::from(2025, 02, 28)
             ),
-            vec![Dt::from(2025, 02, 28)]);
+            vec![Dt::from(2025, 02, 28)]
+        );
         assert_eq!(
             rep_between(
                 DtEvt::from(Dt::from(2021, 02, 28), Freq::Y1),
                 Dt::from(2025, 02, 01),
                 Dt::from(2025, 02, 28)
             ),
-            vec![Dt::from(2025, 02, 28)]);
+            vec![Dt::from(2025, 02, 28)]
+        );
         assert_eq!(
             rep_between(
                 DtEvt::from(Dt::from(2022, 02, 28), Freq::Y1),
                 Dt::from(2025, 02, 01),
                 Dt::from(2025, 02, 28)
             ),
-            vec![Dt::from(2025, 02, 28)]);
+            vec![Dt::from(2025, 02, 28)]
+        );
         assert_eq!(
             rep_between(
                 DtEvt::from(Dt::from(2021, 11, 11), Freq::Y1),
                 Dt::from(2021, 11, 01),
                 Dt::from(2021, 11, 30)
             ),
-            vec![Dt::from(2021, 11, 11)]);
+            vec![Dt::from(2021, 11, 11)]
+        );
     }
 
     #[test]
@@ -663,21 +693,24 @@ mod test {
                 Dt::from(2020, 07, 01),
                 Dt::from(2020, 07, 30)
             ),
-            []);
+            []
+        );
         assert_eq!(
             rep_between(
                 DtEvt::from(Dt::from(2020, 01, 31), Freq::Y2),
                 Dt::from(2022, 01, 01),
                 Dt::from(2022, 01, 31)
             ),
-            vec![Dt::from(2022, 01, 31)]);
+            vec![Dt::from(2022, 01, 31)]
+        );
         assert_eq!(
             rep_between(
                 DtEvt::from(Dt::from(2020, 07, 15), Freq::Y2),
                 Dt::from(2020, 07, 01),
                 Dt::from(2021, 07, 31)
             ),
-            vec![Dt::from(2020, 07, 15)]);
+            vec![Dt::from(2020, 07, 15)]
+        );
     }
 
     #[test]
@@ -688,14 +721,16 @@ mod test {
                 Dt::from(2023, 08, 01),
                 Dt::from(2023, 08, 31)
             ),
-            vec![]);
+            vec![]
+        );
         assert_eq!(
             rep_between(
                 DtEvt { dt: Dt::from(2023, 08, 22), freq: None },
                 Dt::from(2023, 08, 01),
                 Dt::from(2023, 08, 31)
             ),
-            [Dt::from(2023, 08, 22)]);
+            [Dt::from(2023, 08, 22)]
+        );
     }
 
     #[test]
@@ -706,28 +741,32 @@ mod test {
                 Dt::from(2008, 04, 01),
                 Dt::from(2008, 04, 30)
             ),
-            []);
+            []
+        );
         assert_eq!(
             rep_between(
                 DtEvt::from(Dt::from(2009, 04, 01), Freq::M6),
                 Dt::from(2009, 08, 01),
                 Dt::from(2009, 08, 31)
             ),
-            []);
+            []
+        );
         assert_eq!(
             rep_between(
                 DtEvt::from(Dt::from(2010, 05, 01), Freq::Y1),
                 Dt::from(2011, 04, 01),
                 Dt::from(2011, 04, 30)
             ),
-            []);
+            []
+        );
         assert_eq!(
             rep_between(
                 DtEvt::from(Dt::from(2011, 06, 01), Freq::Y2),
                 Dt::from(2012, 06, 01),
                 Dt::from(2012, 06, 30)
             ),
-            []);
+            []
+        );
     }
 
     #[test]
@@ -738,7 +777,8 @@ mod test {
                 Dt::from(1999, 12, 01),
                 Dt::from(1999, 12, 31)
             ),
-            []);
+            []
+        );
         assert_eq!(
             rep_between(
                 DtEvt::from(Dt::from(2023, 06, 01), Freq::D2),
