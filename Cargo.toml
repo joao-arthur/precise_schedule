@@ -2,7 +2,4 @@
 
 resolver = "2"
 
-members = [
-    "lib_cal",
-    "backend"
-]
+members = ["lib_cal", "backend", "frontend_core"]
