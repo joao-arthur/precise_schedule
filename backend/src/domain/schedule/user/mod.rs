@@ -41,9 +41,6 @@ pub mod test {
     }
 
     pub fn user_cred_stub() -> UserCred {
-        UserCred {
-            username: "paul_mc".to_owned(),
-            password: "asdf!@#123".to_owned(),
-        }
+        UserCred { username: "paul_mc".to_owned(), password: "asdf!@#123".to_owned() }
     }
 }

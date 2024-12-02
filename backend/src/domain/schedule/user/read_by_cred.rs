@@ -60,10 +60,7 @@ pub mod test {
         let cred = user_cred_stub();
         assert_eq!(UserRByCredRepoStub(Err(DBErr)).r_by_cred(&cred), Err(DBErr));
         assert_eq!(UserRByCredRepoStub(Ok(None)).r_by_cred(&cred), Ok(None));
-        assert_eq!(
-            UserRByCredRepoStub(Ok(Some(user.clone()))).r_by_cred(&cred),
-            Ok(Some(user))
-        );
+        assert_eq!(UserRByCredRepoStub(Ok(Some(user.clone()))).r_by_cred(&cred), Ok(Some(user)));
     }
 
     #[test]
@@ -78,9 +75,6 @@ pub mod test {
             user_r_by_cred(&UserRByCredRepoStub(Ok(None)), &cred),
             Err(UserRByCredErr::UserCredNotFound(UserCredNotFound))
         );
-        assert_eq!(
-            user_r_by_cred(&UserRByCredRepoStub(Ok(Some(user.clone()))), &cred),
-            Ok(user)
-        );
+        assert_eq!(user_r_by_cred(&UserRByCredRepoStub(Ok(Some(user.clone()))), &cred), Ok(user));
     }
 }

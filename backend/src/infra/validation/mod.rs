@@ -52,7 +52,7 @@ pub fn int_max_v(v: IntMaxV, value: Value) -> Result<(), IntMaxErr> {
 pub fn str_min_len_v(v: StrMinLenV, value: Value) -> Result<(), StrMinLenErr> {
     match value {
         Value::Str(str_value) => {
-            if str_value.chars().count() >= v.value {
+            if str_value.chars().count() as i64 >= v.value {
                 Ok(())
             } else {
                 Err(StrMinLenErr {})
@@ -65,7 +65,7 @@ pub fn str_min_len_v(v: StrMinLenV, value: Value) -> Result<(), StrMinLenErr> {
 pub fn str_max_len_v(v: StrMaxLenV, value: Value) -> Result<(), StrMaxLenErr> {
     match value {
         Value::Str(str_value) => {
-            if str_value.chars().count() <= v.value {
+            if str_value.chars().count() as i64 <= v.value {
                 Ok(())
             } else {
                 Err(StrMaxLenErr {})
@@ -108,18 +108,9 @@ mod test {
         let obj = HashMap::from([(String::from("age"), Value::Int(42))]);
 
         assert_eq!(int_min_v(IntMinV { value: -10 }, Value::Absent), Ok(()));
-        assert_eq!(
-            int_min_v(IntMinV { value: -10 }, Value::Bool(false)),
-            Ok(())
-        );
-        assert_eq!(
-            int_min_v(IntMinV { value: -10 }, Value::Float(24.5)),
-            Ok(())
-        );
-        assert_eq!(
-            int_min_v(IntMinV { value: -10 }, Value::Str(string)),
-            Ok(())
-        );
+        assert_eq!(int_min_v(IntMinV { value: -10 }, Value::Bool(false)), Ok(()));
+        assert_eq!(int_min_v(IntMinV { value: -10 }, Value::Float(24.5)), Ok(()));
+        assert_eq!(int_min_v(IntMinV { value: -10 }, Value::Str(string)), Ok(()));
         assert_eq!(int_min_v(IntMinV { value: -10 }, Value::Arr(arr)), Ok(()));
         assert_eq!(int_min_v(IntMinV { value: -10 }, Value::Obj(obj)), Ok(()));
 
@@ -168,25 +159,13 @@ mod test {
 
     #[test]
     fn int_min_v_err_test() {
-        assert_eq!(
-            int_min_v(IntMinV { value: -10 }, Value::Int(-11)),
-            Err(IntMinErr {})
-        );
-        assert_eq!(
-            int_min_v(IntMinV { value: -10 }, Value::Int(-12)),
-            Err(IntMinErr {})
-        );
+        assert_eq!(int_min_v(IntMinV { value: -10 }, Value::Int(-11)), Err(IntMinErr {}));
+        assert_eq!(int_min_v(IntMinV { value: -10 }, Value::Int(-12)), Err(IntMinErr {}));
     }
 
     #[test]
     fn int_max_v_err_test() {
-        assert_eq!(
-            int_max_v(IntMaxV { value: 10 }, Value::Int(11)),
-            Err(IntMaxErr {})
-        );
-        assert_eq!(
-            int_max_v(IntMaxV { value: 10 }, Value::Int(12)),
-            Err(IntMaxErr {})
-        );
+        assert_eq!(int_max_v(IntMaxV { value: 10 }, Value::Int(11)), Err(IntMaxErr {}));
+        assert_eq!(int_max_v(IntMaxV { value: 10 }, Value::Int(12)), Err(IntMaxErr {}));
     }
 }

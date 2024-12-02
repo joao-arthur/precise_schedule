@@ -59,10 +59,7 @@ pub mod test {
         let user = user_stub();
         assert_eq!(UserRByIdRepoStub(Err(DBErr)).r_by_id(&user.id), Err(DBErr));
         assert_eq!(UserRByIdRepoStub(Ok(None)).r_by_id(&user.id), Ok(None));
-        assert_eq!(
-            UserRByIdRepoStub(Ok(Some(user.clone()))).r_by_id(&user.id),
-            Ok(Some(user))
-        );
+        assert_eq!(UserRByIdRepoStub(Ok(Some(user.clone()))).r_by_id(&user.id), Ok(Some(user)));
     }
 
     #[test]
@@ -76,9 +73,6 @@ pub mod test {
             user_r_by_id(&UserRByIdRepoStub(Ok(None)), &user.id),
             Err(UserRByIdErr::UserIdNotFound(UserIdNotFound))
         );
-        assert_eq!(
-            user_r_by_id(&UserRByIdRepoStub(Ok(Some(user.clone()))), &user.id),
-            Ok(user)
-        );
+        assert_eq!(user_r_by_id(&UserRByIdRepoStub(Ok(Some(user.clone()))), &user.id), Ok(user));
     }
 }

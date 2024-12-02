@@ -1,24 +1,24 @@
+use entry::{
+    event_controller::{
+        event_appointment_c, event_appointment_u, event_birthday_c, event_birthday_u, event_d,
+        event_date_c, event_date_u, event_meeting_c, event_meeting_u, event_party_c, event_party_u,
+        event_r_many, event_r_one,
+    },
+    health_controller::health_r,
+    user_controller::{user_c, user_login, user_r, user_u},
+};
+
 pub mod domain;
-
-fn main() {
-    println!("Hello, world!");
-}
-
-//pub mod infra;
-
-//#[macro_use]
-//extern crate rocket;
-//
+pub mod entry;
+pub mod infra;
 //use domain::schedule::event::appointment::create::AppointmentCreateModel;
 //use rocket::serde::json::Json;
 //use serde_json::Value;
 //use std::collections::HashMap;
-//
-//#[get("/")]
-//fn health_check() -> &'static str {
-//    "Hello, world!"
-//}
-//
+
+#[macro_use]
+extern crate rocket;
+
 //#[post("/appointment", format = "application/json", data = "<event>")]
 //fn post_event(event: Json<AppointmentCreateModel<'_>>) {
 //    println!("{:?}", event);
@@ -35,8 +35,27 @@ fn main() {
 //    }
 //}
 //
-//#[launch]
-//fn rocket() -> _ {
-//    rocket::build().mount("/", routes![health_check, post_event])
-//}
-//
+#[launch]
+fn rocket() -> _ {
+    rocket::build()
+        .mount("/", routes![health_r])
+        .mount(
+            "/event",
+            routes![
+                event_appointment_c,
+                event_appointment_u,
+                event_birthday_c,
+                event_birthday_u,
+                event_d,
+                event_date_c,
+                event_date_u,
+                event_meeting_c,
+                event_meeting_u,
+                event_party_c,
+                event_party_u,
+                event_r_many,
+                event_r_one
+            ],
+        )
+        .mount("/user", routes![user_c, user_r, user_u, user_login])
+}
