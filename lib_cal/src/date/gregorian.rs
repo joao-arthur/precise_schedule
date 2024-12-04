@@ -69,7 +69,7 @@ pub struct Dt {
 }
 
 impl Dt {
-    pub fn from(y: u16, m: u8, d: u8) -> Self {
+    pub fn of(y: u16, m: u8, d: u8) -> Self {
         Dt { y: Y(y), m: M::from_u8(m).unwrap(), d: D(d) }
     }
 }
@@ -87,7 +87,7 @@ impl ops::Add<interval::Y> for Dt {
         let y = self.y.0 + intv.0;
         let m = self.m.to_u8();
         let d = cmp::min(self.d.0, m_days(&Y(y), &self.m).0);
-        Dt::from(y, m, d)
+        Dt::of(y, m, d)
     }
 }
 
@@ -96,12 +96,12 @@ impl ops::Sub<interval::Y> for Dt {
 
     fn sub(self, intv: interval::Y) -> Dt {
         if intv.0 > self.y.0 {
-            return Dt::from(0000, 01, 01);
+            return Dt::of(0000, 01, 01);
         }
         let y = self.y.0 - intv.0;
         let m = self.m.to_u8();
         let d = cmp::min(self.d.0, m_days(&Y(y), &self.m).0);
-        Dt::from(self.y.0 - intv.0, m, d)
+        Dt::of(self.y.0 - intv.0, m, d)
     }
 }
 
@@ -116,7 +116,7 @@ impl ops::Add<interval::M> for Dt {
             m -= 12;
         }
         let d = cmp::min(self.d.0, m_days(&Y(y), &M::from_u8(m as u8 + 1).unwrap()).0);
-        Dt::from(y, m as u8 + 1, d)
+        Dt::of(y, m as u8 + 1, d)
     }
 }
 
@@ -128,13 +128,13 @@ impl ops::Sub<interval::M> for Dt {
         let mut m = i32::from(self.m.to_u8()) - 1 - i32::from(intv.0);
         while m < 0 {
             if y == 0 {
-                return Dt::from(0000, 01, 01);
+                return Dt::of(0000, 01, 01);
             }
             y -= 1;
             m += 12;
         }
         let d = cmp::min(self.d.0, m_days(&Y(y), &M::from_u8(m as u8 + 1).unwrap()).0);
-        Dt::from(y, m as u8 + 1, d)
+        Dt::of(y, m as u8 + 1, d)
     }
 }
 
@@ -155,7 +155,7 @@ impl ops::Add<interval::D> for Dt {
             }
             md = u32::from(m_days(&Y(y), &M::from_u8(m as u8 + 1).unwrap()).0);
         }
-        Dt::from(y, m as u8 + 1, d as u8 + 1)
+        Dt::of(y, m as u8 + 1, d as u8 + 1)
     }
 }
 
@@ -170,7 +170,7 @@ impl ops::Sub<interval::D> for Dt {
             m -= 1;
             if m < 0 {
                 if y == 0 {
-                    return Dt::from(0000, 01, 01);
+                    return Dt::of(0000, 01, 01);
                 }
                 y -= 1;
                 m += 12;
@@ -178,7 +178,7 @@ impl ops::Sub<interval::D> for Dt {
             let md = i64::from(m_days(&Y(y), &M::from_u8(m as u8 + 1).unwrap()).0);
             d += md;
         }
-        Dt::from(y, m as u8 + 1, d as u8 + 1)
+        Dt::of(y, m as u8 + 1, d as u8 + 1)
     }
 }
 
@@ -374,182 +374,182 @@ mod test {
 
     #[test]
     fn test_date() {
-        let dt = Dt::from(0876, 07, 04);
+        let dt = Dt::of(0876, 07, 04);
         assert_eq!(dt, Dt { y: Y(876), m: M::Jul, d: D(4) });
         assert_eq!(format!("{dt}"), "0876-07-04");
     }
 
     #[test]
     fn test_dt_add_year() {
-        assert_eq!(Dt::from(2020, 07, 04) + interval::Y(0), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::Y(1), Dt::from(2021, 07, 04));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::Y(2), Dt::from(2022, 07, 04));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::Y(3), Dt::from(2023, 07, 04));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::Y(4), Dt::from(2024, 07, 04));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::Y(0), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::Y(1), Dt::of(2021, 07, 04));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::Y(2), Dt::of(2022, 07, 04));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::Y(3), Dt::of(2023, 07, 04));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::Y(4), Dt::of(2024, 07, 04));
     }
 
     #[test]
     fn test_dt_sub_year() {
-        assert_eq!(Dt::from(2020, 07, 04) - interval::Y(0), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2021, 07, 04) - interval::Y(1), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2022, 07, 04) - interval::Y(2), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2023, 07, 04) - interval::Y(3), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2024, 07, 04) - interval::Y(4), Dt::from(2020, 07, 04));
+        assert_eq!(Dt::of(2020, 07, 04) - interval::Y(0), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2021, 07, 04) - interval::Y(1), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2022, 07, 04) - interval::Y(2), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2023, 07, 04) - interval::Y(3), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2024, 07, 04) - interval::Y(4), Dt::of(2020, 07, 04));
     }
 
     #[test]
     fn test_dt_add_month() {
-        assert_eq!(Dt::from(2020, 07, 04) + interval::M(0), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::M(1), Dt::from(2020, 08, 04));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::M(2), Dt::from(2020, 09, 04));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::M(3), Dt::from(2020, 10, 04));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::M(4), Dt::from(2020, 11, 04));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::M(5), Dt::from(2020, 12, 04));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::M(6), Dt::from(2021, 01, 04));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::M(7), Dt::from(2021, 02, 04));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::M(12), Dt::from(2021, 07, 04));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::M(24), Dt::from(2022, 07, 04));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::M(36), Dt::from(2023, 07, 04));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::M(48), Dt::from(2024, 07, 04));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::M(60), Dt::from(2025, 07, 04));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::M(0), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::M(1), Dt::of(2020, 08, 04));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::M(2), Dt::of(2020, 09, 04));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::M(3), Dt::of(2020, 10, 04));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::M(4), Dt::of(2020, 11, 04));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::M(5), Dt::of(2020, 12, 04));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::M(6), Dt::of(2021, 01, 04));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::M(7), Dt::of(2021, 02, 04));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::M(12), Dt::of(2021, 07, 04));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::M(24), Dt::of(2022, 07, 04));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::M(36), Dt::of(2023, 07, 04));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::M(48), Dt::of(2024, 07, 04));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::M(60), Dt::of(2025, 07, 04));
     }
 
     #[test]
     fn test_dt_sub_month() {
-        assert_eq!(Dt::from(2020, 07, 04) - interval::M(0), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2020, 08, 04) - interval::M(1), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2020, 09, 04) - interval::M(2), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2020, 10, 04) - interval::M(3), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2020, 11, 04) - interval::M(4), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2020, 12, 04) - interval::M(5), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2021, 01, 04) - interval::M(6), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2021, 02, 04) - interval::M(7), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2021, 07, 04) - interval::M(12), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2022, 07, 04) - interval::M(24), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2023, 07, 04) - interval::M(36), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2024, 07, 04) - interval::M(48), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2025, 07, 04) - interval::M(60), Dt::from(2020, 07, 04));
+        assert_eq!(Dt::of(2020, 07, 04) - interval::M(0), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2020, 08, 04) - interval::M(1), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2020, 09, 04) - interval::M(2), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2020, 10, 04) - interval::M(3), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2020, 11, 04) - interval::M(4), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2020, 12, 04) - interval::M(5), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2021, 01, 04) - interval::M(6), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2021, 02, 04) - interval::M(7), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2021, 07, 04) - interval::M(12), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2022, 07, 04) - interval::M(24), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2023, 07, 04) - interval::M(36), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2024, 07, 04) - interval::M(48), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2025, 07, 04) - interval::M(60), Dt::of(2020, 07, 04));
     }
 
     #[test]
     fn test_dt_add_week() {
-        assert_eq!(Dt::from(2020, 07, 04) + interval::W(0), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::W(1), Dt::from(2020, 07, 11));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::W(2), Dt::from(2020, 07, 18));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::W(3), Dt::from(2020, 07, 25));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::W(4), Dt::from(2020, 08, 01));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::W(5), Dt::from(2020, 08, 08));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::W(10), Dt::from(2020, 09, 12));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::W(20), Dt::from(2020, 11, 21));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::W(30), Dt::from(2021, 01, 30));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::W(40), Dt::from(2021, 04, 10));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::W(50), Dt::from(2021, 06, 19));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::W(52), Dt::from(2021, 07, 03));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::W(0), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::W(1), Dt::of(2020, 07, 11));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::W(2), Dt::of(2020, 07, 18));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::W(3), Dt::of(2020, 07, 25));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::W(4), Dt::of(2020, 08, 01));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::W(5), Dt::of(2020, 08, 08));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::W(10), Dt::of(2020, 09, 12));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::W(20), Dt::of(2020, 11, 21));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::W(30), Dt::of(2021, 01, 30));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::W(40), Dt::of(2021, 04, 10));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::W(50), Dt::of(2021, 06, 19));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::W(52), Dt::of(2021, 07, 03));
     }
 
     #[test]
     fn test_dt_sub_week() {
-        assert_eq!(Dt::from(2020, 07, 04) - interval::W(0), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2020, 07, 11) - interval::W(1), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2020, 07, 18) - interval::W(2), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2020, 07, 25) - interval::W(3), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2020, 08, 01) - interval::W(4), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2020, 08, 08) - interval::W(5), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2020, 09, 12) - interval::W(10), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2020, 11, 21) - interval::W(20), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2021, 01, 30) - interval::W(30), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2021, 04, 10) - interval::W(40), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2021, 06, 19) - interval::W(50), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2021, 07, 03) - interval::W(52), Dt::from(2020, 07, 04));
+        assert_eq!(Dt::of(2020, 07, 04) - interval::W(0), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2020, 07, 11) - interval::W(1), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2020, 07, 18) - interval::W(2), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2020, 07, 25) - interval::W(3), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2020, 08, 01) - interval::W(4), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2020, 08, 08) - interval::W(5), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2020, 09, 12) - interval::W(10), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2020, 11, 21) - interval::W(20), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2021, 01, 30) - interval::W(30), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2021, 04, 10) - interval::W(40), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2021, 06, 19) - interval::W(50), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2021, 07, 03) - interval::W(52), Dt::of(2020, 07, 04));
     }
 
     #[test]
     fn test_dt_add_day() {
-        assert_eq!(Dt::from(2020, 07, 04) + interval::D(0), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::D(1), Dt::from(2020, 07, 05));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::D(10), Dt::from(2020, 07, 14));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::D(20), Dt::from(2020, 07, 24));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::D(21), Dt::from(2020, 07, 25));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::D(22), Dt::from(2020, 07, 26));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::D(23), Dt::from(2020, 07, 27));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::D(24), Dt::from(2020, 07, 28));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::D(25), Dt::from(2020, 07, 29));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::D(26), Dt::from(2020, 07, 30));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::D(27), Dt::from(2020, 07, 31));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::D(28), Dt::from(2020, 08, 01));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::D(29), Dt::from(2020, 08, 02));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::D(30), Dt::from(2020, 08, 03));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::D(31), Dt::from(2020, 08, 04));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::D(62), Dt::from(2020, 09, 04));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::D(92), Dt::from(2020, 10, 04));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::D(365), Dt::from(2021, 07, 04));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::D(365 * 2), Dt::from(2022, 07, 04));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::D(365 * 3), Dt::from(2023, 07, 04));
-        assert_eq!(Dt::from(2020, 07, 04) + interval::D(365 * 4), Dt::from(2024, 07, 03));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::D(0), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::D(1), Dt::of(2020, 07, 05));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::D(10), Dt::of(2020, 07, 14));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::D(20), Dt::of(2020, 07, 24));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::D(21), Dt::of(2020, 07, 25));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::D(22), Dt::of(2020, 07, 26));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::D(23), Dt::of(2020, 07, 27));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::D(24), Dt::of(2020, 07, 28));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::D(25), Dt::of(2020, 07, 29));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::D(26), Dt::of(2020, 07, 30));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::D(27), Dt::of(2020, 07, 31));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::D(28), Dt::of(2020, 08, 01));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::D(29), Dt::of(2020, 08, 02));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::D(30), Dt::of(2020, 08, 03));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::D(31), Dt::of(2020, 08, 04));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::D(62), Dt::of(2020, 09, 04));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::D(92), Dt::of(2020, 10, 04));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::D(365), Dt::of(2021, 07, 04));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::D(365 * 2), Dt::of(2022, 07, 04));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::D(365 * 3), Dt::of(2023, 07, 04));
+        assert_eq!(Dt::of(2020, 07, 04) + interval::D(365 * 4), Dt::of(2024, 07, 03));
     }
 
     #[test]
     fn test_dt_sub_day() {
-        assert_eq!(Dt::from(2020, 07, 04) - interval::D(0), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2020, 07, 05) - interval::D(1), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2020, 07, 14) - interval::D(10), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2020, 07, 24) - interval::D(20), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2020, 07, 25) - interval::D(21), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2020, 07, 26) - interval::D(22), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2020, 07, 27) - interval::D(23), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2020, 07, 28) - interval::D(24), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2020, 07, 29) - interval::D(25), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2020, 07, 30) - interval::D(26), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2020, 07, 31) - interval::D(27), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2020, 08, 01) - interval::D(28), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2020, 08, 02) - interval::D(29), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2020, 08, 03) - interval::D(30), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2020, 08, 04) - interval::D(31), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2020, 09, 04) - interval::D(62), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2020, 10, 04) - interval::D(92), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2021, 07, 04) - interval::D(365), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2022, 07, 04) - interval::D(365 * 2), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2023, 07, 04) - interval::D(365 * 3), Dt::from(2020, 07, 04));
-        assert_eq!(Dt::from(2024, 07, 03) - interval::D(365 * 4), Dt::from(2020, 07, 04));
+        assert_eq!(Dt::of(2020, 07, 04) - interval::D(0), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2020, 07, 05) - interval::D(1), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2020, 07, 14) - interval::D(10), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2020, 07, 24) - interval::D(20), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2020, 07, 25) - interval::D(21), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2020, 07, 26) - interval::D(22), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2020, 07, 27) - interval::D(23), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2020, 07, 28) - interval::D(24), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2020, 07, 29) - interval::D(25), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2020, 07, 30) - interval::D(26), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2020, 07, 31) - interval::D(27), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2020, 08, 01) - interval::D(28), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2020, 08, 02) - interval::D(29), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2020, 08, 03) - interval::D(30), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2020, 08, 04) - interval::D(31), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2020, 09, 04) - interval::D(62), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2020, 10, 04) - interval::D(92), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2021, 07, 04) - interval::D(365), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2022, 07, 04) - interval::D(365 * 2), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2023, 07, 04) - interval::D(365 * 3), Dt::of(2020, 07, 04));
+        assert_eq!(Dt::of(2024, 07, 03) - interval::D(365 * 4), Dt::of(2020, 07, 04));
     }
 
     #[test]
     fn test_dt_sub_y0() {
-        assert_eq!(Dt::from(2024, 07, 04) - interval::Y(2024), Dt::from(0, 07, 04));
-        assert_eq!(Dt::from(2024, 07, 04) - interval::M(2024 * 12), Dt::from(0, 07, 04));
-        assert_eq!(Dt::from(2024, 07, 04) - interval::W((2024 * 52) + 359), Dt::from(0, 7, 6));
-        assert_eq!(Dt::from(2024, 07, 04) - interval::D(2024 * 365 + 491), Dt::from(0, 07, 04));
+        assert_eq!(Dt::of(2024, 07, 04) - interval::Y(2024), Dt::of(0, 07, 04));
+        assert_eq!(Dt::of(2024, 07, 04) - interval::M(2024 * 12), Dt::of(0, 07, 04));
+        assert_eq!(Dt::of(2024, 07, 04) - interval::W((2024 * 52) + 359), Dt::of(0, 7, 6));
+        assert_eq!(Dt::of(2024, 07, 04) - interval::D(2024 * 365 + 491), Dt::of(0, 07, 04));
     }
 
     #[test]
     fn test_dt_end_of_month() {
-        assert_eq!(Dt::from(2024, 02, 29) + interval::Y(1), Dt::from(2025, 02, 28));
-        assert_eq!(Dt::from(2024, 02, 29) - interval::Y(1), Dt::from(2023, 02, 28));
-        assert_eq!(Dt::from(2024, 02, 29) + interval::M(12), Dt::from(2025, 02, 28));
-        assert_eq!(Dt::from(2024, 02, 29) - interval::M(12), Dt::from(2023, 02, 28));
-        assert_eq!(Dt::from(2025, 10, 31) + interval::M(1), Dt::from(2025, 11, 30));
-        assert_eq!(Dt::from(2025, 10, 31) - interval::M(1), Dt::from(2025, 09, 30));
+        assert_eq!(Dt::of(2024, 02, 29) + interval::Y(1), Dt::of(2025, 02, 28));
+        assert_eq!(Dt::of(2024, 02, 29) - interval::Y(1), Dt::of(2023, 02, 28));
+        assert_eq!(Dt::of(2024, 02, 29) + interval::M(12), Dt::of(2025, 02, 28));
+        assert_eq!(Dt::of(2024, 02, 29) - interval::M(12), Dt::of(2023, 02, 28));
+        assert_eq!(Dt::of(2025, 10, 31) + interval::M(1), Dt::of(2025, 11, 30));
+        assert_eq!(Dt::of(2025, 10, 31) - interval::M(1), Dt::of(2025, 09, 30));
     }
 
     #[test]
     fn test_dt_sub_overflow() {
-        assert_eq!(Dt::from(2024, 07, 04) - interval::Y(2025), Dt::from(0000, 01, 01));
-        assert_eq!(Dt::from(2024, 07, 04) - interval::M(2025 * 12), Dt::from(0000, 01, 01));
-        assert_eq!(Dt::from(2024, 07, 04) - interval::W((2025 * 52) + 500), Dt::from(0000, 01, 01));
-        assert_eq!(Dt::from(2024, 07, 04) - interval::D(2025 * 365 + 491), Dt::from(0000, 01, 01));
+        assert_eq!(Dt::of(2024, 07, 04) - interval::Y(2025), Dt::of(0000, 01, 01));
+        assert_eq!(Dt::of(2024, 07, 04) - interval::M(2025 * 12), Dt::of(0000, 01, 01));
+        assert_eq!(Dt::of(2024, 07, 04) - interval::W((2025 * 52) + 500), Dt::of(0000, 01, 01));
+        assert_eq!(Dt::of(2024, 07, 04) - interval::D(2025 * 365 + 491), Dt::of(0000, 01, 01));
     }
 
     #[test]
     fn test_dt_comp() {
-        assert_eq!(Dt::from(2024, 07, 04) > Dt::from(2024, 07, 03), true);
-        assert_eq!(Dt::from(2024, 07, 04) > Dt::from(2024, 06, 04), true);
-        assert_eq!(Dt::from(2024, 07, 04) > Dt::from(2023, 07, 04), true);
-        assert_eq!(Dt::from(2024, 07, 04) < Dt::from(2024, 07, 05), true);
-        assert_eq!(Dt::from(2024, 07, 04) < Dt::from(2024, 08, 04), true);
-        assert_eq!(Dt::from(2024, 07, 04) < Dt::from(2025, 07, 04), true);
-        assert_eq!(Dt::from(2024, 07, 04) == Dt::from(2024, 07, 04), true);
-        assert_eq!(Dt::from(2024, 07, 04) >= Dt::from(2024, 07, 04), true);
-        assert_eq!(Dt::from(2024, 07, 04) <= Dt::from(2024, 07, 04), true);
+        assert_eq!(Dt::of(2024, 07, 04) > Dt::of(2024, 07, 03), true);
+        assert_eq!(Dt::of(2024, 07, 04) > Dt::of(2024, 06, 04), true);
+        assert_eq!(Dt::of(2024, 07, 04) > Dt::of(2023, 07, 04), true);
+        assert_eq!(Dt::of(2024, 07, 04) < Dt::of(2024, 07, 05), true);
+        assert_eq!(Dt::of(2024, 07, 04) < Dt::of(2024, 08, 04), true);
+        assert_eq!(Dt::of(2024, 07, 04) < Dt::of(2025, 07, 04), true);
+        assert_eq!(Dt::of(2024, 07, 04) == Dt::of(2024, 07, 04), true);
+        assert_eq!(Dt::of(2024, 07, 04) >= Dt::of(2024, 07, 04), true);
+        assert_eq!(Dt::of(2024, 07, 04) <= Dt::of(2024, 07, 04), true);
     }
 
     #[test]
@@ -685,299 +685,299 @@ mod test {
 
     #[test]
     fn test_m_days_off_end_m() {
-        assert_eq!(m_days_off_end(&Dt::from(2025, 01, 01)), interval::D(30));
-        assert_eq!(m_days_off_end(&Dt::from(2025, 03, 01)), interval::D(30));
-        assert_eq!(m_days_off_end(&Dt::from(2025, 04, 01)), interval::D(29));
-        assert_eq!(m_days_off_end(&Dt::from(2025, 05, 01)), interval::D(30));
-        assert_eq!(m_days_off_end(&Dt::from(2025, 06, 01)), interval::D(29));
-        assert_eq!(m_days_off_end(&Dt::from(2025, 07, 01)), interval::D(30));
-        assert_eq!(m_days_off_end(&Dt::from(2025, 08, 01)), interval::D(30));
-        assert_eq!(m_days_off_end(&Dt::from(2025, 09, 01)), interval::D(29));
-        assert_eq!(m_days_off_end(&Dt::from(2025, 10, 01)), interval::D(30));
-        assert_eq!(m_days_off_end(&Dt::from(2025, 12, 01)), interval::D(30));
+        assert_eq!(m_days_off_end(&Dt::of(2025, 01, 01)), interval::D(30));
+        assert_eq!(m_days_off_end(&Dt::of(2025, 03, 01)), interval::D(30));
+        assert_eq!(m_days_off_end(&Dt::of(2025, 04, 01)), interval::D(29));
+        assert_eq!(m_days_off_end(&Dt::of(2025, 05, 01)), interval::D(30));
+        assert_eq!(m_days_off_end(&Dt::of(2025, 06, 01)), interval::D(29));
+        assert_eq!(m_days_off_end(&Dt::of(2025, 07, 01)), interval::D(30));
+        assert_eq!(m_days_off_end(&Dt::of(2025, 08, 01)), interval::D(30));
+        assert_eq!(m_days_off_end(&Dt::of(2025, 09, 01)), interval::D(29));
+        assert_eq!(m_days_off_end(&Dt::of(2025, 10, 01)), interval::D(30));
+        assert_eq!(m_days_off_end(&Dt::of(2025, 12, 01)), interval::D(30));
     }
 
     #[test]
     fn test_m_days_off_end_feb() {
-        assert_eq!(m_days_off_end(&Dt::from(2021, 02, 01)), interval::D(27));
-        assert_eq!(m_days_off_end(&Dt::from(2022, 02, 01)), interval::D(27));
-        assert_eq!(m_days_off_end(&Dt::from(2023, 02, 01)), interval::D(27));
-        assert_eq!(m_days_off_end(&Dt::from(2024, 02, 01)), interval::D(28));
+        assert_eq!(m_days_off_end(&Dt::of(2021, 02, 01)), interval::D(27));
+        assert_eq!(m_days_off_end(&Dt::of(2022, 02, 01)), interval::D(27));
+        assert_eq!(m_days_off_end(&Dt::of(2023, 02, 01)), interval::D(27));
+        assert_eq!(m_days_off_end(&Dt::of(2024, 02, 01)), interval::D(28));
     }
 
     #[test]
     fn test_m_days_off_end_nov() {
-        assert_eq!(m_days_off_end(&Dt::from(2024, 11, 01)), interval::D(29));
-        assert_eq!(m_days_off_end(&Dt::from(2024, 11, 03)), interval::D(27));
-        assert_eq!(m_days_off_end(&Dt::from(2024, 11, 05)), interval::D(25));
-        assert_eq!(m_days_off_end(&Dt::from(2024, 11, 10)), interval::D(20));
-        assert_eq!(m_days_off_end(&Dt::from(2024, 11, 15)), interval::D(15));
-        assert_eq!(m_days_off_end(&Dt::from(2024, 11, 20)), interval::D(10));
-        assert_eq!(m_days_off_end(&Dt::from(2024, 11, 25)), interval::D(5));
-        assert_eq!(m_days_off_end(&Dt::from(2024, 11, 27)), interval::D(3));
-        assert_eq!(m_days_off_end(&Dt::from(2024, 11, 30)), interval::D(0));
+        assert_eq!(m_days_off_end(&Dt::of(2024, 11, 01)), interval::D(29));
+        assert_eq!(m_days_off_end(&Dt::of(2024, 11, 03)), interval::D(27));
+        assert_eq!(m_days_off_end(&Dt::of(2024, 11, 05)), interval::D(25));
+        assert_eq!(m_days_off_end(&Dt::of(2024, 11, 10)), interval::D(20));
+        assert_eq!(m_days_off_end(&Dt::of(2024, 11, 15)), interval::D(15));
+        assert_eq!(m_days_off_end(&Dt::of(2024, 11, 20)), interval::D(10));
+        assert_eq!(m_days_off_end(&Dt::of(2024, 11, 25)), interval::D(5));
+        assert_eq!(m_days_off_end(&Dt::of(2024, 11, 27)), interval::D(3));
+        assert_eq!(m_days_off_end(&Dt::of(2024, 11, 30)), interval::D(0));
     }
 
     #[test]
     fn test_y_days_off_end_m() {
-        assert_eq!(y_days_off_end(&Dt::from(2024, 01, 01)), interval::D(365));
-        assert_eq!(y_days_off_end(&Dt::from(2024, 03, 01)), interval::D(305));
-        assert_eq!(y_days_off_end(&Dt::from(2024, 04, 01)), interval::D(274));
-        assert_eq!(y_days_off_end(&Dt::from(2024, 05, 01)), interval::D(244));
-        assert_eq!(y_days_off_end(&Dt::from(2024, 06, 01)), interval::D(213));
-        assert_eq!(y_days_off_end(&Dt::from(2024, 07, 01)), interval::D(183));
-        assert_eq!(y_days_off_end(&Dt::from(2024, 08, 01)), interval::D(152));
-        assert_eq!(y_days_off_end(&Dt::from(2024, 09, 01)), interval::D(121));
-        assert_eq!(y_days_off_end(&Dt::from(2024, 10, 01)), interval::D(91));
-        assert_eq!(y_days_off_end(&Dt::from(2024, 11, 01)), interval::D(60));
+        assert_eq!(y_days_off_end(&Dt::of(2024, 01, 01)), interval::D(365));
+        assert_eq!(y_days_off_end(&Dt::of(2024, 03, 01)), interval::D(305));
+        assert_eq!(y_days_off_end(&Dt::of(2024, 04, 01)), interval::D(274));
+        assert_eq!(y_days_off_end(&Dt::of(2024, 05, 01)), interval::D(244));
+        assert_eq!(y_days_off_end(&Dt::of(2024, 06, 01)), interval::D(213));
+        assert_eq!(y_days_off_end(&Dt::of(2024, 07, 01)), interval::D(183));
+        assert_eq!(y_days_off_end(&Dt::of(2024, 08, 01)), interval::D(152));
+        assert_eq!(y_days_off_end(&Dt::of(2024, 09, 01)), interval::D(121));
+        assert_eq!(y_days_off_end(&Dt::of(2024, 10, 01)), interval::D(91));
+        assert_eq!(y_days_off_end(&Dt::of(2024, 11, 01)), interval::D(60));
     }
 
     #[test]
     fn test_y_days_off_end_feb() {
-        assert_eq!(y_days_off_end(&Dt::from(2021, 02, 01)), interval::D(333));
-        assert_eq!(y_days_off_end(&Dt::from(2022, 02, 01)), interval::D(333));
-        assert_eq!(y_days_off_end(&Dt::from(2023, 02, 01)), interval::D(333));
-        assert_eq!(y_days_off_end(&Dt::from(2024, 02, 01)), interval::D(334));
+        assert_eq!(y_days_off_end(&Dt::of(2021, 02, 01)), interval::D(333));
+        assert_eq!(y_days_off_end(&Dt::of(2022, 02, 01)), interval::D(333));
+        assert_eq!(y_days_off_end(&Dt::of(2023, 02, 01)), interval::D(333));
+        assert_eq!(y_days_off_end(&Dt::of(2024, 02, 01)), interval::D(334));
     }
 
     #[test]
     fn test_y_days_off_end_dec() {
-        assert_eq!(y_days_off_end(&Dt::from(2024, 12, 01)), interval::D(30));
-        assert_eq!(y_days_off_end(&Dt::from(2024, 12, 06)), interval::D(25));
-        assert_eq!(y_days_off_end(&Dt::from(2024, 12, 11)), interval::D(20));
-        assert_eq!(y_days_off_end(&Dt::from(2024, 12, 16)), interval::D(15));
-        assert_eq!(y_days_off_end(&Dt::from(2024, 12, 21)), interval::D(10));
-        assert_eq!(y_days_off_end(&Dt::from(2024, 12, 26)), interval::D(5));
-        assert_eq!(y_days_off_end(&Dt::from(2024, 12, 31)), interval::D(0));
+        assert_eq!(y_days_off_end(&Dt::of(2024, 12, 01)), interval::D(30));
+        assert_eq!(y_days_off_end(&Dt::of(2024, 12, 06)), interval::D(25));
+        assert_eq!(y_days_off_end(&Dt::of(2024, 12, 11)), interval::D(20));
+        assert_eq!(y_days_off_end(&Dt::of(2024, 12, 16)), interval::D(15));
+        assert_eq!(y_days_off_end(&Dt::of(2024, 12, 21)), interval::D(10));
+        assert_eq!(y_days_off_end(&Dt::of(2024, 12, 26)), interval::D(5));
+        assert_eq!(y_days_off_end(&Dt::of(2024, 12, 31)), interval::D(0));
     }
 
     #[test]
     fn test_y_days_off_begin_m() {
-        assert_eq!(y_days_off_begin(&Dt::from(2024, 01, 01)), interval::D(0));
-        assert_eq!(y_days_off_begin(&Dt::from(2024, 02, 01)), interval::D(31));
-        assert_eq!(y_days_off_begin(&Dt::from(2024, 04, 01)), interval::D(91));
-        assert_eq!(y_days_off_begin(&Dt::from(2024, 05, 01)), interval::D(121));
-        assert_eq!(y_days_off_begin(&Dt::from(2024, 06, 01)), interval::D(152));
-        assert_eq!(y_days_off_begin(&Dt::from(2024, 07, 01)), interval::D(182));
-        assert_eq!(y_days_off_begin(&Dt::from(2024, 08, 01)), interval::D(213));
-        assert_eq!(y_days_off_begin(&Dt::from(2024, 09, 01)), interval::D(244));
-        assert_eq!(y_days_off_begin(&Dt::from(2024, 10, 01)), interval::D(274));
-        assert_eq!(y_days_off_begin(&Dt::from(2024, 11, 01)), interval::D(305));
+        assert_eq!(y_days_off_begin(&Dt::of(2024, 01, 01)), interval::D(0));
+        assert_eq!(y_days_off_begin(&Dt::of(2024, 02, 01)), interval::D(31));
+        assert_eq!(y_days_off_begin(&Dt::of(2024, 04, 01)), interval::D(91));
+        assert_eq!(y_days_off_begin(&Dt::of(2024, 05, 01)), interval::D(121));
+        assert_eq!(y_days_off_begin(&Dt::of(2024, 06, 01)), interval::D(152));
+        assert_eq!(y_days_off_begin(&Dt::of(2024, 07, 01)), interval::D(182));
+        assert_eq!(y_days_off_begin(&Dt::of(2024, 08, 01)), interval::D(213));
+        assert_eq!(y_days_off_begin(&Dt::of(2024, 09, 01)), interval::D(244));
+        assert_eq!(y_days_off_begin(&Dt::of(2024, 10, 01)), interval::D(274));
+        assert_eq!(y_days_off_begin(&Dt::of(2024, 11, 01)), interval::D(305));
     }
 
     #[test]
     fn test_y_days_off_begin_feb() {
-        assert_eq!(y_days_off_begin(&Dt::from(2021, 03, 01)), interval::D(59));
-        assert_eq!(y_days_off_begin(&Dt::from(2022, 03, 01)), interval::D(59));
-        assert_eq!(y_days_off_begin(&Dt::from(2023, 03, 01)), interval::D(59));
-        assert_eq!(y_days_off_begin(&Dt::from(2024, 03, 01)), interval::D(60));
+        assert_eq!(y_days_off_begin(&Dt::of(2021, 03, 01)), interval::D(59));
+        assert_eq!(y_days_off_begin(&Dt::of(2022, 03, 01)), interval::D(59));
+        assert_eq!(y_days_off_begin(&Dt::of(2023, 03, 01)), interval::D(59));
+        assert_eq!(y_days_off_begin(&Dt::of(2024, 03, 01)), interval::D(60));
     }
 
     #[test]
     fn test_y_days_off_begin_dec() {
-        assert_eq!(y_days_off_begin(&Dt::from(2024, 12, 01)), interval::D(335));
-        assert_eq!(y_days_off_begin(&Dt::from(2024, 12, 06)), interval::D(340));
-        assert_eq!(y_days_off_begin(&Dt::from(2024, 12, 11)), interval::D(345));
-        assert_eq!(y_days_off_begin(&Dt::from(2024, 12, 16)), interval::D(350));
-        assert_eq!(y_days_off_begin(&Dt::from(2024, 12, 21)), interval::D(355));
-        assert_eq!(y_days_off_begin(&Dt::from(2024, 12, 26)), interval::D(360));
-        assert_eq!(y_days_off_begin(&Dt::from(2024, 12, 31)), interval::D(365));
+        assert_eq!(y_days_off_begin(&Dt::of(2024, 12, 01)), interval::D(335));
+        assert_eq!(y_days_off_begin(&Dt::of(2024, 12, 06)), interval::D(340));
+        assert_eq!(y_days_off_begin(&Dt::of(2024, 12, 11)), interval::D(345));
+        assert_eq!(y_days_off_begin(&Dt::of(2024, 12, 16)), interval::D(350));
+        assert_eq!(y_days_off_begin(&Dt::of(2024, 12, 21)), interval::D(355));
+        assert_eq!(y_days_off_begin(&Dt::of(2024, 12, 26)), interval::D(360));
+        assert_eq!(y_days_off_begin(&Dt::of(2024, 12, 31)), interval::D(365));
     }
 
     #[test]
     fn test_y_intv_edge_day() {
-        assert_eq!(y_intv(&Dt::from(2025, 11, 25), &Dt::from(2026, 11, 23)), interval::Y(0));
-        assert_eq!(y_intv(&Dt::from(2025, 11, 25), &Dt::from(2026, 11, 24)), interval::Y(0));
-        assert_eq!(y_intv(&Dt::from(2025, 11, 25), &Dt::from(2026, 11, 26)), interval::Y(1));
-        assert_eq!(y_intv(&Dt::from(2025, 11, 25), &Dt::from(2026, 11, 27)), interval::Y(1));
+        assert_eq!(y_intv(&Dt::of(2025, 11, 25), &Dt::of(2026, 11, 23)), interval::Y(0));
+        assert_eq!(y_intv(&Dt::of(2025, 11, 25), &Dt::of(2026, 11, 24)), interval::Y(0));
+        assert_eq!(y_intv(&Dt::of(2025, 11, 25), &Dt::of(2026, 11, 26)), interval::Y(1));
+        assert_eq!(y_intv(&Dt::of(2025, 11, 25), &Dt::of(2026, 11, 27)), interval::Y(1));
     }
 
     #[test]
     fn test_y_intv_edge_month() {
-        assert_eq!(y_intv(&Dt::from(2025, 11, 25), &Dt::from(2026, 10, 30)), interval::Y(0));
-        assert_eq!(y_intv(&Dt::from(2025, 11, 25), &Dt::from(2026, 12, 01)), interval::Y(1));
+        assert_eq!(y_intv(&Dt::of(2025, 11, 25), &Dt::of(2026, 10, 30)), interval::Y(0));
+        assert_eq!(y_intv(&Dt::of(2025, 11, 25), &Dt::of(2026, 12, 01)), interval::Y(1));
     }
 
     #[test]
     fn test_y_intv_exact_day() {
-        assert_eq!(y_intv(&Dt::from(2025, 11, 25), &Dt::from(2025, 11, 25)), interval::Y(0));
-        assert_eq!(y_intv(&Dt::from(2025, 11, 25), &Dt::from(2026, 11, 25)), interval::Y(1));
-        assert_eq!(y_intv(&Dt::from(2025, 11, 25), &Dt::from(2027, 11, 25)), interval::Y(2));
-        assert_eq!(y_intv(&Dt::from(2025, 11, 25), &Dt::from(2028, 11, 25)), interval::Y(3));
-        assert_eq!(y_intv(&Dt::from(2025, 11, 25), &Dt::from(2029, 11, 25)), interval::Y(4));
-        assert_eq!(y_intv(&Dt::from(2025, 11, 25), &Dt::from(2030, 11, 25)), interval::Y(5));
+        assert_eq!(y_intv(&Dt::of(2025, 11, 25), &Dt::of(2025, 11, 25)), interval::Y(0));
+        assert_eq!(y_intv(&Dt::of(2025, 11, 25), &Dt::of(2026, 11, 25)), interval::Y(1));
+        assert_eq!(y_intv(&Dt::of(2025, 11, 25), &Dt::of(2027, 11, 25)), interval::Y(2));
+        assert_eq!(y_intv(&Dt::of(2025, 11, 25), &Dt::of(2028, 11, 25)), interval::Y(3));
+        assert_eq!(y_intv(&Dt::of(2025, 11, 25), &Dt::of(2029, 11, 25)), interval::Y(4));
+        assert_eq!(y_intv(&Dt::of(2025, 11, 25), &Dt::of(2030, 11, 25)), interval::Y(5));
     }
 
     #[test]
     fn test_m_intv_edge_day() {
-        assert_eq!(m_intv(&Dt::from(2025, 11, 25), &Dt::from(2026, 11, 23)), interval::M(11));
-        assert_eq!(m_intv(&Dt::from(2025, 11, 25), &Dt::from(2026, 11, 24)), interval::M(11));
-        assert_eq!(m_intv(&Dt::from(2025, 11, 25), &Dt::from(2026, 11, 26)), interval::M(12));
-        assert_eq!(m_intv(&Dt::from(2025, 11, 25), &Dt::from(2026, 11, 27)), interval::M(12));
+        assert_eq!(m_intv(&Dt::of(2025, 11, 25), &Dt::of(2026, 11, 23)), interval::M(11));
+        assert_eq!(m_intv(&Dt::of(2025, 11, 25), &Dt::of(2026, 11, 24)), interval::M(11));
+        assert_eq!(m_intv(&Dt::of(2025, 11, 25), &Dt::of(2026, 11, 26)), interval::M(12));
+        assert_eq!(m_intv(&Dt::of(2025, 11, 25), &Dt::of(2026, 11, 27)), interval::M(12));
     }
 
     #[test]
     fn test_m_intv_exact_day() {
-        assert_eq!(m_intv(&Dt::from(2025, 11, 25), &Dt::from(2025, 11, 25)), interval::M(0));
-        assert_eq!(m_intv(&Dt::from(2025, 11, 25), &Dt::from(2025, 12, 25)), interval::M(1));
-        assert_eq!(m_intv(&Dt::from(2025, 11, 25), &Dt::from(2026, 01, 25)), interval::M(2));
-        assert_eq!(m_intv(&Dt::from(2025, 11, 25), &Dt::from(2026, 02, 25)), interval::M(3));
-        assert_eq!(m_intv(&Dt::from(2025, 11, 25), &Dt::from(2026, 03, 25)), interval::M(4));
-        assert_eq!(m_intv(&Dt::from(2025, 11, 25), &Dt::from(2026, 04, 25)), interval::M(5));
+        assert_eq!(m_intv(&Dt::of(2025, 11, 25), &Dt::of(2025, 11, 25)), interval::M(0));
+        assert_eq!(m_intv(&Dt::of(2025, 11, 25), &Dt::of(2025, 12, 25)), interval::M(1));
+        assert_eq!(m_intv(&Dt::of(2025, 11, 25), &Dt::of(2026, 01, 25)), interval::M(2));
+        assert_eq!(m_intv(&Dt::of(2025, 11, 25), &Dt::of(2026, 02, 25)), interval::M(3));
+        assert_eq!(m_intv(&Dt::of(2025, 11, 25), &Dt::of(2026, 03, 25)), interval::M(4));
+        assert_eq!(m_intv(&Dt::of(2025, 11, 25), &Dt::of(2026, 04, 25)), interval::M(5));
     }
 
     #[test]
     fn test_w_intv() {
-        assert_eq!(w_intv(&Dt::from(2024, 11, 25), &Dt::from(2024, 11, 26)), interval::W(0));
-        assert_eq!(w_intv(&Dt::from(2024, 11, 19), &Dt::from(2024, 11, 26)), interval::W(1));
-        assert_eq!(w_intv(&Dt::from(2024, 10, 26), &Dt::from(2024, 11, 26)), interval::W(4));
-        assert_eq!(w_intv(&Dt::from(2023, 11, 26), &Dt::from(2024, 11, 26)), interval::W(52));
-        assert_eq!(w_intv(&Dt::from(2024, 11, 26), &Dt::from(2024, 11, 26)), interval::W(0));
-        assert_eq!(w_intv(&Dt::from(2024, 11, 20), &Dt::from(2024, 11, 26)), interval::W(0));
-        assert_eq!(w_intv(&Dt::from(2024, 10, 29), &Dt::from(2024, 11, 26)), interval::W(4));
-        assert_eq!(w_intv(&Dt::from(2024, 10, 27), &Dt::from(2024, 11, 26)), interval::W(4));
-        assert_eq!(w_intv(&Dt::from(2023, 11, 27), &Dt::from(2024, 11, 26)), interval::W(52));
-        assert_eq!(w_intv(&Dt::from(1984, 01, 01), &Dt::from(2039, 12, 31)), interval::W(2921));
+        assert_eq!(w_intv(&Dt::of(2024, 11, 25), &Dt::of(2024, 11, 26)), interval::W(0));
+        assert_eq!(w_intv(&Dt::of(2024, 11, 19), &Dt::of(2024, 11, 26)), interval::W(1));
+        assert_eq!(w_intv(&Dt::of(2024, 10, 26), &Dt::of(2024, 11, 26)), interval::W(4));
+        assert_eq!(w_intv(&Dt::of(2023, 11, 26), &Dt::of(2024, 11, 26)), interval::W(52));
+        assert_eq!(w_intv(&Dt::of(2024, 11, 26), &Dt::of(2024, 11, 26)), interval::W(0));
+        assert_eq!(w_intv(&Dt::of(2024, 11, 20), &Dt::of(2024, 11, 26)), interval::W(0));
+        assert_eq!(w_intv(&Dt::of(2024, 10, 29), &Dt::of(2024, 11, 26)), interval::W(4));
+        assert_eq!(w_intv(&Dt::of(2024, 10, 27), &Dt::of(2024, 11, 26)), interval::W(4));
+        assert_eq!(w_intv(&Dt::of(2023, 11, 27), &Dt::of(2024, 11, 26)), interval::W(52));
+        assert_eq!(w_intv(&Dt::of(1984, 01, 01), &Dt::of(2039, 12, 31)), interval::W(2921));
     }
 
     #[test]
     fn test_d_intv() {
-        assert_eq!(d_intv(&Dt::from(2024, 11, 25), &Dt::from(2024, 11, 25)), interval::D(0));
-        assert_eq!(d_intv(&Dt::from(2024, 11, 25), &Dt::from(2024, 11, 26)), interval::D(1));
-        assert_eq!(d_intv(&Dt::from(2024, 11, 25), &Dt::from(2024, 11, 27)), interval::D(2));
-        assert_eq!(d_intv(&Dt::from(2024, 11, 25), &Dt::from(2024, 11, 28)), interval::D(3));
-        assert_eq!(d_intv(&Dt::from(2024, 11, 25), &Dt::from(2024, 11, 29)), interval::D(4));
-        assert_eq!(d_intv(&Dt::from(2024, 11, 25), &Dt::from(2024, 11, 30)), interval::D(5));
-        assert_eq!(d_intv(&Dt::from(2024, 11, 25), &Dt::from(2024, 12, 01)), interval::D(6));
-        assert_eq!(d_intv(&Dt::from(2024, 11, 25), &Dt::from(2024, 12, 02)), interval::D(7));
-        assert_eq!(d_intv(&Dt::from(1984, 01, 01), &Dt::from(2039, 12, 31)), interval::D(20453));
+        assert_eq!(d_intv(&Dt::of(2024, 11, 25), &Dt::of(2024, 11, 25)), interval::D(0));
+        assert_eq!(d_intv(&Dt::of(2024, 11, 25), &Dt::of(2024, 11, 26)), interval::D(1));
+        assert_eq!(d_intv(&Dt::of(2024, 11, 25), &Dt::of(2024, 11, 27)), interval::D(2));
+        assert_eq!(d_intv(&Dt::of(2024, 11, 25), &Dt::of(2024, 11, 28)), interval::D(3));
+        assert_eq!(d_intv(&Dt::of(2024, 11, 25), &Dt::of(2024, 11, 29)), interval::D(4));
+        assert_eq!(d_intv(&Dt::of(2024, 11, 25), &Dt::of(2024, 11, 30)), interval::D(5));
+        assert_eq!(d_intv(&Dt::of(2024, 11, 25), &Dt::of(2024, 12, 01)), interval::D(6));
+        assert_eq!(d_intv(&Dt::of(2024, 11, 25), &Dt::of(2024, 12, 02)), interval::D(7));
+        assert_eq!(d_intv(&Dt::of(1984, 01, 01), &Dt::of(2039, 12, 31)), interval::D(20453));
     }
 
     #[test]
     fn test_d_intv_between_month() {
-        assert_eq!(d_intv(&Dt::from(2026, 01, 31), &Dt::from(2026, 02, 01)), interval::D(1));
-        assert_eq!(d_intv(&Dt::from(2026, 02, 28), &Dt::from(2026, 03, 01)), interval::D(1));
-        assert_eq!(d_intv(&Dt::from(2026, 03, 31), &Dt::from(2026, 04, 01)), interval::D(1));
-        assert_eq!(d_intv(&Dt::from(2026, 04, 30), &Dt::from(2026, 05, 01)), interval::D(1));
-        assert_eq!(d_intv(&Dt::from(2026, 05, 31), &Dt::from(2026, 06, 01)), interval::D(1));
-        assert_eq!(d_intv(&Dt::from(2026, 06, 30), &Dt::from(2026, 07, 01)), interval::D(1));
-        assert_eq!(d_intv(&Dt::from(2026, 07, 31), &Dt::from(2026, 08, 01)), interval::D(1));
-        assert_eq!(d_intv(&Dt::from(2026, 08, 31), &Dt::from(2026, 09, 01)), interval::D(1));
-        assert_eq!(d_intv(&Dt::from(2026, 09, 30), &Dt::from(2026, 10, 01)), interval::D(1));
-        assert_eq!(d_intv(&Dt::from(2026, 10, 31), &Dt::from(2026, 11, 01)), interval::D(1));
-        assert_eq!(d_intv(&Dt::from(2026, 11, 30), &Dt::from(2026, 12, 01)), interval::D(1));
+        assert_eq!(d_intv(&Dt::of(2026, 01, 31), &Dt::of(2026, 02, 01)), interval::D(1));
+        assert_eq!(d_intv(&Dt::of(2026, 02, 28), &Dt::of(2026, 03, 01)), interval::D(1));
+        assert_eq!(d_intv(&Dt::of(2026, 03, 31), &Dt::of(2026, 04, 01)), interval::D(1));
+        assert_eq!(d_intv(&Dt::of(2026, 04, 30), &Dt::of(2026, 05, 01)), interval::D(1));
+        assert_eq!(d_intv(&Dt::of(2026, 05, 31), &Dt::of(2026, 06, 01)), interval::D(1));
+        assert_eq!(d_intv(&Dt::of(2026, 06, 30), &Dt::of(2026, 07, 01)), interval::D(1));
+        assert_eq!(d_intv(&Dt::of(2026, 07, 31), &Dt::of(2026, 08, 01)), interval::D(1));
+        assert_eq!(d_intv(&Dt::of(2026, 08, 31), &Dt::of(2026, 09, 01)), interval::D(1));
+        assert_eq!(d_intv(&Dt::of(2026, 09, 30), &Dt::of(2026, 10, 01)), interval::D(1));
+        assert_eq!(d_intv(&Dt::of(2026, 10, 31), &Dt::of(2026, 11, 01)), interval::D(1));
+        assert_eq!(d_intv(&Dt::of(2026, 11, 30), &Dt::of(2026, 12, 01)), interval::D(1));
     }
 
     #[test]
     fn test_d_intv_between_year() {
-        assert_eq!(d_intv(&Dt::from(2020, 12, 31), &Dt::from(2021, 01, 01)), interval::D(1));
-        assert_eq!(d_intv(&Dt::from(2020, 12, 30), &Dt::from(2021, 01, 02)), interval::D(3));
-        assert_eq!(d_intv(&Dt::from(2021, 12, 31), &Dt::from(2022, 01, 01)), interval::D(1));
-        assert_eq!(d_intv(&Dt::from(2022, 12, 31), &Dt::from(2023, 01, 01)), interval::D(1));
+        assert_eq!(d_intv(&Dt::of(2020, 12, 31), &Dt::of(2021, 01, 01)), interval::D(1));
+        assert_eq!(d_intv(&Dt::of(2020, 12, 30), &Dt::of(2021, 01, 02)), interval::D(3));
+        assert_eq!(d_intv(&Dt::of(2021, 12, 31), &Dt::of(2022, 01, 01)), interval::D(1));
+        assert_eq!(d_intv(&Dt::of(2022, 12, 31), &Dt::of(2023, 01, 01)), interval::D(1));
     }
 
     #[test]
     fn test_d_intv_full_year() {
-        assert_eq!(d_intv(&Dt::from(2020, 01, 01), &Dt::from(2020, 12, 31)), interval::D(365));
-        assert_eq!(d_intv(&Dt::from(2021, 01, 01), &Dt::from(2021, 12, 31)), interval::D(364));
-        assert_eq!(d_intv(&Dt::from(2022, 01, 01), &Dt::from(2022, 12, 31)), interval::D(364));
-        assert_eq!(d_intv(&Dt::from(2023, 01, 01), &Dt::from(2023, 12, 31)), interval::D(364));
-        assert_eq!(d_intv(&Dt::from(2024, 01, 01), &Dt::from(2024, 12, 31)), interval::D(365));
-        assert_eq!(d_intv(&Dt::from(2025, 01, 01), &Dt::from(2025, 12, 31)), interval::D(364));
-        assert_eq!(d_intv(&Dt::from(2026, 01, 01), &Dt::from(2026, 12, 31)), interval::D(364));
-        assert_eq!(d_intv(&Dt::from(2027, 01, 01), &Dt::from(2027, 12, 31)), interval::D(364));
-        assert_eq!(d_intv(&Dt::from(2028, 01, 01), &Dt::from(2028, 12, 31)), interval::D(365));
+        assert_eq!(d_intv(&Dt::of(2020, 01, 01), &Dt::of(2020, 12, 31)), interval::D(365));
+        assert_eq!(d_intv(&Dt::of(2021, 01, 01), &Dt::of(2021, 12, 31)), interval::D(364));
+        assert_eq!(d_intv(&Dt::of(2022, 01, 01), &Dt::of(2022, 12, 31)), interval::D(364));
+        assert_eq!(d_intv(&Dt::of(2023, 01, 01), &Dt::of(2023, 12, 31)), interval::D(364));
+        assert_eq!(d_intv(&Dt::of(2024, 01, 01), &Dt::of(2024, 12, 31)), interval::D(365));
+        assert_eq!(d_intv(&Dt::of(2025, 01, 01), &Dt::of(2025, 12, 31)), interval::D(364));
+        assert_eq!(d_intv(&Dt::of(2026, 01, 01), &Dt::of(2026, 12, 31)), interval::D(364));
+        assert_eq!(d_intv(&Dt::of(2027, 01, 01), &Dt::of(2027, 12, 31)), interval::D(364));
+        assert_eq!(d_intv(&Dt::of(2028, 01, 01), &Dt::of(2028, 12, 31)), interval::D(365));
     }
 
     #[test]
     fn test_d_intv_1_year() {
-        assert_eq!(d_intv(&Dt::from(2020, 01, 01), &Dt::from(2021, 01, 01)), interval::D(366));
-        assert_eq!(d_intv(&Dt::from(2021, 01, 01), &Dt::from(2022, 01, 01)), interval::D(365));
-        assert_eq!(d_intv(&Dt::from(2022, 01, 01), &Dt::from(2023, 01, 01)), interval::D(365));
-        assert_eq!(d_intv(&Dt::from(2023, 01, 01), &Dt::from(2024, 01, 01)), interval::D(365));
-        assert_eq!(d_intv(&Dt::from(2024, 01, 01), &Dt::from(2025, 01, 01)), interval::D(366));
-        assert_eq!(d_intv(&Dt::from(2025, 01, 01), &Dt::from(2026, 01, 01)), interval::D(365));
-        assert_eq!(d_intv(&Dt::from(2026, 01, 01), &Dt::from(2027, 01, 01)), interval::D(365));
-        assert_eq!(d_intv(&Dt::from(2027, 01, 01), &Dt::from(2028, 01, 01)), interval::D(365));
-        assert_eq!(d_intv(&Dt::from(2028, 01, 01), &Dt::from(2029, 01, 01)), interval::D(366));
+        assert_eq!(d_intv(&Dt::of(2020, 01, 01), &Dt::of(2021, 01, 01)), interval::D(366));
+        assert_eq!(d_intv(&Dt::of(2021, 01, 01), &Dt::of(2022, 01, 01)), interval::D(365));
+        assert_eq!(d_intv(&Dt::of(2022, 01, 01), &Dt::of(2023, 01, 01)), interval::D(365));
+        assert_eq!(d_intv(&Dt::of(2023, 01, 01), &Dt::of(2024, 01, 01)), interval::D(365));
+        assert_eq!(d_intv(&Dt::of(2024, 01, 01), &Dt::of(2025, 01, 01)), interval::D(366));
+        assert_eq!(d_intv(&Dt::of(2025, 01, 01), &Dt::of(2026, 01, 01)), interval::D(365));
+        assert_eq!(d_intv(&Dt::of(2026, 01, 01), &Dt::of(2027, 01, 01)), interval::D(365));
+        assert_eq!(d_intv(&Dt::of(2027, 01, 01), &Dt::of(2028, 01, 01)), interval::D(365));
+        assert_eq!(d_intv(&Dt::of(2028, 01, 01), &Dt::of(2029, 01, 01)), interval::D(366));
     }
 
     #[test]
     fn test_d_intv_2_year() {
-        assert_eq!(d_intv(&Dt::from(2020, 01, 01), &Dt::from(2022, 01, 01)), interval::D(366 + 365));
-        assert_eq!(d_intv(&Dt::from(2021, 01, 01), &Dt::from(2023, 01, 01)), interval::D(365 + 365));
-        assert_eq!(d_intv(&Dt::from(2022, 01, 01), &Dt::from(2024, 01, 01)), interval::D(365 + 365));
-        assert_eq!(d_intv(&Dt::from(2023, 01, 01), &Dt::from(2025, 01, 01)), interval::D(365 + 366));
-        assert_eq!(d_intv(&Dt::from(2024, 01, 01), &Dt::from(2026, 01, 01)), interval::D(366 + 365));
-        assert_eq!(d_intv(&Dt::from(2025, 01, 01), &Dt::from(2027, 01, 01)), interval::D(365 + 365));
-        assert_eq!(d_intv(&Dt::from(2026, 01, 01), &Dt::from(2028, 01, 01)), interval::D(365 + 365));
-        assert_eq!(d_intv(&Dt::from(2027, 01, 01), &Dt::from(2029, 01, 01)), interval::D(365 + 366));
+        assert_eq!(d_intv(&Dt::of(2020, 01, 01), &Dt::of(2022, 01, 01)), interval::D(366 + 365));
+        assert_eq!(d_intv(&Dt::of(2021, 01, 01), &Dt::of(2023, 01, 01)), interval::D(365 + 365));
+        assert_eq!(d_intv(&Dt::of(2022, 01, 01), &Dt::of(2024, 01, 01)), interval::D(365 + 365));
+        assert_eq!(d_intv(&Dt::of(2023, 01, 01), &Dt::of(2025, 01, 01)), interval::D(365 + 366));
+        assert_eq!(d_intv(&Dt::of(2024, 01, 01), &Dt::of(2026, 01, 01)), interval::D(366 + 365));
+        assert_eq!(d_intv(&Dt::of(2025, 01, 01), &Dt::of(2027, 01, 01)), interval::D(365 + 365));
+        assert_eq!(d_intv(&Dt::of(2026, 01, 01), &Dt::of(2028, 01, 01)), interval::D(365 + 365));
+        assert_eq!(d_intv(&Dt::of(2027, 01, 01), &Dt::of(2029, 01, 01)), interval::D(365 + 366));
     }
 
     #[test]
     fn test_d_intv_3_year() {
-        assert_eq!(d_intv(&Dt::from(2020, 01, 01), &Dt::from(2023, 01, 01)), interval::D(366 + 365 + 365));
-        assert_eq!(d_intv(&Dt::from(2021, 01, 01), &Dt::from(2024, 01, 01)), interval::D(365 + 365 + 365));
-        assert_eq!(d_intv(&Dt::from(2022, 01, 01), &Dt::from(2025, 01, 01)), interval::D(365 + 365 + 366));
-        assert_eq!(d_intv(&Dt::from(2023, 01, 01), &Dt::from(2026, 01, 01)), interval::D(365 + 366 + 365));
-        assert_eq!(d_intv(&Dt::from(2024, 01, 01), &Dt::from(2027, 01, 01)), interval::D(366 + 365 + 365));
-        assert_eq!(d_intv(&Dt::from(2025, 01, 01), &Dt::from(2028, 01, 01)), interval::D(365 + 365 + 365));
-        assert_eq!(d_intv(&Dt::from(2026, 01, 01), &Dt::from(2029, 01, 01)), interval::D(365 + 365 + 366));
+        assert_eq!(d_intv(&Dt::of(2020, 01, 01), &Dt::of(2023, 01, 01)), interval::D(366 + 365 + 365));
+        assert_eq!(d_intv(&Dt::of(2021, 01, 01), &Dt::of(2024, 01, 01)), interval::D(365 + 365 + 365));
+        assert_eq!(d_intv(&Dt::of(2022, 01, 01), &Dt::of(2025, 01, 01)), interval::D(365 + 365 + 366));
+        assert_eq!(d_intv(&Dt::of(2023, 01, 01), &Dt::of(2026, 01, 01)), interval::D(365 + 366 + 365));
+        assert_eq!(d_intv(&Dt::of(2024, 01, 01), &Dt::of(2027, 01, 01)), interval::D(366 + 365 + 365));
+        assert_eq!(d_intv(&Dt::of(2025, 01, 01), &Dt::of(2028, 01, 01)), interval::D(365 + 365 + 365));
+        assert_eq!(d_intv(&Dt::of(2026, 01, 01), &Dt::of(2029, 01, 01)), interval::D(365 + 365 + 366));
     }
 
     #[test]
     fn test_d_intv_4_year() {
-        assert_eq!(d_intv(&Dt::from(2020, 01, 01), &Dt::from(2024, 01, 01)), interval::D(366 + 365 + 365 + 365));
-        assert_eq!(d_intv(&Dt::from(2021, 01, 01), &Dt::from(2025, 01, 01)), interval::D(365 + 365 + 365 + 366));
-        assert_eq!(d_intv(&Dt::from(2022, 01, 01), &Dt::from(2026, 01, 01)), interval::D(365 + 365 + 366 + 365));
-        assert_eq!(d_intv(&Dt::from(2023, 01, 01), &Dt::from(2027, 01, 01)), interval::D(365 + 366 + 365 + 365));
-        assert_eq!(d_intv(&Dt::from(2024, 01, 01), &Dt::from(2028, 01, 01)), interval::D(366 + 365 + 365 + 365));
-        assert_eq!(d_intv(&Dt::from(2025, 01, 01), &Dt::from(2029, 01, 01)), interval::D(365 + 365 + 365 + 366));
+        assert_eq!(d_intv(&Dt::of(2020, 01, 01), &Dt::of(2024, 01, 01)), interval::D(366 + 365 + 365 + 365));
+        assert_eq!(d_intv(&Dt::of(2021, 01, 01), &Dt::of(2025, 01, 01)), interval::D(365 + 365 + 365 + 366));
+        assert_eq!(d_intv(&Dt::of(2022, 01, 01), &Dt::of(2026, 01, 01)), interval::D(365 + 365 + 366 + 365));
+        assert_eq!(d_intv(&Dt::of(2023, 01, 01), &Dt::of(2027, 01, 01)), interval::D(365 + 366 + 365 + 365));
+        assert_eq!(d_intv(&Dt::of(2024, 01, 01), &Dt::of(2028, 01, 01)), interval::D(366 + 365 + 365 + 365));
+        assert_eq!(d_intv(&Dt::of(2025, 01, 01), &Dt::of(2029, 01, 01)), interval::D(365 + 365 + 365 + 366));
     }
 
     #[test]
     fn test_d_intv_5_year() {
-        assert_eq!(d_intv(&Dt::from(2020, 01, 01), &Dt::from(2025, 01, 01)), interval::D(366 + 365 + 365 + 365 + 366));
-        assert_eq!(d_intv(&Dt::from(2021, 01, 01), &Dt::from(2026, 01, 01)), interval::D(365 + 365 + 365 + 366 + 365));
-        assert_eq!(d_intv(&Dt::from(2022, 01, 01), &Dt::from(2027, 01, 01)), interval::D(365 + 365 + 366 + 365 + 365));
-        assert_eq!(d_intv(&Dt::from(2023, 01, 01), &Dt::from(2028, 01, 01)), interval::D(365 + 366 + 365 + 365 + 365));
-        assert_eq!(d_intv(&Dt::from(2024, 01, 01), &Dt::from(2029, 01, 01)), interval::D(366 + 365 + 365 + 365 + 366));
+        assert_eq!(d_intv(&Dt::of(2020, 01, 01), &Dt::of(2025, 01, 01)), interval::D(366 + 365 + 365 + 365 + 366));
+        assert_eq!(d_intv(&Dt::of(2021, 01, 01), &Dt::of(2026, 01, 01)), interval::D(365 + 365 + 365 + 366 + 365));
+        assert_eq!(d_intv(&Dt::of(2022, 01, 01), &Dt::of(2027, 01, 01)), interval::D(365 + 365 + 366 + 365 + 365));
+        assert_eq!(d_intv(&Dt::of(2023, 01, 01), &Dt::of(2028, 01, 01)), interval::D(365 + 366 + 365 + 365 + 365));
+        assert_eq!(d_intv(&Dt::of(2024, 01, 01), &Dt::of(2029, 01, 01)), interval::D(366 + 365 + 365 + 365 + 366));
     }
 
     #[test]
     fn test_d_intv_6_year() {
-        assert_eq!(d_intv(&Dt::from(2020, 01, 01), &Dt::from(2026, 01, 01)), interval::D(366 + 365 + 365 + 365 + 366 + 365));
-        assert_eq!(d_intv(&Dt::from(2021, 01, 01), &Dt::from(2027, 01, 01)), interval::D(365 + 365 + 365 + 366 + 365 + 365));
-        assert_eq!(d_intv(&Dt::from(2022, 01, 01), &Dt::from(2028, 01, 01)), interval::D(365 + 365 + 366 + 365 + 365 + 365));
-        assert_eq!(d_intv(&Dt::from(2023, 01, 01), &Dt::from(2029, 01, 01)), interval::D(365 + 366 + 365 + 365 + 365 + 366));
+        assert_eq!(d_intv(&Dt::of(2020, 01, 01), &Dt::of(2026, 01, 01)), interval::D(366 + 365 + 365 + 365 + 366 + 365));
+        assert_eq!(d_intv(&Dt::of(2021, 01, 01), &Dt::of(2027, 01, 01)), interval::D(365 + 365 + 365 + 366 + 365 + 365));
+        assert_eq!(d_intv(&Dt::of(2022, 01, 01), &Dt::of(2028, 01, 01)), interval::D(365 + 365 + 366 + 365 + 365 + 365));
+        assert_eq!(d_intv(&Dt::of(2023, 01, 01), &Dt::of(2029, 01, 01)), interval::D(365 + 366 + 365 + 365 + 365 + 366));
     }
 
     #[test]
     fn test_d_intv_multiple_year() {
-        assert_eq!(d_intv(&Dt::from(2023, 01, 01), &Dt::from(2029, 01, 01)), interval::D(365 + 366 + 365 + 365 + 365 + 366));
-        assert_eq!(d_intv(&Dt::from(2023, 01, 10), &Dt::from(2029, 01, 10)), interval::D(365 + 366 + 365 + 365 + 365 + 366));
-        assert_eq!(d_intv(&Dt::from(2023, 01, 10), &Dt::from(2029, 01, 05)), interval::D(365 + 366 + 365 + 365 + 365 + 366 - 5));
+        assert_eq!(d_intv(&Dt::of(2023, 01, 01), &Dt::of(2029, 01, 01)), interval::D(365 + 366 + 365 + 365 + 365 + 366));
+        assert_eq!(d_intv(&Dt::of(2023, 01, 10), &Dt::of(2029, 01, 10)), interval::D(365 + 366 + 365 + 365 + 365 + 366));
+        assert_eq!(d_intv(&Dt::of(2023, 01, 10), &Dt::of(2029, 01, 05)), interval::D(365 + 366 + 365 + 365 + 365 + 366 - 5));
     }
 
     #[test]
     fn test_interval_between_1() {
-        assert_eq!(intv_between(&Dt::from(2024, 11, 25), &Dt::from(2024, 11, 26)), interval::Dt::from(0, 0, 0, 1));
-        assert_eq!(intv_between(&Dt::from(2024, 11, 19), &Dt::from(2024, 11, 26)), interval::Dt::from(0, 0, 1, 7));
-        assert_eq!(intv_between(&Dt::from(2024, 10, 26), &Dt::from(2024, 11, 26)), interval::Dt::from(0, 1, 4, 31));
-        assert_eq!(intv_between(&Dt::from(2023, 11, 26), &Dt::from(2024, 11, 26)), interval::Dt::from(1, 12, 52, 366));
+        assert_eq!(intv_between(&Dt::of(2024, 11, 25), &Dt::of(2024, 11, 26)), interval::Dt::of(0, 0, 0, 1));
+        assert_eq!(intv_between(&Dt::of(2024, 11, 19), &Dt::of(2024, 11, 26)), interval::Dt::of(0, 0, 1, 7));
+        assert_eq!(intv_between(&Dt::of(2024, 10, 26), &Dt::of(2024, 11, 26)), interval::Dt::of(0, 1, 4, 31));
+        assert_eq!(intv_between(&Dt::of(2023, 11, 26), &Dt::of(2024, 11, 26)), interval::Dt::of(1, 12, 52, 366));
     }
 
     #[test]
     fn test_interval_between_0() {
-        assert_eq!(intv_between(&Dt::from(2024, 11, 26), &Dt::from(2024, 11, 26)), interval::Dt::from(0, 0, 0, 0));
-        assert_eq!(intv_between(&Dt::from(2024, 11, 20), &Dt::from(2024, 11, 26)), interval::Dt::from(0, 0, 0, 6));
-        assert_eq!(intv_between(&Dt::from(2024, 10, 29), &Dt::from(2024, 11, 26)), interval::Dt::from(0, 0, 4, 28));
-        assert_eq!(intv_between(&Dt::from(2024, 10, 27), &Dt::from(2024, 11, 26)), interval::Dt::from(0, 0, 4, 30));
-        assert_eq!(intv_between(&Dt::from(2023, 11, 27), &Dt::from(2024, 11, 26)), interval::Dt::from(0, 11, 52, 365));
+        assert_eq!(intv_between(&Dt::of(2024, 11, 26), &Dt::of(2024, 11, 26)), interval::Dt::of(0, 0, 0, 0));
+        assert_eq!(intv_between(&Dt::of(2024, 11, 20), &Dt::of(2024, 11, 26)), interval::Dt::of(0, 0, 0, 6));
+        assert_eq!(intv_between(&Dt::of(2024, 10, 29), &Dt::of(2024, 11, 26)), interval::Dt::of(0, 0, 4, 28));
+        assert_eq!(intv_between(&Dt::of(2024, 10, 27), &Dt::of(2024, 11, 26)), interval::Dt::of(0, 0, 4, 30));
+        assert_eq!(intv_between(&Dt::of(2023, 11, 27), &Dt::of(2024, 11, 26)), interval::Dt::of(0, 11, 52, 365));
     }
 
     #[test]
     fn test_interval_between_big_distance() {
-        assert_eq!(intv_between(&Dt::from(1984, 01, 01), &Dt::from(2039, 12, 31)), interval::Dt::from(55, 671, 2921, 20453));
+        assert_eq!(intv_between(&Dt::of(1984, 01, 01), &Dt::of(2039, 12, 31)), interval::Dt::of(55, 671, 2921, 20453));
     }
 }

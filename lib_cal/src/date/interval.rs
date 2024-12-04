@@ -19,7 +19,7 @@ pub struct Dt {
 }
 
 impl Dt {
-    pub fn from(y: u16, m: u16, w: u32, d: u32) -> Self {
+    pub fn of(y: u16, m: u16, w: u32, d: u32) -> Self {
         Dt { y: Y(y), m: M(m), w: W(w), d: D(d) }
     }
 }
@@ -30,6 +30,6 @@ mod test {
 
     #[test]
     fn test_dt_intv() {
-        assert_eq!(Dt::from(1, 14, 58, 393), Dt { y: Y(1), m: M(14), w: W(58), d: D(393) })
+        assert_eq!(Dt::of(1, 14, 58, 393), Dt { y: Y(1), m: M(14), w: W(58), d: D(393) })
     }
 }
