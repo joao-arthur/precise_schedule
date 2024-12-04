@@ -5,10 +5,10 @@ fn build_create_schema() -> Schema<'static> {
     HashMap::from([(
         "name",
         vec![
-            V::Req(ReqV {}),
-            V::Str(StrV {}),
-            V::StrMinLen(StrMinLenV { value: 1 }),
-            V::StrMaxLen(StrMaxLenV { value: 32 }),
+            Valid::Reqd(ReqdValid()),
+            Valid::Str(StrValid()),
+            Valid::StrMinLen(StrMinLenValid { value: 1 }),
+            Valid::StrMaxLen(StrMaxLenValid { value: 32 }),
         ],
     )])
 }

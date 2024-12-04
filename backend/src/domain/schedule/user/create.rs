@@ -1,6 +1,10 @@
-use super::User;
-use crate::domain::database::DBErr;
-use crate::domain::generator::{DateGen, IdGen};
+use std::{collections::HashMap, sync::LazyLock};
+
+use crate::domain::{
+    database::DBErr,
+    generator::{DateGen, IdGen},
+    schedule::user::User,
+    validation::{ReqdValid, Schema, StrMaxLenValid, StrMinLenValid, StrValid, Valid}};
 
 pub struct UserCModel {
     pub email: String,
@@ -23,6 +27,60 @@ pub trait UserCService {
     fn c(&self, model: UserCModel) -> Result<User, UserCErr>;
 }
 
+static USER_C_SCHEMA: LazyLock<HashMap<String, Vec<Valid>>> = LazyLock::new(|| {
+    HashMap::from([
+        (
+            String::from("first_name"),
+            vec![
+                Valid::Reqd(ReqdValid),
+                Valid::Str(StrValid),
+                Valid::StrMinLen(StrMinLenValid(1)),
+                Valid::StrMaxLen(StrMaxLenValid(256)),
+            ]
+        ),
+        (
+            String::from("birthdate"),
+            vec![
+                Valid::Reqd(ReqdValid),
+                Valid::Str(StrValid),
+                // { type: "dt" },
+                // { type: "dtMin", min: "1970-01-01" },
+            ]
+        ),
+        (
+            String::from("email"),
+            vec![
+                Valid::Reqd(ReqdValid),
+                Valid::Str(StrValid),
+                // { type: "email" },
+                Valid::StrMaxLen(StrMaxLenValid(256)),
+            ]
+        ),
+        (
+            String::from("username"),
+            vec![
+                Valid::Reqd(ReqdValid),
+                Valid::Str(StrValid),
+                Valid::StrMinLen(StrMinLenValid(1)),
+                Valid::StrMaxLen(StrMaxLenValid(32)),
+            ]
+        ),
+        (
+            String::from("password"),
+            vec![
+                Valid::Reqd(ReqdValid),
+                Valid::Str(StrValid),
+                Valid::StrMinLen(StrMinLenValid(1)),
+                Valid::StrMaxLen(StrMaxLenValid(32)),
+                // { type: "strMinNum", min: 1 },
+                // { type: "strMinUpper", min: 1 },
+                // { type: "strMinLower", min: 1 },
+                // { type: "strMinSpecial", min: 1 },
+            ]
+        ),
+    ])
+});
+
 fn user_from_c(model: UserCModel, id: String, created_at: String) -> User {
     User {
         id,
@@ -42,6 +100,7 @@ fn user_c(
     date_gen: &dyn DateGen,
     model: UserCModel,
 ) -> Result<User, UserCErr> {
+    // let transformed = // transformer;
     let id = id_gen.gen();
     let date = date_gen.gen();
     let user = user_from_c(model, id, date);
@@ -49,22 +108,10 @@ fn user_c(
     Ok(user)
 }
 
-pub struct UserCServiceImpl<'a> {
-    repo: &'a dyn UserCRepo,
-    id_gen: &'a dyn IdGen,
-    date_gen: &'a dyn DateGen,
-}
-
-impl UserCService for UserCServiceImpl<'_> {
-    fn c(&self, user_create_model: UserCModel) -> Result<User, UserCErr> {
-        user_c(self.repo, self.id_gen, self.date_gen, user_create_model)
-    }
-}
-
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::domain::generator::test::{DateGenStub, IdGenStub};
+    use crate::domain::{generator::test::{DateGenStub, IdGenStub}, schedule::user::test::user_stub};
 
     pub struct UserCRepoStub(Result<(), DBErr>);
 
@@ -74,62 +121,61 @@ mod test {
         }
     }
 
+    pub fn user_c_stub() -> UserCModel {
+        UserCModel {
+            email: String::from("paul@gmail.com"),
+            first_name: String::from("Paul McCartney"),
+            birthdate: String::from("1942-06-18"),
+            username: String::from("paul_mc"),
+            password: String::from("asdf!@#123"),
+        }
+    }
+
     #[test]
     fn test_user_from_c() {
-        let user_c_model = UserCModel {
-            email: "email".to_owned(),
-            first_name: "first_name".to_owned(),
-            birthdate: "birthdate".to_owned(),
-            username: "username".to_owned(),
-            password: "password".to_owned(),
-        };
-        let user = User {
-            id: "user_id".to_owned(),
-            email: "email".to_owned(),
-            first_name: "first_name".to_owned(),
-            birthdate: "birthdate".to_owned(),
-            username: "username".to_owned(),
-            password: "password".to_owned(),
-            created_at: "2024-07-03T22:49:51.279Z".to_owned(),
-            updated_at: "2024-07-03T22:49:51.279Z".to_owned(),
+        let user = User { 
+            created_at: String::from("2024-07-03T22:49:51.279Z"),
+            updated_at: String::from("2024-07-03T22:49:51.279Z"),
+            ..user_stub()
         };
         assert_eq!(
             user_from_c(
-                user_c_model,
-                "user_id".to_owned(),
-                "2024-07-03T22:49:51.279Z".to_owned()
+                user_c_stub(),
+                String::from("a6edc906-2f9f-5fb2-a373-efac406f0ef2"),
+                String::from("2024-07-03T22:49:51.279Z")
             ),
             user
         );
     }
 
     #[test]
-    fn test_user_create() {
-        let user_c_model = UserCModel {
-            email: "email".to_owned(),
-            first_name: "first_name".to_owned(),
-            birthdate: "birthdate".to_owned(),
-            username: "username".to_owned(),
-            password: "password".to_owned(),
-        };
-        let user = User {
-            id: "user_id".to_owned(),
-            email: "email".to_owned(),
-            first_name: "first_name".to_owned(),
-            birthdate: "birthdate".to_owned(),
-            username: "username".to_owned(),
-            password: "password".to_owned(),
-            created_at: "2024-07-03T22:49:51.279Z".to_owned(),
-            updated_at: "2024-07-03T22:49:51.279Z".to_owned(),
+    fn test_user_c() {
+        let user = User { 
+            created_at: String::from("2024-07-03T22:49:51.279Z"),
+            updated_at: String::from("2024-07-03T22:49:51.279Z"),
+            ..user_stub()
         };
         assert_eq!(
             user_c(
                 &UserCRepoStub(Ok(())),
-                &IdGenStub("user_id".to_owned()),
-                &DateGenStub("2024-07-03T22:49:51.279Z".to_owned()),
-                user_c_model
+                &IdGenStub(String::from("a6edc906-2f9f-5fb2-a373-efac406f0ef2")),
+                &DateGenStub(String::from("2024-07-03T22:49:51.279Z")),
+                user_c_stub()
             ),
             Ok(user)
+        );
+    }
+
+    #[test]
+    fn test_user_c_db_err() {
+        assert_eq!(
+            user_c(
+                &UserCRepoStub(Err(DBErr)),
+                &IdGenStub(String::from("a6edc906-2f9f-5fb2-a373-efac406f0ef2")),
+                &DateGenStub(String::from("2024-07-03T22:49:51.279Z")),
+                user_c_stub()
+            ),
+            Err(UserCErr::DBErr(DBErr))
         );
     }
 }

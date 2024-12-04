@@ -1,7 +1,12 @@
-pub mod read_by_cred;
-pub mod read_by_id;
+pub mod create;
+//pub mod delete;
+//pub mod login;
+//pub mod read_by_cred;
+//pub mod read_by_id;
+//pub mod unique_info;
+//pub mod update;
 
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, PartialEq)]
 pub struct User {
     pub id: String,
     pub first_name: String,
@@ -29,18 +34,18 @@ pub mod test {
 
     pub fn user_stub() -> User {
         User {
-            id: "user_id".to_owned(),
-            email: "paul@gmail.com".to_owned(),
-            first_name: "Paul McCartney".to_owned(),
-            birthdate: "1942-06-18".to_owned(),
-            username: "paul_mc".to_owned(),
-            password: "asdf!@#123".to_owned(),
-            created_at: "2024-03-01T11:26:41.279Z".to_owned(),
-            updated_at: "2024-07-03T22:49:51.279Z".to_owned(),
+            id: String::from("a6edc906-2f9f-5fb2-a373-efac406f0ef2"),
+            email: String::from("paul@gmail.com"),
+            first_name: String::from("Paul McCartney"),
+            birthdate: String::from("1942-06-18"),
+            username: String::from("paul_mc"),
+            password: String::from("asdf!@#123"),
+            created_at: String::from("2024-03-01T11:26:41.279Z"),
+            updated_at: String::from("2024-07-03T22:49:51.279Z"),
         }
     }
 
     pub fn user_cred_stub() -> UserCred {
-        UserCred { username: "paul_mc".to_owned(), password: "asdf!@#123".to_owned() }
+        UserCred { username: String::from("paul_mc"), password: String::from("asdf!@#123") }
     }
 }

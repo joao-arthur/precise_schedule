@@ -1,31 +1,31 @@
-#[post("/APPOINTMENT")]
+#[post("/appointment")]
 pub fn event_appointment_c() {}
 
-#[post("/BIRTHDAY")]
+#[post("/birthday")]
 pub fn event_birthday_c() {}
 
-#[post("/DATE")]
+#[post("/date")]
 pub fn event_date_c() {}
 
-#[post("/MEETING")]
+#[post("/meeting")]
 pub fn event_meeting_c() {}
 
-#[post("/PARTY")]
+#[post("/party")]
 pub fn event_party_c() {}
 
-#[put("/APPOINTMENT/<id>")]
+#[put("/appointment/<id>")]
 pub fn event_appointment_u(id: &str) {}
 
-#[put("/BIRTHDAY/<id>")]
+#[put("/birthday/<id>")]
 pub fn event_birthday_u(id: &str) {}
 
-#[put("/DATE/<id>")]
+#[put("/date/<id>")]
 pub fn event_date_u(id: &str) {}
 
-#[put("/MEETING/<id>")]
+#[put("/meeting/<id>")]
 pub fn event_meeting_u(id: &str) {}
 
-#[put("/PARTY/<id>")]
+#[put("/party/<id>")]
 pub fn event_party_u(id: &str) {}
 
 #[get("/<id>")]
