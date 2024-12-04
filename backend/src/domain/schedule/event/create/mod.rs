@@ -24,12 +24,12 @@ pub fn build_event(event: EventCreateModel, id: String, user: String) -> Event {
         frequency: event.frequency,
         weekend_repeat: event.weekend_repeat,
         user,
-        created_at: "".to_owned(),
-        updated_at: "".to_owned(),
+        created_at: String::from(""),
+        updated_at: String::from(""),
     }
 }
 
-pub fn eventCreate(
+pub fn event_create(
     repo: EventRepo,
     id_gen: IdGen,
     date_gen: DateGen,
@@ -40,7 +40,7 @@ pub fn eventCreate(
     let now = date_gen.gen();
     let built_event = eventCreateToEvent(event, eventId, userId, now);
     let create_result = repo.cCreate(built_event);
-    if (create_result.type === "err") {
+    if create_result == "err" {
         return create_result;
     }
     return ok(built_event);
@@ -56,26 +56,26 @@ mod test {
     #[test]
     fn test_build_event() {
         let create_event = EventCreateModel {
-            name: "Party".to_owned(),
-            day: "2024-03-31".to_owned(),
-            begin: "18:00".to_owned(),
-            end: "22:00".to_owned(),
+            name: String::from("Party"),
+            day: String::from("2024-03-31"),
+            begin: String::from("18:00"),
+            end: String::from("22:00"),
             category: EventCategory::Appointment,
             frequency: Some(EventFrequency::D2),
             weekend_repeat: Some(true),
         };
         let event = Event {
-            id: "12ab-34cd".to_owned(),
-            name: "Party".to_owned(),
-            day: "2024-03-31".to_owned(),
-            begin: "18:00".to_owned(),
-            end: "22:00".to_owned(),
+            id: String::from("12ab-34cd"),
+            name: String::from("Party"),
+            day: String::from("2024-03-31"),
+            begin: String::from("18:00"),
+            end: String::from("22:00"),
             category: EventCategory::Appointment,
             frequency: Some(EventFrequency::D2),
             weekend_repeat: Some(true),
-            user: "ab12-cd34".to_owned(),
-            created_at: "".to_owned(),
-            updated_at: "".to_owned(),
+            user: String::from("ab12-cd34"),
+            created_at: String::from(""),
+            updated_at: String::from(""),
         };
         assert_eq!(build_event(create_event, "12ab-34cd", "ab12-cd34"), event);
     }

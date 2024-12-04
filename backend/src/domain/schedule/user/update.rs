@@ -76,28 +76,24 @@ mod test {
     #[test]
     fn test_user_from_c() {
         let user_u_model = UserUModel {
-            email: "email".to_owned(),
-            first_name: "first_name".to_owned(),
-            birthdate: "birthdate".to_owned(),
-            username: "username".to_owned(),
-            password: "password".to_owned(),
+            email: String::from("email"),
+            first_name: String::from("first_name"),
+            birthdate: String::from("birthdate"),
+            username: String::from("username"),
+            password: String::from("password"),
         };
         let user = User {
-            id: "user_id".to_owned(),
-            email: "email".to_owned(),
-            first_name: "first_name".to_owned(),
-            birthdate: "birthdate".to_owned(),
-            username: "username".to_owned(),
-            password: "password".to_owned(),
-            created_at: "2024-07-03T22:49:51.279Z".to_owned(),
-            updated_at: "2024-07-03T22:49:51.279Z".to_owned(),
+            id: String::from("user_id"),
+            email: String::from("email"),
+            first_name: String::from("first_name"),
+            birthdate: String::from("birthdate"),
+            username: String::from("username"),
+            password: String::from("password"),
+            created_at: String::from("2024-07-03T22:49:51.279Z"),
+            updated_at: String::from("2024-07-03T22:49:51.279Z"),
         };
         assert_eq!(
-            user_from_u(
-                user_u_model,
-                "user_id".to_owned(),
-                "2024-07-03T22:49:51.279Z".to_owned()
-            ),
+            user_from_u(user_u_model, String::from("user_id"), String::from("2024-07-03T22:49:51.279Z")),
             user
         );
     }
@@ -105,27 +101,27 @@ mod test {
     #[test]
     fn test_user_create() {
         let user_u_model = UserUModel {
-            email: "email".to_owned(),
-            first_name: "first_name".to_owned(),
-            birthdate: "birthdate".to_owned(),
-            username: "username".to_owned(),
-            password: "password".to_owned(),
+            email: String::from("email"),
+            first_name: String::from("first_name"),
+            birthdate: String::from("birthdate"),
+            username: String::from("username"),
+            password: String::from("password"),
         };
         let user = User {
-            id: "user_id".to_owned(),
-            email: "email".to_owned(),
-            first_name: "first_name".to_owned(),
-            birthdate: "birthdate".to_owned(),
-            username: "username".to_owned(),
-            password: "password".to_owned(),
-            created_at: "2024-07-03T22:49:51.279Z".to_owned(),
-            updated_at: "2024-07-03T22:49:51.279Z".to_owned(),
+            id: String::from("user_id"),
+            email: String::from("email"),
+            first_name: String::from("first_name"),
+            birthdate: String::from("birthdate"),
+            username: String::from("username"),
+            password: String::from("password"),
+            created_at: String::from("2024-07-03T22:49:51.279Z"),
+            updated_at: String::from("2024-07-03T22:49:51.279Z"),
         };
         assert_eq!(
             user_u(
                 &UserCRepoStub(Ok(())),
-                &IdGenStub("user_id".to_owned()),
-                &DateGenStub("2024-07-03T22:49:51.279Z".to_owned()),
+                &IdGenStub(String::from("user_id")),
+                &DateGenStub(String::from("2024-07-03T22:49:51.279Z")),
                 user_u_model
             ),
             Ok(user)

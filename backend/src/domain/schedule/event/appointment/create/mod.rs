@@ -27,9 +27,6 @@ pub fn build_event_create(event: AppointmentCreateModel) -> EventCreateModel {
     }
 }
 
-
-
-
 #[cfg(test)]
 mod test {
     use super::*;
@@ -40,18 +37,18 @@ mod test {
     #[test]
     fn test_build_event_create() {
         let appointment = AppointmentCreateModel {
-            name: "Party".to_owned(),
-            day: "2024-03-31".to_owned(),
-            begin: "18:00".to_owned(),
-            end: "22:00".to_owned(),
+            name: String::from("Party"),
+            day: String::from("2024-03-31"),
+            begin: String::from("18:00"),
+            end: String::from("22:00"),
             frequency: Some("2D"),
             weekend_repeat: Some(true),
         };
         let create_event = EventCreateModel {
-            name: "Party".to_owned(),
-            day: "2024-03-31".to_owned(),
-            begin: "18:00".to_owned(),
-            end: "22:00".to_owned(),
+            name: String::from("Party"),
+            day: String::from("2024-03-31"),
+            begin: String::from("18:00"),
+            end: String::from("22:00"),
             category: EventCategory::Appointment,
             frequency: Some(EventFrequency::D2),
             weekend_repeat: Some(true),

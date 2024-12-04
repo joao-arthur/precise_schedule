@@ -7,4 +7,3 @@ pub trait UserDeleteService {}
 pub trait UserDeleteRepo {
     fn delete(&self, id: &String) -> Result<(), DBErr>;
 }
-

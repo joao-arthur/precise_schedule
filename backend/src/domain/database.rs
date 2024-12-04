@@ -35,11 +35,11 @@ pub mod test {
 
     #[test]
     fn test_db_stub() {
-        assert_eq!(DBStub(Ok(())).c("".to_owned()), Ok(()));
-        assert_eq!(DBStub(Err(DBErr)).c("".to_owned()), Err(DBErr));
-        assert_eq!(DBStub(Ok(())).u("".to_owned()), Ok(()));
-        assert_eq!(DBStub(Err(DBErr)).u("".to_owned()), Err(DBErr));
-        assert_eq!(DBStub(Ok(())).d("".to_owned()), Ok(()));
-        assert_eq!(DBStub(Err(DBErr)).d("".to_owned()), Err(DBErr));
+        assert_eq!(DBStub(Ok(())).c(String::from("")), Ok(()));
+        assert_eq!(DBStub(Err(DBErr)).c(String::from("")), Err(DBErr));
+        assert_eq!(DBStub(Ok(())).u(String::from("")), Ok(()));
+        assert_eq!(DBStub(Err(DBErr)).u(String::from("")), Err(DBErr));
+        assert_eq!(DBStub(Ok(())).d(String::from("")), Ok(()));
+        assert_eq!(DBStub(Err(DBErr)).d(String::from("")), Err(DBErr));
     }
 }
