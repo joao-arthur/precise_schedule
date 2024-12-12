@@ -1,11 +1,11 @@
-#[post("/")]
-pub fn user_c() {}
+#[post("/", format = "application/json")]
+pub fn user_c() { }
 
-#[put("/")]
+#[put("/", format = "application/json")]
 pub fn user_u() {}
 
-#[get("/")]
+#[get("/", format = "application/json")]
 pub fn user_r() {}
 
-#[post("/login")]
+#[post("/login", format = "application/json")]
 pub fn user_login() {}

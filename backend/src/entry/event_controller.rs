@@ -1,38 +1,38 @@
-#[post("/appointment")]
+#[post("/appointment", format = "application/json")]
 pub fn event_appointment_c() {}
 
-#[post("/birthday")]
+#[post("/birthday", format = "application/json")]
 pub fn event_birthday_c() {}
 
-#[post("/date")]
+#[post("/date", format = "application/json")]
 pub fn event_date_c() {}
 
-#[post("/meeting")]
+#[post("/meeting", format = "application/json")]
 pub fn event_meeting_c() {}
 
-#[post("/party")]
+#[post("/party", format = "application/json")]
 pub fn event_party_c() {}
 
-#[put("/appointment/<id>")]
+#[put("/appointment/<id>", format = "application/json")]
 pub fn event_appointment_u(id: &str) {}
 
-#[put("/birthday/<id>")]
+#[put("/birthday/<id>", format = "application/json")]
 pub fn event_birthday_u(id: &str) {}
 
-#[put("/date/<id>")]
+#[put("/date/<id>", format = "application/json")]
 pub fn event_date_u(id: &str) {}
 
-#[put("/meeting/<id>")]
+#[put("/meeting/<id>", format = "application/json")]
 pub fn event_meeting_u(id: &str) {}
 
-#[put("/party/<id>")]
+#[put("/party/<id>", format = "application/json")]
 pub fn event_party_u(id: &str) {}
 
-#[get("/<id>")]
+#[get("/<id>", format = "application/json")]
 pub fn event_r_one(id: &str) {}
 
-#[get("/")]
+#[get("/", format = "application/json")]
 pub fn event_r_many() {}
 
-#[delete("/<id>")]
+#[delete("/<id>", format = "application/json")]
 pub fn event_d(id: &str) {}
