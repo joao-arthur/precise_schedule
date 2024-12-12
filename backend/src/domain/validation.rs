@@ -1,84 +1,84 @@
 use std::collections::HashMap;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct RequiredErr;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct NumIErr;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct NumUErr;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct NumFErr;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct StrErr;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct BoolErr;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct NumIExactErr;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct NumIMinErr;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct NumIMaxErr;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct NumUExactErr;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct NumUMinErr;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct NumUMaxErr;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct NumFExactErr;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct NumFMinErr;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct NumFMaxErr;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct StrExactErr;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct StrExactLenErr;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct StrMinLenErr;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct StrMaxLenErr;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct StrMinUpperErr;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct StrMinLowerErr;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct StrMinNumErr;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct StrMinSpecialErr;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct DtErr;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct DtMinErr;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct DtMaxErr;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct EmailErr;
 
 pub enum Validation {
@@ -111,13 +111,14 @@ pub enum Validation {
     Email,
 }
 
+#[derive(Debug, PartialEq, Clone)]
 pub enum ValidationErr {
-    RequiredErr(RequiredErr),
-    NumIErr(NumIErr),
-    NumUErr(NumUErr),
-    NumFErr(NumFErr),
-    StrErr(StrErr),
-    BoolErr(BoolErr),
+    RequiredErr,
+    NumIErr,
+    NumUErr,
+    NumFErr,
+    StrErr,
+    BoolErr,
     NumIExactErr(NumIExactErr),
     NumIMinErr(NumIMinErr),
     NumIMaxErr(NumIMaxErr),
@@ -135,10 +136,10 @@ pub enum ValidationErr {
     StrMinLowerErr(StrMinLowerErr),
     StrMinNumErr(StrMinNumErr),
     StrMinSpecialErr(StrMinSpecialErr),
-    DtErr(DtErr),
+    DtErr,
     DtMinErr(DtMinErr),
     DtMaxErr(DtMaxErr),
-    EmailErr(EmailErr),
+    EmailErr,
 }
 
 pub enum Value {
@@ -153,3 +154,31 @@ pub enum Value {
 }
 
 pub type Schema<'a> = HashMap<&'a str, Vec<Validation>>;
+
+pub trait Validator {
+    fn validate(&self, schema: &Schema, value: &Value) -> HashMap<String, Vec<ValidationErr>>;
+}
+
+#[cfg(test)]
+pub mod test {
+    use super::*;
+
+    pub struct ValidatorStub(pub HashMap<String, Vec<ValidationErr>>);
+
+    impl Validator for ValidatorStub {
+        fn validate(&self, _schema: &Schema, _value: &Value) -> HashMap<String, Vec<ValidationErr>> {
+            self.0.clone()
+        }
+    }
+
+    #[test]
+    fn test_validator_stub() {
+        assert_eq!(
+            ValidatorStub(HashMap::from([(String::from("name"), vec![ValidationErr::StrMinLenErr(StrMinLenErr)])])).validate(
+                &HashMap::from([("name", vec![Validation::Str, Validation::StrMinLen(2)])]),
+                &Value::Str(String::from("George"))
+            ),
+            HashMap::from([(String::from("name"), vec![ValidationErr::StrMinLenErr(StrMinLenErr)])])
+        );
+    }
+}

@@ -25,7 +25,7 @@ pub fn dt(value: &Value) -> Result<(), DtErr> {
 pub fn dt_min(valid: &String, value: &Value) -> Result<(), DtMinErr> {
     match value {
         Value::Str(str_value) => {
-            let valid_parts: Vec<&str> = valid.0.split('-').collect();
+            let valid_parts: Vec<&str> = valid.split('-').collect();
             let valid_yyyy = valid_parts[0].parse::<u16>().map_err(|_| DtMinErr)?;
             let valid_mm = valid_parts[1].parse::<u16>().map_err(|_| DtMinErr)?;
             let valid_dd = valid_parts[2].parse::<u16>().map_err(|_| DtMinErr)?;
@@ -53,7 +53,7 @@ pub fn dt_min(valid: &String, value: &Value) -> Result<(), DtMinErr> {
 pub fn dt_max(valid: &String, value: &Value) -> Result<(), DtMaxErr> {
     match value {
         Value::Str(str_value) => {
-            let valid_parts: Vec<&str> = valid.0.split('-').collect();
+            let valid_parts: Vec<&str> = valid.split('-').collect();
             let valid_yyyy = valid_parts[0].parse::<u16>().map_err(|_| DtMaxErr)?;
             let valid_mm = valid_parts[1].parse::<u16>().map_err(|_| DtMaxErr)?;
             let valid_dd = valid_parts[2].parse::<u16>().map_err(|_| DtMaxErr)?;

@@ -4,7 +4,7 @@ use crate::domain::{
     database::DBErr,
     generator::{DateGen, IdGen},
     schedule::user::User,
-    validation::{Schema, Validation},
+    validation::{Schema, Validation, Value},
 };
 
 pub struct UserCModel {
@@ -93,7 +93,15 @@ fn user_c(
     date_gen: &dyn DateGen,
     model: UserCModel,
 ) -> Result<User, UserCErr> {
-    // let transformed = // transformer;
+    let input_value = HashMap::from([
+        ("first_name", Value::Str(model.first_name.clone())),
+        ("birthdate", Value::Str(model.birthdate.clone())),
+        ("email", Value::Str(model.email.clone())),
+        ("username", Value::Str(model.username.clone())),
+        ("password", Value::Str(model.password.clone())),
+    ]);
+    //validate(schema, input_value);
+
     let id = id_gen.gen();
     let date = date_gen.gen();
     let user = user_from_c(model, id, date);
