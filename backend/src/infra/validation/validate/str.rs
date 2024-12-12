@@ -1,6 +1,9 @@
-use crate::domain::validation::{StrErr, StrExactErr, StrMaxLenErr, StrMinLenErr, StrMinNumErr, StrExactLenErr, StrMinSpecialErr, StrMinUpperErr, StrMinLowerErr, Value};
+use crate::domain::validation::{
+    StrErr, StrExactErr, StrExactLenErr, StrMaxLenErr, StrMinLenErr, StrMinLowerErr, StrMinNumErr,
+    StrMinSpecialErr, StrMinUpperErr, Value,
+};
 
-fn str(value: &Value) -> Result<(), StrErr> {
+pub fn str(value: &Value) -> Result<(), StrErr> {
     match value {
         Value::Str(_value) => Ok(()),
         Value::Absent => Ok(()),
@@ -8,38 +11,64 @@ fn str(value: &Value) -> Result<(), StrErr> {
     }
 }
 
-fn str_exact(valid: String, value: &Value) -> Result<(), StrExactErr> {
-    match value {
-        Value::Str(str_value) => if str_value == &valid { Ok(()) } else { Err(StrExactErr) }
-        _ => Ok(()),
-    }
-}
-
-fn str_exact_len(valid: u32, value: &Value) -> Result<(), StrExactLenErr> {
-    match value {
-        Value::Str(str_value) => if str_value.chars().count() as u32 == valid { Ok(()) } else { Err(StrExactLenErr) }
-        _ => Ok(()),
-    }
-}
-
-fn str_min_len(valid: u32, value: &Value) -> Result<(), StrMinLenErr> {
-    match value {
-        Value::Str(str_value) => if str_value.chars().count() as u32 >= valid { Ok(()) } else { Err(StrMinLenErr) }
-        _ => Ok(()),
-    }
-}
-
-fn str_max_len(valid: u32, value: &Value) -> Result<(), StrMaxLenErr> {
-    match value {
-        Value::Str(str_value) => if str_value.chars().count() as u32 <= valid { Ok(()) } else { Err(StrMaxLenErr) }
-        _ => Ok(()),
-    }
-}
-
-fn str_min_upper(valid: u32, value: &Value) -> Result<(), StrMinUpperErr> {
+pub fn str_exact(valid: &String, value: &Value) -> Result<(), StrExactErr> {
     match value {
         Value::Str(str_value) => {
-            if str_value.chars().filter(|c| c.is_alphabetic() && c.is_uppercase()).count() as u32 >= valid {
+            if str_value == valid {
+                Ok(())
+            } else {
+                Err(StrExactErr)
+            }
+        }
+        _ => Ok(()),
+    }
+}
+
+pub fn str_exact_len(valid: u32, value: &Value) -> Result<(), StrExactLenErr> {
+    match value {
+        Value::Str(str_value) => {
+            if str_value.chars().count() as u32 == valid {
+                Ok(())
+            } else {
+                Err(StrExactLenErr)
+            }
+        }
+        _ => Ok(()),
+    }
+}
+
+pub fn str_min_len(valid: u32, value: &Value) -> Result<(), StrMinLenErr> {
+    match value {
+        Value::Str(str_value) => {
+            if str_value.chars().count() as u32 >= valid {
+                Ok(())
+            } else {
+                Err(StrMinLenErr)
+            }
+        }
+        _ => Ok(()),
+    }
+}
+
+pub fn str_max_len(valid: u32, value: &Value) -> Result<(), StrMaxLenErr> {
+    match value {
+        Value::Str(str_value) => {
+            if str_value.chars().count() as u32 <= valid {
+                Ok(())
+            } else {
+                Err(StrMaxLenErr)
+            }
+        }
+        _ => Ok(()),
+    }
+}
+
+pub fn str_min_upper(valid: u32, value: &Value) -> Result<(), StrMinUpperErr> {
+    match value {
+        Value::Str(str_value) => {
+            if str_value.chars().filter(|c| c.is_alphabetic() && c.is_uppercase()).count() as u32
+                >= valid
+            {
                 Ok(())
             } else {
                 Err(StrMinUpperErr)
@@ -49,10 +78,12 @@ fn str_min_upper(valid: u32, value: &Value) -> Result<(), StrMinUpperErr> {
     }
 }
 
-fn str_min_lower(valid: u32, value: &Value) -> Result<(), StrMinLowerErr> {
+pub fn str_min_lower(valid: u32, value: &Value) -> Result<(), StrMinLowerErr> {
     match value {
         Value::Str(str_value) => {
-            if str_value.chars().filter(|c| c.is_alphabetic() && c.is_lowercase()).count() as u32 >= valid {
+            if str_value.chars().filter(|c| c.is_alphabetic() && c.is_lowercase()).count() as u32
+                >= valid
+            {
                 Ok(())
             } else {
                 Err(StrMinLowerErr)
@@ -62,7 +93,7 @@ fn str_min_lower(valid: u32, value: &Value) -> Result<(), StrMinLowerErr> {
     }
 }
 
-fn str_min_num(valid: u32, value: &Value) -> Result<(), StrMinNumErr> {
+pub fn str_min_num(valid: u32, value: &Value) -> Result<(), StrMinNumErr> {
     match value {
         Value::Str(str_value) => {
             if str_value.chars().filter(|c| c.is_ascii_digit()).count() as u32 >= valid {
@@ -75,7 +106,7 @@ fn str_min_num(valid: u32, value: &Value) -> Result<(), StrMinNumErr> {
     }
 }
 
-fn str_min_special(valid: u32, value: &Value) -> Result<(), StrMinSpecialErr> {
+pub fn str_min_special(valid: u32, value: &Value) -> Result<(), StrMinSpecialErr> {
     match value {
         Value::Str(str_value) => {
             if str_value.chars().filter(|c| c.is_ascii_punctuation()).count() as u32 >= valid {
@@ -106,18 +137,24 @@ mod test {
         assert_eq!(str(&Value::NumU(42)), Err(StrErr));
         assert_eq!(str(&Value::NumF(24.5)), Err(StrErr));
         assert_eq!(str(&Value::Arr(vec![Value::NumI(-1), Value::NumI(2)])), Err(StrErr));
-        assert_eq!(str(&Value::Obj(HashMap::from([(String::from("age"), Value::NumI(42))]))), Err(StrErr));
+        assert_eq!(
+            str(&Value::Obj(HashMap::from([(String::from("age"), Value::NumI(42))]))),
+            Err(StrErr)
+        );
     }
 
     #[test]
     fn test_str_exact_ok() {
-        assert_eq!(str_exact(String::from("Ai"), &Value::Absent), Ok(()));
-        assert_eq!(str_exact(String::from("Ai"), &Value::Str(String::from("Ai"))), Ok(()));
+        assert_eq!(str_exact(&String::from("Ai"), &Value::Absent), Ok(()));
+        assert_eq!(str_exact(&String::from("Ai"), &Value::Str(String::from("Ai"))), Ok(()));
     }
 
     #[test]
     fn test_str_exact_err() {
-        assert_eq!(str_exact(String::from("TO BE"), &Value::Str(String::from("to be"))), Err(StrExactErr)); 
+        assert_eq!(
+            str_exact(&String::from("TO BE"), &Value::Str(String::from("to be"))),
+            Err(StrExactErr)
+        );
     }
 
     #[test]
@@ -163,7 +200,6 @@ mod test {
         assert_eq!(str_max_len(10, &Value::Str(String::from("light that n"))), Err(StrMaxLenErr));
     }
 
-
     #[test]
     fn test_str_min_upper_ok() {
         assert_eq!(str_min_upper(1, &Value::Absent), Ok(()));
@@ -205,7 +241,10 @@ mod test {
     #[test]
     fn test_str_min_num_err() {
         assert_eq!(str_min_num(3, &Value::Str(String::from("we are one 3 8"))), Err(StrMinNumErr));
-        assert_eq!(str_min_num(3, &Value::Str(String::from("we are one thirty 8"))), Err(StrMinNumErr));
+        assert_eq!(
+            str_min_num(3, &Value::Str(String::from("we are one thirty 8"))),
+            Err(StrMinNumErr)
+        );
     }
 
     #[test]
@@ -218,7 +257,13 @@ mod test {
 
     #[test]
     fn test_str_min_special_err() {
-        assert_eq!(str_min_special(10, &Value::Str(String::from("!@#$%¨&*("))), Err(StrMinSpecialErr));
-        assert_eq!(str_min_special(10, &Value::Str(String::from("pressure"))), Err(StrMinSpecialErr));
+        assert_eq!(
+            str_min_special(10, &Value::Str(String::from("!@#$%¨&*("))),
+            Err(StrMinSpecialErr)
+        );
+        assert_eq!(
+            str_min_special(10, &Value::Str(String::from("pressure"))),
+            Err(StrMinSpecialErr)
+        );
     }
 }

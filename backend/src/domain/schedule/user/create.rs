@@ -4,7 +4,8 @@ use crate::domain::{
     database::DBErr,
     generator::{DateGen, IdGen},
     schedule::user::User,
-    validation::{ReqdValid, Schema, StrMaxLenValid, StrMinLenValid, StrValid, Valid}};
+    validation::{Schema, Validation},
+};
 
 pub struct UserCModel {
     pub email: String,
@@ -27,56 +28,48 @@ pub trait UserCService {
     fn c(&self, model: UserCModel) -> Result<User, UserCErr>;
 }
 
-static USER_C_SCHEMA: LazyLock<HashMap<String, Vec<Valid>>> = LazyLock::new(|| {
+static USER_C_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
     HashMap::from([
         (
-            String::from("first_name"),
+            "first_name",
             vec![
-                Valid::Reqd(ReqdValid),
-                Valid::Str(StrValid),
-                Valid::StrMinLen(StrMinLenValid(1)),
-                Valid::StrMaxLen(StrMaxLenValid(256)),
-            ]
+                Validation::Required,
+                Validation::Str,
+                Validation::StrMinLen(1),
+                Validation::StrMaxLen(256),
+            ],
         ),
         (
-            String::from("birthdate"),
+            "birthdate",
             vec![
-                Valid::Reqd(ReqdValid),
-                Valid::Str(StrValid),
-                // { type: "dt" },
-                // { type: "dtMin", min: "1970-01-01" },
-            ]
+                Validation::Required,
+                Validation::Str,
+                Validation::Dt,
+                Validation::DtMin(String::from("1970-01-01")),
+            ],
+        ),
+        ("email", vec![Validation::Required, Validation::Str, Validation::Email]),
+        (
+            "username",
+            vec![
+                Validation::Required,
+                Validation::Str,
+                Validation::StrMinLen(1),
+                Validation::StrMaxLen(32),
+            ],
         ),
         (
-            String::from("email"),
+            "password",
             vec![
-                Valid::Reqd(ReqdValid),
-                Valid::Str(StrValid),
-                // { type: "email" },
-                Valid::StrMaxLen(StrMaxLenValid(256)),
-            ]
-        ),
-        (
-            String::from("username"),
-            vec![
-                Valid::Reqd(ReqdValid),
-                Valid::Str(StrValid),
-                Valid::StrMinLen(StrMinLenValid(1)),
-                Valid::StrMaxLen(StrMaxLenValid(32)),
-            ]
-        ),
-        (
-            String::from("password"),
-            vec![
-                Valid::Reqd(ReqdValid),
-                Valid::Str(StrValid),
-                Valid::StrMinLen(StrMinLenValid(1)),
-                Valid::StrMaxLen(StrMaxLenValid(32)),
-                // { type: "strMinNum", min: 1 },
-                // { type: "strMinUpper", min: 1 },
-                // { type: "strMinLower", min: 1 },
-                // { type: "strMinSpecial", min: 1 },
-            ]
+                Validation::Required,
+                Validation::Str,
+                Validation::StrMinLen(1),
+                Validation::StrMaxLen(32),
+                Validation::StrMinUpper(1),
+                Validation::StrMinLower(1),
+                Validation::StrMinSpecial(1),
+                Validation::StrMinNum(1),
+            ],
         ),
     ])
 });
@@ -111,7 +104,10 @@ fn user_c(
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::domain::{generator::test::{DateGenStub, IdGenStub}, schedule::user::test::user_stub};
+    use crate::domain::{
+        generator::test::{DateGenStub, IdGenStub},
+        schedule::user::test::user_stub,
+    };
 
     pub struct UserCRepoStub(Result<(), DBErr>);
 
@@ -133,7 +129,7 @@ mod test {
 
     #[test]
     fn test_user_from_c() {
-        let user = User { 
+        let user = User {
             created_at: String::from("2024-07-03T22:49:51.279Z"),
             updated_at: String::from("2024-07-03T22:49:51.279Z"),
             ..user_stub()
@@ -150,7 +146,7 @@ mod test {
 
     #[test]
     fn test_user_c() {
-        let user = User { 
+        let user = User {
             created_at: String::from("2024-07-03T22:49:51.279Z"),
             updated_at: String::from("2024-07-03T22:49:51.279Z"),
             ..user_stub()

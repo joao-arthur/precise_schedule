@@ -1,6 +1,6 @@
 use crate::domain::validation::{EmailErr, Value};
 
-fn email(value: &Value) -> Result<(), EmailErr> {
+pub fn email(value: &Value) -> Result<(), EmailErr> {
     match value {
         Value::Str(str_value) => {
             if str_value.chars().any(|c| c.is_whitespace()) {
@@ -24,7 +24,6 @@ fn email(value: &Value) -> Result<(), EmailErr> {
         _ => Ok(()),
     }
 }
-
 
 #[cfg(test)]
 mod test {

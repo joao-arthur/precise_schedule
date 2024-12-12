@@ -1,6 +1,6 @@
 use crate::domain::validation::{BoolErr, Value};
 
-fn bool(value: &Value) -> Result<(), BoolErr> {
+pub fn bool(value: &Value) -> Result<(), BoolErr> {
     match value {
         Value::Bool(_value) => Ok(()),
         Value::Absent => Ok(()),
@@ -26,6 +26,9 @@ mod test {
         assert_eq!(bool(&Value::NumF(24.5)), Err(BoolErr));
         assert_eq!(bool(&Value::Str(String::from("hello"))), Err(BoolErr));
         assert_eq!(bool(&Value::Arr(vec![Value::NumI(-1), Value::NumI(2)])), Err(BoolErr));
-        assert_eq!(bool(&Value::Obj(HashMap::from([(String::from("age"), Value::NumI(42))]))), Err(BoolErr));
+        assert_eq!(
+            bool(&Value::Obj(HashMap::from([(String::from("age"), Value::NumI(42))]))),
+            Err(BoolErr)
+        );
     }
 }

@@ -1,6 +1,6 @@
-use crate::domain::validation::{NumFErr,NumFExactErr, NumFMinErr, NumFMaxErr, Value};
+use crate::domain::validation::{NumFErr, NumFExactErr, NumFMaxErr, NumFMinErr, Value};
 
-fn num_f(value: &Value) -> Result<(), NumFErr> {
+pub fn num_f(value: &Value) -> Result<(), NumFErr> {
     match value {
         Value::NumF(_value) => Ok(()),
         Value::Absent => Ok(()),
@@ -8,23 +8,41 @@ fn num_f(value: &Value) -> Result<(), NumFErr> {
     }
 }
 
-fn num_f_exact(valid: f64, value: &Value) -> Result<(), NumFExactErr> {
+pub fn num_f_exact(valid: f64, value: &Value) -> Result<(), NumFExactErr> {
     match value {
-        Value::NumF(num_f) => if num_f == &valid { Ok(()) } else { Err(NumFExactErr) }
+        Value::NumF(num_f) => {
+            if num_f == &valid {
+                Ok(())
+            } else {
+                Err(NumFExactErr)
+            }
+        }
         _ => Ok(()),
     }
 }
 
-fn num_f_min(valid: f64, value: &Value) -> Result<(), NumFMinErr> {
+pub fn num_f_min(valid: f64, value: &Value) -> Result<(), NumFMinErr> {
     match value {
-        Value::NumF(num_f) => if num_f >= &valid { Ok(()) } else { Err(NumFMinErr) }
+        Value::NumF(num_f) => {
+            if num_f >= &valid {
+                Ok(())
+            } else {
+                Err(NumFMinErr)
+            }
+        }
         _ => Ok(()),
     }
 }
 
-fn num_f_max(valid: f64, value: &Value) -> Result<(), NumFMaxErr> {
+pub fn num_f_max(valid: f64, value: &Value) -> Result<(), NumFMaxErr> {
     match value {
-        Value::NumF(num_f) => if num_f <= &valid { Ok(()) } else { Err(NumFMaxErr) }
+        Value::NumF(num_f) => {
+            if num_f <= &valid {
+                Ok(())
+            } else {
+                Err(NumFMaxErr)
+            }
+        }
         _ => Ok(()),
     }
 }
@@ -47,7 +65,10 @@ mod test {
         assert_eq!(num_f(&Value::NumU(42)), Err(NumFErr));
         assert_eq!(num_f(&Value::Str(String::from("hello"))), Err(NumFErr));
         assert_eq!(num_f(&Value::Arr(vec![Value::NumI(-1), Value::NumI(2)])), Err(NumFErr));
-        assert_eq!(num_f(&Value::Obj(HashMap::from([(String::from("age"), Value::NumI(42))]))), Err(NumFErr));
+        assert_eq!(
+            num_f(&Value::Obj(HashMap::from([(String::from("age"), Value::NumI(42))]))),
+            Err(NumFErr)
+        );
     }
 
     #[test]

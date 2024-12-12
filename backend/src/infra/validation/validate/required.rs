@@ -20,7 +20,10 @@ mod test {
         assert_eq!(required(&Value::NumF(24.5)), Ok(()));
         assert_eq!(required(&Value::Str(String::from("hello"))), Ok(()));
         assert_eq!(required(&Value::Arr(vec![Value::NumI(-1), Value::NumI(2)])), Ok(()));
-        assert_eq!(required(&Value::Obj(HashMap::from([(String::from("age"), Value::NumI(42))]))), Ok(()));
+        assert_eq!(
+            required(&Value::Obj(HashMap::from([(String::from("age"), Value::NumI(42))]))),
+            Ok(())
+        );
     }
 
     #[test]
