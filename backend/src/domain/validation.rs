@@ -1,45 +1,22 @@
 use std::collections::HashMap;
 
-pub struct Required;
-
-pub struct NumI;
-pub struct NumIExact(pub i64);
-pub struct NumIMin(pub i64);
-pub struct NumIMax(pub i64);
-
-pub struct NumU;
-pub struct NumUExact(pub u64);
-pub struct NumUMin(pub u64);
-pub struct NumUMax(pub u64);
-
-pub struct NumF;
-pub struct NumFExact(pub f64);
-pub struct NumFMin(pub f64);
-pub struct NumFMax(pub f64);
-
-pub struct Str;
-pub struct StrExact(pub String);
-pub struct StrExactLen(pub u32);
-pub struct StrMinLen(pub u32);
-pub struct StrMaxLen(pub u32);
-
-pub struct StrMinUpper(pub u32);
-pub struct StrMinLower(pub u32);
-pub struct StrMinNum(pub u32);
-pub struct StrMinSpecial(pub u32);
-
-pub struct Dt;
-pub struct DtExact(pub String);
-pub struct DtMin(pub String);
-pub struct DtMax(pub String);
-
-pub struct Email;
-
 #[derive(Debug, PartialEq)]
 pub struct RequiredErr;
 
 #[derive(Debug, PartialEq)]
 pub struct NumIErr;
+
+#[derive(Debug, PartialEq)]
+pub struct NumUErr;
+
+#[derive(Debug, PartialEq)]
+pub struct NumFErr;
+
+#[derive(Debug, PartialEq)]
+pub struct StrErr;
+
+#[derive(Debug, PartialEq)]
+pub struct BoolErr;
 
 #[derive(Debug, PartialEq)]
 pub struct NumIExactErr;
@@ -51,9 +28,6 @@ pub struct NumIMinErr;
 pub struct NumIMaxErr;
 
 #[derive(Debug, PartialEq)]
-pub struct NumUErr;
-
-#[derive(Debug, PartialEq)]
 pub struct NumUExactErr;
 
 #[derive(Debug, PartialEq)]
@@ -63,9 +37,6 @@ pub struct NumUMinErr;
 pub struct NumUMaxErr;
 
 #[derive(Debug, PartialEq)]
-pub struct NumFErr;
-
-#[derive(Debug, PartialEq)]
 pub struct NumFExactErr;
 
 #[derive(Debug, PartialEq)]
@@ -73,9 +44,6 @@ pub struct NumFMinErr;
 
 #[derive(Debug, PartialEq)]
 pub struct NumFMaxErr;
-
-#[derive(Debug, PartialEq)]
-pub struct StrErr;
 
 #[derive(Debug, PartialEq)]
 pub struct StrExactErr;
@@ -105,9 +73,6 @@ pub struct StrMinSpecialErr;
 pub struct DtErr;
 
 #[derive(Debug, PartialEq)]
-pub struct DtExactErr;
-
-#[derive(Debug, PartialEq)]
 pub struct DtMinErr;
 
 #[derive(Debug, PartialEq)]
@@ -117,41 +82,71 @@ pub struct DtMaxErr;
 pub struct EmailErr;
 
 pub enum Validation {
-    Required(Required),
-    NumI(NumI),
-    NumIExact(NumIExact),
-    NumIMin(NumIMin),
-    NumIMax(NumIMax),
-    NumU(NumU),
-    NumUExact(NumUExact),
-    NumUMin(NumUMin),
-    NumUMax(NumUMax),
-    NumF(NumF),
-    NumFExact(NumFExact),
-    NumFMin(NumFMin),
-    NumFMax(NumFMax),
-    Str(Str),
-    StrExact(StrExact),
-    StrExactLen(StrExactLen),
-    StrMinLen(StrMinLen),
-    StrMaxLen(StrMaxLen),
-    StrMinUpper(StrMinUpper),
-    StrMinLower(StrMinLower),
-    StrMinNum(StrMinNum),
-    StrMinSpecial(StrMinSpecial),
-    Dt(Dt),
-    DtExact(DtExact),
-    DtMin(DtMin),
-    DtMax(DtMax),
-    Email(Email),
+    Required,
+    NumI,
+    NumU,
+    NumF,
+    Str,
+    Bool,
+    NumIExact(i64),
+    NumIMin(i64),
+    NumIMax(i64),
+    NumUExact(u64),
+    NumUMin(u64),
+    NumUMax(u64),
+    NumFExact(f64),
+    NumFMin(f64),
+    NumFMax(f64),
+    StrExact(String),
+    StrExactLen(u32),
+    StrMinLen(u32),
+    StrMaxLen(u32),
+    StrMinUpper(u32),
+    StrMinLower(u32),
+    StrMinNum(u32),
+    StrMinSpecial(u32),
+    Dt,
+    DtMin(String),
+    DtMax(String),
+    Email,
+}
+
+pub enum ValidationErr {
+    RequiredErr(RequiredErr),
+    NumIErr(NumIErr),
+    NumUErr(NumUErr),
+    NumFErr(NumFErr),
+    StrErr(StrErr),
+    BoolErr(BoolErr),
+    NumIExactErr(NumIExactErr),
+    NumIMinErr(NumIMinErr),
+    NumIMaxErr(NumIMaxErr),
+    NumUExactErr(NumUExactErr),
+    NumUMinErr(NumUMinErr),
+    NumUMaxErr(NumUMaxErr),
+    NumFExactErr(NumFExactErr),
+    NumFMinErr(NumFMinErr),
+    NumFMaxErr(NumFMaxErr),
+    StrExactErr(StrExactErr),
+    StrExactLenErr(StrExactLenErr),
+    StrMinLenErr(StrMinLenErr),
+    StrMaxLenErr(StrMaxLenErr),
+    StrMinUpperErr(StrMinUpperErr),
+    StrMinLowerErr(StrMinLowerErr),
+    StrMinNumErr(StrMinNumErr),
+    StrMinSpecialErr(StrMinSpecialErr),
+    DtErr(DtErr),
+    DtMinErr(DtMinErr),
+    DtMaxErr(DtMaxErr),
+    EmailErr(EmailErr),
 }
 
 pub enum Value {
-    Bool(bool),
     NumU(u64),
     NumI(i64),
     NumF(f64),
     Str(String),
+    Bool(bool),
     Arr(Vec<Value>),
     Obj(HashMap<String, Value>),
     Absent,
@@ -159,625 +154,84 @@ pub enum Value {
 
 pub type Schema<'a> = HashMap<&'a str, Vec<Validation>>;
 
-fn validate_required(_v: Required, value: Value) -> Result<(), RequiredErr> {
+fn validate_schema(schema: &Schema, value: &Value) -> Result<(), ()> {
     match value {
-        Value::Absent => Err(RequiredErr),
-        _ => Ok(()),
-    }
-}
+        Value::Obj(obj) => {
+            schema.iter().for_each(|f| {
+                let ddd = obj.get(f.0.clone()).unwrap_or(&Value::Absent);
 
-fn validate_num_i(_valid: NumI, value: Value) -> Result<(), NumIErr> {
-    match value {
-        Value::NumI(_num_i) => Ok(()),
-        Value::Absent => Ok(()),
-        _ => Err(NumIErr),
-    }
-}
-
-fn validate_num_i_exact(valid: NumIExact, value: Value) -> Result<(), NumIExactErr> {
-    match value {
-        Value::NumI(num_i) => if num_i == valid.0 { Ok(()) } else { Err(NumIExactErr) }
-        _ => Ok(()),
-    }
-}
-
-fn validate_num_i_min(valid: NumIMin, value: Value) -> Result<(), NumIMinErr> {
-    match value {
-        Value::NumI(num_i) => if num_i >= valid.0 { Ok(()) } else { Err(NumIMinErr) }
-        _ => Ok(()),
-    }
-}
-
-fn validate_num_i_max(valid: NumIMax, value: Value) -> Result<(), NumIMaxErr> {
-    match value {
-        Value::NumI(num_i) => if num_i <= valid.0 { Ok(()) } else { Err(NumIMaxErr) }
-        _ => Ok(()),
-    }
-}
-
-fn validate_num_u(_valid: NumU, value: Value) -> Result<(), NumUErr> {
-    match value {
-        Value::NumU(_num_u) => Ok(()),
-        Value::Absent => Ok(()),
-        _ => Err(NumUErr),
-    }
-}
-
-fn validate_num_u_exact(valid: NumUExact, value: Value) -> Result<(), NumUExactErr> {
-    match value {
-        Value::NumU(num_u) => if num_u == valid.0 { Ok(()) } else { Err(NumUExactErr) }
-        _ => Ok(()),
-    }
-}
-
-fn validate_num_u_min(valid: NumUMin, value: Value) -> Result<(), NumUMinErr> {
-    match value {
-        Value::NumU(num_u) => if num_u >= valid.0 { Ok(()) } else { Err(NumUMinErr) }
-        _ => Ok(()),
-    }
-}
-
-fn validate_num_u_max(valid: NumUMax, value: Value) -> Result<(), NumUMaxErr> {
-    match value {
-        Value::NumU(num_u) => if num_u <= valid.0 { Ok(()) } else { Err(NumUMaxErr) }
-        _ => Ok(()),
-    }
-}
-
-fn validate_num_f(_valid: NumF, value: Value) -> Result<(), NumFErr> {
-    match value {
-        Value::NumF(_value) => Ok(()),
-        Value::Absent => Ok(()),
-        _ => Err(NumFErr),
-    }
-}
-
-fn validate_num_f_exact(valid: NumFExact, value: Value) -> Result<(), NumFExactErr> {
-    match value {
-        Value::NumF(num_f) => if num_f == valid.0 { Ok(()) } else { Err(NumFExactErr) }
-        _ => Ok(()),
-    }
-}
-
-fn validate_num_f_min(valid: NumFMin, value: Value) -> Result<(), NumFMinErr> {
-    match value {
-        Value::NumF(num_f) => if num_f >= valid.0 { Ok(()) } else { Err(NumFMinErr) }
-        _ => Ok(()),
-    }
-}
-
-fn validate_num_f_max(valid: NumFMax, value: Value) -> Result<(), NumFMaxErr> {
-    match value {
-        Value::NumF(num_f) => if num_f <= valid.0 { Ok(()) } else { Err(NumFMaxErr) }
-        _ => Ok(()),
-    }
-}
-
-fn validate_str(_valid: Str, value: Value) -> Result<(), StrErr> {
-    match value {
-        Value::Str(_value) => Ok(()),
-        Value::Absent => Ok(()),
-        _ => Err(StrErr),
-    }
-}
-
-fn validate_str_exact(valid: StrExact, value: Value) -> Result<(), StrExactErr> {
-    match value {
-        Value::Str(str_value) => if str_value == valid.0 { Ok(()) } else { Err(StrExactErr) }
-        _ => Ok(()),
-    }
-}
-
-fn validate_str_exact_len(valid: StrExactLen, value: Value) -> Result<(), StrExactLenErr> {
-    match value {
-        Value::Str(str_value) => if str_value.chars().count() as u32 == valid.0 { Ok(()) } else { Err(StrExactLenErr) }
-        _ => Ok(()),
-    }
-}
-
-fn validate_str_min_len(valid: StrMinLen, value: Value) -> Result<(), StrMinLenErr> {
-    match value {
-        Value::Str(str_value) => if str_value.chars().count() as u32 >= valid.0 { Ok(()) } else { Err(StrMinLenErr) }
-        _ => Ok(()),
-    }
-}
-
-fn validate_str_max_len(valid: StrMaxLen, value: Value) -> Result<(), StrMaxLenErr> {
-    match value {
-        Value::Str(str_value) => if str_value.chars().count() as u32 <= valid.0 { Ok(()) } else { Err(StrMaxLenErr) }
-        _ => Ok(()),
-    }
-}
-
-fn str_min_upper_valid(valid: StrMinUpper, value: Value) -> Result<(), StrMinUpperErr> {
-    match value {
-        Value::Str(str_value) => {
-            if str_value.chars().filter(|c| c.is_alphabetic() && c.is_uppercase()).count() as u32 >= valid.0 {
-                Ok(())
-            } else {
-                Err(StrMinUpperErr)
-            }
-        }
-        _ => Ok(()),
-    }
-}
-
-fn str_min_lower_valid(valid: StrMinLower, value: Value) -> Result<(), StrMinLowerErr> {
-    match value {
-        Value::Str(str_value) => {
-            if str_value.chars().filter(|c| c.is_alphabetic() && c.is_lowercase()).count() as u32 >= valid.0 {
-                Ok(())
-            } else {
-                Err(StrMinLowerErr)
-            }
-        }
-        _ => Ok(()),
-    }
-}
-
-fn str_min_num_valid(valid: StrMinNum, value: Value) -> Result<(), StrMinNumErr> {
-    match value {
-        Value::Str(str_value) => {
-            if str_value.chars().filter(|c| c.is_ascii_digit()).count() as u32 >= valid.0 {
-                Ok(())
-            } else {
-                Err(StrMinNumErr)
-            }
-        }
-        _ => Ok(()),
-    }
-}
-
-fn str_min_special_valid(valid: StrMinSpecial, value: Value) -> Result<(), StrMinSpecialErr> {
-    match value {
-        Value::Str(str_value) => {
-            if str_value.chars().filter(|c| c.is_ascii_punctuation()).count() as u32 >= valid.0 {
-                Ok(())
-            } else {
-                Err(StrMinSpecialErr)
-            }
-        }
-        _ => Ok(()),
-    }
-}
-
-fn dt_valid(valid: Dt, value: Value) -> Result<(), DtErr> {
-    match value {
-        Value::Str(str_value) => {
-            let parts: Vec<&str> = str_value.split('-').collect();
-            if parts.len() != 3 {
-                return Err(DtErr);
-            }
-            if parts[0].len() != 2 || parts[1].len() != 2 || parts[2].len() != 4 {
-                return Err(DtErr);
-            }
-            if !parts.iter().all(|part| part.chars().all(|c| c.is_digit(10))) {
-                return Err(DtErr);
-            }
-            let _yyyy = parts[0].parse::<u32>().map_err(|_| DtErr)?;
-            let _mm = parts[1].parse::<u32>().map_err(|_| DtErr)?;
-            let _dd = parts[2].parse::<u32>().map_err(|_| DtErr)?;
-            return Err(DtErr);
-        }
-        _ => Ok(()),
-    }
-}
-
-fn dt_exact_valid(valid: DtExact, value: Value) -> Result<(), DtExactErr> {
-    match value {
-        Value::Str(str_value) => if str_value == valid.0 { Ok(()) } else { Err(DtExactErr) } 
-        _ => Ok(()),
-    }
-}
-
-fn dt_min_valid(valid: DtMin, value: Value) -> Result<(), DtMinErr> {
-    match value {
-        Value::Str(str_value) => {
-            let valid_parts: Vec<&str> = valid.0.split('-').collect();
-            let valid_yyyy = valid_parts[0].parse::<u32>().map_err(|_| DtMinErr)?;
-            let valid_mm = valid_parts[1].parse::<u32>().map_err(|_| DtMinErr)?;
-            let valid_dd = valid_parts[2].parse::<u32>().map_err(|_| DtMinErr)?;
-
-            let value_parts: Vec<&str> = str_value.split('-').collect();
-            let value_yyyy = value_parts[0].parse::<u32>().map_err(|_| DtMinErr)?;
-            let value_mm = value_parts[1].parse::<u32>().map_err(|_| DtMinErr)?;
-            let value_dd = value_parts[2].parse::<u32>().map_err(|_| DtMinErr)?;
-
-            if value_yyyy < valid_yyyy {
-                return Err(DtMinErr);
-            }
-            if value_yyyy == valid_yyyy && value_mm < valid_mm {
-                return Err(DtMinErr);
-            }
-            if value_yyyy == valid_yyyy && value_mm == valid_mm && value_dd < valid_dd {
-                return Err(DtMinErr);
-            }
+                let dfddeferf: Vec<Result<(), ValidationErr>> = f.1.iter().map(|val| match val {
+                    Validation::Required => required(ddd).map_err(|err| ValidationErr::RequiredErr(err)),
+                    Validation::NumI => num_i(ddd).map_err(|err| ValidationErr::NumIErr(err)),
+                    Validation::NumU => num_u(ddd).map_err(|err| ValidationErr::NumUErr(err)),
+                    Validation::NumF => num_f(ddd).map_err(|err| ValidationErr::NumFErr(err)),
+                    Validation::Str => str(ddd).map_err(|err| ValidationErr::StrErr(err)),
+                    Validation::Bool => bool(ddd).map_err(|err| ValidationErr::BoolErr(err)),
+                    Validation::NumIExact(num_i_exact_v) => num_i_exact(num_i_exact_v, ddd).map_err(|err| ValidationErr::NumIExactErr(err)),
+                    Validation::NumIMin(num_i_min_v) => num_i_min(num_i_min_v, ddd).map_err(|err| ValidationErr::NumIMinErr(err)),
+                    Validation::NumIMax(num_i_max_v) => num_i_max(num_i_max_v, ddd).map_err(|err| ValidationErr::NumIMaxErr(err)),
+                    Validation::NumUExact(num_u_exact_v) => num_u_exact(num_u_exact_v, ddd).map_err(|err| ValidationErr::NumUExactErr(err)),
+                    Validation::NumUMin(num_u_min_v) => num_u_min(num_u_min_v, ddd).map_err(|err| ValidationErr::NumUMinErr(err)),
+                    Validation::NumUMax(num_u_max_v) => num_u_max(num_u_max_v, ddd).map_err(|err| ValidationErr::NumUMaxErr(err)),
+                    Validation::NumFExact(num_f_exact_v) => num_f_exact(num_f_exact_v, ddd).map_err(|err| ValidationErr::NumFExactErr(err)),
+                    Validation::NumFMin(num_f_min_v) => num_f_min(num_f_min_v, ddd).map_err(|err| ValidationErr::NumFMinErr(err)),
+                    Validation::NumFMax(num_f_max_v) => num_f_max(num_f_max_v, ddd).map_err(|err| ValidationErr::NumFMaxErr(err)),
+                    Validation::StrExact(str_exact_v) => str_exact(str_exact_v, ddd).map_err(|err| ValidationErr::StrExactErr(err)),
+                    Validation::StrExactLen(str_exact_len_v) => str_exact_len(str_exact_len_v, ddd).map_err(|err| ValidationErr::StrExactLenErr(err)),
+                    Validation::StrMinLen(str_min_len_v) => str_min_len(str_min_len_v, ddd).map_err(|err| ValidationErr::StrMinLenErr(err)),
+                    Validation::StrMaxLen(str_max_len_v) => str_max_len(str_max_len_v, ddd).map_err(|err| ValidationErr::StrMaxLenErr(err)),
+                    Validation::StrMinUpper(str_min_upper_v) => str_min_upper(str_min_upper_v, ddd).map_err(|err| ValidationErr::StrMinUpperErr(err)),
+                    Validation::StrMinLower(str_min_lower_v) => str_min_lower(str_min_lower_v, ddd).map_err(|err| ValidationErr::StrMinLowerErr(err)),
+                    Validation::StrMinNum(str_min_num_v) => str_min_num(str_min_num_v, ddd).map_err(|err| ValidationErr::StrMinNumErr(err)),
+                    Validation::StrMinSpecial(str_min_special_v) => str_min_special(str_min_special_v, ddd).map_err(|err| ValidationErr::StrMinSpecialErr(err)),
+                    Validation::Dt => dt(ddd).map_err(|err| ValidationErr::DtErr(err)),
+                    Validation::DtMin(dt_min_v) => dt_min(dt_min_v, ddd).map_err(|err| ValidationErr::DtMinErr(err)),
+                    Validation::DtMax(dt_max_v) => dt_max(dt_max_v, ddd).map_err(|err| ValidationErr::DtMaxErr(err)),
+                    Validation::Email => email(ddd).map_err(|err| ValidationErr::EmailErr(err)),
+                } ).collect();
+            
+             });
             Ok(())
-        }
-        _ => Ok(()),
+        },
+        _ => Err(()),
     }
 }
 
-fn dt_max_valid(valid: DtMax, value: Value) -> Result<(), DtMaxErr> {
-    match value {
-        Value::Str(str_value) => {
-            let valid_parts: Vec<&str> = valid.0.split('-').collect();
-            let valid_yyyy = valid_parts[0].parse::<u32>().map_err(|_| DtMaxErr)?;
-            let valid_mm = valid_parts[1].parse::<u32>().map_err(|_| DtMaxErr)?;
-            let valid_dd = valid_parts[2].parse::<u32>().map_err(|_| DtMaxErr)?;
-
-            let value_parts: Vec<&str> = str_value.split('-').collect();
-            let value_yyyy = value_parts[0].parse::<u32>().map_err(|_| DtMaxErr)?;
-            let value_mm = value_parts[1].parse::<u32>().map_err(|_| DtMaxErr)?;
-            let value_dd = value_parts[2].parse::<u32>().map_err(|_| DtMaxErr)?;
-
-            if value_yyyy > valid_yyyy {
-                return Err(DtMaxErr);
-            }
-            if value_yyyy == valid_yyyy && value_mm > valid_mm {
-                return Err(DtMaxErr);
-            }
-            if value_yyyy == valid_yyyy && value_mm == valid_mm && value_dd > valid_dd {
-                return Err(DtMaxErr);
-            }
-            Ok(())
-        }
-        _ => Ok(()),
-    }
-}
-
-fn email_valid(valid: Email, value: Value) -> Result<(), EmailErr> {
-    match value {
-        Value::Str(str_value) => {
-            if str_value.chars().any(|c| c.is_whitespace()) {
-                return Err(EmailErr);
-            }
-            let parts: Vec<&str> = str_value.split('@').collect();
-            if parts.len() != 2 {
-                return Err(EmailErr);
-            }
-            let local_part = parts[0];
-            let domain_part = parts[1];
-            if local_part.is_empty() || domain_part.is_empty() {
-                return Err(EmailErr);
-            }
-            let domain_parts: Vec<&str> = domain_part.split('.').collect();
-            if domain_parts.len() < 2 || domain_parts.iter().any(|part| part.is_empty()) {
-                return Err(EmailErr);
-            }
-            Ok(())
-        }
-        _ => Ok(()),
-    }
-}
-    
 #[cfg(test)]
 mod test {
     use super::*;
     use std::collections::HashMap;
 
     #[test]
-    fn test_validate_required_ok() {
-        let arr = vec![Value::NumI(-1), Value::NumI(2)];
-        let obj = HashMap::from([(String::from("age"), Value::NumI(42))]);
-        assert_eq!(validate_required(Required, Value::Bool(false)), Ok(()));
-        assert_eq!(validate_required(Required, Value::NumI(-42)), Ok(()));
-        assert_eq!(validate_required(Required, Value::NumU(42)), Ok(()));
-        assert_eq!(validate_required(Required, Value::NumF(24.5)), Ok(()));
-        assert_eq!(validate_required(Required, Value::Str(String::from("hello"))), Ok(()));
-        assert_eq!(validate_required(Required, Value::Arr(arr)), Ok(()));
-        assert_eq!(validate_required(Required, Value::Obj(obj)), Ok(()));
-    }
-
-    #[test]
-    fn test_validate_num_i_ok() {
-        assert_eq!(validate_num_i(NumI, Value::Absent), Ok(()));
-        assert_eq!(validate_num_i(NumI, Value::NumI(42)), Ok(()));
-        assert_eq!(validate_num_i(NumI, Value::NumI(-42)), Ok(()));
-    }
-
-    #[test]
-    fn test_validate_num_i_exact_ok() {
-        assert_eq!(validate_num_i_exact(NumIExact(42), Value::Absent), Ok(()));
-        assert_eq!(validate_num_i_exact(NumIExact(-42), Value::NumI(-42)), Ok(()));
-    }
-
-    #[test]
-    fn test_validate_num_i_min_ok() {
-        assert_eq!(validate_num_i_min(NumIMin(-42), Value::Absent), Ok(()));
-        assert_eq!(validate_num_i_min(NumIMin(-42), Value::NumI(-42)), Ok(()));
-        assert_eq!(validate_num_i_min(NumIMin(-42), Value::NumI(-41)), Ok(()));
-        assert_eq!(validate_num_i_min(NumIMin(-42), Value::NumI(22)), Ok(()));
-    }
-
-    #[test]
-    fn test_validate_num_i_max_ok() {
-        assert_eq!(validate_num_i_max(NumIMax(22), Value::Absent), Ok(()));
-        assert_eq!(validate_num_i_max(NumIMax(22), Value::NumI(22)), Ok(()));
-        assert_eq!(validate_num_i_max(NumIMax(22), Value::NumI(21)), Ok(()));
-        assert_eq!(validate_num_i_max(NumIMax(22), Value::NumI(-1943)), Ok(()));
-    }
-
-    #[test]
-    fn test_validate_num_u_ok() {
-        assert_eq!(validate_num_u(NumU, Value::Absent), Ok(()));
-        assert_eq!(validate_num_u(NumU, Value::NumU(42)), Ok(()));
-    }
-
-    #[test]
-    fn test_validate_num_u_exact_ok() {
-        assert_eq!(validate_num_u_exact(NumUExact(42), Value::Absent), Ok(()));
-        assert_eq!(validate_num_u_exact(NumUExact(42), Value::NumU(42)), Ok(()));
-    }
-
-    #[test]
-    fn test_validate_num_u_min_ok() {
-        assert_eq!(validate_num_u_min(NumUMin(42), Value::Absent), Ok(()));
-        assert_eq!(validate_num_u_min(NumUMin(42), Value::NumU(42)), Ok(()));
-        assert_eq!(validate_num_u_min(NumUMin(42), Value::NumU(43)), Ok(()));
-        assert_eq!(validate_num_u_min(NumUMin(42), Value::NumU(100)), Ok(()));
-    }
-
-    #[test]
-    fn test_validate_num_u_max_ok() {
-        assert_eq!(validate_num_u_max(NumUMax(22), Value::Absent), Ok(()));
-        assert_eq!(validate_num_u_max(NumUMax(22), Value::NumU(22)), Ok(()));
-        assert_eq!(validate_num_u_max(NumUMax(22), Value::NumU(21)), Ok(()));
-        assert_eq!(validate_num_u_max(NumUMax(22), Value::NumU(0)), Ok(()));
-    }
-
-    #[test]
-    fn test_validate_num_f_ok() {
-        assert_eq!(validate_num_f(NumF, Value::Absent), Ok(()));
-        assert_eq!(validate_num_f(NumF, Value::NumF(42.0)), Ok(()));
-        assert_eq!(validate_num_f(NumF, Value::NumF(-42.0)), Ok(()));
-    }
-
-    #[test]
-    fn test_validate_num_f_exact_ok() {
-        assert_eq!(validate_num_f_exact(NumFExact(-42.0), Value::Absent), Ok(()));
-        assert_eq!(validate_num_f_exact(NumFExact(-42.5), Value::NumF(-42.5)), Ok(()));
-    }
-
-    #[test]
-    fn test_validate_num_f_min_ok() {
-        assert_eq!(validate_num_f_min(NumFMin(-42.0), Value::Absent), Ok(()));
-        assert_eq!(validate_num_f_min(NumFMin(-42.0), Value::NumF(-42.0)), Ok(()));
-        assert_eq!(validate_num_f_min(NumFMin(-42.0), Value::NumF(-41.5)), Ok(()));
-        assert_eq!(validate_num_f_min(NumFMin(-42.0), Value::NumF(-41.0)), Ok(()));
-        assert_eq!(validate_num_f_min(NumFMin(-42.0), Value::NumF(22.0)), Ok(()));
-    }
-
-    #[test]
-    fn test_validate_num_f_max_ok() {
-        assert_eq!(validate_num_f_max(NumFMax(22.0), Value::Absent), Ok(()));
-        assert_eq!(validate_num_f_max(NumFMax(22.0), Value::NumF(22.0)), Ok(()));
-        assert_eq!(validate_num_f_max(NumFMax(22.0), Value::NumF(21.5)), Ok(()));
-        assert_eq!(validate_num_f_max(NumFMax(22.0), Value::NumF(21.0)), Ok(()));
-        assert_eq!(validate_num_f_max(NumFMax(22.0), Value::NumF(-1943.0)), Ok(()));
-    }
-
-    #[test]
-    fn test_validate_str_ok() {
-        assert_eq!(validate_str(Str, Value::Absent), Ok(()));
-        assert_eq!(validate_str(Str, Value::Str(String::from("42"))), Ok(()));
-    }
-
-    #[test]
-    fn test_validate_str_exact_ok() {
-        assert_eq!(validate_str_exact(StrExact(String::from("Aqui")), Value::Absent), Ok(()));
-        assert_eq!(validate_str_exact(StrExact(String::from("Aqui")), Value::Str(String::from("Aqui"))), Ok(()));
-    }
-
-    #[test]
-    fn test_validate_str_exact_len_ok() {
-        assert_eq!(validate_str_exact_len(StrExactLen(10), Value::Absent), Ok(()));
-        assert_eq!(validate_str_exact_len(StrExactLen(10), Value::Str(String::from("acontecerá"))), Ok(()));
-    }
-
-    #[test]
-    fn test_validate_str_min_len_ok() {
-        assert_eq!(validate_str_min_len(StrMinLen(10), Value::Absent), Ok(()));
-        assert_eq!(validate_str_min_len(StrMinLen(10), Value::Str(String::from("acontecerá"))), Ok(()));
-        assert_eq!(validate_str_min_len(StrMinLen(10), Value::Str(String::from("aconteceria"))), Ok(()));
-        assert_eq!(validate_str_min_len(StrMinLen(10), Value::Str(String::from("acontecería-mos"))), Ok(()));
-    }
-
-    #[test]
-    fn test_validate_str_max_len_ok() {
-        assert_eq!(validate_str_max_len(StrMaxLen(10), Value::Absent), Ok(()));
-        assert_eq!(validate_str_max_len(StrMaxLen(10), Value::Str(String::from("acontecerá"))), Ok(()));
-        assert_eq!(validate_str_max_len(StrMaxLen(10), Value::Str(String::from("acontecer"))), Ok(()));
-        assert_eq!(validate_str_max_len(StrMaxLen(10), Value::Str(String::from("acontece"))), Ok(()));
-    }
-
-    #[test]
-    fn test_str_min_upper_valid_ok() {
-
-    }
-
-    #[test]
-    fn test_str_min_lower_valid_ok() {
-
-    }
-
-    #[test]
-    fn test_str_min_num_valid_ok() {
-
-    }
-
-    #[test]
-    fn test_str_min_special_valid_ok() {
-
-    }
-
-    #[test]
-    fn test_dt_valid_ok() {
-
-    }
-
-    #[test]
-    fn test_dt_exact_valid_ok() {
-
-    }
-
-    #[test]
-    fn test_dt_min_valid_ok() {
-
-    }
-
-    #[test]
-    fn test_dt_max_valid_ok() {
-
-    }
-
-    #[test]
-    fn test_email_valid_ok() {
-
-    }
-
-    #[test]
-    fn test_reqd_valid_err() {
-        assert_eq!(validate_required(Required, Value::Absent), Err(RequiredErr));
-    }
-
-    #[test]
-    fn test_num_i_valid_err() {
-        let string = String::from("hello");
-        let arr = vec![Value::NumI(-1), Value::NumI(2)];
-        let obj = HashMap::from([(String::from("age"), Value::NumI(42))]);
-
-        assert_eq!(validate_num_i(NumI, Value::Bool(false)), Err(NumIErr));
-        assert_eq!(validate_num_i(NumI, Value::NumF(24.5)), Err(NumIErr));
-        assert_eq!(validate_num_i(NumI, Value::Str(string)), Err(NumIErr));
-        assert_eq!(validate_num_i(NumI, Value::Arr(arr)), Err(NumIErr));
-        assert_eq!(validate_num_i(NumI, Value::Obj(obj)), Err(NumIErr));
-    }
-
-    #[test]
-    fn test_num_i_exact_valid_err() {
-
-    }
-
-    #[test]
-    fn test_num_i_min_valid_err() {
-        assert_eq!(validate_num_i_min(NumIMin(-10), Value::NumI(-11)), Err(NumIMinErr));
-        assert_eq!(validate_num_i_min(NumIMin(-10), Value::NumI(-12)), Err(NumIMinErr));
-    }
-
-    #[test]
-    fn test_num_i_max_valid_err() {
-        assert_eq!(validate_num_i_max(NumIMax(10), Value::NumI(11)), Err(NumIMaxErr));
-        assert_eq!(validate_num_i_max(NumIMax(10), Value::NumI(12)), Err(NumIMaxErr));
-    }
-
-    #[test]
-    fn test_num_u_valid_err() {
-
-    }
-
-    #[test]
-    fn test_num_u_exact_valid_err() {
-
-    }
-
-    #[test]
-    fn test_num_u_min_valid_err() {
-
-    }
-
-    #[test]
-    fn test_validate_num_u_max_err() {
-
-    }
-
-    #[test]
-    fn test_validate_num_f_err() {
-
-    }
-
-    #[test]
-    fn test_validate_num_f_exact_err() {
-
-    }
-
-    #[test]
-    fn test_validate_num_f_min_err() {
-
-    }
-
-    #[test]
-    fn test_validate_num_f_max_err() {
-
-    }
-
-    #[test]
-    fn test_validate_str_err() {
-
-    }
-
-    #[test]
-    fn test_validate_str_exact_err() {
-
-    }
-
-    #[test]
-    fn test_validate_str_exact_len_err() {
-
-    }
-
-    #[test]
-    fn test_validate_str_min_len_err() {
-
-    }
-
-    #[test]
-    fn test_validate_str_max_len_err() {
-
-    }
-
-    #[test]
-    fn test_str_min_upper_valid_err() {
-
-    }
-
-    #[test]
-    fn test_str_min_lower_valid_err() {
-
-    }
-
-    #[test]
-    fn test_str_min_num_valid_err() {
-
-    }
-
-    #[test]
-    fn test_str_min_special_valid_err() {
-
-    }
-
-    #[test]
-    fn test_dt_valid_err() {
-
-    }
-
-    #[test]
-    fn test_dt_exact_valid_err() {
-
-    }
-
-    #[test]
-    fn test_dt_min_valid_err() {
-
-    }
-
-    #[test]
-    fn test_dt_max_valid_err() {
-
-    }
-
-    #[test]
-    fn test_email_valid_err() {
-
+    fn test_validate_schema() {
+        assert_eq!(
+            validate_schema(
+                &HashMap::from([
+                    (
+                        "name",
+                        vec![
+                            Validation::Required,
+                            Validation::Str,
+                            Validation::StrMinLen(1),
+                            Validation::StrMaxLen(256),
+                        ],
+                    ),
+                    (
+                        "birthdate",
+                        vec![
+                            Validation::Required,
+                            Validation::Str,
+                            Validation::Dt,
+                        ]
+                    )
+                    ]),
+                &Value::Obj(HashMap::from([
+                    (String::from("name"), Value::Str(String::from("John Doe"))),
+                    (String::from("birthday"), Value::Str(String::from("1990-01-01")))
+                ])
+                )
+            ),
+            Ok(())
+        );
     }
 }
