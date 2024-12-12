@@ -10,21 +10,21 @@ fn num_f(value: &Value) -> Result<(), NumFErr> {
 
 fn num_f_exact(valid: f64, value: &Value) -> Result<(), NumFExactErr> {
     match value {
-        Value::NumF(num_f) => if num_f == &valid.0 { Ok(()) } else { Err(NumFExactErr) }
+        Value::NumF(num_f) => if num_f == &valid { Ok(()) } else { Err(NumFExactErr) }
         _ => Ok(()),
     }
 }
 
 fn num_f_min(valid: f64, value: &Value) -> Result<(), NumFMinErr> {
     match value {
-        Value::NumF(num_f) => if num_f >= &valid.0 { Ok(()) } else { Err(NumFMinErr) }
+        Value::NumF(num_f) => if num_f >= &valid { Ok(()) } else { Err(NumFMinErr) }
         _ => Ok(()),
     }
 }
 
 fn num_f_max(valid: f64, value: &Value) -> Result<(), NumFMaxErr> {
     match value {
-        Value::NumF(num_f) => if num_f <= &valid.0 { Ok(()) } else { Err(NumFMaxErr) }
+        Value::NumF(num_f) => if num_f <= &valid { Ok(()) } else { Err(NumFMaxErr) }
         _ => Ok(()),
     }
 }
