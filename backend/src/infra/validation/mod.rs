@@ -1,4 +1,4 @@
-use crate::domain::validation::Value;
+pub mod validate;
 
 // fn transform_to_value (val: serde_json::Value) -> Value {
 //     match val {
