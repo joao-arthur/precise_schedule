@@ -1,6 +1,8 @@
 use super::User;
-use crate::domain::database::DBErr;
-use crate::domain::generator::{DateGen, IdGen};
+use crate::domain::{
+    database::DBErr,
+    generator::{DateGen, IdGen},
+};
 
 pub trait UserDeleteService {}
 

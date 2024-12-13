@@ -21,23 +21,9 @@ pub trait UserRByCredRepo {
     fn r_by_cred(&self, cred: &UserCred) -> Result<Option<User>, DBErr>;
 }
 
-pub trait UserRByCredService {
-    fn r_by_cred(&self, cred: &UserCred) -> Result<User, UserRByCredErr>;
-}
-
 fn user_r_by_cred(repo: &dyn UserRByCredRepo, cred: &UserCred) -> Result<User, UserRByCredErr> {
     let user = repo.r_by_cred(cred).map_err(UserRByCredErr::DBErr)?;
     user.ok_or(UserRByCredErr::UserCredNotFound(UserCredNotFound))
-}
-
-pub struct UserRByCredServiceImpl<'a> {
-    repo: &'a dyn UserRByCredRepo,
-}
-
-impl UserRByCredService for UserRByCredServiceImpl<'_> {
-    fn r_by_cred(&self, cred: &UserCred) -> Result<User, UserRByCredErr> {
-        user_r_by_cred(self.repo, cred)
-    }
 }
 
 #[cfg(test)]

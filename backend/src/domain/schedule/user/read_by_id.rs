@@ -21,23 +21,9 @@ pub trait UserRByIdRepo {
     fn r_by_id(&self, id: &str) -> Result<Option<User>, DBErr>;
 }
 
-pub trait UserRByIdService {
-    fn r_by_id(&self, id: &str) -> Result<User, UserRByIdErr>;
-}
-
 fn user_r_by_id(repo: &dyn UserRByIdRepo, id: &str) -> Result<User, UserRByIdErr> {
     let user = repo.r_by_id(id).map_err(UserRByIdErr::DBErr)?;
     user.ok_or(UserRByIdErr::UserIdNotFound(UserIdNotFound))
-}
-
-pub struct UserRByIdServiceImpl<'a> {
-    repo: &'a dyn UserRByIdRepo,
-}
-
-impl UserRByIdService for UserRByIdServiceImpl<'_> {
-    fn r_by_id(&self, id: &str) -> Result<User, UserRByIdErr> {
-        user_r_by_id(self.repo, id)
-    }
 }
 
 #[cfg(test)]

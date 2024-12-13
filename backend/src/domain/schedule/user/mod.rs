@@ -1,10 +1,10 @@
 pub mod create;
+pub mod unique_info;
+pub mod update;
 //pub mod delete;
 //pub mod login;
 //pub mod read_by_cred;
 //pub mod read_by_id;
-pub mod unique_info;
-//pub mod update;
 
 #[derive(Debug, PartialEq)]
 pub struct User {
