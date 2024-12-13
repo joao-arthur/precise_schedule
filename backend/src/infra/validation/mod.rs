@@ -16,45 +16,46 @@ use validate::{
     },
 };
 
-use crate::domain::validation::{Schema, Validation, ValidationErr, Value};
+use crate::domain::validation::{Schema, VErr, Value, V};
 
-fn validate_schema(schema: &Schema, value: &Value) -> HashMap<String, Vec<ValidationErr>> {
-    let mut res: HashMap<String, Vec<ValidationErr>> = HashMap::new();
+fn validate_schema(schema: &Schema, value: &Value) -> Result<(), HashMap<String, Vec<VErr>>> {
+    let mut res: HashMap<String, Vec<VErr>> = HashMap::new();
 
     match value {
         Value::Obj(obj) => {
             schema.iter().for_each(|schema_f| {
                 let f = obj.get(*schema_f.0).unwrap_or(&Value::Absent);
-                let f_results: Vec<ValidationErr> = schema_f.1
+                let f_results: Vec<VErr> = schema_f
+                    .1
                     .iter()
                     .map(|val| match val {
-                        Validation::Required => required(f).map_err(|_| ValidationErr::RequiredErr),
-                        Validation::NumI => num_i(f).map_err(|_| ValidationErr::NumIErr),
-                        Validation::NumU => num_u(f).map_err(|_| ValidationErr::NumUErr),
-                        Validation::NumF => num_f(f).map_err(|_| ValidationErr::NumFErr),
-                        Validation::Str => str(f).map_err(|_| ValidationErr::StrErr),
-                        Validation::Bool => bool(f).map_err(|_| ValidationErr::BoolErr),
-                        Validation::NumIExact(v) => num_i_exact(*v, f).map_err(|err| ValidationErr::NumIExactErr(err)),
-                        Validation::NumIMin(v) => num_i_min(*v, f).map_err(|err| ValidationErr::NumIMinErr(err)),
-                        Validation::NumIMax(v) => num_i_max(*v, f).map_err(|err| ValidationErr::NumIMaxErr(err)),
-                        Validation::NumUExact(v) => num_u_exact(*v, f).map_err(|err| ValidationErr::NumUExactErr(err)),
-                        Validation::NumUMin(v) => num_u_min(*v, f).map_err(|err| ValidationErr::NumUMinErr(err)),
-                        Validation::NumUMax(v) => num_u_max(*v, f).map_err(|err| ValidationErr::NumUMaxErr(err)),
-                        Validation::NumFExact(v) => num_f_exact(*v, f).map_err(|err| ValidationErr::NumFExactErr(err)),
-                        Validation::NumFMin(v) => num_f_min(*v, f).map_err(|err| ValidationErr::NumFMinErr(err)),
-                        Validation::NumFMax(v) => num_f_max(*v, f).map_err(|err| ValidationErr::NumFMaxErr(err)),
-                        Validation::StrExact(v) => str_exact(v, f).map_err(|err| ValidationErr::StrExactErr(err)),
-                        Validation::StrExactLen(v) => str_exact_len(*v, f).map_err(|err| ValidationErr::StrExactLenErr(err)),
-                        Validation::StrMinLen(v) => str_min_len(*v, f).map_err(|err| ValidationErr::StrMinLenErr(err)),
-                        Validation::StrMaxLen(v) => str_max_len(*v, f).map_err(|err| ValidationErr::StrMaxLenErr(err)),
-                        Validation::StrMinUpper(v) => str_min_upper(*v, f).map_err(|err| ValidationErr::StrMinUpperErr(err)),
-                        Validation::StrMinLower(v) => str_min_lower(*v, f).map_err(|err| ValidationErr::StrMinLowerErr(err)),
-                        Validation::StrMinNum(v) => str_min_num(*v, f).map_err(|err| ValidationErr::StrMinNumErr(err)),
-                        Validation::StrMinSpecial(v) => str_min_special(*v, f).map_err(|err| ValidationErr::StrMinSpecialErr(err)),
-                        Validation::Dt => dt(f).map_err(|_| ValidationErr::DtErr),
-                        Validation::DtMin(dt_min_v) => dt_min(dt_min_v, f).map_err(|err| ValidationErr::DtMinErr(err)),
-                        Validation::DtMax(dt_max_v) => dt_max(dt_max_v, f).map_err(|err| ValidationErr::DtMaxErr(err)),
-                        Validation::Email => email(f).map_err(|_| ValidationErr::EmailErr),
+                        V::Required => required(f).map_err(|_| VErr::RequiredErr),
+                        V::NumI => num_i(f).map_err(|_| VErr::NumIErr),
+                        V::NumU => num_u(f).map_err(|_| VErr::NumUErr),
+                        V::NumF => num_f(f).map_err(|_| VErr::NumFErr),
+                        V::Str => str(f).map_err(|_| VErr::StrErr),
+                        V::Bool => bool(f).map_err(|_| VErr::BoolErr),
+                        V::NumIExact(v) => num_i_exact(*v, f).map_err(|e| VErr::NumIExactErr(e)),
+                        V::NumIMin(v) => num_i_min(*v, f).map_err(|e| VErr::NumIMinErr(e)),
+                        V::NumIMax(v) => num_i_max(*v, f).map_err(|e| VErr::NumIMaxErr(e)),
+                        V::NumUExact(v) => num_u_exact(*v, f).map_err(|e| VErr::NumUExactErr(e)),
+                        V::NumUMin(v) => num_u_min(*v, f).map_err(|e| VErr::NumUMinErr(e)),
+                        V::NumUMax(v) => num_u_max(*v, f).map_err(|e| VErr::NumUMaxErr(e)),
+                        V::NumFExact(v) => num_f_exact(*v, f).map_err(|e| VErr::NumFExactErr(e)),
+                        V::NumFMin(v) => num_f_min(*v, f).map_err(|e| VErr::NumFMinErr(e)),
+                        V::NumFMax(v) => num_f_max(*v, f).map_err(|e| VErr::NumFMaxErr(e)),
+                        V::StrExact(v) => str_exact(v, f).map_err(|e| VErr::StrExactErr(e)),
+                        V::StrExactLen(v) => str_exact_len(*v, f).map_err(|e| VErr::StrExactLenErr(e)),
+                        V::StrMinLen(v) => str_min_len(*v, f).map_err(|e| VErr::StrMinLenErr(e)),
+                        V::StrMaxLen(v) => str_max_len(*v, f).map_err(|e| VErr::StrMaxLenErr(e)),
+                        V::StrMinUpper(v) => str_min_upper(*v, f).map_err(|e| VErr::StrMinUpperErr(e)),
+                        V::StrMinLower(v) => str_min_lower(*v, f).map_err(|e| VErr::StrMinLowerErr(e)),
+                        V::StrMinNum(v) => str_min_num(*v, f).map_err(|e| VErr::StrMinNumErr(e)),
+                        V::StrMinSpecial(v) => str_min_special(*v, f).map_err(|e| VErr::StrMinSpecialErr(e)),
+                        V::Dt => dt(f).map_err(|_| VErr::DtErr),
+                        V::DtMin(dt_min_v) => dt_min(dt_min_v, f).map_err(|e| VErr::DtMinErr(e)),
+                        V::DtMax(dt_max_v) => dt_max(dt_max_v, f).map_err(|e| VErr::DtMaxErr(e)),
+                        V::Email => email(f).map_err(|_| VErr::EmailErr),
                     })
                     .filter_map(|res| res.err())
                     .collect();
@@ -62,31 +63,26 @@ fn validate_schema(schema: &Schema, value: &Value) -> HashMap<String, Vec<Valida
                     res.insert(String::from(*schema_f.0), f_results);
                 }
             });
-            res
+            if res.is_empty() {
+                return Ok(() )
+            }
+            Err(res)
         }
-        _ => HashMap::new(),
+        _ => Ok(()),
     }
 }
 
 #[cfg(test)]
 mod test {
-    use crate::domain::validation::StrMinLenErr;
     use super::*;
+    use crate::domain::validation::StrMinLenErr;
     use std::collections::HashMap;
 
     #[test]
     fn test_validate_schema() {
         let schema = HashMap::from([
-            (
-                "name",
-                vec![
-                    Validation::Required,
-                    Validation::Str,
-                    Validation::StrMinLen(1),
-                    Validation::StrMaxLen(256),
-                ],
-            ),
-            ("birthdate", vec![Validation::Required, Validation::Str, Validation::Dt]),
+            ("name", vec![V::Required, V::Str, V::StrMinLen(1), V::StrMaxLen(256)]),
+            ("birthdate", vec![V::Required, V::Str, V::Dt]),
         ]);
         assert_eq!(
             validate_schema(
@@ -96,7 +92,7 @@ mod test {
                     (String::from("birthdate"), Value::Str(String::from("1990-01-01")))
                 ]))
             ),
-            HashMap::new()
+            Ok(())
         );
         assert_eq!(
             validate_schema(
@@ -106,10 +102,10 @@ mod test {
                     (String::from("birthdate"), Value::Str(String::from("")))
                 ]))
             ),
-            HashMap::from([
-                (String::from("name"), vec![ValidationErr::StrMinLenErr(StrMinLenErr)]),
-                (String::from("birthdate"), vec![ValidationErr::DtErr])
-            ])
+            Err(HashMap::from([
+                (String::from("name"), vec![VErr::StrMinLenErr(StrMinLenErr)]),
+                (String::from("birthdate"), vec![VErr::DtErr])
+            ]))
         );
         assert_eq!(
             validate_schema(
@@ -119,10 +115,10 @@ mod test {
                     (String::from("birthdate"), Value::Absent)
                 ]))
             ),
-            HashMap::from([
-                (String::from("name"), vec![ValidationErr::RequiredErr]),
-                (String::from("birthdate"), vec![ValidationErr::RequiredErr])
-            ])
+            Err(HashMap::from([
+                (String::from("name"), vec![VErr::RequiredErr]),
+                (String::from("birthdate"), vec![VErr::RequiredErr])
+            ]))
         );
     }
 }

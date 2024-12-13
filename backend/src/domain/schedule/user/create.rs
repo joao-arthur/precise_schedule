@@ -4,7 +4,7 @@ use crate::domain::{
     database::DBErr,
     generator::{DateGen, IdGen},
     schedule::user::User,
-    validation::{Schema, Validation, Value},
+    validation::{Schema, SchemaErr,  Validator, Value, V},
 };
 
 pub struct UserCModel {
@@ -22,6 +22,7 @@ pub trait UserCRepo {
 #[derive(PartialEq, Debug)]
 pub enum UserCErr {
     DBErr(DBErr),
+    SchemaErr(SchemaErr)
 }
 
 pub trait UserCService {
@@ -30,45 +31,21 @@ pub trait UserCService {
 
 static USER_C_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
     HashMap::from([
-        (
-            "first_name",
-            vec![
-                Validation::Required,
-                Validation::Str,
-                Validation::StrMinLen(1),
-                Validation::StrMaxLen(256),
-            ],
-        ),
-        (
-            "birthdate",
-            vec![
-                Validation::Required,
-                Validation::Str,
-                Validation::Dt,
-                Validation::DtMin(String::from("1970-01-01")),
-            ],
-        ),
-        ("email", vec![Validation::Required, Validation::Str, Validation::Email]),
-        (
-            "username",
-            vec![
-                Validation::Required,
-                Validation::Str,
-                Validation::StrMinLen(1),
-                Validation::StrMaxLen(32),
-            ],
-        ),
+        ("first_name", vec![V::Required, V::Str, V::StrMinLen(1), V::StrMaxLen(256)]),
+        ("birthdate", vec![V::Required, V::Str, V::Dt, V::DtMin(String::from("1970-01-01"))]),
+        ("email", vec![V::Required, V::Str, V::Email]),
+        ("username", vec![V::Required, V::Str, V::StrMinLen(1), V::StrMaxLen(32)]),
         (
             "password",
             vec![
-                Validation::Required,
-                Validation::Str,
-                Validation::StrMinLen(1),
-                Validation::StrMaxLen(32),
-                Validation::StrMinUpper(1),
-                Validation::StrMinLower(1),
-                Validation::StrMinSpecial(1),
-                Validation::StrMinNum(1),
+                V::Required,
+                V::Str,
+                V::StrMinLen(1),
+                V::StrMaxLen(32),
+                V::StrMinUpper(1),
+                V::StrMinLower(1),
+                V::StrMinSpecial(1),
+                V::StrMinNum(1),
             ],
         ),
     ])
@@ -88,24 +65,24 @@ fn user_from_c(model: UserCModel, id: String, created_at: String) -> User {
 }
 
 fn user_c(
+    validator: &dyn Validator,
     repo: &dyn UserCRepo,
     id_gen: &dyn IdGen,
     date_gen: &dyn DateGen,
     model: UserCModel,
 ) -> Result<User, UserCErr> {
-    let input_value = HashMap::from([
-        ("first_name", Value::Str(model.first_name.clone())),
-        ("birthdate", Value::Str(model.birthdate.clone())),
-        ("email", Value::Str(model.email.clone())),
-        ("username", Value::Str(model.username.clone())),
-        ("password", Value::Str(model.password.clone())),
-    ]);
-    //validate(schema, input_value);
-
+    let input_value = Value::Obj(HashMap::from([
+        (String::from("first_name"), Value::Str(model.first_name.clone())),
+        (String::from("birthdate"), Value::Str(model.birthdate.clone())),
+        (String::from("email"), Value::Str(model.email.clone())),
+        (String::from("username"), Value::Str(model.username.clone())),
+        (String::from("password"), Value::Str(model.password.clone())),
+    ]));
+    validator.validate(&USER_C_SCHEMA, &input_value).map_err(|err| UserCErr::SchemaErr(err))?;
     let id = id_gen.gen();
     let date = date_gen.gen();
     let user = user_from_c(model, id, date);
-    repo.c(&user).map_err(|e| UserCErr::DBErr(e))?;
+    repo.c(&user).map_err(|err| UserCErr::DBErr(err))?;
     Ok(user)
 }
 
@@ -114,7 +91,7 @@ mod test {
     use super::*;
     use crate::domain::{
         generator::test::{DateGenStub, IdGenStub},
-        schedule::user::test::user_stub,
+        schedule::user::test::user_stub, validation::{test::ValidatorStub, VErr},
     };
 
     pub struct UserCRepoStub(Result<(), DBErr>);
@@ -161,6 +138,7 @@ mod test {
         };
         assert_eq!(
             user_c(
+                &ValidatorStub(Ok(())),
                 &UserCRepoStub(Ok(())),
                 &IdGenStub(String::from("a6edc906-2f9f-5fb2-a373-efac406f0ef2")),
                 &DateGenStub(String::from("2024-07-03T22:49:51.279Z")),
@@ -171,15 +149,26 @@ mod test {
     }
 
     #[test]
-    fn test_user_c_db_err() {
+    fn test_user_c_err() {
         assert_eq!(
             user_c(
+                &ValidatorStub(Ok(())),
                 &UserCRepoStub(Err(DBErr)),
                 &IdGenStub(String::from("a6edc906-2f9f-5fb2-a373-efac406f0ef2")),
                 &DateGenStub(String::from("2024-07-03T22:49:51.279Z")),
                 user_c_stub()
             ),
             Err(UserCErr::DBErr(DBErr))
+        );
+        assert_eq!(
+            user_c(
+                &ValidatorStub(Err(HashMap::from([(String::from("first_name"), vec![VErr::RequiredErr])]))),
+                &UserCRepoStub(Ok(())),
+                &IdGenStub(String::from("a6edc906-2f9f-5fb2-a373-efac406f0ef2")),
+                &DateGenStub(String::from("2024-07-03T22:49:51.279Z")),
+                user_c_stub()
+            ),
+            Err(UserCErr::SchemaErr(HashMap::from([(String::from("first_name"), vec![VErr::RequiredErr])])))
         );
     }
 }

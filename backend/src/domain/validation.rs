@@ -81,7 +81,7 @@ pub struct DtMaxErr;
 #[derive(Debug, PartialEq, Clone)]
 pub struct EmailErr;
 
-pub enum Validation {
+pub enum V {
     Required,
     NumI,
     NumU,
@@ -112,7 +112,7 @@ pub enum Validation {
 }
 
 #[derive(Debug, PartialEq, Clone)]
-pub enum ValidationErr {
+pub enum VErr {
     RequiredErr,
     NumIErr,
     NumUErr,
@@ -153,20 +153,22 @@ pub enum Value {
     Absent,
 }
 
-pub type Schema<'a> = HashMap<&'a str, Vec<Validation>>;
+pub type Schema<'a> = HashMap<&'a str, Vec<V>>;
+
+pub type SchemaErr = HashMap<String, Vec<VErr>>;
 
 pub trait Validator {
-    fn validate(&self, schema: &Schema, value: &Value) -> HashMap<String, Vec<ValidationErr>>;
+    fn validate(&self, schema: &Schema, value: &Value) -> Result<(), SchemaErr>;
 }
 
 #[cfg(test)]
 pub mod test {
     use super::*;
 
-    pub struct ValidatorStub(pub HashMap<String, Vec<ValidationErr>>);
+    pub struct ValidatorStub(pub Result<(), SchemaErr>);
 
     impl Validator for ValidatorStub {
-        fn validate(&self, _schema: &Schema, _value: &Value) -> HashMap<String, Vec<ValidationErr>> {
+        fn validate(&self, _schema: &Schema, _value: &Value) -> Result<(), SchemaErr> {
             self.0.clone()
         }
     }
@@ -174,11 +176,23 @@ pub mod test {
     #[test]
     fn test_validator_stub() {
         assert_eq!(
-            ValidatorStub(HashMap::from([(String::from("name"), vec![ValidationErr::StrMinLenErr(StrMinLenErr)])])).validate(
-                &HashMap::from([("name", vec![Validation::Str, Validation::StrMinLen(2)])]),
+            ValidatorStub(Ok(()))
+            .validate(
+                &HashMap::from([("name", vec![V::Str, V::StrMinLen(2)])]),
                 &Value::Str(String::from("George"))
             ),
-            HashMap::from([(String::from("name"), vec![ValidationErr::StrMinLenErr(StrMinLenErr)])])
+            Ok(())
+        );
+        assert_eq!(
+            ValidatorStub(Err(HashMap::from([(
+                String::from("name"),
+                vec![VErr::StrMinLenErr(StrMinLenErr)]
+            )])))
+            .validate(
+                &HashMap::from([("name", vec![V::Str, V::StrMinLen(2)])]),
+                &Value::Str(String::from("George"))
+            ),
+            Err(HashMap::from([(String::from("name"), vec![VErr::StrMinLenErr(StrMinLenErr)])]))
         );
     }
 }
