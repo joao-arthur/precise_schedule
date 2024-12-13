@@ -3,7 +3,7 @@ pub mod create;
 //pub mod login;
 //pub mod read_by_cred;
 //pub mod read_by_id;
-//pub mod unique_info;
+pub mod unique_info;
 //pub mod update;
 
 #[derive(Debug, PartialEq)]
@@ -21,11 +21,6 @@ pub struct User {
 pub struct UserCred {
     pub username: String,
     pub password: String,
-}
-
-pub struct UserUniqueInfo {
-    pub email: String,
-    pub username: String,
 }
 
 #[cfg(test)]

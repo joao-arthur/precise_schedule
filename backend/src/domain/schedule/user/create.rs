@@ -4,7 +4,7 @@ use crate::domain::{
     database::DBErr,
     generator::{DateGen, IdGen},
     schedule::user::User,
-    validation::{Schema, SchemaErr,  Validator, Value, V},
+    validation::{Schema, SchemaErr, Validator, Value, V},
 };
 
 pub struct UserCModel {
@@ -22,11 +22,7 @@ pub trait UserCRepo {
 #[derive(PartialEq, Debug)]
 pub enum UserCErr {
     DBErr(DBErr),
-    SchemaErr(SchemaErr)
-}
-
-pub trait UserCService {
-    fn c(&self, model: UserCModel) -> Result<User, UserCErr>;
+    SchemaErr(SchemaErr),
 }
 
 static USER_C_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
@@ -91,7 +87,8 @@ mod test {
     use super::*;
     use crate::domain::{
         generator::test::{DateGenStub, IdGenStub},
-        schedule::user::test::user_stub, validation::{test::ValidatorStub, VErr},
+        schedule::user::test::user_stub,
+        validation::{test::ValidatorStub, VErr},
     };
 
     pub struct UserCRepoStub(Result<(), DBErr>);
@@ -162,13 +159,19 @@ mod test {
         );
         assert_eq!(
             user_c(
-                &ValidatorStub(Err(HashMap::from([(String::from("first_name"), vec![VErr::RequiredErr])]))),
+                &ValidatorStub(Err(HashMap::from([(
+                    String::from("first_name"),
+                    vec![VErr::RequiredErr]
+                )]))),
                 &UserCRepoStub(Ok(())),
                 &IdGenStub(String::from("a6edc906-2f9f-5fb2-a373-efac406f0ef2")),
                 &DateGenStub(String::from("2024-07-03T22:49:51.279Z")),
                 user_c_stub()
             ),
-            Err(UserCErr::SchemaErr(HashMap::from([(String::from("first_name"), vec![VErr::RequiredErr])])))
+            Err(UserCErr::SchemaErr(HashMap::from([(
+                String::from("first_name"),
+                vec![VErr::RequiredErr]
+            )])))
         );
     }
 }

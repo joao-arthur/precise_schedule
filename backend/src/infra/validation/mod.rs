@@ -64,7 +64,7 @@ fn validate_schema(schema: &Schema, value: &Value) -> Result<(), HashMap<String,
                 }
             });
             if res.is_empty() {
-                return Ok(() )
+                return Ok(());
             }
             Err(res)
         }

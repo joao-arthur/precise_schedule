@@ -176,8 +176,7 @@ pub mod test {
     #[test]
     fn test_validator_stub() {
         assert_eq!(
-            ValidatorStub(Ok(()))
-            .validate(
+            ValidatorStub(Ok(())).validate(
                 &HashMap::from([("name", vec![V::Str, V::StrMinLen(2)])]),
                 &Value::Str(String::from("George"))
             ),
