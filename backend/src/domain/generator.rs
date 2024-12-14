@@ -28,14 +28,11 @@ pub mod test {
 
     #[test]
     fn test_id_gen_stub() {
-        assert_eq!(IdGenStub(String::from("example")).gen(), String::from("example"));
+        assert_eq!(IdGenStub(String::from("Lorem ipsum")).gen(), String::from("Lorem ipsum"));
     }
 
     #[test]
     fn test_date_gen_stub() {
-        assert_eq!(
-            DateGenStub(String::from("2024-07-03T22:49:51.279Z")).gen(),
-            String::from("2024-07-03T22:49:51.279Z")
-        );
+        assert_eq!(DateGenStub(String::from("Lorem ipsum")).gen(), String::from("Lorem ipsum"));
     }
 }

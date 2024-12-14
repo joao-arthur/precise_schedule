@@ -1,10 +1,14 @@
 use std::{collections::HashMap, sync::LazyLock};
 
 use crate::domain::{
-    database::DBErr,
     generator::{DateGen, IdGen},
-    schedule::user::User,
-    validation::{Schema, SchemaErr, Validator, Value, V},
+    schedule::user::{
+        error::UserErr,
+        model::User,
+        repo::UserRepo,
+        unique_info::{user_c_unique_info_is_valid, UserUniqueInfo},
+    },
+    validation::{Schema, Validator, Value, V},
 };
 
 pub struct UserCModel {
@@ -13,16 +17,6 @@ pub struct UserCModel {
     pub birthdate: String,
     pub username: String,
     pub password: String,
-}
-
-pub trait UserCRepo {
-    fn c(&self, user: &User) -> Result<(), DBErr>;
-}
-
-#[derive(PartialEq, Debug)]
-pub enum UserCErr {
-    DBErr(DBErr),
-    SchemaErr(SchemaErr),
 }
 
 static USER_C_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
@@ -62,11 +56,11 @@ fn user_from_c(model: UserCModel, id: String, created_at: String) -> User {
 
 fn user_c(
     validator: &dyn Validator,
-    repo: &dyn UserCRepo,
+    repo: &dyn UserRepo,
     id_gen: &dyn IdGen,
     date_gen: &dyn DateGen,
     model: UserCModel,
-) -> Result<User, UserCErr> {
+) -> Result<User, UserErr> {
     let input_value = Value::Obj(HashMap::from([
         (String::from("first_name"), Value::Str(model.first_name.clone())),
         (String::from("birthdate"), Value::Str(model.birthdate.clone())),
@@ -74,11 +68,15 @@ fn user_c(
         (String::from("username"), Value::Str(model.username.clone())),
         (String::from("password"), Value::Str(model.password.clone())),
     ]));
-    validator.validate(&USER_C_SCHEMA, &input_value).map_err(|err| UserCErr::SchemaErr(err))?;
+    validator.validate(&USER_C_SCHEMA, &input_value).map_err(UserErr::SchemaErr)?;
+    user_c_unique_info_is_valid(
+        repo,
+        &UserUniqueInfo { username: model.username.clone(), email: model.email.clone() },
+    )?;
     let id = id_gen.gen();
     let date = date_gen.gen();
     let user = user_from_c(model, id, date);
-    repo.c(&user).map_err(|err| UserCErr::DBErr(err))?;
+    repo.c(&user).map_err(UserErr::DBErr)?;
     Ok(user)
 }
 
@@ -86,62 +84,31 @@ fn user_c(
 mod test {
     use super::*;
     use crate::domain::{
+        database::DBErr,
         generator::test::{DateGenStub, IdGenStub},
-        schedule::user::test::user_stub,
+        schedule::user::stub::{user_after_c_stub, user_c_stub, user_stub, UserRepoStub},
         validation::{test::ValidatorStub, VErr},
     };
 
-    pub struct UserCRepoStub(Result<(), DBErr>);
-
-    impl UserCRepo for UserCRepoStub {
-        fn c(&self, _: &User) -> Result<(), DBErr> {
-            self.0.clone()
-        }
-    }
-
-    pub fn user_c_stub() -> UserCModel {
-        UserCModel {
-            email: String::from("paul@gmail.com"),
-            first_name: String::from("Paul McCartney"),
-            birthdate: String::from("1942-06-18"),
-            username: String::from("paul_mc"),
-            password: String::from("asdf!@#123"),
-        }
-    }
-
     #[test]
     fn test_user_from_c() {
-        let user = User {
-            created_at: String::from("2024-07-03T22:49:51.279Z"),
-            updated_at: String::from("2024-07-03T22:49:51.279Z"),
-            ..user_stub()
-        };
         assert_eq!(
-            user_from_c(
-                user_c_stub(),
-                String::from("a6edc906-2f9f-5fb2-a373-efac406f0ef2"),
-                String::from("2024-07-03T22:49:51.279Z")
-            ),
-            user
+            user_from_c(user_c_stub(), user_stub().id, user_stub().created_at),
+            user_after_c_stub()
         );
     }
 
     #[test]
-    fn test_user_c() {
-        let user = User {
-            created_at: String::from("2024-07-03T22:49:51.279Z"),
-            updated_at: String::from("2024-07-03T22:49:51.279Z"),
-            ..user_stub()
-        };
+    fn test_user_c_ok() {
         assert_eq!(
             user_c(
                 &ValidatorStub(Ok(())),
-                &UserCRepoStub(Ok(())),
-                &IdGenStub(String::from("a6edc906-2f9f-5fb2-a373-efac406f0ef2")),
-                &DateGenStub(String::from("2024-07-03T22:49:51.279Z")),
+                &UserRepoStub::default(),
+                &IdGenStub(user_stub().id),
+                &DateGenStub(user_stub().created_at),
                 user_c_stub()
             ),
-            Ok(user)
+            Ok(user_after_c_stub())
         );
     }
 
@@ -150,12 +117,12 @@ mod test {
         assert_eq!(
             user_c(
                 &ValidatorStub(Ok(())),
-                &UserCRepoStub(Err(DBErr)),
-                &IdGenStub(String::from("a6edc906-2f9f-5fb2-a373-efac406f0ef2")),
-                &DateGenStub(String::from("2024-07-03T22:49:51.279Z")),
+                &UserRepoStub::of_db_err(),
+                &IdGenStub(user_stub().id),
+                &DateGenStub(user_stub().created_at),
                 user_c_stub()
             ),
-            Err(UserCErr::DBErr(DBErr))
+            Err(UserErr::DBErr(DBErr))
         );
         assert_eq!(
             user_c(
@@ -163,12 +130,12 @@ mod test {
                     String::from("first_name"),
                     vec![VErr::RequiredErr]
                 )]))),
-                &UserCRepoStub(Ok(())),
-                &IdGenStub(String::from("a6edc906-2f9f-5fb2-a373-efac406f0ef2")),
-                &DateGenStub(String::from("2024-07-03T22:49:51.279Z")),
+                &UserRepoStub::default(),
+                &IdGenStub(user_stub().id),
+                &DateGenStub(user_stub().created_at),
                 user_c_stub()
             ),
-            Err(UserCErr::SchemaErr(HashMap::from([(
+            Err(UserErr::SchemaErr(HashMap::from([(
                 String::from("first_name"),
                 vec![VErr::RequiredErr]
             )])))
