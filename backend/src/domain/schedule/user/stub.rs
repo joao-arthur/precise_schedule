@@ -1,12 +1,12 @@
 use crate::domain::database::DBErr;
 
 use super::{
-    create::UserCModel,
+    create::UserC,
     login::UserCred,
     model::User,
     repo::UserRepo,
     unique_info::{UserUniqueInfo, UserUniqueInfoCount},
-    update::UserUModel,
+    update::UserU,
 };
 
 pub fn user_stub() -> User {
@@ -26,8 +26,8 @@ pub fn user_cred_stub() -> UserCred {
     UserCred { username: String::from("paul_mc"), password: String::from("asdf!@#123") }
 }
 
-pub fn user_c_stub() -> UserCModel {
-    UserCModel {
+pub fn user_c_stub() -> UserC {
+    UserC {
         email: String::from("paul@gmail.com"),
         first_name: String::from("Paul McCartney"),
         birthdate: String::from("1942-06-18"),
@@ -40,8 +40,8 @@ pub fn user_after_c_stub() -> User {
     User { updated_at: String::from("2024-03-01T11:26:41.279Z"), ..user_stub() }
 }
 
-pub fn user_u_stub() -> UserUModel {
-    UserUModel {
+pub fn user_u_stub() -> UserU {
+    UserU {
         email: String::from("john@gmail.com"),
         first_name: String::from("John Lennon"),
         birthdate: String::from("1940-10-09"),

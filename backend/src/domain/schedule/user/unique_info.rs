@@ -1,4 +1,4 @@
-use super::{create::UserCModel, error::UserErr, model::User, repo::UserRepo, update::UserUModel};
+use super::{create::UserC, error::UserErr, model::User, repo::UserRepo, update::UserU};
 
 #[derive(Debug, PartialEq)]
 pub struct UserUniqueInfo {
@@ -12,14 +12,14 @@ impl From<&User> for UserUniqueInfo {
     }
 }
 
-impl From<&UserCModel> for UserUniqueInfo {
-    fn from(user: &UserCModel) -> Self {
+impl From<&UserC> for UserUniqueInfo {
+    fn from(user: &UserC) -> Self {
         UserUniqueInfo { username: user.username.clone(), email: user.email.clone() }
     }
 }
 
-impl From<&UserUModel> for UserUniqueInfo {
-    fn from(user: &UserUModel) -> Self {
+impl From<&UserU> for UserUniqueInfo {
+    fn from(user: &UserU) -> Self {
         UserUniqueInfo { username: user.username.clone(), email: user.email.clone() }
     }
 }
@@ -40,11 +40,11 @@ pub fn user_c_unique_info_is_valid(
     repo: &dyn UserRepo,
     user: &UserUniqueInfo,
 ) -> Result<(), UserErr> {
-    let unique_info = repo.r_count_unique_info(&user).map_err(UserErr::DBErr)?;
+    let unique_info = repo.r_count_unique_info(&user).map_err(UserErr::DB)?;
     let username_err = unique_info.username > 0;
     let email_err = unique_info.email > 0;
     if username_err || email_err {
-        return Err(UserErr::UserUniqueInfoFieldErr(UserUniqueInfoFieldErr {
+        return Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr {
             username: username_err,
             email: email_err,
         }));
@@ -60,11 +60,11 @@ pub fn user_u_unique_info_is_valid(
     if user.username == old_user.username && user.email == old_user.email {
         return Ok(());
     }
-    let unique_info = repo.r_count_unique_info(&user).map_err(UserErr::DBErr)?;
+    let unique_info = repo.r_count_unique_info(&user).map_err(UserErr::DB)?;
     let username_err = user.username != old_user.username && unique_info.username > 0;
     let email_err = user.email != old_user.email && unique_info.email > 0;
     if username_err || email_err {
-        return Err(UserErr::UserUniqueInfoFieldErr(UserUniqueInfoFieldErr {
+        return Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr {
             username: username_err,
             email: email_err,
         }));
@@ -120,7 +120,7 @@ mod test {
                 &UserRepoStub::of_2(UserUniqueInfoCount { username: 1, email: 0 }),
                 &user_unique_stub_1()
             ),
-            Err(UserErr::UserUniqueInfoFieldErr(UserUniqueInfoFieldErr {
+            Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr {
                 username: true,
                 email: false,
             })),
@@ -130,7 +130,7 @@ mod test {
                 &UserRepoStub::of_2(UserUniqueInfoCount { username: 0, email: 1 }),
                 &user_unique_stub_1()
             ),
-            Err(UserErr::UserUniqueInfoFieldErr(UserUniqueInfoFieldErr {
+            Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr {
                 username: false,
                 email: true,
             })),
@@ -140,7 +140,7 @@ mod test {
                 &UserRepoStub::of_2(UserUniqueInfoCount { username: 1, email: 1 }),
                 &user_unique_stub_1()
             ),
-            Err(UserErr::UserUniqueInfoFieldErr(UserUniqueInfoFieldErr {
+            Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr {
                 username: true,
                 email: true,
             })),
@@ -215,7 +215,7 @@ mod test {
                 &user_unique_stub_2(),
                 &user_unique_stub_1(),
             ),
-            Err(UserErr::UserUniqueInfoFieldErr(UserUniqueInfoFieldErr {
+            Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr {
                 username: true,
                 email: false,
             })),
@@ -226,7 +226,7 @@ mod test {
                 &user_unique_stub_2(),
                 &user_unique_stub_1(),
             ),
-            Err(UserErr::UserUniqueInfoFieldErr(UserUniqueInfoFieldErr {
+            Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr {
                 username: false,
                 email: true,
             })),
@@ -237,7 +237,7 @@ mod test {
                 &user_unique_stub_2(),
                 &user_unique_stub_1(),
             ),
-            Err(UserErr::UserUniqueInfoFieldErr(UserUniqueInfoFieldErr {
+            Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr {
                 username: true,
                 email: true,
             })),

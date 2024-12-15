@@ -113,33 +113,33 @@ pub enum V {
 
 #[derive(Debug, PartialEq, Clone)]
 pub enum VErr {
-    RequiredErr,
-    NumIErr,
-    NumUErr,
-    NumFErr,
-    StrErr,
-    BoolErr,
-    NumIExactErr(NumIExactErr),
-    NumIMinErr(NumIMinErr),
-    NumIMaxErr(NumIMaxErr),
-    NumUExactErr(NumUExactErr),
-    NumUMinErr(NumUMinErr),
-    NumUMaxErr(NumUMaxErr),
-    NumFExactErr(NumFExactErr),
-    NumFMinErr(NumFMinErr),
-    NumFMaxErr(NumFMaxErr),
-    StrExactErr(StrExactErr),
-    StrExactLenErr(StrExactLenErr),
-    StrMinLenErr(StrMinLenErr),
-    StrMaxLenErr(StrMaxLenErr),
-    StrMinUpperErr(StrMinUpperErr),
-    StrMinLowerErr(StrMinLowerErr),
-    StrMinNumErr(StrMinNumErr),
-    StrMinSpecialErr(StrMinSpecialErr),
-    DtErr,
-    DtMinErr(DtMinErr),
-    DtMaxErr(DtMaxErr),
-    EmailErr,
+    Required,
+    NumI,
+    NumU,
+    NumF,
+    Str,
+    Bool,
+    NumIExact(NumIExactErr),
+    NumIMin(NumIMinErr),
+    NumIMax(NumIMaxErr),
+    NumUExact(NumUExactErr),
+    NumUMin(NumUMinErr),
+    NumUMax(NumUMaxErr),
+    NumFExact(NumFExactErr),
+    NumFMin(NumFMinErr),
+    NumFMax(NumFMaxErr),
+    StrExact(StrExactErr),
+    StrExactLen(StrExactLenErr),
+    StrMinLen(StrMinLenErr),
+    StrMaxLen(StrMaxLenErr),
+    StrMinUpper(StrMinUpperErr),
+    StrMinLower(StrMinLowerErr),
+    StrMinNum(StrMinNumErr),
+    StrMinSpecial(StrMinSpecialErr),
+    Dt,
+    DtMin(DtMinErr),
+    DtMax(DtMaxErr),
+    Email,
 }
 
 pub enum Value {
@@ -185,13 +185,13 @@ pub mod test {
         assert_eq!(
             ValidatorStub(Err(HashMap::from([(
                 String::from("name"),
-                vec![VErr::StrMinLenErr(StrMinLenErr)]
+                vec![VErr::StrMinLen(StrMinLenErr)]
             )])))
             .validate(
                 &HashMap::from([("name", vec![V::Str, V::StrMinLen(2)])]),
                 &Value::Str(String::from("George"))
             ),
-            Err(HashMap::from([(String::from("name"), vec![VErr::StrMinLenErr(StrMinLenErr)])]))
+            Err(HashMap::from([(String::from("name"), vec![VErr::StrMinLen(StrMinLenErr)])]))
         );
     }
 }
