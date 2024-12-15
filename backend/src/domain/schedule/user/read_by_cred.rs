@@ -10,11 +10,12 @@ pub fn user_r_by_cred(repo: &dyn UserRepo, cred: &UserCred) -> Result<User, User
 
 #[cfg(test)]
 pub mod test {
-    use super::*;
     use crate::domain::{
         database::DBErr,
         schedule::user::stub::{user_cred_stub, user_stub, UserRepoStub},
     };
+
+    use super::*;
 
     #[test]
     fn test_r_by_cred() {
@@ -23,7 +24,7 @@ pub mod test {
             Err(UserErr::DBErr(DBErr))
         );
         assert_eq!(
-            user_r_by_cred(&UserRepoStub::of_1(Ok(None)), &user_cred_stub()),
+            user_r_by_cred(&UserRepoStub::of_1(None), &user_cred_stub()),
             Err(UserErr::UserCredNotFound(UserCredNotFound))
         );
         assert_eq!(user_r_by_cred(&UserRepoStub::default(), &user_cred_stub()), Ok(user_stub()));

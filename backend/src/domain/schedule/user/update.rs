@@ -42,19 +42,6 @@ static USER_U_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
     ])
 });
 
-fn user_from_u(model: UserUModel, user: User, updated_at: String) -> User {
-    User {
-        id: user.id,
-        first_name: model.first_name,
-        birthdate: model.birthdate,
-        email: model.email,
-        username: model.username,
-        password: model.password,
-        created_at: user.created_at,
-        updated_at,
-    }
-}
-
 fn user_u(
     validator: &dyn Validator,
     repo: &dyn UserRepo,
@@ -73,11 +60,20 @@ fn user_u(
     let old_user = user_r_by_id(repo, &id)?;
     user_u_unique_info_is_valid(
         repo,
-        &UserUniqueInfo { username: model.username.clone(), email: model.email.clone() },
-        &UserUniqueInfo { username: old_user.username.clone(), email: old_user.email.clone() },
+        &UserUniqueInfo::from(&model),
+        &UserUniqueInfo::from(&old_user),
     )?;
-    let date = date_gen.gen();
-    let user = user_from_u(model, old_user, date);
+    let now = date_gen.gen();
+    let user = User {
+        id: old_user.id,
+        first_name: model.first_name,
+        birthdate: model.birthdate,
+        email: model.email,
+        username: model.username,
+        password: model.password,
+        created_at: old_user.created_at,
+        updated_at: now,
+    };
     repo.u(&user).map_err(UserErr::DBErr)?;
     Ok(user)
 }
@@ -88,17 +84,12 @@ mod test {
     use crate::domain::{
         database::DBErr,
         generator::test::DateGenStub,
-        schedule::user::stub::{user_after_u_stub, user_stub, user_u_stub, UserRepoStub},
+        schedule::user::{
+            stub::{user_after_u_stub, user_stub, user_u_stub, UserRepoStub},
+            unique_info::{UserUniqueInfoCount, UserUniqueInfoFieldErr},
+        },
         validation::{test::ValidatorStub, VErr},
     };
-
-    #[test]
-    fn test_user_from_c() {
-        assert_eq!(
-            user_from_u(user_u_stub(), user_stub(), user_stub().updated_at),
-            user_after_u_stub()
-        );
-    }
 
     #[test]
     fn test_user_u_ok() {
@@ -141,6 +132,19 @@ mod test {
                 String::from("first_name"),
                 vec![VErr::RequiredErr]
             )])))
+        );
+        assert_eq!(
+            user_u(
+                &ValidatorStub(Ok(())),
+                &UserRepoStub::of_2(UserUniqueInfoCount { username: 2, email: 2 }),
+                &DateGenStub(user_stub().updated_at),
+                user_stub().id,
+                user_u_stub()
+            ),
+            Err(UserErr::UserUniqueInfoFieldErr(UserUniqueInfoFieldErr {
+                username: true,
+                email: true
+            }))
         );
     }
 }

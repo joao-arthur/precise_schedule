@@ -38,10 +38,7 @@ pub fn user_c_stub() -> UserCModel {
 }
 
 pub fn user_after_c_stub() -> User {
-    User {
-        updated_at: String::from("2024-03-01T11:26:41.279Z"),
-        ..user_stub()
-    }
+    User { updated_at: String::from("2024-03-01T11:26:41.279Z"), ..user_stub() }
 }
 
 pub fn user_u_stub() -> UserUModel {
@@ -117,12 +114,12 @@ impl Default for UserRepoStub {
 }
 
 impl UserRepoStub {
-    pub fn of_1(arg: Result<Option<User>, DBErr>) -> Self {
-        UserRepoStub(UserRepoStub::default().0, arg, UserRepoStub::default().2)
+    pub fn of_1(arg: Option<User>) -> Self {
+        UserRepoStub(UserRepoStub::default().0, Ok(arg), UserRepoStub::default().2)
     }
 
-    pub fn of_2(arg: Result<UserUniqueInfoCount, DBErr>) -> Self {
-        UserRepoStub(UserRepoStub::default().0, UserRepoStub::default().1, arg)
+    pub fn of_2(arg: UserUniqueInfoCount) -> Self {
+        UserRepoStub(UserRepoStub::default().0, UserRepoStub::default().1, Ok(arg))
     }
 
     pub fn of_db_err() -> Self {
@@ -162,14 +159,14 @@ mod test {
 
     #[test]
     fn test_user_repo_stub_from_1() {
-        assert_eq!(UserRepoStub::of_1(Ok(None)).r_by_cred(&user_cred_stub()), Ok(None));
-        assert_eq!(UserRepoStub::of_1(Ok(None)).r_by_id(&user_stub().id), Ok(None));
+        assert_eq!(UserRepoStub::of_1(None).r_by_cred(&user_cred_stub()), Ok(None));
+        assert_eq!(UserRepoStub::of_1(None).r_by_id(&user_stub().id), Ok(None));
     }
 
     #[test]
     fn test_user_repo_stub_from_2() {
         assert_eq!(
-            UserRepoStub::of_2(Ok(UserUniqueInfoCount { username: 1, email: 0 }))
+            UserRepoStub::of_2(UserUniqueInfoCount { username: 1, email: 0 })
                 .r_count_unique_info(&user_unique_stub_1()),
             Ok(UserUniqueInfoCount { username: 1, email: 0 })
         );

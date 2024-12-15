@@ -10,11 +10,12 @@ pub fn user_r_by_id(repo: &dyn UserRepo, id: &str) -> Result<User, UserErr> {
 
 #[cfg(test)]
 pub mod test {
-    use super::*;
     use crate::domain::{
         database::DBErr,
         schedule::user::stub::{user_stub, UserRepoStub},
     };
+
+    use super::*;
 
     #[test]
     fn test_r_by_id() {
@@ -23,7 +24,7 @@ pub mod test {
             Err(UserErr::DBErr(DBErr))
         );
         assert_eq!(
-            user_r_by_id(&UserRepoStub::of_1(Ok(None)), &user_stub().id),
+            user_r_by_id(&UserRepoStub::of_1(None), &user_stub().id),
             Err(UserErr::UserIdNotFound(UserIdNotFound))
         );
         assert_eq!(user_r_by_id(&UserRepoStub::default(), &user_stub().id), Ok(user_stub()));
