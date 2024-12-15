@@ -1,17 +1,81 @@
+#[derive(Debug, PartialEq, Clone)]
 pub struct Session {
     pub token: String,
 }
 
-pub struct SessionCreateErr {}
+#[derive(Debug, PartialEq, Clone)]
+pub struct SessionEncodeErr;
 
-pub struct SessionDecodeErr {}
+#[derive(Debug, PartialEq, Clone)]
+pub struct SessionDecodeErr;
 
+#[derive(Debug, PartialEq, Clone)]
 pub enum SessionErr {
-    Create(SessionCreateErr),
+    Encode(SessionEncodeErr),
     Decode(SessionDecodeErr),
 }
 
 pub trait SessionService {
-    fn create(user_id: String) -> Result<Session, SessionErr>;
-    fn decode(session: Session) -> Result<String, SessionErr>;
+    fn encode(self: &Self, user_id: String) -> Result<Session, SessionErr>;
+    fn decode(self: &Self, session: Session) -> Result<String, SessionErr>;
+}
+
+#[cfg(test)]
+pub mod stub {
+    use super::*;
+
+    pub fn session_stub() -> Session {
+        Session { token: String::from("TOKEN") }
+    }
+
+    pub struct SessionServiceStub(pub Result<Session, SessionErr>, pub Result<String, SessionErr>);
+
+    impl SessionService for SessionServiceStub {
+        fn encode(self: &Self, user_id: String) -> Result<Session, SessionErr> {
+            self.0.clone()
+        }
+
+        fn decode(self: &Self, session: Session) -> Result<String, SessionErr> {
+            self.1.clone()
+        }
+    }
+
+    impl Default for SessionServiceStub {
+        fn default() -> Self {
+            SessionServiceStub(Ok(session_stub()), Ok(String::from("id")))
+        }
+    }
+
+    impl SessionServiceStub {
+        pub fn of_session_err() -> Self {
+            SessionServiceStub(
+                Err(SessionErr::Encode(SessionEncodeErr)),
+                Err(SessionErr::Decode(SessionDecodeErr)),
+            )
+        }
+    }
+
+    mod test {
+        use super::*;
+
+        #[test]
+        fn test_session_service_stub() {
+            assert_eq!(
+                SessionServiceStub::default().encode(String::from("id")),
+                Ok(session_stub())
+            );
+            assert_eq!(
+                SessionServiceStub::default().decode(session_stub()),
+                Ok(String::from("id"))
+            );
+            assert_eq!(
+                SessionServiceStub::of_session_err().encode(String::from("id")),
+                Err(SessionErr::Encode(SessionEncodeErr))
+            );
+            assert_eq!(
+                SessionServiceStub::of_session_err().decode(session_stub()),
+                Err(SessionErr::Decode(SessionDecodeErr))
+            );
+        }
+    }
 }

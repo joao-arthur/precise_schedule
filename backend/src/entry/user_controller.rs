@@ -2,7 +2,7 @@ use rocket::serde::{json::Json, Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug)]
 #[serde(crate = "rocket::serde")]
-pub struct UserCEndpointModel<'a> {
+pub struct UserCEndpoint<'a> {
     pub email: &'a str,
     pub first_name: &'a str,
     pub birthdate: &'a str,
@@ -13,7 +13,7 @@ pub struct UserCEndpointModel<'a> {
 }
 
 #[post("/", format = "application/json", data = "<user>")]
-pub fn user_c(user: Json<UserCEndpointModel<'_>>) -> Json<UserCEndpointModel> {
+pub fn user_c(user: Json<UserCEndpoint<'_>>) -> Json<UserCEndpoint> {
     user
 }
 

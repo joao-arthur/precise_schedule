@@ -11,5 +11,5 @@ pub enum UserErr {
     UserUniqueInfoField(UserUniqueInfoFieldErr),
     UserIdNotFound(UserIdNotFound),
     UserCredNotFound(UserCredNotFound),
-    Session(SessionErr)
+    Session(SessionErr),
 }

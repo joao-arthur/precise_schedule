@@ -2,6 +2,7 @@ use std::{collections::HashMap, sync::LazyLock};
 
 use crate::domain::{
     generator::{DateGen, IdGen},
+    session::{Session, SessionService},
     validation::{Schema, Validator, Value, V},
 };
 
@@ -12,12 +13,18 @@ use super::{
     unique_info::{user_c_unique_info_is_valid, UserUniqueInfo},
 };
 
-pub struct UserCModel {
+pub struct UserC {
     pub email: String,
     pub first_name: String,
     pub birthdate: String,
     pub username: String,
     pub password: String,
+}
+
+#[derive(Debug, PartialEq)]
+pub struct UserCResult {
+    pub user: User,
+    pub session: Session,
 }
 
 static USER_C_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
@@ -47,31 +54,33 @@ fn user_c(
     repo: &dyn UserRepo,
     id_gen: &dyn IdGen,
     date_gen: &dyn DateGen,
-    model: UserCModel,
-) -> Result<User, UserErr> {
+    session_service: &dyn SessionService,
+    user_c: UserC,
+) -> Result<UserCResult, UserErr> {
     let input_value = Value::Obj(HashMap::from([
-        (String::from("first_name"), Value::Str(model.first_name.clone())),
-        (String::from("birthdate"), Value::Str(model.birthdate.clone())),
-        (String::from("email"), Value::Str(model.email.clone())),
-        (String::from("username"), Value::Str(model.username.clone())),
-        (String::from("password"), Value::Str(model.password.clone())),
+        (String::from("first_name"), Value::Str(user_c.first_name.clone())),
+        (String::from("birthdate"), Value::Str(user_c.birthdate.clone())),
+        (String::from("email"), Value::Str(user_c.email.clone())),
+        (String::from("username"), Value::Str(user_c.username.clone())),
+        (String::from("password"), Value::Str(user_c.password.clone())),
     ]));
-    validator.validate(&USER_C_SCHEMA, &input_value).map_err(UserErr::SchemaErr)?;
-    user_c_unique_info_is_valid(repo, &UserUniqueInfo::from(&model))?;
+    validator.validate(&USER_C_SCHEMA, &input_value).map_err(UserErr::Schema)?;
+    user_c_unique_info_is_valid(repo, &UserUniqueInfo::from(&user_c))?;
     let id = id_gen.gen();
     let now = date_gen.gen();
     let user = User {
         id,
-        first_name: model.first_name,
-        birthdate: model.birthdate,
-        email: model.email,
-        username: model.username,
-        password: model.password,
+        first_name: user_c.first_name,
+        birthdate: user_c.birthdate,
+        email: user_c.email,
+        username: user_c.username,
+        password: user_c.password,
         created_at: now.clone(),
         updated_at: now,
     };
-    repo.c(&user).map_err(UserErr::DBErr)?;
-    Ok(user)
+    repo.c(&user).map_err(UserErr::DB)?;
+    let session = session_service.encode(user.id.clone()).map_err(UserErr::Session)?;
+    Ok(UserCResult { user, session })
 }
 
 #[cfg(test)]
@@ -84,6 +93,7 @@ mod test {
             stub::{user_after_c_stub, user_c_stub, user_stub, UserRepoStub},
             unique_info::{UserUniqueInfoCount, UserUniqueInfoFieldErr},
         },
+        session::{stub::{session_stub, SessionServiceStub}, SessionEncodeErr, SessionErr},
         validation::{test::ValidatorStub, VErr},
     };
 
@@ -95,9 +105,10 @@ mod test {
                 &UserRepoStub::default(),
                 &IdGenStub(user_stub().id),
                 &DateGenStub(user_stub().created_at),
+                &SessionServiceStub::default(),
                 user_c_stub()
             ),
-            Ok(user_after_c_stub())
+            Ok(UserCResult { user: user_after_c_stub(), session: session_stub() })
         );
     }
 
@@ -109,24 +120,26 @@ mod test {
                 &UserRepoStub::of_db_err(),
                 &IdGenStub(user_stub().id),
                 &DateGenStub(user_stub().created_at),
+                &SessionServiceStub::default(),
                 user_c_stub()
             ),
-            Err(UserErr::DBErr(DBErr))
+            Err(UserErr::DB(DBErr))
         );
         assert_eq!(
             user_c(
                 &ValidatorStub(Err(HashMap::from([(
                     String::from("first_name"),
-                    vec![VErr::RequiredErr]
+                    vec![VErr::Required]
                 )]))),
                 &UserRepoStub::default(),
                 &IdGenStub(user_stub().id),
                 &DateGenStub(user_stub().created_at),
+                &SessionServiceStub::default(),
                 user_c_stub()
             ),
-            Err(UserErr::SchemaErr(HashMap::from([(
+            Err(UserErr::Schema(HashMap::from([(
                 String::from("first_name"),
-                vec![VErr::RequiredErr]
+                vec![VErr::Required]
             )])))
         );
         assert_eq!(
@@ -135,12 +148,24 @@ mod test {
                 &UserRepoStub::of_2(UserUniqueInfoCount { username: 2, email: 2 }),
                 &IdGenStub(user_stub().id),
                 &DateGenStub(user_stub().created_at),
+                &SessionServiceStub::default(),
                 user_c_stub()
             ),
-            Err(UserErr::UserUniqueInfoFieldErr(UserUniqueInfoFieldErr {
+            Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr {
                 username: true,
                 email: true
             }))
+        );
+        assert_eq!(
+            user_c(
+                &ValidatorStub(Ok(())),
+                &UserRepoStub::default(),
+                &IdGenStub(user_stub().id),
+                &DateGenStub(user_stub().created_at),
+                &SessionServiceStub::of_session_err(),
+                user_c_stub()
+            ),
+            Err(UserErr::Session(SessionErr::Encode(SessionEncodeErr)))
         );
     }
 }

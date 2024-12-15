@@ -2,6 +2,7 @@ use std::{collections::HashMap, sync::LazyLock};
 
 use crate::domain::{
     generator::DateGen,
+    session::{Session, SessionService},
     validation::{Schema, Validator, Value, V},
 };
 
@@ -13,12 +14,18 @@ use super::{
     unique_info::{user_u_unique_info_is_valid, UserUniqueInfo},
 };
 
-pub struct UserUModel {
+pub struct UserU {
     pub email: String,
     pub first_name: String,
     pub birthdate: String,
     pub username: String,
     pub password: String,
+}
+
+#[derive(Debug, PartialEq)]
+pub struct UserUResult {
+    pub user: User,
+    pub session: Session,
 }
 
 static USER_U_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
@@ -47,36 +54,38 @@ fn user_u(
     validator: &dyn Validator,
     repo: &dyn UserRepo,
     date_gen: &dyn DateGen,
+    session_service: &dyn SessionService,
     id: String,
-    model: UserUModel,
-) -> Result<User, UserErr> {
+    user_u: UserU,
+) -> Result<UserUResult, UserErr> {
     let input_value = Value::Obj(HashMap::from([
-        (String::from("first_name"), Value::Str(model.first_name.clone())),
-        (String::from("birthdate"), Value::Str(model.birthdate.clone())),
-        (String::from("email"), Value::Str(model.email.clone())),
-        (String::from("username"), Value::Str(model.username.clone())),
-        (String::from("password"), Value::Str(model.password.clone())),
+        (String::from("first_name"), Value::Str(user_u.first_name.clone())),
+        (String::from("birthdate"), Value::Str(user_u.birthdate.clone())),
+        (String::from("email"), Value::Str(user_u.email.clone())),
+        (String::from("username"), Value::Str(user_u.username.clone())),
+        (String::from("password"), Value::Str(user_u.password.clone())),
     ]));
-    validator.validate(&USER_U_SCHEMA, &input_value).map_err(UserErr::SchemaErr)?;
+    validator.validate(&USER_U_SCHEMA, &input_value).map_err(UserErr::Schema)?;
     let old_user = user_r_by_id(repo, &id)?;
     user_u_unique_info_is_valid(
         repo,
-        &UserUniqueInfo::from(&model),
+        &UserUniqueInfo::from(&user_u),
         &UserUniqueInfo::from(&old_user),
     )?;
     let now = date_gen.gen();
     let user = User {
         id: old_user.id,
-        first_name: model.first_name,
-        birthdate: model.birthdate,
-        email: model.email,
-        username: model.username,
-        password: model.password,
+        first_name: user_u.first_name,
+        birthdate: user_u.birthdate,
+        email: user_u.email,
+        username: user_u.username,
+        password: user_u.password,
         created_at: old_user.created_at,
         updated_at: now,
     };
-    repo.u(&user).map_err(UserErr::DBErr)?;
-    Ok(user)
+    repo.u(&user).map_err(UserErr::DB)?;
+    let session = session_service.encode(user.id.clone()).map_err(UserErr::Session)?;
+    Ok(UserUResult { user, session })
 }
 
 #[cfg(test)]
@@ -90,6 +99,7 @@ mod test {
             stub::{user_after_u_stub, user_stub, user_u_stub, UserRepoStub},
             unique_info::{UserUniqueInfoCount, UserUniqueInfoFieldErr},
         },
+        session::{stub::{session_stub, SessionServiceStub}, SessionEncodeErr, SessionErr},
         validation::{test::ValidatorStub, VErr},
     };
 
@@ -100,10 +110,11 @@ mod test {
                 &ValidatorStub(Ok(())),
                 &UserRepoStub::default(),
                 &DateGenStub(user_stub().updated_at),
+                &SessionServiceStub::default(),
                 user_stub().id,
                 user_u_stub()
             ),
-            Ok(user_after_u_stub())
+            Ok(UserUResult { user: user_after_u_stub(), session: session_stub() })
         );
     }
 
@@ -114,16 +125,18 @@ mod test {
                 &ValidatorStub(Ok(())),
                 &UserRepoStub::of_db_err(),
                 &DateGenStub(user_stub().updated_at),
+                &SessionServiceStub::default(),
                 user_stub().id,
                 user_u_stub()
             ),
-            Err(UserErr::DBErr(DBErr))
+            Err(UserErr::DB(DBErr))
         );
         assert_eq!(
             user_u(
                 &ValidatorStub(Ok(())),
                 &UserRepoStub::of_1(None),
                 &DateGenStub(user_stub().updated_at),
+                &SessionServiceStub::default(),
                 user_stub().id,
                 user_u_stub()
             ),
@@ -133,16 +146,17 @@ mod test {
             user_u(
                 &ValidatorStub(Err(HashMap::from([(
                     String::from("first_name"),
-                    vec![VErr::RequiredErr]
+                    vec![VErr::Required]
                 )]))),
                 &UserRepoStub::default(),
                 &DateGenStub(user_stub().updated_at),
+                &SessionServiceStub::default(),
                 user_stub().id,
                 user_u_stub()
             ),
-            Err(UserErr::SchemaErr(HashMap::from([(
+            Err(UserErr::Schema(HashMap::from([(
                 String::from("first_name"),
-                vec![VErr::RequiredErr]
+                vec![VErr::Required]
             )])))
         );
         assert_eq!(
@@ -150,13 +164,25 @@ mod test {
                 &ValidatorStub(Ok(())),
                 &UserRepoStub::of_2(UserUniqueInfoCount { username: 2, email: 2 }),
                 &DateGenStub(user_stub().updated_at),
+                &SessionServiceStub::default(),
                 user_stub().id,
                 user_u_stub()
             ),
-            Err(UserErr::UserUniqueInfoFieldErr(UserUniqueInfoFieldErr {
+            Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr {
                 username: true,
                 email: true
             }))
+        );
+        assert_eq!(
+            user_u(
+                &ValidatorStub(Ok(())),
+                &UserRepoStub::default(),
+                &DateGenStub(user_stub().updated_at),
+                &SessionServiceStub::of_session_err(),
+                user_stub().id,
+                user_u_stub()
+            ),
+            Err(UserErr::Session(SessionErr::Encode(SessionEncodeErr)))
         );
     }
 }
