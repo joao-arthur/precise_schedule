@@ -86,7 +86,9 @@ mod test {
         database::DBErr,
         generator::test::DateGenStub,
         schedule::user::{
-            read_by_id::UserIdNotFound, stub::{user_after_u_stub, user_stub, user_u_stub, UserRepoStub}, unique_info::{UserUniqueInfoCount, UserUniqueInfoFieldErr}
+            read_by_id::UserIdNotFound,
+            stub::{user_after_u_stub, user_stub, user_u_stub, UserRepoStub},
+            unique_info::{UserUniqueInfoCount, UserUniqueInfoFieldErr},
         },
         validation::{test::ValidatorStub, VErr},
     };

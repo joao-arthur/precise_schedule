@@ -1,6 +1,4 @@
-use super::{
-    create::UserCModel, error::UserErr, model::User, repo::UserRepo, update::UserUModel,
-};
+use super::{create::UserCModel, error::UserErr, model::User, repo::UserRepo, update::UserUModel};
 
 #[derive(Debug, PartialEq)]
 pub struct UserUniqueInfo {
