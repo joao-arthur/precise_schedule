@@ -1,10 +1,9 @@
-use crate::domain::{
-    database::DBErr,
-    schedule::user::{
-        login::UserCred,
-        model::User,
-        unique_info::{UserUniqueInfo, UserUniqueInfoCount},
-    },
+use crate::domain::database::DBErr;
+
+use super::{
+    login::UserCred,
+    model::User,
+    unique_info::{UserUniqueInfo, UserUniqueInfoCount},
 };
 
 pub trait UserRepo {

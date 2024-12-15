@@ -1,13 +1,12 @@
-use crate::domain::{
-    database::DBErr,
-    schedule::user::{
-        create::UserCModel,
-        login::UserCred,
-        model::User,
-        repo::UserRepo,
-        unique_info::{UserUniqueInfo, UserUniqueInfoCount},
-        update::UserUModel,
-    },
+use crate::domain::database::DBErr;
+
+use super::{
+    create::UserCModel,
+    login::UserCred,
+    model::User,
+    repo::UserRepo,
+    unique_info::{UserUniqueInfo, UserUniqueInfoCount},
+    update::UserUModel,
 };
 
 pub fn user_stub() -> User {

@@ -2,14 +2,15 @@ use std::{collections::HashMap, sync::LazyLock};
 
 use crate::domain::{
     generator::DateGen,
-    schedule::user::{
-        error::UserErr,
-        model::User,
-        read_by_id::user_r_by_id,
-        repo::UserRepo,
-        unique_info::{user_u_unique_info_is_valid, UserUniqueInfo},
-    },
     validation::{Schema, Validator, Value, V},
+};
+
+use super::{
+    error::UserErr,
+    model::User,
+    read_by_id::user_r_by_id,
+    repo::UserRepo,
+    unique_info::{user_u_unique_info_is_valid, UserUniqueInfo},
 };
 
 pub struct UserUModel {
@@ -85,8 +86,7 @@ mod test {
         database::DBErr,
         generator::test::DateGenStub,
         schedule::user::{
-            stub::{user_after_u_stub, user_stub, user_u_stub, UserRepoStub},
-            unique_info::{UserUniqueInfoCount, UserUniqueInfoFieldErr},
+            read_by_id::UserIdNotFound, stub::{user_after_u_stub, user_stub, user_u_stub, UserRepoStub}, unique_info::{UserUniqueInfoCount, UserUniqueInfoFieldErr}
         },
         validation::{test::ValidatorStub, VErr},
     };
@@ -116,6 +116,16 @@ mod test {
                 user_u_stub()
             ),
             Err(UserErr::DBErr(DBErr))
+        );
+        assert_eq!(
+            user_u(
+                &ValidatorStub(Ok(())),
+                &UserRepoStub::of_1(None),
+                &DateGenStub(user_stub().updated_at),
+                user_stub().id,
+                user_u_stub()
+            ),
+            Err(UserErr::UserIdNotFound(UserIdNotFound))
         );
         assert_eq!(
             user_u(

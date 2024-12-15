@@ -1,4 +1,4 @@
-use crate::domain::schedule::user::{
+use super::{
     create::UserCModel, error::UserErr, model::User, repo::UserRepo, update::UserUModel,
 };
 

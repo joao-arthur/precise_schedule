@@ -1,4 +1,4 @@
-use crate::domain::schedule::user::{error::UserErr, model::User, repo::UserRepo};
+use super::{error::UserErr, model::User, repo::UserRepo};
 
 #[derive(Debug, PartialEq)]
 pub struct UserIdNotFound;

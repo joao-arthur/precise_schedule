@@ -2,13 +2,14 @@ use std::{collections::HashMap, sync::LazyLock};
 
 use crate::domain::{
     generator::{DateGen, IdGen},
-    schedule::user::{
-        error::UserErr,
-        model::User,
-        repo::UserRepo,
-        unique_info::{user_c_unique_info_is_valid, UserUniqueInfo},
-    },
     validation::{Schema, Validator, Value, V},
+};
+
+use super::{
+    error::UserErr,
+    model::User,
+    repo::UserRepo,
+    unique_info::{user_c_unique_info_is_valid, UserUniqueInfo},
 };
 
 pub struct UserCModel {

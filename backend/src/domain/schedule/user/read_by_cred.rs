@@ -1,4 +1,4 @@
-use crate::domain::schedule::user::{error::UserErr, login::UserCred, model::User, repo::UserRepo};
+use super::{error::UserErr, login::UserCred, model::User, repo::UserRepo};
 
 #[derive(Debug, PartialEq)]
 pub struct UserCredNotFound;
