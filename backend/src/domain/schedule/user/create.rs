@@ -49,7 +49,20 @@ static USER_C_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
     ])
 });
 
-fn user_c(
+fn user_from_c(user_c: UserC, id: String, created_at: String) -> User {
+    User {
+        id,
+        first_name: user_c.first_name,
+        birthdate: user_c.birthdate,
+        email: user_c.email,
+        username: user_c.username,
+        password: user_c.password,
+        created_at: created_at.clone(),
+        updated_at: created_at,
+    }
+}
+
+pub fn user_c(
     validator: &dyn Validator,
     repo: &dyn UserRepo,
     id_gen: &dyn IdGen,
@@ -68,16 +81,7 @@ fn user_c(
     user_c_unique_info_is_valid(repo, &UserUniqueInfo::from(&user_c))?;
     let id = id_gen.gen();
     let now = date_gen.gen();
-    let user = User {
-        id,
-        first_name: user_c.first_name,
-        birthdate: user_c.birthdate,
-        email: user_c.email,
-        username: user_c.username,
-        password: user_c.password,
-        created_at: now.clone(),
-        updated_at: now,
-    };
+    let user = user_from_c(user_c, id, now);
     repo.c(&user).map_err(UserErr::DB)?;
     let session = session_service.encode(user.id.clone()).map_err(UserErr::Session)?;
     Ok(UserCResult { user, session })
@@ -93,9 +97,20 @@ mod test {
             stub::{user_after_c_stub, user_c_stub, user_stub, UserRepoStub},
             unique_info::{UserUniqueInfoCount, UserUniqueInfoFieldErr},
         },
-        session::{stub::{session_stub, SessionServiceStub}, SessionEncodeErr, SessionErr},
+        session::{
+            stub::{session_stub, SessionServiceStub},
+            SessionEncodeErr, SessionErr,
+        },
         validation::{test::ValidatorStub, VErr},
     };
+
+    #[test]
+    fn test_user_from_c() {
+        assert_eq!(
+            user_from_c(user_c_stub(), user_stub().id, user_stub().created_at),
+            user_after_c_stub()
+        );
+    }
 
     #[test]
     fn test_user_c_ok() {

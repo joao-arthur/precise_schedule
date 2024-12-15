@@ -5,6 +5,7 @@ mod login;
 mod model;
 mod read_by_cred;
 mod read_by_id;
+mod read_info;
 mod repo;
 mod unique_info;
 mod update;

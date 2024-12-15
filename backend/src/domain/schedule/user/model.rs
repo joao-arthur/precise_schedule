@@ -9,3 +9,25 @@ pub struct User {
     pub password: String,
     pub updated_at: String,
 }
+
+/*
+enum Language {
+    Por,
+    Eng,
+    Spa,
+    Deu,
+    Lat
+}
+
+enum Status {
+    Active,
+    Excluding,
+}
+
+struct Password {
+    pepper: String,
+    salt: String,
+    iterations: u16,
+    hash: String,
+}
+*/

@@ -4,6 +4,7 @@ use super::{
     create::UserC,
     login::UserCred,
     model::User,
+    read_info::UserInfo,
     repo::UserRepo,
     unique_info::{UserUniqueInfo, UserUniqueInfoCount},
     update::UserU,
@@ -68,6 +69,15 @@ pub fn user_unique_stub_1() -> UserUniqueInfo {
 
 pub fn user_unique_stub_2() -> UserUniqueInfo {
     UserUniqueInfo { username: String::from("peter987"), email: String::from("peter@gmail.com") }
+}
+
+pub fn user_info_stub() -> UserInfo {
+    UserInfo {
+        email: String::from("paul@gmail.com"),
+        first_name: String::from("Paul McCartney"),
+        birthdate: String::from("1942-06-18"),
+        username: String::from("paul_mc"),
+    }
 }
 
 pub struct UserRepoStub(
