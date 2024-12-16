@@ -56,7 +56,7 @@ mod test {
             stub::{session_stub, SessionServiceStub},
             SessionEncodeErr, SessionErr,
         },
-        validation::{test::ValidatorStub, VErr},
+        validation::{stub::ValidatorStub, VErr},
     };
 
     use super::*;

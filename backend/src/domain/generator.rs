@@ -7,7 +7,7 @@ pub trait DateGen {
 }
 
 #[cfg(test)]
-pub mod test {
+pub mod stub {
     use super::*;
 
     pub struct IdGenStub(pub String);
@@ -26,13 +26,17 @@ pub mod test {
         }
     }
 
-    #[test]
-    fn test_id_gen_stub() {
-        assert_eq!(IdGenStub(String::from("Lorem ipsum")).gen(), String::from("Lorem ipsum"));
-    }
+    mod test {
+        use super::*;
 
-    #[test]
-    fn test_date_gen_stub() {
-        assert_eq!(DateGenStub(String::from("Lorem ipsum")).gen(), String::from("Lorem ipsum"));
+        #[test]
+        fn test_id_gen_stub() {
+            assert_eq!(IdGenStub(String::from("Lorem ipsum")).gen(), String::from("Lorem ipsum"));
+        }
+
+        #[test]
+        fn test_date_gen_stub() {
+            assert_eq!(DateGenStub(String::from("Lorem ipsum")).gen(), String::from("Lorem ipsum"));
+        }
     }
 }

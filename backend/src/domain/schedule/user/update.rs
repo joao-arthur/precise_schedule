@@ -97,7 +97,7 @@ mod test {
     use super::*;
     use crate::domain::{
         database::DBErr,
-        generator::test::DateGenStub,
+        generator::stub::DateGenStub,
         schedule::user::{
             read_by_id::UserIdNotFound,
             stub::{user_after_u_stub, user_stub, user_u_stub, UserRepoStub},
@@ -107,7 +107,7 @@ mod test {
             stub::{session_stub, SessionServiceStub},
             SessionEncodeErr, SessionErr,
         },
-        validation::{test::ValidatorStub, VErr},
+        validation::{stub::ValidatorStub, VErr},
     };
 
     #[test]

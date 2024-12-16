@@ -162,7 +162,7 @@ pub trait Validator {
 }
 
 #[cfg(test)]
-pub mod test {
+pub mod stub {
     use super::*;
 
     pub struct ValidatorStub(pub Result<(), SchemaErr>);
@@ -173,25 +173,29 @@ pub mod test {
         }
     }
 
-    #[test]
-    fn test_validator_stub() {
-        assert_eq!(
-            ValidatorStub(Ok(())).validate(
-                &HashMap::from([("name", vec![V::Str, V::StrMinLen(2)])]),
-                &Value::Str(String::from("George"))
-            ),
-            Ok(())
-        );
-        assert_eq!(
-            ValidatorStub(Err(HashMap::from([(
-                String::from("name"),
-                vec![VErr::StrMinLen(StrMinLenErr)]
-            )])))
-            .validate(
-                &HashMap::from([("name", vec![V::Str, V::StrMinLen(2)])]),
-                &Value::Str(String::from("George"))
-            ),
-            Err(HashMap::from([(String::from("name"), vec![VErr::StrMinLen(StrMinLenErr)])]))
-        );
+    mod test {
+        use super::*;
+
+        #[test]
+        fn test_validator_stub() {
+            assert_eq!(
+                ValidatorStub(Ok(())).validate(
+                    &HashMap::from([("name", vec![V::Str, V::StrMinLen(2)])]),
+                    &Value::Str(String::from("George"))
+                ),
+                Ok(())
+            );
+            assert_eq!(
+                ValidatorStub(Err(HashMap::from([(
+                    String::from("name"),
+                    vec![VErr::StrMinLen(StrMinLenErr)]
+                )])))
+                .validate(
+                    &HashMap::from([("name", vec![V::Str, V::StrMinLen(2)])]),
+                    &Value::Str(String::from("George"))
+                ),
+                Err(HashMap::from([(String::from("name"), vec![VErr::StrMinLen(StrMinLenErr)])]))
+            );
+        }
     }
 }
