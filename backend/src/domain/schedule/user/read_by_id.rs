@@ -18,7 +18,12 @@ pub mod test {
     use super::*;
 
     #[test]
-    fn test_r_by_id() {
+    fn test_r_by_id_ok() {
+        assert_eq!(user_r_by_id(&UserRepoStub::default(), &user_stub().id), Ok(user_stub()));
+    }
+
+    #[test]
+    fn test_r_by_id_err() {
         assert_eq!(
             user_r_by_id(&UserRepoStub::of_db_err(), &user_stub().id),
             Err(UserErr::DB(DBErr))
@@ -27,6 +32,5 @@ pub mod test {
             user_r_by_id(&UserRepoStub::of_1(None), &user_stub().id),
             Err(UserErr::UserIdNotFound(UserIdNotFound))
         );
-        assert_eq!(user_r_by_id(&UserRepoStub::default(), &user_stub().id), Ok(user_stub()));
     }
 }

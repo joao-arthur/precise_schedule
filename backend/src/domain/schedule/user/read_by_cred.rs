@@ -18,7 +18,12 @@ pub mod test {
     use super::*;
 
     #[test]
-    fn test_r_by_cred() {
+    fn test_r_by_cred_ok() {
+        assert_eq!(user_r_by_cred(&UserRepoStub::default(), &user_cred_stub()), Ok(user_stub()));
+    }
+
+    #[test]
+    fn test_r_by_cred_err() {
         assert_eq!(
             user_r_by_cred(&UserRepoStub::of_db_err(), &user_cred_stub()),
             Err(UserErr::DB(DBErr))
@@ -27,6 +32,5 @@ pub mod test {
             user_r_by_cred(&UserRepoStub::of_1(None), &user_cred_stub()),
             Err(UserErr::UserCredNotFound(UserCredNotFound))
         );
-        assert_eq!(user_r_by_cred(&UserRepoStub::default(), &user_cred_stub()), Ok(user_stub()));
     }
 }
