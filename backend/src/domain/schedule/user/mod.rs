@@ -11,4 +11,4 @@ mod unique_info;
 mod update;
 
 #[cfg(test)]
-mod stub;
+pub mod stub;

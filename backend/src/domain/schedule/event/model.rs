@@ -1,4 +1,4 @@
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub enum EventCategory {
     Appointment,
     Birthday,
@@ -8,7 +8,7 @@ pub enum EventCategory {
     Travel,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub enum EventFrequency {
     D1,
     D2,
@@ -36,7 +36,7 @@ impl EventFrequency {
     }
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct Event {
     pub id: String,
     pub name: String,

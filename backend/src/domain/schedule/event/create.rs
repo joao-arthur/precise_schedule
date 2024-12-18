@@ -1,9 +1,13 @@
-use super::model::Event;
-use super::model::EventCategory;
-use super::model::EventFrequency;
+use crate::domain::generator::{DateGen, IdGen};
+
+use super::{
+    error::EventErr,
+    model::{Event, EventCategory, EventFrequency},
+    repo::EventRepo,
+};
 
 #[derive(Debug, PartialEq)]
-pub struct EventCreateModel {
+pub struct EventC {
     pub name: String,
     pub day: String,
     pub begin: String,
@@ -13,70 +17,79 @@ pub struct EventCreateModel {
     pub weekend_repeat: Option<bool>,
 }
 
-pub fn build_event(event: EventCreateModel, id: String, user: String) -> Event {
+pub fn event_from_c(event_c: EventC, id: String, user_id: String, created_at: String) -> Event {
     Event {
         id,
-        name: event.name,
-        day: event.day,
-        begin: event.begin,
-        end: event.end,
-        category: event.category,
-        frequency: event.frequency,
-        weekend_repeat: event.weekend_repeat,
-        user,
-        created_at: String::from(""),
-        updated_at: String::from(""),
+        name: event_c.name,
+        day: event_c.day,
+        begin: event_c.begin,
+        end: event_c.end,
+        category: event_c.category,
+        frequency: event_c.frequency,
+        weekend_repeat: event_c.weekend_repeat,
+        user: user_id,
+        created_at: created_at.clone(),
+        updated_at: created_at,
     }
 }
 
-pub fn event_create(
-    repo: EventRepo,
-    id_gen: IdGen,
-    date_gen: DateGen,
-    event: EventCreate,
-    //userId: User["id"],
-) -> Result<Event, EventCreateErrors> {
-    let eventId = id_gen.gen();
+pub fn event_c(
+    repo: &dyn EventRepo,
+    id_gen: &dyn IdGen,
+    date_gen: &dyn DateGen,
+    event_c: EventC,
+    user_id: String,
+) -> Result<Event, EventErr> {
+    let id = id_gen.gen();
     let now = date_gen.gen();
-    let built_event = eventCreateToEvent(event, eventId, userId, now);
-    let create_result = repo.cCreate(built_event);
-    if create_result == "err" {
-        return create_result;
-    }
-    return ok(built_event);
+    let event = event_from_c(event_c, id, user_id, now);
+    repo.c(&event).map_err(EventErr::DB)?;
+    Ok(event)
 }
 
 #[cfg(test)]
 mod test {
+    use crate::domain::{database::DBErr, generator::stub::{DateGenStub, IdGenStub}, schedule::{
+        event::stub::{event_after_c_stub, event_c_stub, event_stub, EventRepoStub},
+        user::stub::user_stub,
+    }};
+
     use super::*;
-    use crate::domain::schedule::event::model::Event;
-    use crate::domain::schedule::event::model::EventCategory;
-    use crate::domain::schedule::event::model::EventFrequency;
 
     #[test]
-    fn test_build_event() {
-        let create_event = EventCreateModel {
-            name: String::from("Party"),
-            day: String::from("2024-03-31"),
-            begin: String::from("18:00"),
-            end: String::from("22:00"),
-            category: EventCategory::Appointment,
-            frequency: Some(EventFrequency::D2),
-            weekend_repeat: Some(true),
-        };
-        let event = Event {
-            id: String::from("12ab-34cd"),
-            name: String::from("Party"),
-            day: String::from("2024-03-31"),
-            begin: String::from("18:00"),
-            end: String::from("22:00"),
-            category: EventCategory::Appointment,
-            frequency: Some(EventFrequency::D2),
-            weekend_repeat: Some(true),
-            user: String::from("ab12-cd34"),
-            created_at: String::from(""),
-            updated_at: String::from(""),
-        };
-        assert_eq!(build_event(create_event, "12ab-34cd", "ab12-cd34"), event);
+    fn test_event_from_c() {
+        assert_eq!(
+            event_from_c(event_c_stub(), event_stub().id, user_stub().id, event_stub().created_at),
+            event_after_c_stub()
+        );
     }
+
+    #[test]
+    fn test_event_c_ok() {
+        assert_eq!(
+            event_c(
+                &EventRepoStub::default(),
+                &IdGenStub(event_stub().id),
+                &DateGenStub(event_stub().created_at),
+                event_c_stub(),
+                user_stub().id
+            ),
+            Ok(event_after_c_stub())
+        );
+    }
+
+    #[test]
+    fn test_user_c_err() {  
+        assert_eq!(
+            event_c(
+                &EventRepoStub::of_db_err(),
+                &IdGenStub(user_stub().id),
+                &DateGenStub(user_stub().created_at),
+                event_c_stub(),
+                user_stub().id
+            ),
+            Err(EventErr::DB(DBErr))
+        );
+    }
+
 }
