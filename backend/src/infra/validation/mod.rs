@@ -16,7 +16,7 @@ use validate::{
     },
 };
 
-use crate::domain::validation::{Schema, VErr, Value, V};
+use crate::domain::validation::{Schema, SchemaErr, VErr, Validator, Value, V};
 
 fn validate_schema(schema: &Schema, value: &Value) -> Result<(), HashMap<String, Vec<VErr>>> {
     let mut res: HashMap<String, Vec<VErr>> = HashMap::new();
@@ -69,6 +69,14 @@ fn validate_schema(schema: &Schema, value: &Value) -> Result<(), HashMap<String,
             Err(res)
         }
         _ => Ok(()),
+    }
+}
+
+pub struct ValidatorCustom;
+
+impl Validator for ValidatorCustom {
+    fn validate(&self, schema: &Schema, value: &Value) -> Result<(), SchemaErr> {
+        validate_schema(schema, value)
     }
 }
 

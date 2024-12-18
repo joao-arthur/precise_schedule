@@ -1,14 +1,14 @@
-mod create;
-mod delete;
+pub mod create;
+pub mod delete;
 mod error;
-mod login;
-mod model;
+pub mod login;
+pub mod model;
 mod read_by_cred;
 mod read_by_id;
 mod read_info;
-mod repo;
-mod unique_info;
-mod update;
+pub mod repo;
+pub mod unique_info;
+pub mod update;
 
 #[cfg(test)]
 pub mod stub;
