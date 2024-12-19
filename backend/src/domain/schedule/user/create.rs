@@ -1,7 +1,7 @@
 use std::{collections::HashMap, sync::LazyLock};
 
 use crate::domain::{
-    generator::{DateGen, IdGen},
+    generator::{DateGen, IdGen, TimeGen},
     session::{Session, SessionService},
     validation::{Schema, Validator, Value, V},
 };
@@ -67,6 +67,7 @@ pub fn user_c(
     repo: &dyn UserRepo,
     id_gen: &dyn IdGen,
     date_gen: &dyn DateGen,
+    time_gen: &dyn TimeGen,
     session_service: &dyn SessionService,
     user_c: UserC,
 ) -> Result<UserCResult, UserErr> {
@@ -83,7 +84,7 @@ pub fn user_c(
     let now = date_gen.gen();
     let user = user_from_c(user_c, id, now);
     repo.c(&user).map_err(UserErr::DB)?;
-    let session = session_service.encode(user.id.clone()).map_err(UserErr::Session)?;
+    let session = session_service.encode(&user, time_gen).map_err(UserErr::Session)?;
     Ok(UserCResult { user, session })
 }
 
@@ -92,7 +93,7 @@ mod test {
     use super::*;
     use crate::domain::{
         database::DBErr,
-        generator::stub::{DateGenStub, IdGenStub},
+        generator::stub::{DateGenStub, IdGenStub, TimeGenStub},
         schedule::user::{
             stub::{user_after_c_stub, user_c_stub, user_stub, UserRepoStub},
             unique_info::{UserUniqueInfoCount, UserUniqueInfoFieldErr},
@@ -120,6 +121,7 @@ mod test {
                 &UserRepoStub::default(),
                 &IdGenStub(user_stub().id),
                 &DateGenStub(user_stub().created_at),
+                &TimeGenStub(1734555761),
                 &SessionServiceStub::default(),
                 user_c_stub()
             ),
@@ -135,6 +137,7 @@ mod test {
                 &UserRepoStub::of_db_err(),
                 &IdGenStub(user_stub().id),
                 &DateGenStub(user_stub().created_at),
+                &TimeGenStub(1734555761),
                 &SessionServiceStub::default(),
                 user_c_stub()
             ),
@@ -149,6 +152,7 @@ mod test {
                 &UserRepoStub::default(),
                 &IdGenStub(user_stub().id),
                 &DateGenStub(user_stub().created_at),
+                &TimeGenStub(1734555761),
                 &SessionServiceStub::default(),
                 user_c_stub()
             ),
@@ -163,6 +167,7 @@ mod test {
                 &UserRepoStub::of_2(UserUniqueInfoCount { username: 2, email: 2 }),
                 &IdGenStub(user_stub().id),
                 &DateGenStub(user_stub().created_at),
+                &TimeGenStub(1734555761),
                 &SessionServiceStub::default(),
                 user_c_stub()
             ),
@@ -177,6 +182,7 @@ mod test {
                 &UserRepoStub::default(),
                 &IdGenStub(user_stub().id),
                 &DateGenStub(user_stub().created_at),
+                &TimeGenStub(1734555761),
                 &SessionServiceStub::of_session_err(),
                 user_c_stub()
             ),

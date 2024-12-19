@@ -2,7 +2,8 @@ use crate::domain::database::DBErr;
 
 use super::{
     create::EventC,
-    model::{Event, EventCategory, EventFrequency}, repo::EventRepo,
+    model::{Event, EventCategory, EventFrequency},
+    repo::EventRepo,
 };
 
 pub fn event_stub() -> Event {
@@ -37,11 +38,7 @@ pub fn event_after_c_stub() -> Event {
     Event { updated_at: String::from("2025-02-05T22:49:51.279Z"), ..event_stub() }
 }
 
-
-pub struct EventRepoStub(
-    Result<(), DBErr>,
-    Result<Option<Event>, DBErr>,
-);
+pub struct EventRepoStub(Result<(), DBErr>, Result<Option<Event>, DBErr>);
 
 impl EventRepo for EventRepoStub {
     fn c(&self, _: &Event) -> Result<(), DBErr> {
@@ -63,10 +60,7 @@ impl EventRepo for EventRepoStub {
 
 impl Default for EventRepoStub {
     fn default() -> Self {
-        EventRepoStub(
-            Ok(()),
-            Ok(Some(event_stub())),
-        )
+        EventRepoStub(Ok(()), Ok(Some(event_stub())))
     }
 }
 

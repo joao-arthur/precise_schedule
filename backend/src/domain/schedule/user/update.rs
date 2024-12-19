@@ -1,7 +1,7 @@
 use std::{collections::HashMap, sync::LazyLock};
 
 use crate::domain::{
-    generator::DateGen,
+    generator::{DateGen, TimeGen},
     session::{Session, SessionService},
     validation::{Schema, Validator, Value, V},
 };
@@ -67,6 +67,7 @@ pub fn user_u(
     validator: &dyn Validator,
     repo: &dyn UserRepo,
     date_gen: &dyn DateGen,
+    time_gen: &dyn TimeGen,
     session_service: &dyn SessionService,
     id: String,
     user_u: UserU,
@@ -88,7 +89,7 @@ pub fn user_u(
     let now = date_gen.gen();
     let user = user_from_u(user_u, old_user, now);
     repo.u(&user).map_err(UserErr::DB)?;
-    let session = session_service.encode(user.id.clone()).map_err(UserErr::Session)?;
+    let session = session_service.encode(&user, time_gen).map_err(UserErr::Session)?;
     Ok(UserUResult { user, session })
 }
 
@@ -97,7 +98,7 @@ mod test {
     use super::*;
     use crate::domain::{
         database::DBErr,
-        generator::stub::DateGenStub,
+        generator::stub::{DateGenStub, TimeGenStub},
         schedule::user::{
             read_by_id::UserIdNotFound,
             stub::{user_after_u_stub, user_stub, user_u_stub, UserRepoStub},
@@ -125,6 +126,7 @@ mod test {
                 &ValidatorStub(Ok(())),
                 &UserRepoStub::default(),
                 &DateGenStub(user_stub().updated_at),
+                &TimeGenStub(1734555761),
                 &SessionServiceStub::default(),
                 user_stub().id,
                 user_u_stub()
@@ -140,6 +142,7 @@ mod test {
                 &ValidatorStub(Ok(())),
                 &UserRepoStub::of_db_err(),
                 &DateGenStub(user_stub().updated_at),
+                &TimeGenStub(1734555761),
                 &SessionServiceStub::default(),
                 user_stub().id,
                 user_u_stub()
@@ -151,6 +154,7 @@ mod test {
                 &ValidatorStub(Ok(())),
                 &UserRepoStub::of_1(None),
                 &DateGenStub(user_stub().updated_at),
+                &TimeGenStub(1734555761),
                 &SessionServiceStub::default(),
                 user_stub().id,
                 user_u_stub()
@@ -165,6 +169,7 @@ mod test {
                 )]))),
                 &UserRepoStub::default(),
                 &DateGenStub(user_stub().updated_at),
+                &TimeGenStub(1734555761),
                 &SessionServiceStub::default(),
                 user_stub().id,
                 user_u_stub()
@@ -179,6 +184,7 @@ mod test {
                 &ValidatorStub(Ok(())),
                 &UserRepoStub::of_2(UserUniqueInfoCount { username: 2, email: 2 }),
                 &DateGenStub(user_stub().updated_at),
+                &TimeGenStub(1734555761),
                 &SessionServiceStub::default(),
                 user_stub().id,
                 user_u_stub()
@@ -193,6 +199,7 @@ mod test {
                 &ValidatorStub(Ok(())),
                 &UserRepoStub::default(),
                 &DateGenStub(user_stub().updated_at),
+                &TimeGenStub(1734555761),
                 &SessionServiceStub::of_session_err(),
                 user_stub().id,
                 user_u_stub()

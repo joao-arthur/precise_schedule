@@ -49,10 +49,14 @@ pub fn event_c(
 
 #[cfg(test)]
 mod test {
-    use crate::domain::{database::DBErr, generator::stub::{DateGenStub, IdGenStub}, schedule::{
-        event::stub::{event_after_c_stub, event_c_stub, event_stub, EventRepoStub},
-        user::stub::user_stub,
-    }};
+    use crate::domain::{
+        database::DBErr,
+        generator::stub::{DateGenStub, IdGenStub},
+        schedule::{
+            event::stub::{event_after_c_stub, event_c_stub, event_stub, EventRepoStub},
+            user::stub::user_stub,
+        },
+    };
 
     use super::*;
 
@@ -79,7 +83,7 @@ mod test {
     }
 
     #[test]
-    fn test_user_c_err() {  
+    fn test_user_c_err() {
         assert_eq!(
             event_c(
                 &EventRepoStub::of_db_err(),
@@ -91,5 +95,4 @@ mod test {
             Err(EventErr::DB(DBErr))
         );
     }
-
 }

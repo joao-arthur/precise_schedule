@@ -5,7 +5,7 @@ use entry::{
         event_r_many, event_r_one,
     },
     health_controller::health_r,
-    user_controller::{user_c, user_login, user_r, user_u},
+    user_controller::{user_c_endpoint, user_login, user_r, user_u},
 };
 
 pub mod domain;
@@ -37,5 +37,5 @@ fn rocket() -> _ {
                 event_r_one
             ],
         )
-        .mount("/user", routes![user_c, user_r, user_u, user_login])
+        .mount("/user", routes![user_c_endpoint, user_r, user_u, user_login])
 }
