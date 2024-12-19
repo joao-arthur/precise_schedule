@@ -69,8 +69,10 @@ pub mod stub {
         #[test]
         fn test_session_service_stub() {
             assert_eq!(
-                SessionServiceStub::default()
-                    .encode(&user_stub(), &DateTimeGenStub(String::from("2024-12-18T18:02:41Z"), 1734555761)),
+                SessionServiceStub::default().encode(
+                    &user_stub(),
+                    &DateTimeGenStub(String::from("2024-12-18T18:02:41Z"), 1734555761)
+                ),
                 Ok(session_stub())
             );
             assert_eq!(
@@ -78,8 +80,10 @@ pub mod stub {
                 Ok(String::from("id"))
             );
             assert_eq!(
-                SessionServiceStub::of_session_err()
-                    .encode(&user_stub(), &DateTimeGenStub(String::from("2024-12-18T18:02:41Z"), 1734555761)),
+                SessionServiceStub::of_session_err().encode(
+                    &user_stub(),
+                    &DateTimeGenStub(String::from("2024-12-18T18:02:41Z"), 1734555761)
+                ),
                 Err(SessionErr::Encode(SessionEncodeErr))
             );
             assert_eq!(

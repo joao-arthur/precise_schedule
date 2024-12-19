@@ -1,42 +1,10 @@
-use std::sync::OnceLock;
-
 use rocket::serde::{json::Json, Deserialize, Serialize};
 
-use crate::{
-    domain::schedule::user::create::{user_c, UserC},
-    infra::{
-        generator::{DateTimeGenImpl, IdGenUUID4},
-        schedule::user::repo_vec::UserRepoVec,
-        session::SessionServiceJWT,
-        validation::ValidatorCustom,
-    },
+use crate::domain::schedule::user::create::{user_c, UserC};
+
+use super::deps::{
+    get_date_time_gen, get_id_gen, get_session_service, get_user_repo, get_validator,
 };
-
-static USER_REPO: OnceLock<UserRepoVec> = OnceLock::new();
-static ID_GEN: OnceLock<IdGenUUID4> = OnceLock::new();
-static DATE_TIME_GEN: OnceLock<DateTimeGenImpl> = OnceLock::new();
-static VALIDATOR: OnceLock<ValidatorCustom> = OnceLock::new();
-static SESSION_SERVICE: OnceLock<SessionServiceJWT> = OnceLock::new();
-
-pub fn get_user_repo() -> &'static UserRepoVec {
-    USER_REPO.get_or_init(|| UserRepoVec::default())
-}
-
-pub fn get_id_gen() -> &'static IdGenUUID4 {
-    ID_GEN.get_or_init(|| IdGenUUID4)
-}
-
-pub fn get_date_time_gen() -> &'static DateTimeGenImpl {
-    DATE_TIME_GEN.get_or_init(|| DateTimeGenImpl)
-}
-
-pub fn get_validator() -> &'static ValidatorCustom {
-    VALIDATOR.get_or_init(|| ValidatorCustom)
-}
-
-pub fn get_session_service() -> &'static SessionServiceJWT {
-    SESSION_SERVICE.get_or_init(|| SessionServiceJWT)
-}
 
 #[derive(Deserialize, Serialize, Debug)]
 #[serde(crate = "rocket::serde")]
