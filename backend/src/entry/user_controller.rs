@@ -1,7 +1,4 @@
-use std::{
-    cell::OnceCell,
-    sync::{OnceLock, RwLock},
-};
+use std::sync::OnceLock;
 
 use rocket::serde::{json::Json, Deserialize, Serialize};
 
@@ -83,7 +80,7 @@ pub struct Session {
 }
 
 #[post("/", format = "application/json", data = "<user>")]
-pub fn user_c_endpoint(user: Json<UserCCDD<'_>>) -> Json<UserCResult> {
+pub fn endpoint_user_c(user: Json<UserCCDD<'_>>) -> Json<UserCResult> {
     let user__ = UserC {
         email: user.email.to_string(),
         first_name: user.first_name.to_string(),
@@ -120,10 +117,10 @@ pub fn user_c_endpoint(user: Json<UserCCDD<'_>>) -> Json<UserCResult> {
 }
 
 #[put("/", format = "application/json")]
-pub fn user_u() {}
+pub fn endpoint_user_u() {}
 
 #[get("/", format = "application/json")]
-pub fn user_r() {}
+pub fn endpoint_user_r() {}
 
 #[post("/login", format = "application/json")]
-pub fn user_login() {}
+pub fn endpoint_user_login() {}

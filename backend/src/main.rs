@@ -1,11 +1,12 @@
 use entry::{
     event_controller::{
-        event_appointment_c, event_appointment_u, event_birthday_c, event_birthday_u, event_d,
-        event_date_c, event_date_u, event_meeting_c, event_meeting_u, event_party_c, event_party_u,
-        event_r_many, event_r_one,
+        endpoint_event_appointment_c, endpoint_event_appointment_u, endpoint_event_birthday_c,
+        endpoint_event_birthday_u, endpoint_event_d, endpoint_event_date_c, endpoint_event_date_u,
+        endpoint_event_meeting_c, endpoint_event_meeting_u, endpoint_event_party_c,
+        endpoint_event_party_u, endpoint_event_r_many, endpoint_event_r_one,
     },
-    health_controller::health_r,
-    user_controller::{user_c_endpoint, user_login, user_r, user_u},
+    health_controller::endpoint_health_r,
+    user_controller::{endpoint_user_c, endpoint_user_login, endpoint_user_r, endpoint_user_u},
 };
 
 pub mod domain;
@@ -18,24 +19,27 @@ extern crate rocket;
 #[launch]
 fn rocket() -> _ {
     rocket::build()
-        .mount("/", routes![health_r])
+        .mount("/", routes![endpoint_health_r])
         .mount(
             "/event",
             routes![
-                event_appointment_c,
-                event_appointment_u,
-                event_birthday_c,
-                event_birthday_u,
-                event_d,
-                event_date_c,
-                event_date_u,
-                event_meeting_c,
-                event_meeting_u,
-                event_party_c,
-                event_party_u,
-                event_r_many,
-                event_r_one
+                endpoint_event_appointment_c,
+                endpoint_event_appointment_u,
+                endpoint_event_birthday_c,
+                endpoint_event_birthday_u,
+                endpoint_event_d,
+                endpoint_event_date_c,
+                endpoint_event_date_u,
+                endpoint_event_meeting_c,
+                endpoint_event_meeting_u,
+                endpoint_event_party_c,
+                endpoint_event_party_u,
+                endpoint_event_r_many,
+                endpoint_event_r_one
             ],
         )
-        .mount("/user", routes![user_c_endpoint, user_r, user_u, user_login])
+        .mount(
+            "/user",
+            routes![endpoint_user_c, endpoint_user_r, endpoint_user_u, endpoint_user_login],
+        )
 }
