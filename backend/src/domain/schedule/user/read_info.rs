@@ -28,7 +28,7 @@ pub fn user_r_info_by_id(repo: &dyn UserRepo, id: &String) -> Result<UserInfo, U
 }
 
 #[cfg(test)]
-pub mod test {
+mod test {
     use crate::domain::{
         database::DBErr,
         schedule::user::{

@@ -1,4 +1,4 @@
-use crate::domain::generator::{DateGen, IdGen};
+use crate::domain::generator::{DateTimeGen, IdGen};
 
 use super::{
     error::EventErr,
@@ -36,12 +36,12 @@ pub fn event_from_c(event_c: EventC, id: String, user_id: String, created_at: St
 pub fn event_c(
     repo: &dyn EventRepo,
     id_gen: &dyn IdGen,
-    date_gen: &dyn DateGen,
+    date_time_gen: &dyn DateTimeGen,
     event_c: EventC,
     user_id: String,
 ) -> Result<Event, EventErr> {
     let id = id_gen.gen();
-    let now = date_gen.gen();
+    let now = date_time_gen.now_as_iso();
     let event = event_from_c(event_c, id, user_id, now);
     repo.c(&event).map_err(EventErr::DB)?;
     Ok(event)
@@ -51,7 +51,7 @@ pub fn event_c(
 mod test {
     use crate::domain::{
         database::DBErr,
-        generator::stub::{DateGenStub, IdGenStub},
+        generator::stub::{DateTimeGenStub, IdGenStub},
         schedule::{
             event::stub::{event_after_c_stub, event_c_stub, event_stub, EventRepoStub},
             user::stub::user_stub,
@@ -74,7 +74,7 @@ mod test {
             event_c(
                 &EventRepoStub::default(),
                 &IdGenStub(event_stub().id),
-                &DateGenStub(event_stub().created_at),
+                &DateTimeGenStub(event_stub().created_at, 1734555761),
                 event_c_stub(),
                 user_stub().id
             ),
@@ -88,7 +88,7 @@ mod test {
             event_c(
                 &EventRepoStub::of_db_err(),
                 &IdGenStub(user_stub().id),
-                &DateGenStub(user_stub().created_at),
+                &DateTimeGenStub(user_stub().created_at, 1734555761),
                 event_c_stub(),
                 user_stub().id
             ),

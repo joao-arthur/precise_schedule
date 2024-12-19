@@ -1,7 +1,7 @@
 use std::{collections::HashMap, sync::LazyLock};
 
 use crate::domain::{
-    generator::TimeGen,
+    generator::DateTimeGen,
     session::{Session, SessionService},
     validation::{Schema, Validator, Value, V},
 };
@@ -35,7 +35,7 @@ static USER_LOGIN_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
 pub fn user_login(
     validator: &dyn Validator,
     repo: &dyn UserRepo,
-    time_gen: &dyn TimeGen,
+    date_time_gen: &dyn DateTimeGen,
     session_service: &dyn SessionService,
     user_cred: UserCred,
 ) -> Result<Session, UserErr> {
@@ -45,7 +45,7 @@ pub fn user_login(
     ]));
     validator.validate(&USER_LOGIN_SCHEMA, &input_value).map_err(UserErr::Schema)?;
     let user = user_r_by_cred(repo, &user_cred)?;
-    let session = session_service.encode(&user, time_gen).map_err(UserErr::Session)?;
+    let session = session_service.encode(&user, date_time_gen).map_err(UserErr::Session)?;
     Ok(session)
 }
 
@@ -53,7 +53,7 @@ pub fn user_login(
 mod test {
     use crate::domain::{
         database::DBErr,
-        generator::stub::TimeGenStub,
+        generator::stub::DateTimeGenStub,
         schedule::user::stub::{user_cred_stub, UserRepoStub},
         session::{
             stub::{session_stub, SessionServiceStub},
@@ -70,7 +70,7 @@ mod test {
             user_login(
                 &ValidatorStub(Ok(())),
                 &UserRepoStub::default(),
-                &TimeGenStub(1734555761),
+                &DateTimeGenStub(String::from("2024-12-18T18:02:41Z"), 1734555761),
                 &SessionServiceStub::default(),
                 user_cred_stub()
             ),
@@ -84,7 +84,7 @@ mod test {
             user_login(
                 &ValidatorStub(Ok(())),
                 &UserRepoStub::of_db_err(),
-                &TimeGenStub(1734555761),
+                &DateTimeGenStub(String::from("2024-12-18T18:02:41Z"), 1734555761),
                 &SessionServiceStub::default(),
                 user_cred_stub()
             ),
@@ -97,7 +97,7 @@ mod test {
                     vec![VErr::Required]
                 )]))),
                 &UserRepoStub::default(),
-                &TimeGenStub(1734555761),
+                &DateTimeGenStub(String::from("2024-12-18T18:02:41Z"), 1734555761),
                 &SessionServiceStub::default(),
                 user_cred_stub()
             ),
@@ -110,7 +110,7 @@ mod test {
             user_login(
                 &ValidatorStub(Ok(())),
                 &UserRepoStub::default(),
-                &TimeGenStub(1734555761),
+                &DateTimeGenStub(String::from("2024-12-18T18:02:41Z"), 1734555761),
                 &SessionServiceStub::of_session_err(),
                 user_cred_stub()
             ),

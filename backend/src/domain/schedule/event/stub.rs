@@ -17,8 +17,8 @@ pub fn event_stub() -> Event {
         frequency: Some(EventFrequency::D2),
         weekend_repeat: Some(true),
         user: String::from("a6edc906-2f9f-5fb2-a373-efac406f0ef2"),
-        created_at: String::from("2025-02-05T22:49:51.279Z"),
-        updated_at: String::from("2025-04-18T10:23:25.158Z"),
+        created_at: String::from("2025-02-05T22:49:51Z"),
+        updated_at: String::from("2025-04-18T10:23:25Z"),
     }
 }
 
@@ -35,7 +35,7 @@ pub fn event_c_stub() -> EventC {
 }
 
 pub fn event_after_c_stub() -> Event {
-    Event { updated_at: String::from("2025-02-05T22:49:51.279Z"), ..event_stub() }
+    Event { updated_at: String::from("2025-02-05T22:49:51Z"), ..event_stub() }
 }
 
 pub struct EventRepoStub(Result<(), DBErr>, Result<Option<Event>, DBErr>);

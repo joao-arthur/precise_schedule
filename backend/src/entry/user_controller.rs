@@ -5,7 +5,7 @@ use rocket::serde::{json::Json, Deserialize, Serialize};
 use crate::{
     domain::schedule::user::create::{user_c, UserC},
     infra::{
-        generator::{DateGenChrono, IdGenUUID4, TimeGenUnix},
+        generator::{DateTimeGenImpl, IdGenUUID4},
         schedule::user::repo_vec::UserRepoVec,
         session::SessionServiceJWT,
         validation::ValidatorCustom,
@@ -14,8 +14,7 @@ use crate::{
 
 static USER_REPO: OnceLock<UserRepoVec> = OnceLock::new();
 static ID_GEN: OnceLock<IdGenUUID4> = OnceLock::new();
-static DATE_GEN: OnceLock<DateGenChrono> = OnceLock::new();
-static TIME_GEN: OnceLock<TimeGenUnix> = OnceLock::new();
+static DATE_TIME_GEN: OnceLock<DateTimeGenImpl> = OnceLock::new();
 static VALIDATOR: OnceLock<ValidatorCustom> = OnceLock::new();
 static SESSION_SERVICE: OnceLock<SessionServiceJWT> = OnceLock::new();
 
@@ -27,12 +26,8 @@ pub fn get_id_gen() -> &'static IdGenUUID4 {
     ID_GEN.get_or_init(|| IdGenUUID4)
 }
 
-pub fn get_date_gen() -> &'static DateGenChrono {
-    DATE_GEN.get_or_init(|| DateGenChrono)
-}
-
-pub fn get_time_gen() -> &'static TimeGenUnix {
-    TIME_GEN.get_or_init(|| TimeGenUnix)
+pub fn get_date_time_gen() -> &'static DateTimeGenImpl {
+    DATE_TIME_GEN.get_or_init(|| DateTimeGenImpl)
 }
 
 pub fn get_validator() -> &'static ValidatorCustom {
@@ -81,7 +76,7 @@ pub struct Session {
 
 #[post("/", format = "application/json", data = "<user>")]
 pub fn endpoint_user_c(user: Json<UserCCDD<'_>>) -> Json<UserCResult> {
-    let user__ = UserC {
+    let user = UserC {
         email: user.email.to_string(),
         first_name: user.first_name.to_string(),
         birthdate: user.birthdate.to_string(),
@@ -94,10 +89,9 @@ pub fn endpoint_user_c(user: Json<UserCCDD<'_>>) -> Json<UserCResult> {
         get_validator(),
         repo,
         get_id_gen(),
-        get_date_gen(),
-        get_time_gen(),
+        get_date_time_gen(),
         get_session_service(),
-        user__,
+        user,
     )
     .unwrap();
 

@@ -9,7 +9,7 @@ pub fn user_r_by_id(repo: &dyn UserRepo, id: &str) -> Result<User, UserErr> {
 }
 
 #[cfg(test)]
-pub mod test {
+mod test {
     use crate::domain::{
         database::DBErr,
         schedule::user::stub::{user_stub, UserRepoStub},
