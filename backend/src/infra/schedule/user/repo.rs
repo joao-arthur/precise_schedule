@@ -69,7 +69,9 @@ impl UserRepo for UserRepoMemory {
 
 #[cfg(test)]
 mod test {
-    use crate::domain::schedule::user::stub::{user_after_u_stub, user_cred_stub, user_stub, user_unique_stub_3};
+    use crate::domain::schedule::user::stub::{
+        user_after_u_stub, user_cred_stub, user_stub, user_unique_stub_3,
+    };
 
     use super::*;
 
@@ -78,31 +80,46 @@ mod test {
 
         assert_eq!(repo.r_by_id(&user_stub().id), Ok(None));
         assert_eq!(repo.r_by_cred(&user_cred_stub()), Ok(None));
-        assert_eq!(repo.r_count_unique_info(&user_unique_stub_3()), Ok(UserUniqueInfoCount { username: 0, email: 0 }));
+        assert_eq!(
+            repo.r_count_unique_info(&user_unique_stub_3()),
+            Ok(UserUniqueInfoCount { username: 0, email: 0 })
+        );
 
         assert_eq!(repo.d(&user_stub().id), Ok(()));
         assert_eq!(repo.u(&user_stub()), Ok(()));
-    
+
         assert_eq!(repo.r_by_id(&user_stub().id), Ok(None));
         assert_eq!(repo.r_by_cred(&user_cred_stub()), Ok(None));
-        assert_eq!(repo.r_count_unique_info(&user_unique_stub_3()), Ok(UserUniqueInfoCount { username: 0, email: 0 }));
+        assert_eq!(
+            repo.r_count_unique_info(&user_unique_stub_3()),
+            Ok(UserUniqueInfoCount { username: 0, email: 0 })
+        );
 
         assert_eq!(repo.c(&user_stub()), Ok(()));
 
         assert_eq!(repo.r_by_id(&user_stub().id), Ok(Some(user_stub())));
         assert_eq!(repo.r_by_cred(&user_cred_stub()), Ok(Some(user_stub())));
-        assert_eq!(repo.r_count_unique_info(&user_unique_stub_3()), Ok(UserUniqueInfoCount { username: 1, email: 1 }));
+        assert_eq!(
+            repo.r_count_unique_info(&user_unique_stub_3()),
+            Ok(UserUniqueInfoCount { username: 1, email: 1 })
+        );
 
         assert_eq!(repo.u(&user_after_u_stub()), Ok(()));
 
         assert_eq!(repo.r_by_id(&user_stub().id), Ok(Some(user_after_u_stub())));
         assert_eq!(repo.r_by_cred(&user_cred_stub()), Ok(Some(user_after_u_stub())));
-        assert_eq!(repo.r_count_unique_info(&user_unique_stub_3()), Ok(UserUniqueInfoCount { username: 0, email: 0 }));
+        assert_eq!(
+            repo.r_count_unique_info(&user_unique_stub_3()),
+            Ok(UserUniqueInfoCount { username: 0, email: 0 })
+        );
 
         assert_eq!(repo.d(&user_stub().id), Ok(()));
 
         assert_eq!(repo.r_by_id(&user_stub().id), Ok(None));
         assert_eq!(repo.r_by_cred(&user_cred_stub()), Ok(None));
-        assert_eq!(repo.r_count_unique_info(&user_unique_stub_3()), Ok(UserUniqueInfoCount { username: 0, email: 0 }));
+        assert_eq!(
+            repo.r_count_unique_info(&user_unique_stub_3()),
+            Ok(UserUniqueInfoCount { username: 0, email: 0 })
+        );
     }
 }

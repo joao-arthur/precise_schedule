@@ -9,7 +9,7 @@ use crate::{
     },
     infra::{
         generator::{DateTimeGenImpl, IdGenUUID4},
-        schedule::user::repo_vec::UserRepoMemory,
+        schedule::user::repo::UserRepoMemory,
         session::SessionServiceJWT,
         validation::ValidatorCustom,
     },

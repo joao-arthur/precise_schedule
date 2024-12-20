@@ -40,18 +40,18 @@ mod test {
         let re =
             Regex::new(r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$").unwrap();
         let id = IdGenUUID4.gen();
-        assert_eq!(re.is_match(&id), true);
+        assert!(re.is_match(&id));
     }
 
     #[test]
     fn test_date_time_gen_now_as_iso() {
         let re = Regex::new(r"^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$").unwrap();
         let curr_as_iso = DateTimeGenImpl.now_as_iso();
-        assert_eq!(re.is_match(&curr_as_iso), true);
+        assert!(re.is_match(&curr_as_iso));
     }
 
     #[test]
     fn test_date_time_gen_now_as_epoch() {
-        assert_eq!(DateTimeGenImpl.now_as_epoch() > EPOCH_2024, true)
+        assert!(DateTimeGenImpl.now_as_epoch() > EPOCH_2024)
     }
 }
