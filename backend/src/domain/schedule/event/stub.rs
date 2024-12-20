@@ -1,4 +1,4 @@
-use crate::domain::database::DBErr;
+use crate::domain::database::{DBErr, DBOp};
 
 use super::{
     create::EventC,
@@ -38,18 +38,18 @@ pub fn event_after_c_stub() -> Event {
     Event { updated_at: String::from("2025-02-05T22:49:51Z"), ..event_stub() }
 }
 
-pub struct EventRepoStub(Result<(), DBErr>, Result<Option<Event>, DBErr>);
+pub struct EventRepoStub(DBOp<()>, Result<Option<Event>, DBErr>);
 
 impl EventRepo for EventRepoStub {
-    fn c(&self, _: &Event) -> Result<(), DBErr> {
+    fn c(&self, _: &Event) -> DBOp<()> {
         self.0.clone()
     }
 
-    fn u(&self, _: &Event) -> Result<(), DBErr> {
+    fn u(&self, _: &Event) -> DBOp<()> {
         self.0.clone()
     }
 
-    fn d(&self, _: &String) -> Result<(), DBErr> {
+    fn d(&self, _: &String) -> DBOp<()> {
         self.0.clone()
     }
 

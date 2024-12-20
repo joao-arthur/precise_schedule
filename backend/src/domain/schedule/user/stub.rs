@@ -1,4 +1,4 @@
-use crate::domain::database::DBErr;
+use crate::domain::database::{DBErr, DBOp};
 
 use super::{
     create::UserC,
@@ -84,22 +84,18 @@ pub fn user_info_stub() -> UserInfo {
     }
 }
 
-pub struct UserRepoStub(
-    Result<(), DBErr>,
-    Result<Option<User>, DBErr>,
-    Result<UserUniqueInfoCount, DBErr>,
-);
+pub struct UserRepoStub(DBOp<()>, Result<Option<User>, DBErr>, Result<UserUniqueInfoCount, DBErr>);
 
 impl UserRepo for UserRepoStub {
-    fn c(&self, _: &User) -> Result<(), DBErr> {
+    fn c(&self, _: &User) -> DBOp<()> {
         self.0.clone()
     }
 
-    fn u(&self, _: &User) -> Result<(), DBErr> {
+    fn u(&self, _: &User) -> DBOp<()> {
         self.0.clone()
     }
 
-    fn d(&self, _: &String) -> Result<(), DBErr> {
+    fn d(&self, _: &String) -> DBOp<()> {
         self.0.clone()
     }
 

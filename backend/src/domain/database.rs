@@ -9,26 +9,28 @@ impl fmt::Display for DBErr {
     }
 }
 
+pub type DBOp<T> = Result<T, DBErr>;
+
 pub trait DB {
-    fn c(&self, ent: String) -> Result<(), DBErr>;
-    fn u(&self, ent: String) -> Result<(), DBErr>;
-    fn d(&self, ent: String) -> Result<(), DBErr>;
+    fn c(&self, ent: String) -> DBOp<()>;
+    fn u(&self, ent: String) -> DBOp<()>;
+    fn d(&self, ent: String) -> DBOp<()>;
 }
 
 #[cfg(test)]
 pub mod test {
     use super::*;
 
-    pub struct DBStub(Result<(), DBErr>);
+    pub struct DBStub(DBOp<()>);
 
     impl DB for DBStub {
-        fn c(&self, _: String) -> Result<(), DBErr> {
+        fn c(&self, _: String) -> DBOp<()> {
             self.0.clone()
         }
-        fn u(&self, _: String) -> Result<(), DBErr> {
+        fn u(&self, _: String) -> DBOp<()> {
             self.0.clone()
         }
-        fn d(&self, _: String) -> Result<(), DBErr> {
+        fn d(&self, _: String) -> DBOp<()> {
             self.0.clone()
         }
     }

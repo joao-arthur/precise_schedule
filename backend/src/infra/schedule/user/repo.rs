@@ -1,7 +1,7 @@
 use std::cell::RefCell;
 
 use crate::domain::{
-    database::DBErr,
+    database::{DBErr, DBOp},
     schedule::user::{
         login::UserCred,
         model::User,
@@ -23,12 +23,12 @@ impl Default for UserRepoMemory {
 unsafe impl Sync for UserRepoMemory {}
 
 impl UserRepo for UserRepoMemory {
-    fn c(&self, user: &User) -> Result<(), DBErr> {
+    fn c(&self, user: &User) -> DBOp<()> {
         self.users.borrow_mut().push(user.clone());
         Ok(())
     }
 
-    fn u(&self, user: &User) -> Result<(), DBErr> {
+    fn u(&self, user: &User) -> DBOp<()> {
         let pos = self.users.borrow().iter().position(|u| u.id == user.id);
         if let Some(pos) = pos {
             self.users.borrow_mut()[pos] = user.clone();
@@ -36,7 +36,7 @@ impl UserRepo for UserRepoMemory {
         Ok(())
     }
 
-    fn d(&self, id: &String) -> Result<(), DBErr> {
+    fn d(&self, id: &String) -> DBOp<()> {
         let pos = self.users.borrow().iter().position(|u| u.id == *id);
         if let Some(pos) = pos {
             self.users.borrow_mut().swap_remove(pos);
