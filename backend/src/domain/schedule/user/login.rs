@@ -6,7 +6,7 @@ use crate::domain::{
     validation::{Schema, Validator, Value, V},
 };
 
-use super::{error::UserErr, read_by_cred::user_r_by_cred, repo::UserRepo};
+use super::{error::UserErr, read::user_r_by_cred, repo::UserRepo};
 
 pub struct UserCred {
     pub username: String,

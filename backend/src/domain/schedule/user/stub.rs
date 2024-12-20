@@ -4,7 +4,7 @@ use super::{
     create::UserC,
     login::UserCred,
     model::User,
-    read_info::UserInfo,
+    read::UserInfo,
     repo::UserRepo,
     unique_info::{UserUniqueInfo, UserUniqueInfoCount},
     update::UserU,

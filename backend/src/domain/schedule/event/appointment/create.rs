@@ -37,7 +37,7 @@ mod test {
     #[test]
     fn test_build_event_create() {
         let appointment = AppointmentC {
-            name: String::from("Party"),
+            name: String::from("Dentist"),
             day: String::from("2024-03-31"),
             begin: String::from("18:00"),
             end: String::from("22:00"),
@@ -45,7 +45,7 @@ mod test {
             weekend_repeat: Some(true),
         };
         let create_event = EventCreateModel {
-            name: String::from("Party"),
+            name: String::from("Dentist"),
             day: String::from("2024-03-31"),
             begin: String::from("18:00"),
             end: String::from("22:00"),

@@ -9,7 +9,7 @@ use crate::domain::{
 use super::{
     error::UserErr,
     model::User,
-    read_by_id::user_r_by_id,
+    read::user_r_by_id,
     repo::UserRepo,
     unique_info::{user_u_unique_info_is_valid, UserUniqueInfo},
 };
@@ -52,14 +52,13 @@ static USER_U_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
 
 fn user_from_u(user_u: UserU, user: User, updated_at: String) -> User {
     User {
-        id: user.id,
         first_name: user_u.first_name,
         birthdate: user_u.birthdate,
         email: user_u.email,
         username: user_u.username,
         password: user_u.password,
-        created_at: user.created_at,
         updated_at,
+        ..user
     }
 }
 
@@ -99,7 +98,7 @@ mod test {
         database::DBErr,
         generator::stub::DateTimeGenStub,
         schedule::user::{
-            read_by_id::UserIdNotFound,
+            read::UserIdNotFound,
             stub::{user_after_u_stub, user_stub, user_u_stub, UserRepoStub},
             unique_info::{UserUniqueInfoCount, UserUniqueInfoFieldErr},
         },

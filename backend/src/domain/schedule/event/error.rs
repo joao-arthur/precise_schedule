@@ -1,6 +1,6 @@
 use crate::domain::{database::DBErr, validation::SchemaErr};
 
-use super::read_by_id::EventIdNotFoundErr;
+use super::read::EventIdNotFoundErr;
 
 #[derive(PartialEq, Debug)]
 pub enum EventErr {

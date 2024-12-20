@@ -1,4 +1,4 @@
-use super::{error::UserErr, model::User, read_by_id::user_r_by_id, repo::UserRepo};
+use super::{error::UserErr, model::User, read::user_r_by_id, repo::UserRepo};
 
 pub fn user_d(repo: &dyn UserRepo, id: String) -> Result<User, UserErr> {
     let old_user = user_r_by_id(repo, &id)?;
@@ -12,7 +12,7 @@ mod test {
     use crate::domain::{
         database::DBErr,
         schedule::user::{
-            read_by_id::UserIdNotFound,
+            read::UserIdNotFound,
             stub::{user_stub, UserRepoStub},
         },
     };
