@@ -84,55 +84,77 @@ pub fn user_info_stub() -> UserInfo {
     }
 }
 
-pub struct UserRepoStub(DBOp<()>, Result<Option<User>, DBErr>, Result<UserUniqueInfoCount, DBErr>);
+pub struct UserRepoStub {
+    err: bool,
+    user: Option<User>,
+    user_unique_count: UserUniqueInfoCount,
+}
 
 impl UserRepo for UserRepoStub {
     fn c(&self, _: &User) -> DBOp<()> {
-        self.0.clone()
+        if self.err {
+            return Err(DBErr);
+        }
+        Ok(())
     }
 
     fn u(&self, _: &User) -> DBOp<()> {
-        self.0.clone()
+        if self.err {
+            return Err(DBErr);
+        }
+        Ok(())
     }
 
     fn d(&self, _: &str) -> DBOp<()> {
-        self.0.clone()
+        if self.err {
+            return Err(DBErr);
+        }
+        Ok(())
     }
 
-    fn r_by_id(&self, _: &str) -> Result<Option<User>, DBErr> {
-        self.1.clone()
+    fn r_by_id(&self, _: &str) -> DBOp<Option<User>> {
+        if self.err {
+            return Err(DBErr);
+        }
+        Ok(self.user.clone())
     }
 
-    fn r_by_cred(&self, _: &UserCred) -> Result<Option<User>, DBErr> {
-        self.1.clone()
+    fn r_by_cred(&self, _: &UserCred) -> DBOp<Option<User>> {
+        if self.err {
+            return Err(DBErr);
+        }
+        Ok(self.user.clone())
     }
 
-    fn r_count_unique_info(&self, _: &UserUniqueInfo) -> Result<UserUniqueInfoCount, DBErr> {
-        self.2.clone()
+    fn r_count_unique_info(&self, _: &UserUniqueInfo) -> DBOp<UserUniqueInfoCount> {
+        if self.err {
+            return Err(DBErr);
+        }
+        Ok(self.user_unique_count.clone())
     }
 }
 
 impl Default for UserRepoStub {
     fn default() -> Self {
-        UserRepoStub(
-            Ok(()),
-            Ok(Some(user_stub())),
-            Ok(UserUniqueInfoCount { email: 0, username: 0 }),
-        )
+        UserRepoStub {
+            err: false,
+            user: Some(user_stub()),
+            user_unique_count: UserUniqueInfoCount { email: 0, username: 0 },
+        }
     }
 }
 
 impl UserRepoStub {
-    pub fn of_1(arg: Option<User>) -> Self {
-        UserRepoStub(UserRepoStub::default().0, Ok(arg), UserRepoStub::default().2)
+    pub fn of_none() -> Self {
+        UserRepoStub { user: None, ..Default::default() }
     }
 
-    pub fn of_2(arg: UserUniqueInfoCount) -> Self {
-        UserRepoStub(UserRepoStub::default().0, UserRepoStub::default().1, Ok(arg))
+    pub fn of_unique_info(user_unique_count: UserUniqueInfoCount) -> Self {
+        UserRepoStub { user_unique_count, ..Default::default() }
     }
 
     pub fn of_db_err() -> Self {
-        UserRepoStub(Err(DBErr), Err(DBErr), Err(DBErr))
+        UserRepoStub { err: true, ..Default::default() }
     }
 }
 
@@ -167,15 +189,15 @@ mod test {
     }
 
     #[test]
-    fn test_user_repo_stub_from_1() {
-        assert_eq!(UserRepoStub::of_1(None).r_by_cred(&user_cred_stub()), Ok(None));
-        assert_eq!(UserRepoStub::of_1(None).r_by_id(&user_stub().id), Ok(None));
+    fn test_user_repo_stub_of_none() {
+        assert_eq!(UserRepoStub::of_none().r_by_cred(&user_cred_stub()), Ok(None));
+        assert_eq!(UserRepoStub::of_none().r_by_id(&user_stub().id), Ok(None));
     }
 
     #[test]
-    fn test_user_repo_stub_from_2() {
+    fn test_user_repo_stub_of_unique_info() {
         assert_eq!(
-            UserRepoStub::of_2(UserUniqueInfoCount { username: 1, email: 0 })
+            UserRepoStub::of_unique_info(UserUniqueInfoCount { username: 1, email: 0 })
                 .r_count_unique_info(&user_unique_stub_1()),
             Ok(UserUniqueInfoCount { username: 1, email: 0 })
         );

@@ -51,7 +51,7 @@ mod test {
             Err(UserErr::DB(DBErr))
         );
         assert_eq!(
-            user_r_info_by_id(&UserRepoStub::of_1(None), &user_stub().id),
+            user_r_info_by_id(&UserRepoStub::of_none(), &user_stub().id),
             Err(UserErr::UserIdNotFound(UserIdNotFound))
         );
         assert_eq!(

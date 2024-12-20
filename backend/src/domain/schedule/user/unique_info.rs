@@ -125,7 +125,7 @@ mod test {
         );
         assert_eq!(
             user_c_unique_info_is_valid(
-                &UserRepoStub::of_2(UserUniqueInfoCount { username: 1, email: 0 }),
+                &UserRepoStub::of_unique_info(UserUniqueInfoCount { username: 1, email: 0 }),
                 &user_unique_stub_1()
             ),
             Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr {
@@ -135,7 +135,7 @@ mod test {
         );
         assert_eq!(
             user_c_unique_info_is_valid(
-                &UserRepoStub::of_2(UserUniqueInfoCount { username: 0, email: 1 }),
+                &UserRepoStub::of_unique_info(UserUniqueInfoCount { username: 0, email: 1 }),
                 &user_unique_stub_1()
             ),
             Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr {
@@ -145,7 +145,7 @@ mod test {
         );
         assert_eq!(
             user_c_unique_info_is_valid(
-                &UserRepoStub::of_2(UserUniqueInfoCount { username: 1, email: 1 }),
+                &UserRepoStub::of_unique_info(UserUniqueInfoCount { username: 1, email: 1 }),
                 &user_unique_stub_1()
             ),
             Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr {
@@ -167,7 +167,7 @@ mod test {
         );
         assert_eq!(
             user_u_unique_info_is_valid(
-                &UserRepoStub::of_2(UserUniqueInfoCount { username: 1, email: 0 }),
+                &UserRepoStub::of_unique_info(UserUniqueInfoCount { username: 1, email: 0 }),
                 &user_unique_stub_1(),
                 &user_unique_stub_1(),
             ),
@@ -175,7 +175,7 @@ mod test {
         );
         assert_eq!(
             user_u_unique_info_is_valid(
-                &UserRepoStub::of_2(UserUniqueInfoCount { username: 0, email: 1 }),
+                &UserRepoStub::of_unique_info(UserUniqueInfoCount { username: 0, email: 1 }),
                 &user_unique_stub_1(),
                 &user_unique_stub_1(),
             ),
@@ -183,7 +183,7 @@ mod test {
         );
         assert_eq!(
             user_u_unique_info_is_valid(
-                &UserRepoStub::of_2(UserUniqueInfoCount { username: 1, email: 1 }),
+                &UserRepoStub::of_unique_info(UserUniqueInfoCount { username: 1, email: 1 }),
                 &user_unique_stub_1(),
                 &user_unique_stub_1(),
             ),
@@ -191,7 +191,7 @@ mod test {
         );
         assert_eq!(
             user_u_unique_info_is_valid(
-                &UserRepoStub::of_2(UserUniqueInfoCount { username: 2, email: 1 }),
+                &UserRepoStub::of_unique_info(UserUniqueInfoCount { username: 2, email: 1 }),
                 &user_unique_stub_1(),
                 &user_unique_stub_1(),
             ),
@@ -199,7 +199,7 @@ mod test {
         );
         assert_eq!(
             user_u_unique_info_is_valid(
-                &UserRepoStub::of_2(UserUniqueInfoCount { username: 1, email: 2 }),
+                &UserRepoStub::of_unique_info(UserUniqueInfoCount { username: 1, email: 2 }),
                 &user_unique_stub_1(),
                 &user_unique_stub_1(),
             ),
@@ -227,7 +227,7 @@ mod test {
         );
         assert_eq!(
             user_u_unique_info_is_valid(
-                &UserRepoStub::of_2(UserUniqueInfoCount { username: 1, email: 0 }),
+                &UserRepoStub::of_unique_info(UserUniqueInfoCount { username: 1, email: 0 }),
                 &user_unique_stub_2(),
                 &user_unique_stub_1(),
             ),
@@ -238,7 +238,7 @@ mod test {
         );
         assert_eq!(
             user_u_unique_info_is_valid(
-                &UserRepoStub::of_2(UserUniqueInfoCount { username: 0, email: 1 }),
+                &UserRepoStub::of_unique_info(UserUniqueInfoCount { username: 0, email: 1 }),
                 &user_unique_stub_2(),
                 &user_unique_stub_1(),
             ),
@@ -249,7 +249,7 @@ mod test {
         );
         assert_eq!(
             user_u_unique_info_is_valid(
-                &UserRepoStub::of_2(UserUniqueInfoCount { username: 1, email: 1 }),
+                &UserRepoStub::of_unique_info(UserUniqueInfoCount { username: 1, email: 1 }),
                 &user_unique_stub_2(),
                 &user_unique_stub_1(),
             ),

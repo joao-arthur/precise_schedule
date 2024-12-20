@@ -160,7 +160,7 @@ mod test {
         assert_eq!(
             user_c(
                 &ValidatorStub(Ok(())),
-                &UserRepoStub::of_2(UserUniqueInfoCount { username: 2, email: 2 }),
+                &UserRepoStub::of_unique_info(UserUniqueInfoCount { username: 2, email: 2 }),
                 &IdGenStub(user_stub().id),
                 &DateTimeGenStub(user_stub().created_at, 1734555761),
                 &SessionServiceStub::default(),

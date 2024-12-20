@@ -3,6 +3,7 @@ use crate::domain::database::{DBErr, DBOp};
 use super::{
     create::EventC,
     model::{Event, EventCategory, EventFrequency},
+    read_info::EventInfo,
     repo::EventRepo,
 };
 
@@ -38,39 +39,73 @@ pub fn event_after_c_stub() -> Event {
     Event { updated_at: String::from("2025-02-05T22:49:51Z"), ..event_stub() }
 }
 
-pub struct EventRepoStub(DBOp<()>, Result<Option<Event>, DBErr>);
+pub fn event_info_stub() -> EventInfo {
+    EventInfo {
+        name: String::from("Party"),
+        day: String::from("2024-03-31"),
+        begin: String::from("18:00"),
+        end: String::from("22:00"),
+        category: EventCategory::Appointment,
+        frequency: Some(EventFrequency::D2),
+        weekend_repeat: Some(true),
+    }
+}
+
+pub struct EventRepoStub {
+    err: bool,
+    event: Option<Event>,
+}
 
 impl EventRepo for EventRepoStub {
     fn c(&self, _: &Event) -> DBOp<()> {
-        self.0.clone()
+        if self.err {
+            return Err(DBErr);
+        }
+        Ok(())
     }
 
     fn u(&self, _: &Event) -> DBOp<()> {
-        self.0.clone()
+        if self.err {
+            return Err(DBErr);
+        }
+        Ok(())
     }
 
     fn d(&self, _: &str) -> DBOp<()> {
-        self.0.clone()
+        if self.err {
+            return Err(DBErr);
+        }
+        Ok(())
     }
 
-    fn r_by_id(&self, _: &str) -> Result<Option<Event>, DBErr> {
-        self.1.clone()
+    fn r_by_id(&self, _: &str) -> DBOp<Option<Event>> {
+        if self.err {
+            return Err(DBErr);
+        }
+        Ok(self.event.clone())
+    }
+
+    fn r_by_user(&self, _: &str) -> DBOp<Vec<Event>> {
+        if self.err {
+            return Err(DBErr);
+        }
+        Ok(vec![self.event.clone()].iter().filter_map(|e| e.clone()).collect())
     }
 }
 
 impl Default for EventRepoStub {
     fn default() -> Self {
-        EventRepoStub(Ok(()), Ok(Some(event_stub())))
+        EventRepoStub { err: false, event: Some(event_stub()) }
     }
 }
 
 impl EventRepoStub {
-    pub fn of_1(arg: Option<Event>) -> Self {
-        EventRepoStub(EventRepoStub::default().0, Ok(arg))
+    pub fn of_none() -> Self {
+        EventRepoStub { event: None, ..Default::default() }
     }
 
     pub fn of_db_err() -> Self {
-        EventRepoStub(Err(DBErr), Err(DBErr))
+        EventRepoStub { err: true, ..Default::default() }
     }
 }
 
@@ -96,6 +131,6 @@ mod test {
 
     #[test]
     fn test_user_repo_stub_from_1() {
-        assert_eq!(EventRepoStub::of_1(None).r_by_id(&event_stub().id), Ok(None));
+        assert_eq!(EventRepoStub::of_none().r_by_id(&event_stub().id), Ok(None));
     }
 }

@@ -149,7 +149,7 @@ mod test {
         assert_eq!(
             user_u(
                 &ValidatorStub(Ok(())),
-                &UserRepoStub::of_1(None),
+                &UserRepoStub::of_none(),
                 &DateTimeGenStub(user_stub().updated_at, 1734555761),
                 &SessionServiceStub::default(),
                 user_stub().id,
@@ -177,7 +177,7 @@ mod test {
         assert_eq!(
             user_u(
                 &ValidatorStub(Ok(())),
-                &UserRepoStub::of_2(UserUniqueInfoCount { username: 2, email: 2 }),
+                &UserRepoStub::of_unique_info(UserUniqueInfoCount { username: 2, email: 2 }),
                 &DateTimeGenStub(user_stub().updated_at, 1734555761),
                 &SessionServiceStub::default(),
                 user_stub().id,

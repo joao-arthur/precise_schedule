@@ -29,7 +29,7 @@ mod test {
             Err(UserErr::DB(DBErr))
         );
         assert_eq!(
-            user_r_by_cred(&UserRepoStub::of_1(None), &user_cred_stub()),
+            user_r_by_cred(&UserRepoStub::of_none(), &user_cred_stub()),
             Err(UserErr::UserCredNotFound(UserCredNotFound))
         );
     }
