@@ -71,6 +71,10 @@ pub fn user_unique_stub_2() -> UserUniqueInfo {
     UserUniqueInfo { username: String::from("peter987"), email: String::from("peter@gmail.com") }
 }
 
+pub fn user_unique_stub_3() -> UserUniqueInfo {
+    UserUniqueInfo { username: String::from("paul_mc"), email: String::from("paul@gmail.com") }
+}
+
 pub fn user_info_stub() -> UserInfo {
     UserInfo {
         email: String::from("paul@gmail.com"),

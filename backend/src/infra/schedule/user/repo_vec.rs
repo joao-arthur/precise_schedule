@@ -10,19 +10,19 @@ use crate::domain::{
     },
 };
 
-pub struct UserRepoVec {
+pub struct UserRepoMemory {
     users: RefCell<Vec<User>>,
 }
 
-impl Default for UserRepoVec {
+impl Default for UserRepoMemory {
     fn default() -> Self {
-        UserRepoVec { users: RefCell::new(vec![]) }
+        UserRepoMemory { users: RefCell::new(vec![]) }
     }
 }
 
-unsafe impl Sync for UserRepoVec {}
+unsafe impl Sync for UserRepoMemory {}
 
-impl UserRepo for UserRepoVec {
+impl UserRepo for UserRepoMemory {
     fn c(&self, user: &User) -> Result<(), DBErr> {
         self.users.borrow_mut().push(user.clone());
         Ok(())
@@ -64,5 +64,45 @@ impl UserRepo for UserRepoVec {
         let email_count =
             self.users.borrow().iter().filter(|u| u.email == user_unique_info.email).count();
         Ok(UserUniqueInfoCount { username: username_count as u32, email: email_count as u32 })
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use crate::domain::schedule::user::stub::{user_after_u_stub, user_cred_stub, user_stub, user_unique_stub_3};
+
+    use super::*;
+
+    fn test_user_repo_vec() {
+        let repo = UserRepoMemory::default();
+
+        assert_eq!(repo.r_by_id(&user_stub().id), Ok(None));
+        assert_eq!(repo.r_by_cred(&user_cred_stub()), Ok(None));
+        assert_eq!(repo.r_count_unique_info(&user_unique_stub_3()), Ok(UserUniqueInfoCount { username: 0, email: 0 }));
+
+        assert_eq!(repo.d(&user_stub().id), Ok(()));
+        assert_eq!(repo.u(&user_stub()), Ok(()));
+    
+        assert_eq!(repo.r_by_id(&user_stub().id), Ok(None));
+        assert_eq!(repo.r_by_cred(&user_cred_stub()), Ok(None));
+        assert_eq!(repo.r_count_unique_info(&user_unique_stub_3()), Ok(UserUniqueInfoCount { username: 0, email: 0 }));
+
+        assert_eq!(repo.c(&user_stub()), Ok(()));
+
+        assert_eq!(repo.r_by_id(&user_stub().id), Ok(Some(user_stub())));
+        assert_eq!(repo.r_by_cred(&user_cred_stub()), Ok(Some(user_stub())));
+        assert_eq!(repo.r_count_unique_info(&user_unique_stub_3()), Ok(UserUniqueInfoCount { username: 1, email: 1 }));
+
+        assert_eq!(repo.u(&user_after_u_stub()), Ok(()));
+
+        assert_eq!(repo.r_by_id(&user_stub().id), Ok(Some(user_after_u_stub())));
+        assert_eq!(repo.r_by_cred(&user_cred_stub()), Ok(Some(user_after_u_stub())));
+        assert_eq!(repo.r_count_unique_info(&user_unique_stub_3()), Ok(UserUniqueInfoCount { username: 0, email: 0 }));
+
+        assert_eq!(repo.d(&user_stub().id), Ok(()));
+
+        assert_eq!(repo.r_by_id(&user_stub().id), Ok(None));
+        assert_eq!(repo.r_by_cred(&user_cred_stub()), Ok(None));
+        assert_eq!(repo.r_count_unique_info(&user_unique_stub_3()), Ok(UserUniqueInfoCount { username: 0, email: 0 }));
     }
 }

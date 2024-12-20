@@ -9,20 +9,20 @@ use crate::{
     },
     infra::{
         generator::{DateTimeGenImpl, IdGenUUID4},
-        schedule::user::repo_vec::UserRepoVec,
+        schedule::user::repo_vec::UserRepoMemory,
         session::SessionServiceJWT,
         validation::ValidatorCustom,
     },
 };
 
-static USER_REPO: OnceLock<UserRepoVec> = OnceLock::new();
+static USER_REPO: OnceLock<UserRepoMemory> = OnceLock::new();
 static ID_GEN: OnceLock<IdGenUUID4> = OnceLock::new();
 static DATE_TIME_GEN: OnceLock<DateTimeGenImpl> = OnceLock::new();
 static VALIDATOR: OnceLock<ValidatorCustom> = OnceLock::new();
 static SESSION_SERVICE: OnceLock<SessionServiceJWT> = OnceLock::new();
 
 pub fn get_user_repo() -> &'static dyn UserRepo {
-    USER_REPO.get_or_init(|| UserRepoVec::default())
+    USER_REPO.get_or_init(|| UserRepoMemory::default())
 }
 
 pub fn get_id_gen() -> &'static dyn IdGen {

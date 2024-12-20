@@ -56,7 +56,8 @@ mod test {
     use super::*;
 
     #[test]
-    fn test_event_frenquency_parse() {
+    fn test_event_frequency_parse() {
+        assert_eq!(EventFrequency::parse("365D"), None);
         assert_eq!(EventFrequency::parse("1D"), Some(EventFrequency::D1));
         assert_eq!(EventFrequency::parse("2D"), Some(EventFrequency::D2));
         assert_eq!(EventFrequency::parse("1W"), Some(EventFrequency::W1));

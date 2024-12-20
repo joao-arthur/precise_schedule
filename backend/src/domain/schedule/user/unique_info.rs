@@ -74,8 +74,12 @@ pub fn user_u_unique_info_is_valid(
 
 #[cfg(test)]
 mod test {
-    use crate::domain::schedule::user::stub::{
-        user_c_stub, user_stub, user_u_stub, user_unique_stub_1, user_unique_stub_2, UserRepoStub,
+    use crate::domain::{
+        database::DBErr,
+        schedule::user::stub::{
+            user_c_stub, user_stub, user_u_stub, user_unique_stub_1, user_unique_stub_2,
+            UserRepoStub,
+        },
     };
 
     use super::*;
@@ -115,6 +119,10 @@ mod test {
 
     #[test]
     fn test_user_c_unique_info_is_valid_err() {
+        assert_eq!(
+            user_c_unique_info_is_valid(&UserRepoStub::of_db_err(), &user_unique_stub_1()),
+            Err(UserErr::DB(DBErr)),
+        );
         assert_eq!(
             user_c_unique_info_is_valid(
                 &UserRepoStub::of_2(UserUniqueInfoCount { username: 1, email: 0 }),
@@ -209,6 +217,14 @@ mod test {
 
     #[test]
     fn user_u_unique_info_is_valid_err() {
+        assert_eq!(
+            user_u_unique_info_is_valid(
+                &UserRepoStub::of_db_err(),
+                &user_unique_stub_2(),
+                &user_unique_stub_1(),
+            ),
+            Err(UserErr::DB(DBErr)),
+        );
         assert_eq!(
             user_u_unique_info_is_valid(
                 &UserRepoStub::of_2(UserUniqueInfoCount { username: 1, email: 0 }),
