@@ -2,7 +2,7 @@ use crate::domain::schedule::event::create::EventCreateModel;
 use crate::domain::schedule::event::model::EventCategory;
 use crate::domain::schedule::event::model::EventFrequency;
 
-pub struct AppointmentCreateModel {
+pub struct AppointmentC {
     pub name: String,
     pub day: String,
     pub begin: String,
@@ -11,7 +11,7 @@ pub struct AppointmentCreateModel {
     pub weekend_repeat: Option<bool>,
 }
 
-pub fn build_event_create(event: AppointmentCreateModel) -> EventCreateModel {
+pub fn build_event_create(event: AppointmentC) -> EventCreateModel {
     EventCreateModel {
         name: event.name,
         day: event.day,
@@ -36,7 +36,7 @@ mod test {
 
     #[test]
     fn test_build_event_create() {
-        let appointment = AppointmentCreateModel {
+        let appointment = AppointmentC {
             name: String::from("Party"),
             day: String::from("2024-03-31"),
             begin: String::from("18:00"),
