@@ -156,7 +156,7 @@ mod test {
     }
 
     #[test]
-    fn user_u_unique_info_is_valid_ok() {
+    fn test_user_u_unique_info_is_valid_ok() {
         assert_eq!(
             user_u_unique_info_is_valid(
                 &UserRepoStub::default(),
@@ -216,7 +216,7 @@ mod test {
     }
 
     #[test]
-    fn user_u_unique_info_is_valid_err() {
+    fn test_user_u_unique_info_is_valid_err() {
         assert_eq!(
             user_u_unique_info_is_valid(
                 &UserRepoStub::of_db_err(),

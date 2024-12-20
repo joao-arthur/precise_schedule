@@ -40,6 +40,11 @@ mod test {
     use super::*;
 
     #[test]
+    fn test_user_info() {
+        assert_eq!(UserInfo::from(user_stub()), user_info_stub());
+    }
+
+    #[test]
     fn test_user_r_info_by_id() {
         assert_eq!(
             user_r_info_by_id(&UserRepoStub::of_db_err(), &user_stub().id),

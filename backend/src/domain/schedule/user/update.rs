@@ -111,7 +111,7 @@ mod test {
     };
 
     #[test]
-    fn test_user_from_c() {
+    fn test_user_from_u() {
         assert_eq!(
             user_from_u(user_u_stub(), user_stub(), user_stub().updated_at),
             user_after_u_stub()
