@@ -18,12 +18,12 @@ mod test {
     };
 
     #[test]
-    fn test_user_u_ok() {
+    fn test_user_d_ok() {
         assert_eq!(user_d(&UserRepoStub::default(), user_stub().id), Ok(user_stub()));
     }
 
     #[test]
-    fn test_user_u_err() {
+    fn test_user_d_err() {
         assert_eq!(user_d(&UserRepoStub::of_db_err(), user_stub().id), Err(UserErr::DB(DBErr)));
         assert_eq!(
             user_d(&UserRepoStub::of_none(), user_stub().id),
