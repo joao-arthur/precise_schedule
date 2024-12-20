@@ -29,14 +29,16 @@ impl UserRepo for UserRepoMemory {
     }
 
     fn u(&self, user: &User) -> Result<(), DBErr> {
-        if let Some(pos) = self.users.borrow().iter().position(|u| u.id == user.id) {
+        let pos = self.users.borrow().iter().position(|u| u.id == user.id);
+        if let Some(pos) = pos {
             self.users.borrow_mut()[pos] = user.clone();
         }
         Ok(())
     }
 
     fn d(&self, id: &String) -> Result<(), DBErr> {
-        if let Some(pos) = self.users.borrow().iter().position(|u| u.id == *id) {
+        let pos = self.users.borrow().iter().position(|u| u.id == *id);
+        if let Some(pos) = pos {
             self.users.borrow_mut().swap_remove(pos);
         }
         Ok(())
@@ -75,7 +77,8 @@ mod test {
 
     use super::*;
 
-    fn test_user_repo_vec() {
+    #[test]
+    fn test_user_repo_memory() {
         let repo = UserRepoMemory::default();
 
         assert_eq!(repo.r_by_id(&user_stub().id), Ok(None));
@@ -107,7 +110,7 @@ mod test {
         assert_eq!(repo.u(&user_after_u_stub()), Ok(()));
 
         assert_eq!(repo.r_by_id(&user_stub().id), Ok(Some(user_after_u_stub())));
-        assert_eq!(repo.r_by_cred(&user_cred_stub()), Ok(Some(user_after_u_stub())));
+        assert_eq!(repo.r_by_cred(&user_cred_stub()), Ok(None));
         assert_eq!(
             repo.r_count_unique_info(&user_unique_stub_3()),
             Ok(UserUniqueInfoCount { username: 0, email: 0 })

@@ -130,30 +130,3 @@ mod test {
         );
     }
 }
-
-// pub fn transform_to_value(val: &rocket::figment::value::Value) -> Value {
-//     match val {
-//         rocket::figment::value::Value::String(_, s) => Value::Str(s),
-//         rocket::figment::value::Value::Char(_, c) => Value::Str(String::from(c)),
-//         rocket::figment::value::Value::Bool(_, b) => Value::Bool(b),
-//         rocket::figment::value::Value::Num(_, n) => match n {
-//             rocket::figment::value::Num::U8(v) => Value::NumU(u64::from(v)),
-//             rocket::figment::value::Num::U16(v) => Value::NumU(u64::from(v)),
-//             rocket::figment::value::Num::U32(v) => Value::NumU(u64::from(v)),
-//             rocket::figment::value::Num::U64(v) => Value::NumU(v),
-//             rocket::figment::value::Num::U128(v) => Value::NumU(v as u64),
-//             rocket::figment::value::Num::USize(v) => Value::NumU(v as u64),
-//             rocket::figment::value::Num::I8(v) => Value::NumI(i64::from(v)),
-//             rocket::figment::value::Num::I16(v) => Value::NumI(i64::from(v)),
-//             rocket::figment::value::Num::I32(v) => Value::NumI(i64::from(v)),
-//             rocket::figment::value::Num::I64(v) => Value::NumI(v),
-//             rocket::figment::value::Num::I128(v) => Value::NumI(v as i64),
-//             rocket::figment::value::Num::ISize(v) => Value::NumI(v as i64),
-//             rocket::figment::value::Num::F32(v) => Value::NumF(f64::from(v)),
-//             rocket::figment::value::Num::F64(v) => Value::NumF(v),
-//         },
-//         rocket::figment::value::Value::Empty(_, __) => Value::Absent,
-//         rocket::figment::value::Value::Dict(_, obj) => Value::Obj(obj.into_iter().map(|f| (f.0, transform_to_value(f.1))).collect()),
-//         rocket::figment::value::Value::Array(_, arr) => Value::Arr(arr.into_iter().map(transform_to_value).collect()),
-//     }
-// }

@@ -26,11 +26,17 @@ pub fn dt_min(valid: &String, value: &Value) -> Result<(), DtMinErr> {
     match value {
         Value::Str(str_value) => {
             let valid_parts: Vec<&str> = valid.split('-').collect();
+            if valid_parts.len() != 3 {
+                return Err(DtMinErr);
+            }
             let valid_yyyy = valid_parts[0].parse::<u16>().map_err(|_| DtMinErr)?;
             let valid_mm = valid_parts[1].parse::<u16>().map_err(|_| DtMinErr)?;
             let valid_dd = valid_parts[2].parse::<u16>().map_err(|_| DtMinErr)?;
 
             let value_parts: Vec<&str> = str_value.split('-').collect();
+            if value_parts.len() != 3 {
+                return Err(DtMinErr);
+            }
             let value_yyyy = value_parts[0].parse::<u16>().map_err(|_| DtMinErr)?;
             let value_mm = value_parts[1].parse::<u16>().map_err(|_| DtMinErr)?;
             let value_dd = value_parts[2].parse::<u16>().map_err(|_| DtMinErr)?;
@@ -54,11 +60,17 @@ pub fn dt_max(valid: &String, value: &Value) -> Result<(), DtMaxErr> {
     match value {
         Value::Str(str_value) => {
             let valid_parts: Vec<&str> = valid.split('-').collect();
+            if valid_parts.len() != 3 {
+                return Err(DtMaxErr);
+            }
             let valid_yyyy = valid_parts[0].parse::<u16>().map_err(|_| DtMaxErr)?;
             let valid_mm = valid_parts[1].parse::<u16>().map_err(|_| DtMaxErr)?;
             let valid_dd = valid_parts[2].parse::<u16>().map_err(|_| DtMaxErr)?;
 
             let value_parts: Vec<&str> = str_value.split('-').collect();
+            if value_parts.len() != 3 {
+                return Err(DtMaxErr);
+            }
             let value_yyyy = value_parts[0].parse::<u16>().map_err(|_| DtMaxErr)?;
             let value_mm = value_parts[1].parse::<u16>().map_err(|_| DtMaxErr)?;
             let value_dd = value_parts[2].parse::<u16>().map_err(|_| DtMaxErr)?;
@@ -91,6 +103,8 @@ mod test {
     #[test]
     fn test_dt_err() {
         assert_eq!(dt(&Value::Str(String::from("28-10-2026"))), Err(DtErr));
+        assert_eq!(dt(&Value::Str(String::from("28-102026"))), Err(DtErr));
+        assert_eq!(dt(&Value::Str(String::from("2810-2026"))), Err(DtErr));
         assert_eq!(dt(&Value::Str(String::from("10-2026-28"))), Err(DtErr));
         assert_eq!(dt(&Value::Str(String::from("26-10-28"))), Err(DtErr));
         assert_eq!(dt(&Value::Str(String::from("026-10-28"))), Err(DtErr));
@@ -126,6 +140,15 @@ mod test {
 
     #[test]
     fn test_dt_min_err() {
+        assert_eq!(
+            dt_min(&String::from("2026-1028"), &Value::Str(String::from("2026-1027"))),
+            Err(DtMinErr)
+        );
+        assert_eq!(
+            dt_min(&String::from("202610-28"), &Value::Str(String::from("202610-27"))),
+            Err(DtMinErr)
+        );
+
         assert_eq!(
             dt_min(&String::from("2026-10-28"), &Value::Str(String::from("2026-10-27"))),
             Err(DtMinErr)
