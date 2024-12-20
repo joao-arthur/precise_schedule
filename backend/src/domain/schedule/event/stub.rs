@@ -49,7 +49,7 @@ impl EventRepo for EventRepoStub {
         self.0.clone()
     }
 
-    fn d(&self, _: &String) -> DBOp<()> {
+    fn d(&self, _: &str) -> DBOp<()> {
         self.0.clone()
     }
 

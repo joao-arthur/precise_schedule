@@ -95,7 +95,7 @@ impl UserRepo for UserRepoStub {
         self.0.clone()
     }
 
-    fn d(&self, _: &String) -> DBOp<()> {
+    fn d(&self, _: &str) -> DBOp<()> {
         self.0.clone()
     }
 

@@ -1,7 +1,7 @@
 use std::cell::RefCell;
 
 use crate::domain::{
-    database::{DBErr, DBOp},
+    database::DBOp,
     schedule::user::{
         login::UserCred,
         model::User,
@@ -36,7 +36,7 @@ impl UserRepo for UserRepoMemory {
         Ok(())
     }
 
-    fn d(&self, id: &String) -> DBOp<()> {
+    fn d(&self, id: &str) -> DBOp<()> {
         let pos = self.users.borrow().iter().position(|u| u.id == *id);
         if let Some(pos) = pos {
             self.users.borrow_mut().swap_remove(pos);
@@ -44,7 +44,7 @@ impl UserRepo for UserRepoMemory {
         Ok(())
     }
 
-    fn r_by_cred(&self, cred: &UserCred) -> Result<Option<User>, DBErr> {
+    fn r_by_cred(&self, cred: &UserCred) -> DBOp<Option<User>> {
         Ok(self
             .users
             .borrow()
@@ -53,14 +53,11 @@ impl UserRepo for UserRepoMemory {
             .cloned())
     }
 
-    fn r_by_id(&self, id: &str) -> Result<Option<User>, DBErr> {
+    fn r_by_id(&self, id: &str) -> DBOp<Option<User>> {
         Ok(self.users.borrow().iter().find(|u| u.id == id).cloned())
     }
 
-    fn r_count_unique_info(
-        &self,
-        user_unique_info: &UserUniqueInfo,
-    ) -> Result<UserUniqueInfoCount, DBErr> {
+    fn r_count_unique_info(&self, user_unique_info: &UserUniqueInfo) -> DBOp<UserUniqueInfoCount> {
         let username_count =
             self.users.borrow().iter().filter(|u| u.username == user_unique_info.username).count();
         let email_count =
