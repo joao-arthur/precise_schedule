@@ -1,7 +1,7 @@
 use crate::domain::{database::DBErr, session::SessionErr, validation::SchemaErr};
 
 use super::{
-    read::{UserCredNotFound, UserIdNotFound},
+    read::{UserCredNotFoundErr, UserIdNotFoundErr},
     unique_info::UserUniqueInfoFieldErr,
 };
 
@@ -10,7 +10,7 @@ pub enum UserErr {
     DB(DBErr),
     Schema(SchemaErr),
     UserUniqueInfoField(UserUniqueInfoFieldErr),
-    UserIdNotFound(UserIdNotFound),
-    UserCredNotFound(UserCredNotFound),
+    UserIdNotFound(UserIdNotFoundErr),
+    UserCredNotFound(UserCredNotFoundErr),
     Session(SessionErr),
 }

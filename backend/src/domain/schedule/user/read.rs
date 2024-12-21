@@ -1,10 +1,10 @@
 use super::{error::UserErr, login::UserCred, model::User, repo::UserRepo};
 
 #[derive(Debug, PartialEq)]
-pub struct UserCredNotFound;
+pub struct UserCredNotFoundErr;
 
 #[derive(Debug, PartialEq)]
-pub struct UserIdNotFound;
+pub struct UserIdNotFoundErr;
 
 #[derive(Debug, PartialEq)]
 pub struct UserInfo {
@@ -26,14 +26,14 @@ impl From<User> for UserInfo {
 }
 
 pub fn user_r_by_cred(repo: &dyn UserRepo, cred: &UserCred) -> Result<User, UserErr> {
-    repo.r_by_cred(cred).map_err(UserErr::DB)?.ok_or(UserErr::UserCredNotFound(UserCredNotFound))
+    repo.r_by_cred(cred).map_err(UserErr::DB)?.ok_or(UserErr::UserCredNotFound(UserCredNotFoundErr))
 }
 
 pub fn user_r_by_id(repo: &dyn UserRepo, id: &str) -> Result<User, UserErr> {
-    repo.r_by_id(id).map_err(UserErr::DB)?.ok_or(UserErr::UserIdNotFound(UserIdNotFound))
+    repo.r_by_id(id).map_err(UserErr::DB)?.ok_or(UserErr::UserIdNotFound(UserIdNotFoundErr))
 }
 
-pub fn user_r_info_by_id(repo: &dyn UserRepo, id: &String) -> Result<UserInfo, UserErr> {
+pub fn user_r_info_by_id(repo: &dyn UserRepo, id: &str) -> Result<UserInfo, UserErr> {
     user_r_by_id(repo, id).map(UserInfo::from)
 }
 
@@ -81,15 +81,15 @@ mod test {
     fn test_user_r_not_found() {
         assert_eq!(
             user_r_by_cred(&UserRepoStub::of_none(), &user_cred_stub()),
-            Err(UserErr::UserCredNotFound(UserCredNotFound))
+            Err(UserErr::UserCredNotFound(UserCredNotFoundErr))
         );
         assert_eq!(
             user_r_by_id(&UserRepoStub::of_none(), &user_stub().id),
-            Err(UserErr::UserIdNotFound(UserIdNotFound))
+            Err(UserErr::UserIdNotFound(UserIdNotFoundErr))
         );
         assert_eq!(
             user_r_info_by_id(&UserRepoStub::of_none(), &user_stub().id),
-            Err(UserErr::UserIdNotFound(UserIdNotFound))
+            Err(UserErr::UserIdNotFound(UserIdNotFoundErr))
         );
     }
 }

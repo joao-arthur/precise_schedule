@@ -1,9 +1,9 @@
 use super::{error::UserErr, model::User, read::user_r_by_id, repo::UserRepo};
 
 pub fn user_d(repo: &dyn UserRepo, id: String) -> Result<User, UserErr> {
-    let old_user = user_r_by_id(repo, &id)?;
-    repo.d(&id).map_err(UserErr::DB)?;
-    Ok(old_user)
+    let found_user = user_r_by_id(repo, &id)?;
+    repo.d(&found_user.id).map_err(UserErr::DB)?;
+    Ok(found_user)
 }
 
 #[cfg(test)]
@@ -12,7 +12,7 @@ mod test {
     use crate::domain::{
         database::DBErr,
         schedule::user::{
-            read::UserIdNotFound,
+            read::UserIdNotFoundErr,
             stub::{user_stub, UserRepoStub},
         },
     };
@@ -27,7 +27,7 @@ mod test {
         assert_eq!(user_d(&UserRepoStub::of_db_err(), user_stub().id), Err(UserErr::DB(DBErr)));
         assert_eq!(
             user_d(&UserRepoStub::of_none(), user_stub().id),
-            Err(UserErr::UserIdNotFound(UserIdNotFound))
+            Err(UserErr::UserIdNotFound(UserIdNotFoundErr))
         );
     }
 }

@@ -98,7 +98,7 @@ mod test {
         database::DBErr,
         generator::stub::DateTimeGenStub,
         schedule::user::{
-            read::UserIdNotFound,
+            read::UserIdNotFoundErr,
             stub::{user_after_u_stub, user_stub, user_u_stub, UserRepoStub},
             unique_info::{UserUniqueInfoCount, UserUniqueInfoFieldErr},
         },
@@ -154,7 +154,7 @@ mod test {
                 user_stub().id,
                 user_u_stub()
             ),
-            Err(UserErr::UserIdNotFound(UserIdNotFound))
+            Err(UserErr::UserIdNotFound(UserIdNotFoundErr))
         );
         assert_eq!(
             user_u(
