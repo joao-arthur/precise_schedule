@@ -26,21 +26,15 @@ impl From<User> for UserInfo {
 }
 
 pub fn user_r_by_cred(repo: &dyn UserRepo, cred: &UserCred) -> Result<User, UserErr> {
-    repo.r_by_cred(cred)
-    .map_err(UserErr::DB)?
-    .ok_or(UserErr::UserCredNotFound(UserCredNotFound))
+    repo.r_by_cred(cred).map_err(UserErr::DB)?.ok_or(UserErr::UserCredNotFound(UserCredNotFound))
 }
 
 pub fn user_r_by_id(repo: &dyn UserRepo, id: &str) -> Result<User, UserErr> {
-    repo
-    .r_by_id(id)
-    .map_err(UserErr::DB)?
-    .ok_or(UserErr::UserIdNotFound(UserIdNotFound))
+    repo.r_by_id(id).map_err(UserErr::DB)?.ok_or(UserErr::UserIdNotFound(UserIdNotFound))
 }
 
 pub fn user_r_info_by_id(repo: &dyn UserRepo, id: &String) -> Result<UserInfo, UserErr> {
-    user_r_by_id(repo, id)
-    .map(UserInfo::from)
+    user_r_by_id(repo, id).map(UserInfo::from)
 }
 
 #[cfg(test)]
@@ -61,20 +55,41 @@ mod test {
     fn test_user_r_ok() {
         assert_eq!(user_r_by_cred(&UserRepoStub::default(), &user_cred_stub()), Ok(user_stub()));
         assert_eq!(user_r_by_id(&UserRepoStub::default(), &user_stub().id), Ok(user_stub()));
-        assert_eq!(user_r_info_by_id(&UserRepoStub::default(), &user_stub().id), Ok(user_info_stub()));
+        assert_eq!(
+            user_r_info_by_id(&UserRepoStub::default(), &user_stub().id),
+            Ok(user_info_stub())
+        );
     }
 
     #[test]
     fn test_user_r_db_err() {
-        assert_eq!(user_r_by_cred(&UserRepoStub::of_db_err(), &user_cred_stub()), Err(UserErr::DB(DBErr)));
-        assert_eq!(user_r_by_id(&UserRepoStub::of_db_err(), &user_stub().id), Err(UserErr::DB(DBErr)));
-        assert_eq!(user_r_info_by_id(&UserRepoStub::of_db_err(), &user_stub().id), Err(UserErr::DB(DBErr)));
+        assert_eq!(
+            user_r_by_cred(&UserRepoStub::of_db_err(), &user_cred_stub()),
+            Err(UserErr::DB(DBErr))
+        );
+        assert_eq!(
+            user_r_by_id(&UserRepoStub::of_db_err(), &user_stub().id),
+            Err(UserErr::DB(DBErr))
+        );
+        assert_eq!(
+            user_r_info_by_id(&UserRepoStub::of_db_err(), &user_stub().id),
+            Err(UserErr::DB(DBErr))
+        );
     }
 
     #[test]
     fn test_user_r_not_found() {
-        assert_eq!(user_r_by_cred(&UserRepoStub::of_none(), &user_cred_stub()), Err(UserErr::UserCredNotFound(UserCredNotFound)));
-        assert_eq!(user_r_by_id(&UserRepoStub::of_none(), &user_stub().id), Err(UserErr::UserIdNotFound(UserIdNotFound)));
-        assert_eq!(user_r_info_by_id(&UserRepoStub::of_none(), &user_stub().id), Err(UserErr::UserIdNotFound(UserIdNotFound)));
+        assert_eq!(
+            user_r_by_cred(&UserRepoStub::of_none(), &user_cred_stub()),
+            Err(UserErr::UserCredNotFound(UserCredNotFound))
+        );
+        assert_eq!(
+            user_r_by_id(&UserRepoStub::of_none(), &user_stub().id),
+            Err(UserErr::UserIdNotFound(UserIdNotFound))
+        );
+        assert_eq!(
+            user_r_info_by_id(&UserRepoStub::of_none(), &user_stub().id),
+            Err(UserErr::UserIdNotFound(UserIdNotFound))
+        );
     }
 }

@@ -1,7 +1,8 @@
 use crate::domain::{database::DBErr, session::SessionErr, validation::SchemaErr};
 
 use super::{
-    read::{UserCredNotFound, UserIdNotFound}, unique_info::UserUniqueInfoFieldErr,
+    read::{UserCredNotFound, UserIdNotFound},
+    unique_info::UserUniqueInfoFieldErr,
 };
 
 #[derive(PartialEq, Debug)]

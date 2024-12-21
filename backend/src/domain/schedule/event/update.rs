@@ -1,7 +1,10 @@
 use crate::domain::generator::DateTimeGen;
 
 use super::{
-    error::EventErr, model::{Event, EventCategory, EventFrequency}, read::event_r_by_id, repo::EventRepo
+    error::EventErr,
+    model::{Event, EventCategory, EventFrequency},
+    read::event_r_by_id,
+    repo::EventRepo,
 };
 
 #[derive(Debug, PartialEq)]

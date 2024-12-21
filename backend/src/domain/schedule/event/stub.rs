@@ -1,7 +1,11 @@
 use crate::domain::database::{DBErr, DBOp};
 
 use super::{
-    create::EventC, model::{Event, EventCategory, EventFrequency}, read::EventInfo, repo::EventRepo, update::EventU
+    create::EventC,
+    model::{Event, EventCategory, EventFrequency},
+    read::EventInfo,
+    repo::EventRepo,
+    update::EventU,
 };
 
 pub fn event_stub() -> Event {
@@ -49,7 +53,7 @@ pub fn event_after_c_stub() -> Event {
 }
 
 pub fn event_after_u_stub() -> Event {
-    Event { 
+    Event {
         name: String::from("Medical physicist"),
         day: String::from("2025-08-11"),
         begin: String::from("10:00"),
@@ -60,8 +64,6 @@ pub fn event_after_u_stub() -> Event {
         ..event_stub()
     }
 }
-
-
 
 pub fn event_info_stub() -> EventInfo {
     EventInfo {
@@ -144,7 +146,10 @@ mod test {
         assert_eq!(EventRepoStub::default().c(&event_stub()), Ok(()));
         assert_eq!(EventRepoStub::default().u(&event_stub()), Ok(()));
         assert_eq!(EventRepoStub::default().d(&event_stub().id), Ok(()));
-        assert_eq!(EventRepoStub::default().r_by_id(&user_stub().id, &event_stub().id), Ok(Some(event_stub())));
+        assert_eq!(
+            EventRepoStub::default().r_by_id(&user_stub().id, &event_stub().id),
+            Ok(Some(event_stub()))
+        );
     }
 
     #[test]
@@ -152,7 +157,10 @@ mod test {
         assert_eq!(EventRepoStub::of_db_err().c(&event_stub()), Err(DBErr));
         assert_eq!(EventRepoStub::of_db_err().u(&event_stub()), Err(DBErr));
         assert_eq!(EventRepoStub::of_db_err().d(&event_stub().id), Err(DBErr));
-        assert_eq!(EventRepoStub::of_db_err().r_by_id(&user_stub().id, &event_stub().id), Err(DBErr));
+        assert_eq!(
+            EventRepoStub::of_db_err().r_by_id(&user_stub().id, &event_stub().id),
+            Err(DBErr)
+        );
     }
 
     #[test]
