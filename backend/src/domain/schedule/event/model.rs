@@ -1,5 +1,5 @@
 #[derive(Debug, PartialEq, Clone)]
-pub enum EventCategory {
+pub enum EventCat {
     Appointment,
     Birthday,
     Date,
@@ -9,7 +9,7 @@ pub enum EventCategory {
 }
 
 #[derive(Debug, PartialEq, Clone)]
-pub enum EventFrequency {
+pub enum EventFreq {
     D1,
     D2,
     W1,
@@ -20,17 +20,17 @@ pub enum EventFrequency {
     Y2,
 }
 
-impl EventFrequency {
-    pub fn parse(frequency: &str) -> Option<EventFrequency> {
+impl EventFreq {
+    pub fn parse(frequency: &str) -> Option<EventFreq> {
         match frequency {
-            "1D" => Some(EventFrequency::D1),
-            "2D" => Some(EventFrequency::D2),
-            "1W" => Some(EventFrequency::W1),
-            "1M" => Some(EventFrequency::M1),
-            "3M" => Some(EventFrequency::M3),
-            "6M" => Some(EventFrequency::M6),
-            "1Y" => Some(EventFrequency::Y1),
-            "2Y" => Some(EventFrequency::Y2),
+            "1D" => Some(EventFreq::D1),
+            "2D" => Some(EventFreq::D2),
+            "1W" => Some(EventFreq::W1),
+            "1M" => Some(EventFreq::M1),
+            "3M" => Some(EventFreq::M3),
+            "6M" => Some(EventFreq::M6),
+            "1Y" => Some(EventFreq::Y1),
+            "2Y" => Some(EventFreq::Y2),
             _ => None,
         }
     }
@@ -40,11 +40,10 @@ impl EventFrequency {
 pub struct Event {
     pub id: String,
     pub name: String,
-    pub day: String,
     pub begin: String,
     pub end: String,
-    pub category: EventCategory,
-    pub frequency: Option<EventFrequency>,
+    pub category: EventCat,
+    pub frequency: Option<EventFreq>,
     pub weekend_repeat: Option<bool>,
     pub user: String,
     pub created_at: String,
@@ -57,14 +56,14 @@ mod test {
 
     #[test]
     fn test_event_frequency_parse() {
-        assert_eq!(EventFrequency::parse("365D"), None);
-        assert_eq!(EventFrequency::parse("1D"), Some(EventFrequency::D1));
-        assert_eq!(EventFrequency::parse("2D"), Some(EventFrequency::D2));
-        assert_eq!(EventFrequency::parse("1W"), Some(EventFrequency::W1));
-        assert_eq!(EventFrequency::parse("1M"), Some(EventFrequency::M1));
-        assert_eq!(EventFrequency::parse("3M"), Some(EventFrequency::M3));
-        assert_eq!(EventFrequency::parse("6M"), Some(EventFrequency::M6));
-        assert_eq!(EventFrequency::parse("1Y"), Some(EventFrequency::Y1));
-        assert_eq!(EventFrequency::parse("2Y"), Some(EventFrequency::Y2));
+        assert_eq!(EventFreq::parse("365D"), None);
+        assert_eq!(EventFreq::parse("1D"), Some(EventFreq::D1));
+        assert_eq!(EventFreq::parse("2D"), Some(EventFreq::D2));
+        assert_eq!(EventFreq::parse("1W"), Some(EventFreq::W1));
+        assert_eq!(EventFreq::parse("1M"), Some(EventFreq::M1));
+        assert_eq!(EventFreq::parse("3M"), Some(EventFreq::M3));
+        assert_eq!(EventFreq::parse("6M"), Some(EventFreq::M6));
+        assert_eq!(EventFreq::parse("1Y"), Some(EventFreq::Y1));
+        assert_eq!(EventFreq::parse("2Y"), Some(EventFreq::Y2));
     }
 }

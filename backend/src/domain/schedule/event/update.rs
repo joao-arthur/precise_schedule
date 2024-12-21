@@ -2,7 +2,7 @@ use crate::domain::generator::DateTimeGen;
 
 use super::{
     error::EventErr,
-    model::{Event, EventCategory, EventFrequency},
+    model::{Event, EventCat, EventFreq},
     read::event_r_by_id,
     repo::EventRepo,
 };
@@ -13,15 +13,14 @@ pub struct EventU {
     pub day: String,
     pub begin: String,
     pub end: String,
-    pub category: EventCategory,
-    pub frequency: Option<EventFrequency>,
+    pub category: EventCat,
+    pub frequency: Option<EventFreq>,
     pub weekend_repeat: Option<bool>,
 }
 
 pub fn event_from_u(event_u: EventU, event: Event, updated_at: String) -> Event {
     Event {
         name: event_u.name,
-        day: event_u.day,
         begin: event_u.begin,
         end: event_u.end,
         category: event_u.category,

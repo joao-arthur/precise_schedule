@@ -2,7 +2,7 @@ use crate::domain::database::{DBErr, DBOp};
 
 use super::{
     create::EventC,
-    model::{Event, EventCategory, EventFrequency},
+    model::{Event, EventCat, EventFreq},
     read::EventInfo,
     repo::EventRepo,
     update::EventU,
@@ -12,11 +12,10 @@ pub fn event_stub() -> Event {
     Event {
         id: String::from("6d470410-5e51-40d1-bd13-0bb6a99de95e"),
         name: String::from("Dentist"),
-        day: String::from("2024-03-31"),
-        begin: String::from("18:00"),
-        end: String::from("22:00"),
-        category: EventCategory::Appointment,
-        frequency: Some(EventFrequency::D2),
+        begin: String::from("2024-03-31T18:00Z"),
+        end: String::from("2024-03-31T22:00Z"),
+        category: EventCat::Appointment,
+        frequency: Some(EventFreq::D2),
         weekend_repeat: Some(true),
         user: String::from("a6edc906-2f9f-5fb2-a373-efac406f0ef2"),
         created_at: String::from("2025-02-05T22:49:51Z"),
@@ -27,11 +26,10 @@ pub fn event_stub() -> Event {
 pub fn event_c_stub() -> EventC {
     EventC {
         name: String::from("Dentist"),
-        day: String::from("2024-03-31"),
-        begin: String::from("18:00"),
-        end: String::from("22:00"),
-        category: EventCategory::Appointment,
-        frequency: Some(EventFrequency::D2),
+        begin: String::from("2024-03-31T18:00Z"),
+        end: String::from("2024-03-31T22:00Z"),
+        category: EventCat::Appointment,
+        frequency: Some(EventFreq::D2),
         weekend_repeat: Some(true),
     }
 }
@@ -42,7 +40,7 @@ pub fn event_u_stub() -> EventU {
         day: String::from("2025-08-11"),
         begin: String::from("10:00"),
         end: String::from("11:00"),
-        category: EventCategory::Appointment,
+        category: EventCat::Appointment,
         frequency: None,
         weekend_repeat: None,
     }
@@ -55,10 +53,9 @@ pub fn event_after_c_stub() -> Event {
 pub fn event_after_u_stub() -> Event {
     Event {
         name: String::from("Medical physicist"),
-        day: String::from("2025-08-11"),
-        begin: String::from("10:00"),
-        end: String::from("11:00"),
-        category: EventCategory::Appointment,
+        begin: String::from("2025-08-11T10:00Z"),
+        end: String::from("2025-08-11T11:00Z"),
+        category: EventCat::Appointment,
         frequency: None,
         weekend_repeat: None,
         ..event_stub()
@@ -68,11 +65,10 @@ pub fn event_after_u_stub() -> Event {
 pub fn event_info_stub() -> EventInfo {
     EventInfo {
         name: String::from("Dentist"),
-        day: String::from("2024-03-31"),
-        begin: String::from("18:00"),
-        end: String::from("22:00"),
-        category: EventCategory::Appointment,
-        frequency: Some(EventFrequency::D2),
+        begin: String::from("2024-03-31T18:00Z"),
+        end: String::from("2024-03-31T22:00Z"),
+        category: EventCat::Appointment,
+        frequency: Some(EventFreq::D2),
         weekend_repeat: Some(true),
     }
 }

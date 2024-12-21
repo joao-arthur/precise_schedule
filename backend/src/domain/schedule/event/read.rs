@@ -1,6 +1,6 @@
 use super::{
     error::EventErr,
-    model::{Event, EventCategory, EventFrequency},
+    model::{Event, EventCat, EventFreq},
     repo::EventRepo,
 };
 
@@ -10,11 +10,10 @@ pub struct EventIdNotFoundErr;
 #[derive(Debug, PartialEq)]
 pub struct EventInfo {
     pub name: String,
-    pub day: String,
     pub begin: String,
     pub end: String,
-    pub category: EventCategory,
-    pub frequency: Option<EventFrequency>,
+    pub category: EventCat,
+    pub frequency: Option<EventFreq>,
     pub weekend_repeat: Option<bool>,
 }
 
@@ -22,7 +21,6 @@ impl From<Event> for EventInfo {
     fn from(event: Event) -> Self {
         EventInfo {
             name: event.name,
-            day: event.day,
             begin: event.begin,
             end: event.end,
             category: event.category,
