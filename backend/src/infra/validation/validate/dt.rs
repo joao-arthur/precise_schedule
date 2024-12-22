@@ -1,25 +1,31 @@
+use regex::Regex;
+
 use crate::{
     domain::validation::{DtErr, DtMaxErr, DtMinErr, Val},
     infra::validation::Field,
 };
 
+struct InternalDT(pub u16, pub u16, pub u16);
+
+fn parsedt(s: &String) -> Result<InternalDT, ()> {
+    let re = Regex::new(r"^(\[0-9]{4})-(\[0-9]{2})-(\[0-9]{2})$").unwrap();
+    if let Some(caps) = re.captures(s) {
+        let _yyyy = caps[1].parse::<u16>().map_err(|_| ())?;
+        let _mm = caps[2].parse::<u16>().map_err(|_| ())?;
+        let _dd = caps[3].parse::<u16>().map_err(|_| ())?;
+        return Ok(InternalDT(_yyyy, _mm, _dd));
+    } else {
+        return Err(());
+    }
+} 
+
 pub fn dt(f: &Field) -> Result<(), DtErr> {
     match &f.value {
         Val::Str(str_value) => {
-            let parts: Vec<&str> = str_value.split('-').collect();
-            if parts.len() != 3 {
-                return Err(DtErr(f.name));
+            match parsedt(str_value) {
+               Err(_) => Err(DtErr(f.name)),
+               Ok(_) => Ok(())
             }
-            if parts[0].len() != 4 || parts[1].len() != 2 || parts[2].len() != 2 {
-                return Err(DtErr(f.name));
-            }
-            if !parts.iter().all(|part| part.chars().all(|c| c.is_digit(10))) {
-                return Err(DtErr(f.name));
-            }
-            let _yyyy = parts[0].parse::<u16>().map_err(|_| DtErr(f.name))?;
-            let _mm = parts[1].parse::<u16>().map_err(|_| DtErr(f.name))?;
-            let _dd = parts[2].parse::<u16>().map_err(|_| DtErr(f.name))?;
-            return Ok(());
         }
         _ => Ok(()),
     }
@@ -28,29 +34,16 @@ pub fn dt(f: &Field) -> Result<(), DtErr> {
 pub fn dt_min(valid: &String, f: &Field) -> Result<(), DtMinErr> {
     match &f.value {
         Val::Str(str_value) => {
-            let valid_parts: Vec<&str> = valid.split('-').collect();
-            if valid_parts.len() != 3 {
-                return Err(DtMinErr(f.name));
-            }
-            let valid_yyyy = valid_parts[0].parse::<u16>().map_err(|_| DtMinErr(f.name))?;
-            let valid_mm = valid_parts[1].parse::<u16>().map_err(|_| DtMinErr(f.name))?;
-            let valid_dd = valid_parts[2].parse::<u16>().map_err(|_| DtMinErr(f.name))?;
+            let valid_dt = parsedt(valid).map_err(|_| DtMinErr(f.name))?;
+            let value_dt = parsedt(str_value).map_err(|_| DtMinErr(f.name))?;
 
-            let value_parts: Vec<&str> = str_value.split('-').collect();
-            if value_parts.len() != 3 {
+            if value_dt.0 < valid_dt.0 {
                 return Err(DtMinErr(f.name));
             }
-            let value_yyyy = value_parts[0].parse::<u16>().map_err(|_| DtMinErr(f.name))?;
-            let value_mm = value_parts[1].parse::<u16>().map_err(|_| DtMinErr(f.name))?;
-            let value_dd = value_parts[2].parse::<u16>().map_err(|_| DtMinErr(f.name))?;
-
-            if value_yyyy < valid_yyyy {
+            if value_dt.0 == valid_dt.0 && value_dt.1 < valid_dt.1 {
                 return Err(DtMinErr(f.name));
             }
-            if value_yyyy == valid_yyyy && value_mm < valid_mm {
-                return Err(DtMinErr(f.name));
-            }
-            if value_yyyy == valid_yyyy && value_mm == valid_mm && value_dd < valid_dd {
+            if value_dt.0 == valid_dt.0 && value_dt.1 == valid_dt.1 && value_dt.2 < valid_dt.2 {
                 return Err(DtMinErr(f.name));
             }
             Ok(())
@@ -62,29 +55,16 @@ pub fn dt_min(valid: &String, f: &Field) -> Result<(), DtMinErr> {
 pub fn dt_max(valid: &String, f: &Field) -> Result<(), DtMaxErr> {
     match &f.value {
         Val::Str(str_value) => {
-            let valid_parts: Vec<&str> = valid.split('-').collect();
-            if valid_parts.len() != 3 {
-                return Err(DtMaxErr(f.name));
-            }
-            let valid_yyyy = valid_parts[0].parse::<u16>().map_err(|_| DtMaxErr(f.name))?;
-            let valid_mm = valid_parts[1].parse::<u16>().map_err(|_| DtMaxErr(f.name))?;
-            let valid_dd = valid_parts[2].parse::<u16>().map_err(|_| DtMaxErr(f.name))?;
+            let valid_dt = parsedt(valid).map_err(|_| DtMaxErr(f.name))?;
+            let value_dt = parsedt(str_value).map_err(|_| DtMaxErr(f.name))?;
 
-            let value_parts: Vec<&str> = str_value.split('-').collect();
-            if value_parts.len() != 3 {
+            if value_dt.0 > valid_dt.0 {
                 return Err(DtMaxErr(f.name));
             }
-            let value_yyyy = value_parts[0].parse::<u16>().map_err(|_| DtMaxErr(f.name))?;
-            let value_mm = value_parts[1].parse::<u16>().map_err(|_| DtMaxErr(f.name))?;
-            let value_dd = value_parts[2].parse::<u16>().map_err(|_| DtMaxErr(f.name))?;
-
-            if value_yyyy > valid_yyyy {
+            if value_dt.0 == valid_dt.0 && value_dt.1 > valid_dt.1 {
                 return Err(DtMaxErr(f.name));
             }
-            if value_yyyy == valid_yyyy && value_mm > valid_mm {
-                return Err(DtMaxErr(f.name));
-            }
-            if value_yyyy == valid_yyyy && value_mm == valid_mm && value_dd > valid_dd {
+            if value_dt.0 == valid_dt.0 && value_dt.1 == valid_dt.1 && value_dt.2 > valid_dt.2 {
                 return Err(DtMaxErr(f.name));
             }
             Ok(())

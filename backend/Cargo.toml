@@ -12,6 +12,4 @@ uuid = { version = "1.11.0", features = [ "v4"] }
 chrono = "0.4.39"
 jsonwebtoken = "9.3.0"
 email_address = "0.2.9"
-
-[dev-dependencies]
 regex = "1.11.1"
