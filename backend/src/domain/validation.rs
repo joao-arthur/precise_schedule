@@ -4,10 +4,10 @@ use std::collections::HashMap;
 pub struct RequiredErr(pub &'static str);
 
 #[derive(Debug, PartialEq, Clone)]
-pub struct NumIErr(pub &'static str);
+pub struct NumUErr(pub &'static str);
 
 #[derive(Debug, PartialEq, Clone)]
-pub struct NumUErr(pub &'static str);
+pub struct NumIErr(pub &'static str);
 
 #[derive(Debug, PartialEq, Clone)]
 pub struct NumFErr(pub &'static str);
@@ -19,15 +19,6 @@ pub struct StrErr(pub &'static str);
 pub struct BoolErr(pub &'static str);
 
 #[derive(Debug, PartialEq, Clone)]
-pub struct NumIExactErr(pub &'static str);
-
-#[derive(Debug, PartialEq, Clone)]
-pub struct NumIMinErr(pub &'static str);
-
-#[derive(Debug, PartialEq, Clone)]
-pub struct NumIMaxErr(pub &'static str);
-
-#[derive(Debug, PartialEq, Clone)]
 pub struct NumUExactErr(pub &'static str);
 
 #[derive(Debug, PartialEq, Clone)]
@@ -35,6 +26,15 @@ pub struct NumUMinErr(pub &'static str);
 
 #[derive(Debug, PartialEq, Clone)]
 pub struct NumUMaxErr(pub &'static str);
+
+#[derive(Debug, PartialEq, Clone)]
+pub struct NumIExactErr(pub &'static str);
+
+#[derive(Debug, PartialEq, Clone)]
+pub struct NumIMinErr(pub &'static str);
+
+#[derive(Debug, PartialEq, Clone)]
+pub struct NumIMaxErr(pub &'static str);
 
 #[derive(Debug, PartialEq, Clone)]
 pub struct NumFExactErr(pub &'static str);

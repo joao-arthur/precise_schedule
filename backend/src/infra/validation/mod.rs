@@ -137,8 +137,8 @@ mod test {
                 ]))
             ),
             Err(HashMap::from([
-                (String::from("name"), vec![VErr::Required(RequiredErr("name")), VErr::Str(StrErr("name"))]),
-                (String::from("birthdate"), vec![VErr::Required(RequiredErr("birthdate")), VErr::Str(StrErr("birthdate"))])
+                (String::from("name"), vec![VErr::Required(RequiredErr("name")), VErr::Str(StrErr("name")), VErr::StrMinLen(StrMinLenErr("name")), VErr::StrMaxLen(StrMaxLenErr("name"))]),
+                (String::from("birthdate"), vec![VErr::Required(RequiredErr("birthdate")), VErr::Str(StrErr("birthdate")), VErr::Dt(DtErr("birthdate"))])
             ]))
         );
     }
