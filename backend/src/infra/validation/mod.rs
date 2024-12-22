@@ -2,19 +2,7 @@ mod validate;
 
 use std::collections::HashMap;
 
-use validate::{
-    dt::{dt, dt_max, dt_min},
-    email::email,
-    num::{
-        num_f_exact, num_f_max, num_f_min, num_i_exact, num_i_max, num_i_min, num_u_exact,
-        num_u_max, num_u_min,
-    },
-    str::{
-        str_exact, str_exact_len, str_max_len, str_min_len, str_min_lower, str_min_num,
-        str_min_special, str_min_upper,
-    },
-    value_type::{bool, num_f, num_i, num_u, required, str},
-};
+use validate::*;
 
 use crate::domain::validation::{Schema, SchemaErr, VErr, Val, Validator, V};
 
@@ -47,7 +35,7 @@ fn validate_schema(schema: &Schema, value: &Val) -> Result<(), HashMap<String, V
         Val::Obj(obj) => {
             schema.iter().for_each(|schema_f| {
                 let value = obj.get(*schema_f.0).unwrap_or(&Val::None);
-                let name = schema_f.0.clone();
+                let name = schema_f.0;
                 let has_required = schema_f.1.iter().find(|v| v == &&V::Required).is_some();
 
                 let f_results: Vec<VErr> = schema_f
