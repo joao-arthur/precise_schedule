@@ -45,11 +45,11 @@ pub mod stub {
         #[test]
         fn test_date_time_gen_stub() {
             assert_eq!(
-                DateTimeGenStub(String::from("2025-04-18T10:23:25Z"), 1734555761).now_as_iso(),
-                String::from("2025-04-18T10:23:25Z")
+                DateTimeGenStub(String::from("2025-04-18T10:23Z"), 1734555761).now_as_iso(),
+                String::from("2025-04-18T10:23Z")
             );
             assert_eq!(
-                DateTimeGenStub(String::from("2025-04-18T10:23:25Z"), 1734555761).now_as_epoch(),
+                DateTimeGenStub(String::from("2025-04-18T10:23Z"), 1734555761).now_as_epoch(),
                 1734555761
             );
         }

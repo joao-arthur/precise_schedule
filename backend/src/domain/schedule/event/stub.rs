@@ -18,8 +18,8 @@ pub fn event_stub() -> Event {
         frequency: Some(EventFreq::D2),
         weekend_repeat: Some(true),
         user: String::from("a6edc906-2f9f-5fb2-a373-efac406f0ef2"),
-        created_at: String::from("2025-02-05T22:49:51Z"),
-        updated_at: String::from("2025-04-18T10:23:25Z"),
+        created_at: String::from("2025-02-05T22:49Z"),
+        updated_at: String::from("2025-04-18T10:23Z"),
     }
 }
 
@@ -37,9 +37,8 @@ pub fn event_c_stub() -> EventC {
 pub fn event_u_stub() -> EventU {
     EventU {
         name: String::from("Medical physicist"),
-        day: String::from("2025-08-11"),
-        begin: String::from("10:00"),
-        end: String::from("11:00"),
+        begin: String::from("2025-08-11T10:00Z"),
+        end: String::from("2025-08-11T11:00Z"),
         category: EventCat::Appointment,
         frequency: None,
         weekend_repeat: None,
@@ -47,7 +46,7 @@ pub fn event_u_stub() -> EventU {
 }
 
 pub fn event_after_c_stub() -> Event {
-    Event { updated_at: String::from("2025-02-05T22:49:51Z"), ..event_stub() }
+    Event { updated_at: String::from("2025-02-05T22:49Z"), ..event_stub() }
 }
 
 pub fn event_after_u_stub() -> Event {

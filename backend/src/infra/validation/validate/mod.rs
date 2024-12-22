@@ -1,8 +1,9 @@
-pub mod bool;
 pub mod dt;
 pub mod email;
-pub mod num_f;
-pub mod num_i;
-pub mod num_u;
-pub mod required;
+pub mod num;
 pub mod str;
+pub mod value_type;
+
+// todo time
+// todo timestamp
+// refactor pra usar regex ou algo assim

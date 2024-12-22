@@ -71,7 +71,7 @@ pub mod stub {
             assert_eq!(
                 SessionServiceStub::default().encode(
                     &user_stub(),
-                    &DateTimeGenStub(String::from("2024-12-18T18:02:41Z"), 1734555761)
+                    &DateTimeGenStub(String::from("2024-12-18T18:02Z"), 1734555761)
                 ),
                 Ok(session_stub())
             );
@@ -82,7 +82,7 @@ pub mod stub {
             assert_eq!(
                 SessionServiceStub::of_session_err().encode(
                     &user_stub(),
-                    &DateTimeGenStub(String::from("2024-12-18T18:02:41Z"), 1734555761)
+                    &DateTimeGenStub(String::from("2024-12-18T18:02Z"), 1734555761)
                 ),
                 Err(SessionErr::Encode(SessionEncodeErr))
             );

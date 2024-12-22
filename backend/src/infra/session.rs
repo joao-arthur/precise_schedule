@@ -78,7 +78,7 @@ mod test {
         assert_eq!(
             SessionServiceJWT.encode(
                 &user_stub(),
-                &DateTimeGenStub(String::from("2099-12-18T18:02:41Z"), 4101300161)
+                &DateTimeGenStub(String::from("2099-12-18T18:02Z"), 4101300161)
             ),
             Ok(SESSION.clone())
         );

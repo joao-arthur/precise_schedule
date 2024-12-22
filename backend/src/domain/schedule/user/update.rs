@@ -3,7 +3,7 @@ use std::{collections::HashMap, sync::LazyLock};
 use crate::domain::{
     generator::DateTimeGen,
     session::{Session, SessionService},
-    validation::{Schema, Validator, Value, V},
+    validation::{Schema, Val, Validator, V},
 };
 
 use super::{
@@ -70,12 +70,12 @@ pub fn user_u(
     id: String,
     user_u: UserU,
 ) -> Result<UserUResult, UserErr> {
-    let input_value = Value::Obj(HashMap::from([
-        (String::from("first_name"), Value::Str(user_u.first_name.clone())),
-        (String::from("birthdate"), Value::Str(user_u.birthdate.clone())),
-        (String::from("email"), Value::Str(user_u.email.clone())),
-        (String::from("username"), Value::Str(user_u.username.clone())),
-        (String::from("password"), Value::Str(user_u.password.clone())),
+    let input_value = Val::Obj(HashMap::from([
+        (String::from("first_name"), Val::Str(user_u.first_name.clone())),
+        (String::from("birthdate"), Val::Str(user_u.birthdate.clone())),
+        (String::from("email"), Val::Str(user_u.email.clone())),
+        (String::from("username"), Val::Str(user_u.username.clone())),
+        (String::from("password"), Val::Str(user_u.password.clone())),
     ]));
     validator.validate(&USER_U_SCHEMA, &input_value).map_err(UserErr::Schema)?;
     let old_user = user_r_by_id(repo, &id)?;
@@ -106,7 +106,7 @@ mod test {
             stub::{session_stub, SessionServiceStub},
             SessionEncodeErr, SessionErr,
         },
-        validation::{stub::ValidatorStub, VErr},
+        validation::{stub::ValidatorStub, RequiredErr, VErr},
     };
 
     #[test]
@@ -160,7 +160,7 @@ mod test {
             user_u(
                 &ValidatorStub(Err(HashMap::from([(
                     String::from("first_name"),
-                    vec![VErr::Required]
+                    vec![VErr::Required(RequiredErr("first_name"))]
                 )]))),
                 &UserRepoStub::default(),
                 &DateTimeGenStub(user_stub().updated_at, 1734555761),
@@ -170,7 +170,7 @@ mod test {
             ),
             Err(UserErr::Schema(HashMap::from([(
                 String::from("first_name"),
-                vec![VErr::Required]
+                vec![VErr::Required(RequiredErr("first_name"))]
             )])))
         );
         assert_eq!(

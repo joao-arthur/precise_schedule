@@ -10,7 +10,6 @@ use super::{
 #[derive(Debug, PartialEq)]
 pub struct EventU {
     pub name: String,
-    pub day: String,
     pub begin: String,
     pub end: String,
     pub category: EventCat,

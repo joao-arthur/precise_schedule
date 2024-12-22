@@ -18,8 +18,8 @@ pub fn user_stub() -> User {
         birthdate: String::from("1942-06-18"),
         username: String::from("paul_mc"),
         password: String::from("asdf!@#123"),
-        created_at: String::from("2024-03-01T11:26:41Z"),
-        updated_at: String::from("2024-07-03T22:49:51Z"),
+        created_at: String::from("2024-03-01T11:26Z"),
+        updated_at: String::from("2024-07-03T22:49Z"),
     }
 }
 
@@ -38,7 +38,7 @@ pub fn user_c_stub() -> UserC {
 }
 
 pub fn user_after_c_stub() -> User {
-    User { updated_at: String::from("2024-03-01T11:26:41Z"), ..user_stub() }
+    User { updated_at: String::from("2024-03-01T11:26Z"), ..user_stub() }
 }
 
 pub fn user_u_stub() -> UserU {
@@ -58,7 +58,7 @@ pub fn user_after_u_stub() -> User {
         birthdate: String::from("1940-10-09"),
         username: String::from("john_lennon"),
         password: String::from("abcd!@#$4321"),
-        updated_at: String::from("2024-07-03T22:49:51Z"),
+        updated_at: String::from("2024-07-03T22:49Z"),
         ..user_stub()
     }
 }

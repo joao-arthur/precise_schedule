@@ -1,86 +1,87 @@
 use std::collections::HashMap;
 
 #[derive(Debug, PartialEq, Clone)]
-pub struct RequiredErr;
+pub struct RequiredErr(pub &'static str);
 
 #[derive(Debug, PartialEq, Clone)]
-pub struct NumIErr;
+pub struct NumIErr(pub &'static str);
 
 #[derive(Debug, PartialEq, Clone)]
-pub struct NumUErr;
+pub struct NumUErr(pub &'static str);
 
 #[derive(Debug, PartialEq, Clone)]
-pub struct NumFErr;
+pub struct NumFErr(pub &'static str);
 
 #[derive(Debug, PartialEq, Clone)]
-pub struct StrErr;
+pub struct StrErr(pub &'static str);
 
 #[derive(Debug, PartialEq, Clone)]
-pub struct BoolErr;
+pub struct BoolErr(pub &'static str);
 
 #[derive(Debug, PartialEq, Clone)]
-pub struct NumIExactErr;
+pub struct NumIExactErr(pub &'static str);
 
 #[derive(Debug, PartialEq, Clone)]
-pub struct NumIMinErr;
+pub struct NumIMinErr(pub &'static str);
 
 #[derive(Debug, PartialEq, Clone)]
-pub struct NumIMaxErr;
+pub struct NumIMaxErr(pub &'static str);
 
 #[derive(Debug, PartialEq, Clone)]
-pub struct NumUExactErr;
+pub struct NumUExactErr(pub &'static str);
 
 #[derive(Debug, PartialEq, Clone)]
-pub struct NumUMinErr;
+pub struct NumUMinErr(pub &'static str);
 
 #[derive(Debug, PartialEq, Clone)]
-pub struct NumUMaxErr;
+pub struct NumUMaxErr(pub &'static str);
 
 #[derive(Debug, PartialEq, Clone)]
-pub struct NumFExactErr;
+pub struct NumFExactErr(pub &'static str);
 
 #[derive(Debug, PartialEq, Clone)]
-pub struct NumFMinErr;
+pub struct NumFMinErr(pub &'static str);
 
 #[derive(Debug, PartialEq, Clone)]
-pub struct NumFMaxErr;
+pub struct NumFMaxErr(pub &'static str);
 
 #[derive(Debug, PartialEq, Clone)]
-pub struct StrExactErr;
+pub struct StrExactErr(pub &'static str);
 
 #[derive(Debug, PartialEq, Clone)]
-pub struct StrExactLenErr;
+pub struct StrExactLenErr(pub &'static str);
 
 #[derive(Debug, PartialEq, Clone)]
-pub struct StrMinLenErr;
+pub struct StrMinLenErr(pub &'static str);
 
 #[derive(Debug, PartialEq, Clone)]
-pub struct StrMaxLenErr;
+pub struct StrMaxLenErr(pub &'static str);
 
 #[derive(Debug, PartialEq, Clone)]
-pub struct StrMinUpperErr;
+pub struct StrMinUpperErr(pub &'static str);
 
 #[derive(Debug, PartialEq, Clone)]
-pub struct StrMinLowerErr;
+pub struct StrMinLowerErr(pub &'static str);
 
 #[derive(Debug, PartialEq, Clone)]
-pub struct StrMinNumErr;
+pub struct StrMinNumErr(pub &'static str);
 
 #[derive(Debug, PartialEq, Clone)]
-pub struct StrMinSpecialErr;
+pub struct StrMinSpecialErr(pub &'static str);
 
 #[derive(Debug, PartialEq, Clone)]
-pub struct DtErr;
+pub struct DtErr(pub &'static str);
 
 #[derive(Debug, PartialEq, Clone)]
-pub struct DtMinErr;
+pub struct DtMinErr(pub &'static str);
 
 #[derive(Debug, PartialEq, Clone)]
-pub struct DtMaxErr;
+pub struct DtMaxErr(pub &'static str);
 
 #[derive(Debug, PartialEq, Clone)]
-pub struct EmailErr;
+pub struct EmailErr(pub &'static str);
 
+#[derive(Debug, PartialEq)]
 pub enum V {
     Required,
     NumI,
@@ -113,12 +114,12 @@ pub enum V {
 
 #[derive(Debug, PartialEq, Clone)]
 pub enum VErr {
-    Required,
-    NumI,
-    NumU,
-    NumF,
-    Str,
-    Bool,
+    Required(RequiredErr),
+    NumI(NumIErr),
+    NumU(NumUErr),
+    NumF(NumFErr),
+    Str(StrErr),
+    Bool(BoolErr),
     NumIExact(NumIExactErr),
     NumIMin(NumIMinErr),
     NumIMax(NumIMaxErr),
@@ -136,29 +137,30 @@ pub enum VErr {
     StrMinLower(StrMinLowerErr),
     StrMinNum(StrMinNumErr),
     StrMinSpecial(StrMinSpecialErr),
-    Dt,
+    Dt(DtErr),
     DtMin(DtMinErr),
     DtMax(DtMaxErr),
-    Email,
+    Email(EmailErr),
 }
 
-pub enum Value {
+#[derive(Debug, PartialEq, Clone)]
+pub enum Val {
+    None,
     NumU(u64),
     NumI(i64),
     NumF(f64),
     Str(String),
     Bool(bool),
-    Arr(Vec<Value>),
-    Obj(HashMap<String, Value>),
-    Absent,
+    Arr(Vec<Val>),
+    Obj(HashMap<String, Val>),
 }
 
-pub type Schema<'a> = HashMap<&'a str, Vec<V>>;
+pub type Schema = HashMap<&'static str, Vec<V>>;
 
 pub type SchemaErr = HashMap<String, Vec<VErr>>;
 
 pub trait Validator {
-    fn validate(&self, schema: &Schema, value: &Value) -> Result<(), SchemaErr>;
+    fn validate(&self, schema: &Schema, value: &Val) -> Result<(), SchemaErr>;
 }
 
 #[cfg(test)]
@@ -168,7 +170,7 @@ pub mod stub {
     pub struct ValidatorStub(pub Result<(), SchemaErr>);
 
     impl Validator for ValidatorStub {
-        fn validate(&self, _schema: &Schema, _value: &Value) -> Result<(), SchemaErr> {
+        fn validate(&self, _schema: &Schema, _value: &Val) -> Result<(), SchemaErr> {
             self.0.clone()
         }
     }
@@ -181,20 +183,23 @@ pub mod stub {
             assert_eq!(
                 ValidatorStub(Ok(())).validate(
                     &HashMap::from([("name", vec![V::Str, V::StrMinLen(2)])]),
-                    &Value::Str(String::from("George"))
+                    &Val::Str(String::from("George"))
                 ),
                 Ok(())
             );
             assert_eq!(
                 ValidatorStub(Err(HashMap::from([(
                     String::from("name"),
-                    vec![VErr::StrMinLen(StrMinLenErr)]
+                    vec![VErr::StrMinLen(StrMinLenErr("name"))]
                 )])))
                 .validate(
                     &HashMap::from([("name", vec![V::Str, V::StrMinLen(2)])]),
-                    &Value::Str(String::from("George"))
+                    &Val::Str(String::from("George"))
                 ),
-                Err(HashMap::from([(String::from("name"), vec![VErr::StrMinLen(StrMinLenErr)])]))
+                Err(HashMap::from([(
+                    String::from("name"),
+                    vec![VErr::StrMinLen(StrMinLenErr("name"))]
+                )]))
             );
         }
     }

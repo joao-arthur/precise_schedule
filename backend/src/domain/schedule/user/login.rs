@@ -3,7 +3,7 @@ use std::{collections::HashMap, sync::LazyLock};
 use crate::domain::{
     generator::DateTimeGen,
     session::{Session, SessionService},
-    validation::{Schema, Validator, Value, V},
+    validation::{Schema, Val, Validator, V},
 };
 
 use super::{error::UserErr, read::user_r_by_cred, repo::UserRepo};
@@ -39,9 +39,9 @@ pub fn user_login(
     session_service: &dyn SessionService,
     user_cred: UserCred,
 ) -> Result<Session, UserErr> {
-    let input_value = Value::Obj(HashMap::from([
-        (String::from("username"), Value::Str(user_cred.username.clone())),
-        (String::from("password"), Value::Str(user_cred.password.clone())),
+    let input_value = Val::Obj(HashMap::from([
+        (String::from("username"), Val::Str(user_cred.username.clone())),
+        (String::from("password"), Val::Str(user_cred.password.clone())),
     ]));
     validator.validate(&USER_LOGIN_SCHEMA, &input_value).map_err(UserErr::Schema)?;
     let user = user_r_by_cred(repo, &user_cred)?;
@@ -59,7 +59,7 @@ mod test {
             stub::{session_stub, SessionServiceStub},
             SessionEncodeErr, SessionErr,
         },
-        validation::{stub::ValidatorStub, VErr},
+        validation::{stub::ValidatorStub, RequiredErr, VErr},
     };
 
     use super::*;
@@ -70,7 +70,7 @@ mod test {
             user_login(
                 &ValidatorStub(Ok(())),
                 &UserRepoStub::default(),
-                &DateTimeGenStub(String::from("2024-12-18T18:02:41Z"), 1734555761),
+                &DateTimeGenStub(String::from("2024-12-18T18:02Z"), 1734555761),
                 &SessionServiceStub::default(),
                 user_cred_stub()
             ),
@@ -84,7 +84,7 @@ mod test {
             user_login(
                 &ValidatorStub(Ok(())),
                 &UserRepoStub::of_db_err(),
-                &DateTimeGenStub(String::from("2024-12-18T18:02:41Z"), 1734555761),
+                &DateTimeGenStub(String::from("2024-12-18T18:02Z"), 1734555761),
                 &SessionServiceStub::default(),
                 user_cred_stub()
             ),
@@ -94,23 +94,23 @@ mod test {
             user_login(
                 &ValidatorStub(Err(HashMap::from([(
                     String::from("first_name"),
-                    vec![VErr::Required]
+                    vec![VErr::Required(RequiredErr("first_name"))]
                 )]))),
                 &UserRepoStub::default(),
-                &DateTimeGenStub(String::from("2024-12-18T18:02:41Z"), 1734555761),
+                &DateTimeGenStub(String::from("2024-12-18T18:02Z"), 1734555761),
                 &SessionServiceStub::default(),
                 user_cred_stub()
             ),
             Err(UserErr::Schema(HashMap::from([(
                 String::from("first_name"),
-                vec![VErr::Required]
+                vec![VErr::Required(RequiredErr("first_name"))]
             )])))
         );
         assert_eq!(
             user_login(
                 &ValidatorStub(Ok(())),
                 &UserRepoStub::default(),
-                &DateTimeGenStub(String::from("2024-12-18T18:02:41Z"), 1734555761),
+                &DateTimeGenStub(String::from("2024-12-18T18:02Z"), 1734555761),
                 &SessionServiceStub::of_session_err(),
                 user_cred_stub()
             ),
