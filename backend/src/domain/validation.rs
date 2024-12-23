@@ -146,9 +146,7 @@ pub enum VErr {
 #[derive(Debug, PartialEq, Clone)]
 pub enum Val {
     None,
-    NumU(u64),
-    NumI(i64),
-    NumF(f64),
+    Num(Option<u64>, Option<i64>, Option<f64>),
     Str(String),
     Bool(bool),
     Arr(Vec<Val>),

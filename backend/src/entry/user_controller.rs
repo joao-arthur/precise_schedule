@@ -1,10 +1,7 @@
-use rocket::serde::{json::Json, Deserialize, Serialize};
-
-use crate::domain::schedule::user::create::{user_c, UserC};
-
-use super::deps::{
-    get_date_time_gen, get_id_gen, get_session_service, get_user_repo, get_validator,
-};
+use rocket::serde::{self, json, Deserialize, Serialize};
+use rocket::{post, Data, http::Status, response::status};
+use rocket::data::ToByteUnit;
+use serde_json::Value;
 
 #[derive(Deserialize, Serialize, Debug)]
 #[serde(crate = "rocket::serde")]
@@ -42,9 +39,63 @@ pub struct Session {
     pub token: String,
 }
 
-#[post("/", format = "application/json", data = "<user>")]
-pub fn endpoint_user_c(user: Json<UserCCDD<'_>>) -> Json<UserCResult> {
-    let user = UserC {
+#[post("/", format = "application/json", data = "<data>")]
+pub async fn endpoint_user_c(data: Data<'_>){
+    let limit = 1.mebibytes();
+    let body = match data.open(limit).into_string().await {
+        Ok(body) => body.value,
+        Err(_) => {
+            return;
+            //return status::Custom(
+            //    Status::PayloadTooLarge,
+            //    "Payload is too large.".to_string(),
+            //);
+        }
+    };
+    let json_value: Value = serde_json::from_str(&body).unwrap();
+    match &json_value {
+        Value::Object(map) => {
+            for (key, value) in map {
+                match value {
+                    Value::Null => {},
+                    Value::Bool(_bool) => {},
+                    Value::Number(num) => {
+                        if num.is_f64() {
+
+                        }
+                        if num.is_u64() {
+
+                        }
+                        if num.is_i64() {
+                            
+                        }
+                    },
+                    Value::String(_str) => {},
+                    Value::Array(_arr) => {},
+                    Value::Object(_obj) => {},
+                }
+                println!("Key: {}, Value: {}", key, value);
+            }
+        }
+        _ => println!("Expected a JSON object"),
+    }
+    // Attempt to deserialize the JSON
+    // let task: Result<User, _> = json::from_str(&body);
+    // match task {
+    //     Ok(task) => status::Custom(
+    //         Status::Ok,
+    //         format!(
+    //             "Task received: description = {}, complete = {}",
+    //             task.email, task.first_name
+    //         ),
+    //     ),
+    //     Err(err) => status::Custom(
+    //         Status::UnprocessableEntity,
+    //         format!("Failed to parse JSON: {}", err),
+    //     ),
+    // }
+
+   /* let user = UserC {
         email: user.email.to_string(),
         first_name: user.first_name.to_string(),
         birthdate: user.birthdate.to_string(),
@@ -75,7 +126,7 @@ pub fn endpoint_user_c(user: Json<UserCCDD<'_>>) -> Json<UserCResult> {
             updated_at: temp.user.updated_at.clone(),
         },
         session: Session { token: temp.session.token },
-    })
+    }) */
 }
 
 #[put("/", format = "application/json")]
