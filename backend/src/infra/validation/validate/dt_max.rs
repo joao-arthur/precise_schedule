@@ -35,7 +35,9 @@ pub fn dt_max(valid: &String, f: &Field) -> Result<(), DtMaxErr> {
 
 #[cfg(test)]
 mod test {
-    use crate::infra::validation::validate::stub::f_obj_stub;
+    use crate::infra::validation::validate::stub::{
+        f_arr_stub, f_bool_stub, f_num_f_stub, f_num_i_stub, f_num_u_stub, f_obj_stub,
+    };
 
     use super::*;
 
@@ -85,17 +87,18 @@ mod test {
     }
 
     #[test]
-    fn test_wrong_type_err() {
+    fn test_dt_max_type_err() {
+        assert_eq!(dt_max(&String::from("2099-12-31"), &f_num_u_stub()), Err(DtMaxErr("foo")));
+        assert_eq!(dt_max(&String::from("2099-12-31"), &f_num_i_stub()), Err(DtMaxErr("foo")));
+        assert_eq!(dt_max(&String::from("2099-12-31"), &f_num_f_stub()), Err(DtMaxErr("foo")));
+        assert_eq!(dt_max(&String::from("2099-12-31"), &f_bool_stub()), Err(DtMaxErr("foo")));
+        assert_eq!(dt_max(&String::from("2099-12-31"), &f_arr_stub()), Err(DtMaxErr("foo")));
         assert_eq!(dt_max(&String::from("2099-12-31"), &f_obj_stub()), Err(DtMaxErr("foo")));
     }
 
     #[test]
-    fn test_none_not_required() {
+    fn test_dt_max_required() {
         assert_eq!(dt_max(&String::from("2099-12-31"), &Field::default()), Ok(()));
-    }
-
-    #[test]
-    fn test_none_required() {
         assert_eq!(dt_max(&String::from("2099-12-31"), &Field::required()), Err(DtMaxErr("foo")));
     }
 }

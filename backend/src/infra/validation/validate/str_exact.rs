@@ -25,7 +25,9 @@ pub fn str_exact(valid: &String, f: &Field) -> Result<(), StrExactErr> {
 
 #[cfg(test)]
 mod test {
-    use crate::infra::validation::validate::stub::f_obj_stub;
+    use crate::infra::validation::validate::stub::{
+        f_arr_stub, f_bool_stub, f_num_f_stub, f_num_i_stub, f_num_u_stub, f_obj_stub,
+    };
 
     use super::*;
 
@@ -47,17 +49,18 @@ mod test {
     }
 
     #[test]
-    fn test_wrong_type_err() {
+    fn test_str_exact_type_err() {
+        assert_eq!(str_exact(&String::from(""), &f_num_u_stub()), Err(StrExactErr("foo")));
+        assert_eq!(str_exact(&String::from(""), &f_num_i_stub()), Err(StrExactErr("foo")));
+        assert_eq!(str_exact(&String::from(""), &f_num_f_stub()), Err(StrExactErr("foo")));
+        assert_eq!(str_exact(&String::from(""), &f_bool_stub()), Err(StrExactErr("foo")));
+        assert_eq!(str_exact(&String::from(""), &f_arr_stub()), Err(StrExactErr("foo")));
         assert_eq!(str_exact(&String::from(""), &f_obj_stub()), Err(StrExactErr("foo")));
     }
 
     #[test]
-    fn test_none_not_required() {
+    fn test_str_exact_required() {
         assert_eq!(str_exact(&String::from(""), &Field::default()), Ok(()));
-    }
-
-    #[test]
-    fn test_none_required() {
         assert_eq!(str_exact(&String::from(""), &Field::required()), Err(StrExactErr("foo")));
     }
 }

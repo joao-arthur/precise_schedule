@@ -19,27 +19,30 @@ pub fn bool(f: &Field) -> Result<(), BoolErr> {
 
 #[cfg(test)]
 mod test {
-    use crate::infra::validation::validate::stub::{f_bool_stub, f_obj_stub};
+    use crate::infra::validation::validate::stub::{
+        f_arr_stub, f_bool_stub, f_num_f_stub, f_num_i_stub, f_num_u_stub, f_obj_stub, f_str_stub,
+    };
 
     use super::*;
 
     #[test]
-    fn test_type_ok() {
+    fn test_bool_ok() {
         assert_eq!(bool(&f_bool_stub()), Ok(()));
     }
 
     #[test]
-    fn test_wrong_type_err() {
+    fn test_bool_err() {
+        assert_eq!(bool(&f_num_u_stub()), Err(BoolErr("foo")));
+        assert_eq!(bool(&f_num_i_stub()), Err(BoolErr("foo")));
+        assert_eq!(bool(&f_num_f_stub()), Err(BoolErr("foo")));
+        assert_eq!(bool(&f_str_stub()), Err(BoolErr("foo")));
+        assert_eq!(bool(&f_arr_stub()), Err(BoolErr("foo")));
         assert_eq!(bool(&f_obj_stub()), Err(BoolErr("foo")));
     }
 
     #[test]
-    fn test_none_not_required() {
+    fn test_bool_required() {
         assert_eq!(bool(&Field::default()), Ok(()));
-    }
-
-    #[test]
-    fn test_none_required() {
         assert_eq!(bool(&Field::required()), Err(BoolErr("foo")));
     }
 }

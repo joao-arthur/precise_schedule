@@ -35,7 +35,9 @@ pub fn dt_min(valid: &String, f: &Field) -> Result<(), DtMinErr> {
 
 #[cfg(test)]
 mod test {
-    use crate::infra::validation::validate::stub::f_obj_stub;
+    use crate::infra::validation::validate::stub::{
+        f_arr_stub, f_bool_stub, f_num_f_stub, f_num_i_stub, f_num_u_stub, f_obj_stub,
+    };
 
     use super::*;
 
@@ -93,17 +95,18 @@ mod test {
     }
 
     #[test]
-    fn test_wrong_type_err() {
+    fn test_dt_min_type_err() {
+        assert_eq!(dt_min(&String::from("1970-01-01"), &f_num_u_stub()), Err(DtMinErr("foo")));
+        assert_eq!(dt_min(&String::from("1970-01-01"), &f_num_i_stub()), Err(DtMinErr("foo")));
+        assert_eq!(dt_min(&String::from("1970-01-01"), &f_num_f_stub()), Err(DtMinErr("foo")));
+        assert_eq!(dt_min(&String::from("1970-01-01"), &f_bool_stub()), Err(DtMinErr("foo")));
+        assert_eq!(dt_min(&String::from("1970-01-01"), &f_arr_stub()), Err(DtMinErr("foo")));
         assert_eq!(dt_min(&String::from("1970-01-01"), &f_obj_stub()), Err(DtMinErr("foo")));
     }
 
     #[test]
-    fn test_none_not_required() {
+    fn test_dt_min_required() {
         assert_eq!(dt_min(&String::from("1970-01-01"), &Field::default()), Ok(()));
-    }
-
-    #[test]
-    fn test_none_required() {
         assert_eq!(dt_min(&String::from("1970-01-01"), &Field::required()), Err(DtMinErr("foo")));
     }
 }

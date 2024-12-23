@@ -25,7 +25,9 @@ pub fn str_exact_len(valid: u32, f: &Field) -> Result<(), StrExactLenErr> {
 
 #[cfg(test)]
 mod test {
-    use crate::infra::validation::validate::stub::f_obj_stub;
+    use crate::infra::validation::validate::stub::{
+        f_arr_stub, f_bool_stub, f_num_f_stub, f_num_i_stub, f_num_u_stub, f_obj_stub,
+    };
 
     use super::*;
 
@@ -51,17 +53,18 @@ mod test {
     }
 
     #[test]
-    fn test_wrong_type_err() {
+    fn test_str_exact_len_type_err() {
+        assert_eq!(str_exact_len(1, &f_num_u_stub()), Err(StrExactLenErr("foo")));
+        assert_eq!(str_exact_len(1, &f_num_i_stub()), Err(StrExactLenErr("foo")));
+        assert_eq!(str_exact_len(1, &f_num_f_stub()), Err(StrExactLenErr("foo")));
+        assert_eq!(str_exact_len(1, &f_bool_stub()), Err(StrExactLenErr("foo")));
+        assert_eq!(str_exact_len(1, &f_arr_stub()), Err(StrExactLenErr("foo")));
         assert_eq!(str_exact_len(1, &f_obj_stub()), Err(StrExactLenErr("foo")));
     }
 
     #[test]
-    fn test_none_not_required() {
+    fn test_str_exact_len_required() {
         assert_eq!(str_exact_len(1, &Field::default()), Ok(()));
-    }
-
-    #[test]
-    fn test_none_required() {
         assert_eq!(str_exact_len(1, &Field::required()), Err(StrExactLenErr("foo")));
     }
 }

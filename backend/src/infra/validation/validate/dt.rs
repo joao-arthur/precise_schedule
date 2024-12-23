@@ -24,7 +24,9 @@ pub fn dt(f: &Field) -> Result<(), DtErr> {
 
 #[cfg(test)]
 mod test {
-    use crate::infra::validation::validate::stub::f_obj_stub;
+    use crate::infra::validation::validate::stub::{
+        f_arr_stub, f_bool_stub, f_num_f_stub, f_num_i_stub, f_num_u_stub, f_obj_stub,
+    };
 
     use super::*;
 
@@ -48,17 +50,18 @@ mod test {
     }
 
     #[test]
-    fn test_wrong_type_err() {
+    fn test_dt_type_err() {
+        assert_eq!(dt(&f_num_u_stub()), Err(DtErr("foo")));
+        assert_eq!(dt(&f_num_i_stub()), Err(DtErr("foo")));
+        assert_eq!(dt(&f_num_f_stub()), Err(DtErr("foo")));
+        assert_eq!(dt(&f_bool_stub()), Err(DtErr("foo")));
+        assert_eq!(dt(&f_arr_stub()), Err(DtErr("foo")));
         assert_eq!(dt(&f_obj_stub()), Err(DtErr("foo")));
     }
 
     #[test]
-    fn test_none_not_required() {
+    fn test_dt_required() {
         assert_eq!(dt(&Field::default()), Ok(()));
-    }
-
-    #[test]
-    fn test_none_required() {
         assert_eq!(dt(&Field::required()), Err(DtErr("foo")));
     }
 }

@@ -25,41 +25,44 @@ pub fn num_i_exact(valid: i64, f: &Field) -> Result<(), NumIExactErr> {
 
 #[cfg(test)]
 mod test {
-    use crate::infra::validation::validate::stub::f_obj_stub;
+    use crate::infra::validation::validate::stub::{
+        f_arr_stub, f_bool_stub, f_num_f_stub, f_num_u_stub, f_obj_stub, f_str_stub,
+    };
 
     use super::*;
 
     #[test]
-    fn test_num_exact_ok() {
+    fn test_num_i_exact_ok() {
         assert_eq!(num_i_exact(42, &Field::of(Val::None)), Ok(()));
-        assert_eq!(num_i_exact(42, &Field::of(Val::Num(None, Some(42), None,))), Ok(()));
-        assert_eq!(num_i_exact(-42, &Field::of(Val::Num(None, Some(-42), None,))), Ok(()));
+        assert_eq!(num_i_exact(42, &Field::of(Val::Num(None, Some(42), None))), Ok(()));
+        assert_eq!(num_i_exact(-42, &Field::of(Val::Num(None, Some(-42), None))), Ok(()));
     }
 
     #[test]
-    fn test_num_exact_err() {
+    fn test_num_i_exact_err() {
         assert_eq!(
-            num_i_exact(-10, &Field::of(Val::Num(None, Some(-11), None,))),
+            num_i_exact(-10, &Field::of(Val::Num(None, Some(-11), None))),
             Err(NumIExactErr("foo"))
         );
         assert_eq!(
-            num_i_exact(-10, &Field::of(Val::Num(None, Some(-9), None,))),
+            num_i_exact(-10, &Field::of(Val::Num(None, Some(-9), None))),
             Err(NumIExactErr("foo"))
         );
     }
 
     #[test]
-    fn test_wrong_type_err() {
+    fn test_num_i_exact_type_err() {
+        assert_eq!(num_i_exact(-42, &f_num_u_stub()), Err(NumIExactErr("foo")));
+        assert_eq!(num_i_exact(-42, &f_num_f_stub()), Err(NumIExactErr("foo")));
+        assert_eq!(num_i_exact(-42, &f_str_stub()), Err(NumIExactErr("foo")));
+        assert_eq!(num_i_exact(-42, &f_bool_stub()), Err(NumIExactErr("foo")));
+        assert_eq!(num_i_exact(-42, &f_arr_stub()), Err(NumIExactErr("foo")));
         assert_eq!(num_i_exact(-42, &f_obj_stub()), Err(NumIExactErr("foo")));
     }
 
     #[test]
-    fn test_none_not_required() {
+    fn test_num_i_exact_required() {
         assert_eq!(num_i_exact(-42, &Field::default()), Ok(()));
-    }
-
-    #[test]
-    fn test_none_required() {
         assert_eq!(num_i_exact(-42, &Field::required()), Err(NumIExactErr("foo")));
     }
 }

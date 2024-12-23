@@ -27,7 +27,9 @@ pub fn email(f: &Field) -> Result<(), EmailErr> {
 
 #[cfg(test)]
 mod test {
-    use crate::infra::validation::validate::stub::f_obj_stub;
+    use crate::infra::validation::validate::stub::{
+        f_arr_stub, f_bool_stub, f_num_f_stub, f_num_i_stub, f_num_u_stub, f_obj_stub, 
+    };
 
     use super::*;
 
@@ -52,17 +54,18 @@ mod test {
     }
 
     #[test]
-    fn test_wrong_type_err() {
+    fn test_email_type_err() {
+        assert_eq!(email(&f_num_u_stub()), Err(EmailErr("foo")));
+        assert_eq!(email(&f_num_i_stub()), Err(EmailErr("foo")));
+        assert_eq!(email(&f_num_f_stub()), Err(EmailErr("foo")));
+        assert_eq!(email(&f_bool_stub()), Err(EmailErr("foo")));
+        assert_eq!(email(&f_arr_stub()), Err(EmailErr("foo")));
         assert_eq!(email(&f_obj_stub()), Err(EmailErr("foo")));
     }
 
     #[test]
-    fn test_none_not_required() {
+    fn test_email_required() {
         assert_eq!(email(&Field::default()), Ok(()));
-    }
-
-    #[test]
-    fn test_none_required() {
         assert_eq!(email(&Field::required()), Err(EmailErr("foo")));
     }
 }

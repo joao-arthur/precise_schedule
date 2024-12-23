@@ -25,7 +25,9 @@ pub fn str_min_len(valid: u32, f: &Field) -> Result<(), StrMinLenErr> {
 
 #[cfg(test)]
 mod test {
-    use crate::infra::validation::validate::stub::f_obj_stub;
+    use crate::infra::validation::validate::stub::{
+        f_arr_stub, f_bool_stub, f_num_f_stub, f_num_i_stub, f_num_u_stub, f_obj_stub,
+    };
 
     use super::*;
 
@@ -52,17 +54,18 @@ mod test {
     }
 
     #[test]
-    fn test_wrong_type_err() {
+    fn test_str_min_len_type_err() {
+        assert_eq!(str_min_len(1, &f_num_u_stub()), Err(StrMinLenErr("foo")));
+        assert_eq!(str_min_len(1, &f_num_i_stub()), Err(StrMinLenErr("foo")));
+        assert_eq!(str_min_len(1, &f_num_f_stub()), Err(StrMinLenErr("foo")));
+        assert_eq!(str_min_len(1, &f_bool_stub()), Err(StrMinLenErr("foo")));
+        assert_eq!(str_min_len(1, &f_arr_stub()), Err(StrMinLenErr("foo")));
         assert_eq!(str_min_len(1, &f_obj_stub()), Err(StrMinLenErr("foo")));
     }
 
     #[test]
-    fn test_none_not_required() {
+    fn test_str_min_len_required() {
         assert_eq!(str_min_len(1, &Field::default()), Ok(()));
-    }
-
-    #[test]
-    fn test_none_required() {
         assert_eq!(str_min_len(1, &Field::required()), Err(StrMinLenErr("foo")));
     }
 }
