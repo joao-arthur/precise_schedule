@@ -1,6 +1,6 @@
-use rocket::serde::{self, json, Deserialize, Serialize};
-use rocket::{post, Data, http::Status, response::status};
 use rocket::data::ToByteUnit;
+use rocket::serde::{self, json, Deserialize, Serialize};
+use rocket::{http::Status, post, response::status, Data};
 use serde_json::Value;
 
 #[derive(Deserialize, Serialize, Debug)]
@@ -40,7 +40,7 @@ pub struct Session {
 }
 
 #[post("/", format = "application/json", data = "<data>")]
-pub async fn endpoint_user_c(data: Data<'_>){
+pub async fn endpoint_user_c(data: Data<'_>) {
     let limit = 1.mebibytes();
     let body = match data.open(limit).into_string().await {
         Ok(body) => body.value,
@@ -57,22 +57,16 @@ pub async fn endpoint_user_c(data: Data<'_>){
         Value::Object(map) => {
             for (key, value) in map {
                 match value {
-                    Value::Null => {},
-                    Value::Bool(_bool) => {},
+                    Value::Null => {}
+                    Value::Bool(_bool) => {}
                     Value::Number(num) => {
-                        if num.is_f64() {
-
-                        }
-                        if num.is_u64() {
-
-                        }
-                        if num.is_i64() {
-                            
-                        }
-                    },
-                    Value::String(_str) => {},
-                    Value::Array(_arr) => {},
-                    Value::Object(_obj) => {},
+                        if num.is_f64() {}
+                        if num.is_u64() {}
+                        if num.is_i64() {}
+                    }
+                    Value::String(_str) => {}
+                    Value::Array(_arr) => {}
+                    Value::Object(_obj) => {}
                 }
                 println!("Key: {}, Value: {}", key, value);
             }
@@ -95,7 +89,7 @@ pub async fn endpoint_user_c(data: Data<'_>){
     //     ),
     // }
 
-   /* let user = UserC {
+    /* let user = UserC {
         email: user.email.to_string(),
         first_name: user.first_name.to_string(),
         birthdate: user.birthdate.to_string(),

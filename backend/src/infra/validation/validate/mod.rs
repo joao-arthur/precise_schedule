@@ -1,0 +1,31 @@
+mod bool;
+mod dt;
+mod dt_max;
+mod dt_min;
+mod email;
+mod num_f;
+mod num_f_exact;
+mod num_f_max;
+mod num_f_min;
+mod num_i;
+mod num_i_exact;
+mod num_i_max;
+mod num_i_min;
+mod num_u;
+mod num_u_exact;
+mod num_u_max;
+mod num_u_min;
+mod parse;
+mod required;
+mod str;
+mod str_exact;
+mod str_exact_len;
+mod str_max_len;
+mod str_min_len;
+mod str_min_lower;
+mod str_min_num;
+mod str_min_special;
+mod str_min_upper;
+
+#[cfg(test)]
+mod stub;

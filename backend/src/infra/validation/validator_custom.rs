@@ -2,8 +2,6 @@ use std::collections::HashMap;
 
 use crate::domain::validation::{Schema, SchemaErr, VErr, Val, Validator, V};
 
-use super::{validate::*, Field};
-
 fn validate_schema(schema: &Schema, value: &Val) -> Result<(), HashMap<String, Vec<VErr>>> {
     let mut res: HashMap<String, Vec<VErr>> = HashMap::new();
 

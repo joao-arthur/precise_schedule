@@ -1,8 +1,8 @@
-mod validate;
-mod adapter;
-pub mod validator_custom;
-
 use crate::domain::validation::Val;
+
+mod adapter;
+mod validate;
+pub mod validator_custom;
 
 struct Field {
     name: &'static str,
