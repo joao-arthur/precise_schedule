@@ -1,40 +1,63 @@
+use std::sync::LazyLock;
+
 use email_address::EmailAddress;
 use regex::Regex;
 
-use crate::{
-    domain::validation::*,
-    infra::validation::Field,
-};
+use crate::{domain::validation::*, infra::validation::Field};
 
+#[derive(Debug, PartialEq)]
+struct InternalDT(pub u32, pub u8, pub u8);
 
-struct InternalDT(pub u32, pub u16, pub u16);
+#[derive(Debug, PartialEq)]
+struct InternalTM(pub u8, pub u8);
 
-fn parsedt(s: &String) -> Result<InternalDT, ()> {
-    let re = Regex::new(r"(?x)
-(?P<year>\d{4})  # the year
--
-(?P<month>\d{2}) # the month
--
-(?P<day>\d{2})   # the day
-").unwrap();
-    if let Some(caps) = re.captures(s) {
-        let _yyyy = caps["year"].parse::<u32>().map_err(|_| ())?;
-        let _mm = caps["month"].parse::<u16>().map_err(|_| ())?;
-        let _dd = caps["day"].parse::<u16>().map_err(|_| ())?;
-        return Ok(InternalDT(_yyyy, _mm, _dd));
+#[derive(Debug, PartialEq)]
+struct InternalISO(pub u32, pub u16, pub u16, pub u8, pub u8);
+
+static DT_RE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"([0-9]{4})-([0-9]{2})-([0-9]{2})").unwrap());
+
+static TM_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"([0-9]{2}):([0-9]{2})").unwrap());
+
+static ISO_DATE_RE: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(r"^([0-9]{4})-([0-9]{2})-([0-9]{2})T([0-9]{2}):([0-9]{2})Z$").unwrap()
+});
+
+fn parse_dt(s: &String) -> Result<InternalDT, ()> {
+    if let Some(caps) = DT_RE.captures(s) {
+        let c: (&str, [&str; 3]) = caps.extract();
+        let yyyy = c.1[0].parse::<u32>().map_err(|_| ())?;
+        let mm = c.1[1].parse::<u8>().map_err(|_| ())?;
+        let dd = c.1[2].parse::<u8>().map_err(|_| ())?;
+        return Ok(InternalDT(yyyy, mm, dd));
     } else {
         return Err(());
     }
 }
 
-fn parsetime(s: &String) -> Result<InternalDT, ()> {
+fn parse_tm(s: &String) -> Result<InternalTM, ()> {
+    if let Some(caps) = TM_RE.captures(s) {
+        let c: (&str, [&str; 2]) = caps.extract();
+        let h = c.1[0].parse::<u8>().map_err(|_| ())?;
+        let m = c.1[1].parse::<u8>().map_err(|_| ())?;
+        return Ok(InternalTM(h, m));
+    } else {
         return Err(());
-    
+    }
 }
 
-fn parsetimestamp(s: &String) -> Result<InternalDT, ()> {
+fn parse_iso(s: &String) -> Result<InternalISO, ()> {
+    if let Some(caps) = ISO_DATE_RE.captures(s) {
+        let c: (&str, [&str; 5]) = caps.extract();
+        let yyyy = c.1[0].parse::<u32>().map_err(|_| ())?;
+        let mm = c.1[1].parse::<u16>().map_err(|_| ())?;
+        let dd = c.1[2].parse::<u16>().map_err(|_| ())?;
+        let h = c.1[3].parse::<u8>().map_err(|_| ())?;
+        let m = c.1[4].parse::<u8>().map_err(|_| ())?;
+        return Ok(InternalISO(yyyy, mm, dd, h, m));
+    } else {
         return Err(());
-    
+    }
 }
 
 pub fn required(f: &Field) -> Result<(), RequiredErr> {
@@ -122,14 +145,14 @@ pub fn num_u_exact(valid: u64, f: &Field) -> Result<(), NumUExactErr> {
             } else {
                 Err(NumUExactErr(f.name))
             }
-        },
+        }
         Val::None => {
             if f.has_required {
                 Err(NumUExactErr(f.name))
             } else {
                 Ok(())
             }
-        },
+        }
         _ => Err(NumUExactErr(f.name)),
     }
 }
@@ -142,14 +165,14 @@ pub fn num_i_exact(valid: i64, f: &Field) -> Result<(), NumIExactErr> {
             } else {
                 Err(NumIExactErr(f.name))
             }
-        },
+        }
         Val::None => {
             if f.has_required {
                 Err(NumIExactErr(f.name))
             } else {
                 Ok(())
             }
-        },
+        }
         _ => Err(NumIExactErr(f.name)),
     }
 }
@@ -162,14 +185,14 @@ pub fn num_f_exact(valid: f64, f: &Field) -> Result<(), NumFExactErr> {
             } else {
                 Err(NumFExactErr(f.name))
             }
-        },
+        }
         Val::None => {
             if f.has_required {
                 Err(NumFExactErr(f.name))
             } else {
                 Ok(())
             }
-        },
+        }
         _ => Err(NumFExactErr(f.name)),
     }
 }
@@ -182,14 +205,14 @@ pub fn num_u_min(valid: u64, f: &Field) -> Result<(), NumUMinErr> {
             } else {
                 Err(NumUMinErr(f.name))
             }
-        },
+        }
         Val::None => {
             if f.has_required {
                 Err(NumUMinErr(f.name))
             } else {
                 Ok(())
             }
-        },
+        }
         _ => Err(NumUMinErr(f.name)),
     }
 }
@@ -202,14 +225,14 @@ pub fn num_i_min(valid: i64, f: &Field) -> Result<(), NumIMinErr> {
             } else {
                 Err(NumIMinErr(f.name))
             }
-        },
+        }
         Val::None => {
             if f.has_required {
                 Err(NumIMinErr(f.name))
             } else {
                 Ok(())
             }
-        },
+        }
         _ => Err(NumIMinErr(f.name)),
     }
 }
@@ -222,14 +245,14 @@ pub fn num_f_min(valid: f64, f: &Field) -> Result<(), NumFMinErr> {
             } else {
                 Err(NumFMinErr(f.name))
             }
-        },
+        }
         Val::None => {
             if f.has_required {
                 Err(NumFMinErr(f.name))
             } else {
                 Ok(())
             }
-        },
+        }
         _ => Err(NumFMinErr(f.name)),
     }
 }
@@ -242,14 +265,14 @@ pub fn num_u_max(valid: u64, f: &Field) -> Result<(), NumUMaxErr> {
             } else {
                 Err(NumUMaxErr(f.name))
             }
-        },
+        }
         Val::None => {
             if f.has_required {
                 Err(NumUMaxErr(f.name))
             } else {
                 Ok(())
             }
-        },
+        }
         _ => Err(NumUMaxErr(f.name)),
     }
 }
@@ -262,14 +285,14 @@ pub fn num_i_max(valid: i64, f: &Field) -> Result<(), NumIMaxErr> {
             } else {
                 Err(NumIMaxErr(f.name))
             }
-        },
+        }
         Val::None => {
             if f.has_required {
                 Err(NumIMaxErr(f.name))
             } else {
                 Ok(())
             }
-        },
+        }
         _ => Err(NumIMaxErr(f.name)),
     }
 }
@@ -282,14 +305,14 @@ pub fn num_f_max(valid: f64, f: &Field) -> Result<(), NumFMaxErr> {
             } else {
                 Err(NumFMaxErr(f.name))
             }
-        },
+        }
         Val::None => {
             if f.has_required {
                 Err(NumFMaxErr(f.name))
             } else {
                 Ok(())
             }
-        },
+        }
         _ => Err(NumFMaxErr(f.name)),
     }
 }
@@ -302,7 +325,7 @@ pub fn str_exact(valid: &String, f: &Field) -> Result<(), StrExactErr> {
             } else {
                 Err(StrExactErr(f.name))
             }
-        },
+        }
         Val::None => {
             if f.has_required {
                 Err(StrExactErr(f.name))
@@ -322,7 +345,7 @@ pub fn str_exact_len(valid: u32, f: &Field) -> Result<(), StrExactLenErr> {
             } else {
                 Err(StrExactLenErr(f.name))
             }
-        },
+        }
         Val::None => {
             if f.has_required {
                 Err(StrExactLenErr(f.name))
@@ -342,7 +365,7 @@ pub fn str_min_len(valid: u32, f: &Field) -> Result<(), StrMinLenErr> {
             } else {
                 Err(StrMinLenErr(f.name))
             }
-        },
+        }
         Val::None => {
             if f.has_required {
                 Err(StrMinLenErr(f.name))
@@ -362,7 +385,7 @@ pub fn str_max_len(valid: u32, f: &Field) -> Result<(), StrMaxLenErr> {
             } else {
                 Err(StrMaxLenErr(f.name))
             }
-        },
+        }
         Val::None => {
             if f.has_required {
                 Err(StrMaxLenErr(f.name))
@@ -384,7 +407,7 @@ pub fn str_min_upper(valid: u32, f: &Field) -> Result<(), StrMinUpperErr> {
             } else {
                 Err(StrMinUpperErr(f.name))
             }
-        },
+        }
         Val::None => {
             if f.has_required {
                 Err(StrMinUpperErr(f.name))
@@ -406,7 +429,7 @@ pub fn str_min_lower(valid: u32, f: &Field) -> Result<(), StrMinLowerErr> {
             } else {
                 Err(StrMinLowerErr(f.name))
             }
-        },
+        }
         Val::None => {
             if f.has_required {
                 Err(StrMinLowerErr(f.name))
@@ -426,7 +449,7 @@ pub fn str_min_num(valid: u32, f: &Field) -> Result<(), StrMinNumErr> {
             } else {
                 Err(StrMinNumErr(f.name))
             }
-        },
+        }
         Val::None => {
             if f.has_required {
                 Err(StrMinNumErr(f.name))
@@ -446,7 +469,7 @@ pub fn str_min_special(valid: u32, f: &Field) -> Result<(), StrMinSpecialErr> {
             } else {
                 Err(StrMinSpecialErr(f.name))
             }
-        },
+        }
         Val::None => {
             if f.has_required {
                 Err(StrMinSpecialErr(f.name))
@@ -460,11 +483,9 @@ pub fn str_min_special(valid: u32, f: &Field) -> Result<(), StrMinSpecialErr> {
 
 pub fn dt(f: &Field) -> Result<(), DtErr> {
     match &f.value {
-        Val::Str(str_value) => {
-            match parsedt(str_value) {
-               Err(_) => Err(DtErr(f.name)),
-               Ok(_) => Ok(())
-            }
+        Val::Str(str_value) => match parse_dt(str_value) {
+            Err(_) => Err(DtErr(f.name)),
+            Ok(_) => Ok(()),
         },
         Val::None => {
             if f.has_required {
@@ -480,8 +501,8 @@ pub fn dt(f: &Field) -> Result<(), DtErr> {
 pub fn dt_min(valid: &String, f: &Field) -> Result<(), DtMinErr> {
     match &f.value {
         Val::Str(str_value) => {
-            let valid_dt = parsedt(valid).map_err(|_| DtMinErr(f.name))?;
-            let value_dt = parsedt(str_value).map_err(|_| DtMinErr(f.name))?;
+            let valid_dt = parse_dt(valid).map_err(|_| DtMinErr(f.name))?;
+            let value_dt = parse_dt(str_value).map_err(|_| DtMinErr(f.name))?;
 
             if value_dt.0 < valid_dt.0 {
                 return Err(DtMinErr(f.name));
@@ -493,7 +514,7 @@ pub fn dt_min(valid: &String, f: &Field) -> Result<(), DtMinErr> {
                 return Err(DtMinErr(f.name));
             }
             Ok(())
-        },
+        }
         Val::None => {
             if f.has_required {
                 Err(DtMinErr(f.name))
@@ -508,8 +529,8 @@ pub fn dt_min(valid: &String, f: &Field) -> Result<(), DtMinErr> {
 pub fn dt_max(valid: &String, f: &Field) -> Result<(), DtMaxErr> {
     match &f.value {
         Val::Str(str_value) => {
-            let valid_dt = parsedt(valid).map_err(|_| DtMaxErr(f.name))?;
-            let value_dt = parsedt(str_value).map_err(|_| DtMaxErr(f.name))?;
+            let valid_dt = parse_dt(valid).map_err(|_| DtMaxErr(f.name))?;
+            let value_dt = parse_dt(str_value).map_err(|_| DtMaxErr(f.name))?;
 
             if value_dt.0 > valid_dt.0 {
                 return Err(DtMaxErr(f.name));
@@ -521,7 +542,7 @@ pub fn dt_max(valid: &String, f: &Field) -> Result<(), DtMaxErr> {
                 return Err(DtMaxErr(f.name));
             }
             Ok(())
-        },
+        }
         Val::None => {
             if f.has_required {
                 Err(DtMaxErr(f.name))
@@ -541,7 +562,7 @@ pub fn email(f: &Field) -> Result<(), EmailErr> {
             } else {
                 Err(EmailErr(f.name))
             }
-        },
+        }
         Val::None => {
             if f.has_required {
                 Err(EmailErr(f.name))
@@ -557,12 +578,6 @@ pub fn email(f: &Field) -> Result<(), EmailErr> {
 mod test {
     use super::*;
     use std::collections::HashMap;
-
-
-    
-    fn f_none_stub() -> Field {
-        Field::of(Val::None)
-    }
 
     fn f_num_u_stub() -> Field {
         Field::of(Val::NumU(42))
@@ -590,7 +605,22 @@ mod test {
 
     fn f_obj_stub() -> Field {
         Field::of(Val::Obj(HashMap::from([(String::from("age"), Val::NumI(42))])))
-}
+    }
+
+    #[test]
+    fn test_parse_dt() {
+        assert_eq!(parse_dt(&String::from("2029-12-31")), Ok(InternalDT(2029, 12, 31)));
+    }
+    
+    #[test]
+    fn test_parse_tm() {
+        assert_eq!(parse_tm(&String::from("06:11")), Ok(InternalTM(06, 11)));
+    }
+    
+    #[test]
+    fn test_parse_iso() {
+        assert_eq!(parse_iso(&String::from("2029-12-31T06:11Z")), Ok(InternalISO(2029, 12, 31, 06, 11)));
+    }
 
     #[test]
     fn test_num_exact_ok() {
@@ -672,12 +702,18 @@ mod test {
     #[test]
     fn test_str_exact_ok() {
         assert_eq!(str_exact(&String::from("Ai"), &Field::of(Val::None)), Ok(()));
-        assert_eq!(str_exact(&String::from("Ai"), &Field::of(Val::Str(String::from("Ai")))), Ok(()));
+        assert_eq!(
+            str_exact(&String::from("Ai"), &Field::of(Val::Str(String::from("Ai")))),
+            Ok(())
+        );
     }
 
     #[test]
     fn test_str_exact_err() {
-        assert_eq!(str_exact(&String::from("TO BE"), &Field::of(Val::Str(String::from("to be")))), Err(StrExactErr("foo")));
+        assert_eq!(
+            str_exact(&String::from("TO BE"), &Field::of(Val::Str(String::from("to be")))),
+            Err(StrExactErr("foo"))
+        );
     }
 
     #[test]
@@ -691,21 +727,36 @@ mod test {
 
     #[test]
     fn test_str_exact_len_err() {
-        assert_eq!(str_exact_len(6, &Field::of(Val::Str(String::from("touch")))), Err(StrExactLenErr("foo")));
-        assert_eq!(str_exact_len(6, &Field::of(Val::Str(String::from("the sky")))), Err(StrExactLenErr("foo")));
+        assert_eq!(
+            str_exact_len(6, &Field::of(Val::Str(String::from("touch")))),
+            Err(StrExactLenErr("foo"))
+        );
+        assert_eq!(
+            str_exact_len(6, &Field::of(Val::Str(String::from("the sky")))),
+            Err(StrExactLenErr("foo"))
+        );
     }
 
     #[test]
     fn test_str_min_len_ok() {
         assert_eq!(str_min_len(10, &Field::of(Val::None)), Ok(()));
         assert_eq!(str_min_len(10, &Field::of(Val::Str(String::from("Hitchhiker")))), Ok(()));
-        assert_eq!(str_min_len(10, &Field::of(Val::Str(String::from("Guide to the galaxy")))), Ok(()));
+        assert_eq!(
+            str_min_len(10, &Field::of(Val::Str(String::from("Guide to the galaxy")))),
+            Ok(())
+        );
     }
 
     #[test]
     fn test_str_min_len_err() {
-        assert_eq!(str_min_len(10, &Field::of(Val::Str(String::from("Nevermore")))), Err(StrMinLenErr("foo")));
-        assert_eq!(str_min_len(10, &Field::of(Val::Str(String::from("Nevermor")))), Err(StrMinLenErr("foo")));
+        assert_eq!(
+            str_min_len(10, &Field::of(Val::Str(String::from("Nevermore")))),
+            Err(StrMinLenErr("foo"))
+        );
+        assert_eq!(
+            str_min_len(10, &Field::of(Val::Str(String::from("Nevermor")))),
+            Err(StrMinLenErr("foo"))
+        );
     }
 
     #[test]
@@ -719,8 +770,14 @@ mod test {
 
     #[test]
     fn test_str_max_len_err() {
-        assert_eq!(str_max_len(10, &Field::of(Val::Str(String::from("there is a ")))), Err(StrMaxLenErr("foo")));
-        assert_eq!(str_max_len(10, &Field::of(Val::Str(String::from("light that n")))), Err(StrMaxLenErr("foo")));
+        assert_eq!(
+            str_max_len(10, &Field::of(Val::Str(String::from("there is a ")))),
+            Err(StrMaxLenErr("foo"))
+        );
+        assert_eq!(
+            str_max_len(10, &Field::of(Val::Str(String::from("light that n")))),
+            Err(StrMaxLenErr("foo"))
+        );
     }
 
     #[test]
@@ -734,8 +791,14 @@ mod test {
 
     #[test]
     fn test_str_min_upper_err() {
-        assert_eq!(str_min_upper(4, &Field::of(Val::Str(String::from("JOHn")))), Err(StrMinUpperErr("foo")));
-        assert_eq!(str_min_upper(4, &Field::of(Val::Str(String::from("JOhn")))), Err(StrMinUpperErr("foo")));
+        assert_eq!(
+            str_min_upper(4, &Field::of(Val::Str(String::from("JOHn")))),
+            Err(StrMinUpperErr("foo"))
+        );
+        assert_eq!(
+            str_min_upper(4, &Field::of(Val::Str(String::from("JOhn")))),
+            Err(StrMinUpperErr("foo"))
+        );
     }
 
     #[test]
@@ -749,8 +812,14 @@ mod test {
 
     #[test]
     fn test_str_min_lower_err() {
-        assert_eq!(str_min_lower(4, &Field::of(Val::Str(String::from("PaUL")))), Err(StrMinLowerErr("foo")));
-        assert_eq!(str_min_lower(4, &Field::of(Val::Str(String::from("PauL")))), Err(StrMinLowerErr("foo")));
+        assert_eq!(
+            str_min_lower(4, &Field::of(Val::Str(String::from("PaUL")))),
+            Err(StrMinLowerErr("foo"))
+        );
+        assert_eq!(
+            str_min_lower(4, &Field::of(Val::Str(String::from("PauL")))),
+            Err(StrMinLowerErr("foo"))
+        );
     }
 
     #[test]
@@ -763,8 +832,14 @@ mod test {
 
     #[test]
     fn test_str_min_num_err() {
-        assert_eq!(str_min_num(3, &Field::of(Val::Str(String::from("we are one 3 8")))), Err(StrMinNumErr("foo")));
-        assert_eq!(str_min_num(3, &Field::of(Val::Str(String::from("we are one thirty 8")))), Err(StrMinNumErr("foo")));
+        assert_eq!(
+            str_min_num(3, &Field::of(Val::Str(String::from("we are one 3 8")))),
+            Err(StrMinNumErr("foo"))
+        );
+        assert_eq!(
+            str_min_num(3, &Field::of(Val::Str(String::from("we are one thirty 8")))),
+            Err(StrMinNumErr("foo"))
+        );
     }
 
     #[test]
@@ -777,8 +852,14 @@ mod test {
 
     #[test]
     fn test_str_min_special_err() {
-        assert_eq!(str_min_special(10, &Field::of(Val::Str(String::from("!@#$%¨&*(")))), Err(StrMinSpecialErr("foo")));
-        assert_eq!(str_min_special(10, &Field::of(Val::Str(String::from("pressure")))), Err(StrMinSpecialErr("foo")));
+        assert_eq!(
+            str_min_special(10, &Field::of(Val::Str(String::from("!@#$%¨&*(")))),
+            Err(StrMinSpecialErr("foo"))
+        );
+        assert_eq!(
+            str_min_special(10, &Field::of(Val::Str(String::from("pressure")))),
+            Err(StrMinSpecialErr("foo"))
+        );
     }
 
     #[test]
@@ -803,39 +884,99 @@ mod test {
     #[test]
     fn test_dt_min_ok() {
         assert_eq!(dt_min(&String::from("2026-10-28"), &Field::of(Val::None)), Ok(()));
-        assert_eq!(dt_min(&String::from("2026-10-28"), &Field::of(Val::Str(String::from("2026-10-28")))), Ok(()));
-        assert_eq!(dt_min(&String::from("2026-10-28"), &Field::of(Val::Str(String::from("2026-10-29")))), Ok(()));
-        assert_eq!(dt_min(&String::from("2026-10-28"), &Field::of(Val::Str(String::from("2026-11-01")))), Ok(()));
-        assert_eq!(dt_min(&String::from("2026-10-28"), &Field::of(Val::Str(String::from("2027-01-01")))), Ok(()));
-        assert_eq!(dt_min(&String::from("2026-10-28"), &Field::of(Val::Str(String::from("2027-12-31")))), Ok(()));
+        assert_eq!(
+            dt_min(&String::from("2026-10-28"), &Field::of(Val::Str(String::from("2026-10-28")))),
+            Ok(())
+        );
+        assert_eq!(
+            dt_min(&String::from("2026-10-28"), &Field::of(Val::Str(String::from("2026-10-29")))),
+            Ok(())
+        );
+        assert_eq!(
+            dt_min(&String::from("2026-10-28"), &Field::of(Val::Str(String::from("2026-11-01")))),
+            Ok(())
+        );
+        assert_eq!(
+            dt_min(&String::from("2026-10-28"), &Field::of(Val::Str(String::from("2027-01-01")))),
+            Ok(())
+        );
+        assert_eq!(
+            dt_min(&String::from("2026-10-28"), &Field::of(Val::Str(String::from("2027-12-31")))),
+            Ok(())
+        );
     }
 
     #[test]
     fn test_dt_min_err() {
-        assert_eq!(dt_min(&String::from("2026-1028"), &Field::of(Val::Str(String::from("2026-1027")))), Err(DtMinErr("foo")));
-        assert_eq!(dt_min(&String::from("202610-28"), &Field::of(Val::Str(String::from("202610-27")))), Err(DtMinErr("foo")));
-        assert_eq!(dt_min(&String::from("2026-10-28"), &Field::of(Val::Str(String::from("2026-10-27")))), Err(DtMinErr("foo")));
-        assert_eq!(dt_min(&String::from("2026-10-28"), &Field::of(Val::Str(String::from("2026-09-30")))), Err(DtMinErr("foo")));
-        assert_eq!(dt_min(&String::from("2026-10-28"), &Field::of(Val::Str(String::from("2025-12-31")))), Err(DtMinErr("foo")));
-        assert_eq!(dt_min(&String::from("2026-10-28"), &Field::of(Val::Str(String::from("2025-01-01")))), Err(DtMinErr("foo")));
+        assert_eq!(
+            dt_min(&String::from("2026-1028"), &Field::of(Val::Str(String::from("2026-1027")))),
+            Err(DtMinErr("foo"))
+        );
+        assert_eq!(
+            dt_min(&String::from("202610-28"), &Field::of(Val::Str(String::from("202610-27")))),
+            Err(DtMinErr("foo"))
+        );
+        assert_eq!(
+            dt_min(&String::from("2026-10-28"), &Field::of(Val::Str(String::from("2026-10-27")))),
+            Err(DtMinErr("foo"))
+        );
+        assert_eq!(
+            dt_min(&String::from("2026-10-28"), &Field::of(Val::Str(String::from("2026-09-30")))),
+            Err(DtMinErr("foo"))
+        );
+        assert_eq!(
+            dt_min(&String::from("2026-10-28"), &Field::of(Val::Str(String::from("2025-12-31")))),
+            Err(DtMinErr("foo"))
+        );
+        assert_eq!(
+            dt_min(&String::from("2026-10-28"), &Field::of(Val::Str(String::from("2025-01-01")))),
+            Err(DtMinErr("foo"))
+        );
     }
 
     #[test]
     fn test_dt_max_ok() {
         assert_eq!(dt_max(&String::from("2026-10-28"), &Field::of(Val::None)), Ok(()));
-        assert_eq!(dt_max(&String::from("2026-10-28"), &Field::of(Val::Str(String::from("2026-10-28")))), Ok(()));
-        assert_eq!(dt_max(&String::from("2026-10-28"), &Field::of(Val::Str(String::from("2026-10-27")))), Ok(()));
-        assert_eq!(dt_max(&String::from("2026-10-28"), &Field::of(Val::Str(String::from("2026-09-30")))), Ok(()));
-        assert_eq!(dt_max(&String::from("2026-10-28"), &Field::of(Val::Str(String::from("2025-12-31")))), Ok(()));
-        assert_eq!(dt_max(&String::from("2026-10-28"), &Field::of(Val::Str(String::from("2025-01-01")))), Ok(()));
+        assert_eq!(
+            dt_max(&String::from("2026-10-28"), &Field::of(Val::Str(String::from("2026-10-28")))),
+            Ok(())
+        );
+        assert_eq!(
+            dt_max(&String::from("2026-10-28"), &Field::of(Val::Str(String::from("2026-10-27")))),
+            Ok(())
+        );
+        assert_eq!(
+            dt_max(&String::from("2026-10-28"), &Field::of(Val::Str(String::from("2026-09-30")))),
+            Ok(())
+        );
+        assert_eq!(
+            dt_max(&String::from("2026-10-28"), &Field::of(Val::Str(String::from("2025-12-31")))),
+            Ok(())
+        );
+        assert_eq!(
+            dt_max(&String::from("2026-10-28"), &Field::of(Val::Str(String::from("2025-01-01")))),
+            Ok(())
+        );
     }
 
     #[test]
     fn test_dt_max_err() {
-        assert_eq!(dt_max(&String::from("2026-10-28"), &Field::of(Val::Str(String::from("2026-10-29")))), Err(DtMaxErr("foo")));
-        assert_eq!(dt_max(&String::from("2026-10-28"), &Field::of(Val::Str(String::from("2026-11-01")))), Err(DtMaxErr("foo")));
-        assert_eq!(dt_max(&String::from("2026-10-28"), &Field::of(Val::Str(String::from("2027-01-01")))), Err(DtMaxErr("foo")));
-        assert_eq!(dt_max(&String::from("2026-10-28"), &Field::of(Val::Str(String::from("2027-12-31")))), Err(DtMaxErr("foo")));
+        assert_eq!(
+            dt_max(&String::from("2026-10-28"), &Field::of(Val::Str(String::from("2026-10-29")))),
+            Err(DtMaxErr("foo"))
+        );
+        assert_eq!(
+            dt_max(&String::from("2026-10-28"), &Field::of(Val::Str(String::from("2026-11-01")))),
+            Err(DtMaxErr("foo"))
+        );
+        assert_eq!(
+            dt_max(&String::from("2026-10-28"), &Field::of(Val::Str(String::from("2027-01-01")))),
+            Err(DtMaxErr("foo"))
+        );
+        assert_eq!(
+            dt_max(&String::from("2026-10-28"), &Field::of(Val::Str(String::from("2027-12-31")))),
+            Err(DtMaxErr("foo"))
+        );
     }
 
     #[test]
@@ -850,7 +991,10 @@ mod test {
     fn test_email_err() {
         assert_eq!(email(&Field::of(Val::Str(String::from("paullivecom")))), Err(EmailErr("foo")));
         assert_eq!(email(&Field::of(Val::Str(String::from("paullive.com")))), Err(EmailErr("foo")));
-        assert_eq!(email(&Field::of(Val::Str(String::from("paul@liv@e.com")))), Err(EmailErr("foo")));
+        assert_eq!(
+            email(&Field::of(Val::Str(String::from("paul@liv@e.com")))),
+            Err(EmailErr("foo"))
+        );
         assert_eq!(email(&Field::of(Val::Str(String::from("live.com")))), Err(EmailErr("foo")));
         assert_eq!(email(&Field::of(Val::Str(String::from("@live.com")))), Err(EmailErr("foo")));
     }

@@ -42,33 +42,100 @@ fn validate_schema(schema: &Schema, value: &Val) -> Result<(), HashMap<String, V
                     .1
                     .iter()
                     .map(|val| match val {
-                        V::Required => required(&Field { name, value: value.clone(), has_required }).map_err(VErr::Required),
-                        V::NumI => num_i(&Field { name, value: value.clone(), has_required }).map_err(VErr::NumI),
-                        V::NumU => num_u(&Field { name, value: value.clone(), has_required }).map_err(VErr::NumU),
-                        V::NumF => num_f(&Field { name, value: value.clone(), has_required }).map_err(VErr::NumF),
-                        V::Str => str(&Field { name, value: value.clone(), has_required }).map_err(VErr::Str),
-                        V::Bool => bool(&Field { name, value: value.clone(), has_required }).map_err(VErr::Bool),
-                        V::NumIExact(v) => num_i_exact(*v, &Field { name, value: value.clone(), has_required }).map_err(VErr::NumIExact),
-                        V::NumIMin(v) => num_i_min(*v, &Field { name, value: value.clone(), has_required }).map_err(VErr::NumIMin),
-                        V::NumIMax(v) => num_i_max(*v, &Field { name, value: value.clone(), has_required }).map_err(VErr::NumIMax),
-                        V::NumUExact(v) => num_u_exact(*v, &Field { name, value: value.clone(), has_required }).map_err(VErr::NumUExact),
-                        V::NumUMin(v) => num_u_min(*v, &Field { name, value: value.clone(), has_required }).map_err(VErr::NumUMin),
-                        V::NumUMax(v) => num_u_max(*v, &Field { name, value: value.clone(), has_required }).map_err(VErr::NumUMax),
-                        V::NumFExact(v) => num_f_exact(*v, &Field { name, value: value.clone(), has_required }).map_err(VErr::NumFExact),
-                        V::NumFMin(v) => num_f_min(*v, &Field { name, value: value.clone(), has_required }).map_err(VErr::NumFMin),
-                        V::NumFMax(v) => num_f_max(*v, &Field { name, value: value.clone(), has_required }).map_err(VErr::NumFMax),
-                        V::StrExact(v) => str_exact(v, &Field { name, value: value.clone(), has_required }).map_err(VErr::StrExact),
-                        V::StrExactLen(v) => str_exact_len(*v, &Field { name, value: value.clone(), has_required }).map_err(VErr::StrExactLen),
-                        V::StrMinLen(v) => str_min_len(*v, &Field { name, value: value.clone(), has_required }).map_err(VErr::StrMinLen),
-                        V::StrMaxLen(v) => str_max_len(*v, &Field { name, value: value.clone(), has_required }).map_err(VErr::StrMaxLen),
-                        V::StrMinUpper(v) => str_min_upper(*v, &Field { name, value: value.clone(), has_required }).map_err(VErr::StrMinUpper),
-                        V::StrMinLower(v) => str_min_lower(*v, &Field { name, value: value.clone(), has_required }).map_err(VErr::StrMinLower),
-                        V::StrMinNum(v) => str_min_num(*v, &Field { name, value: value.clone(), has_required }).map_err(VErr::StrMinNum),
-                        V::StrMinSpecial(v) => str_min_special(*v, &Field { name, value: value.clone(), has_required }).map_err(VErr::StrMinSpecial),
-                        V::Dt => dt(&Field { name, value: value.clone(), has_required }).map_err(VErr::Dt),
-                        V::DtMin(dt_min_v) => dt_min(dt_min_v, &Field { name, value: value.clone(), has_required }).map_err(VErr::DtMin),
-                        V::DtMax(dt_max_v) => dt_max(dt_max_v, &Field { name, value: value.clone(), has_required }).map_err(VErr::DtMax),
-                        V::Email => email(&Field { name, value: value.clone(), has_required }).map_err(VErr::Email),
+                        V::Required => {
+                            required(&Field { name, value: value.clone(), has_required })
+                                .map_err(VErr::Required)
+                        }
+                        V::NumI => num_i(&Field { name, value: value.clone(), has_required })
+                            .map_err(VErr::NumI),
+                        V::NumU => num_u(&Field { name, value: value.clone(), has_required })
+                            .map_err(VErr::NumU),
+                        V::NumF => num_f(&Field { name, value: value.clone(), has_required })
+                            .map_err(VErr::NumF),
+                        V::Str => str(&Field { name, value: value.clone(), has_required })
+                            .map_err(VErr::Str),
+                        V::Bool => bool(&Field { name, value: value.clone(), has_required })
+                            .map_err(VErr::Bool),
+                        V::NumIExact(v) => {
+                            num_i_exact(*v, &Field { name, value: value.clone(), has_required })
+                                .map_err(VErr::NumIExact)
+                        }
+                        V::NumIMin(v) => {
+                            num_i_min(*v, &Field { name, value: value.clone(), has_required })
+                                .map_err(VErr::NumIMin)
+                        }
+                        V::NumIMax(v) => {
+                            num_i_max(*v, &Field { name, value: value.clone(), has_required })
+                                .map_err(VErr::NumIMax)
+                        }
+                        V::NumUExact(v) => {
+                            num_u_exact(*v, &Field { name, value: value.clone(), has_required })
+                                .map_err(VErr::NumUExact)
+                        }
+                        V::NumUMin(v) => {
+                            num_u_min(*v, &Field { name, value: value.clone(), has_required })
+                                .map_err(VErr::NumUMin)
+                        }
+                        V::NumUMax(v) => {
+                            num_u_max(*v, &Field { name, value: value.clone(), has_required })
+                                .map_err(VErr::NumUMax)
+                        }
+                        V::NumFExact(v) => {
+                            num_f_exact(*v, &Field { name, value: value.clone(), has_required })
+                                .map_err(VErr::NumFExact)
+                        }
+                        V::NumFMin(v) => {
+                            num_f_min(*v, &Field { name, value: value.clone(), has_required })
+                                .map_err(VErr::NumFMin)
+                        }
+                        V::NumFMax(v) => {
+                            num_f_max(*v, &Field { name, value: value.clone(), has_required })
+                                .map_err(VErr::NumFMax)
+                        }
+                        V::StrExact(v) => {
+                            str_exact(v, &Field { name, value: value.clone(), has_required })
+                                .map_err(VErr::StrExact)
+                        }
+                        V::StrExactLen(v) => {
+                            str_exact_len(*v, &Field { name, value: value.clone(), has_required })
+                                .map_err(VErr::StrExactLen)
+                        }
+                        V::StrMinLen(v) => {
+                            str_min_len(*v, &Field { name, value: value.clone(), has_required })
+                                .map_err(VErr::StrMinLen)
+                        }
+                        V::StrMaxLen(v) => {
+                            str_max_len(*v, &Field { name, value: value.clone(), has_required })
+                                .map_err(VErr::StrMaxLen)
+                        }
+                        V::StrMinUpper(v) => {
+                            str_min_upper(*v, &Field { name, value: value.clone(), has_required })
+                                .map_err(VErr::StrMinUpper)
+                        }
+                        V::StrMinLower(v) => {
+                            str_min_lower(*v, &Field { name, value: value.clone(), has_required })
+                                .map_err(VErr::StrMinLower)
+                        }
+                        V::StrMinNum(v) => {
+                            str_min_num(*v, &Field { name, value: value.clone(), has_required })
+                                .map_err(VErr::StrMinNum)
+                        }
+                        V::StrMinSpecial(v) => {
+                            str_min_special(*v, &Field { name, value: value.clone(), has_required })
+                                .map_err(VErr::StrMinSpecial)
+                        }
+                        V::Dt => dt(&Field { name, value: value.clone(), has_required })
+                            .map_err(VErr::Dt),
+                        V::DtMin(dt_min_v) => {
+                            dt_min(dt_min_v, &Field { name, value: value.clone(), has_required })
+                                .map_err(VErr::DtMin)
+                        }
+                        V::DtMax(dt_max_v) => {
+                            dt_max(dt_max_v, &Field { name, value: value.clone(), has_required })
+                                .map_err(VErr::DtMax)
+                        }
+                        V::Email => email(&Field { name, value: value.clone(), has_required })
+                            .map_err(VErr::Email),
                     })
                     .filter_map(|res| res.err())
                     .collect();
@@ -137,8 +204,23 @@ mod test {
                 ]))
             ),
             Err(HashMap::from([
-                (String::from("name"), vec![VErr::Required(RequiredErr("name")), VErr::Str(StrErr("name")), VErr::StrMinLen(StrMinLenErr("name")), VErr::StrMaxLen(StrMaxLenErr("name"))]),
-                (String::from("birthdate"), vec![VErr::Required(RequiredErr("birthdate")), VErr::Str(StrErr("birthdate")), VErr::Dt(DtErr("birthdate"))])
+                (
+                    String::from("name"),
+                    vec![
+                        VErr::Required(RequiredErr("name")),
+                        VErr::Str(StrErr("name")),
+                        VErr::StrMinLen(StrMinLenErr("name")),
+                        VErr::StrMaxLen(StrMaxLenErr("name"))
+                    ]
+                ),
+                (
+                    String::from("birthdate"),
+                    vec![
+                        VErr::Required(RequiredErr("birthdate")),
+                        VErr::Str(StrErr("birthdate")),
+                        VErr::Dt(DtErr("birthdate"))
+                    ]
+                )
             ]))
         );
     }
