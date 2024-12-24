@@ -1,12 +1,14 @@
 use crate::{
-    domain::validation::{V, Val},
+    domain::validation::{Val, V},
     infra::validation::Field,
 };
 
 pub fn str_min_upper(valid: u32, f: &Field) -> Result<(), V> {
     match &f.value {
         Val::Str(str_value) => {
-            if str_value.chars().filter(|c| c.is_alphabetic() && c.is_uppercase()).count() as u32 >= valid {
+            if str_value.chars().filter(|c| c.is_alphabetic() && c.is_uppercase()).count() as u32
+                >= valid
+            {
                 Ok(())
             } else {
                 Err(V::StrMinUpper(valid))

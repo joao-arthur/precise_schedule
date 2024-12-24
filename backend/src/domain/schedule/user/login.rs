@@ -98,7 +98,7 @@ mod test {
                 &SessionServiceStub::default(),
                 user_cred_stub()
             ),
-            Err(UserErr::Schema(HashMap::from([("first_name",vec![V::Required])])))
+            Err(UserErr::Schema(HashMap::from([("first_name", vec![V::Required])])))
         );
         assert_eq!(
             user_login(

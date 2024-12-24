@@ -1,5 +1,5 @@
 use crate::{
-    domain::validation::{V, Val},
+    domain::validation::{Val, V},
     infra::validation::Field,
 };
 

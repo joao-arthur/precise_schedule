@@ -7,8 +7,8 @@ use rocket::{http::Status, post, response::status, Data};
 use serde_json::Value;
 
 use crate::domain::validation::{Schema, V};
-use crate::infra::validation::adapter::value_from_json_value;
 use crate::entry::deps::get_validator;
+use crate::infra::validation::adapter::{to_english, value_from_json_value};
 
 #[derive(Deserialize, Serialize, Debug)]
 #[serde(crate = "rocket::serde")]
@@ -59,7 +59,7 @@ pub async fn endpoint_user_c(data: Data<'_>) {
             //);
         }
     };
-    
+
     static USER_C_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
         HashMap::from([
             ("first_name", vec![V::Required, V::Str, V::StrMinLen(1), V::StrMaxLen(256)]),
@@ -81,15 +81,23 @@ pub async fn endpoint_user_c(data: Data<'_>) {
             ),
         ])
     });
-    
+
     let json_value: Value = serde_json::from_str(&body).unwrap();
-    
-
-
     let internal_value = value_from_json_value(json_value);
 
     let res = get_validator().validate(&USER_C_SCHEMA, &internal_value);
-    println!("{:?}", res);
+    match res {
+        Ok(_data) => {}
+        Err(err) => {
+            println!("{:?}", err);
+            let sdfsdf: HashMap<&str, Vec<String>> = err
+            .into_iter()
+            .map(|f| (f.0, f.1.iter().map(|p| to_english(p)).collect::<Vec<String>>())).map(|f| f)
+            .collect();
+        println!("{:?}", sdfsdf);
+
+        }
+    }
 
     // Attempt to deserialize the JSON
     // let task: Result<User, _> = json::from_str(&body);

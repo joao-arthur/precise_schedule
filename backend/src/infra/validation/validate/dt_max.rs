@@ -44,26 +44,11 @@ mod test {
     #[test]
     fn test_dt_max_ok() {
         assert_eq!(dt_max("2026-10-28", &Field::of(Val::None)), Ok(()));
-        assert_eq!(
-            dt_max("2026-10-28", &Field::of(Val::Str(String::from("2026-10-28")))),
-            Ok(())
-        );
-        assert_eq!(
-            dt_max("2026-10-28", &Field::of(Val::Str(String::from("2026-10-27")))),
-            Ok(())
-        );
-        assert_eq!(
-            dt_max("2026-10-28", &Field::of(Val::Str(String::from("2026-09-30")))),
-            Ok(())
-        );
-        assert_eq!(
-            dt_max("2026-10-28", &Field::of(Val::Str(String::from("2025-12-31")))),
-            Ok(())
-        );
-        assert_eq!(
-            dt_max("2026-10-28", &Field::of(Val::Str(String::from("2025-01-01")))),
-            Ok(())
-        );
+        assert_eq!(dt_max("2026-10-28", &Field::of(Val::Str(String::from("2026-10-28")))), Ok(()));
+        assert_eq!(dt_max("2026-10-28", &Field::of(Val::Str(String::from("2026-10-27")))), Ok(()));
+        assert_eq!(dt_max("2026-10-28", &Field::of(Val::Str(String::from("2026-09-30")))), Ok(()));
+        assert_eq!(dt_max("2026-10-28", &Field::of(Val::Str(String::from("2025-12-31")))), Ok(()));
+        assert_eq!(dt_max("2026-10-28", &Field::of(Val::Str(String::from("2025-01-01")))), Ok(()));
     }
 
     #[test]

@@ -1,5 +1,5 @@
 use crate::{
-    domain::validation::{V, Val},
+    domain::validation::{Val, V},
     infra::validation::Field,
 };
 
@@ -42,14 +42,8 @@ mod test {
 
     #[test]
     fn test_num_i_max_err() {
-        assert_eq!(
-            num_i_max(10, &Field::of(Val::Num(None, Some(11), None))),
-            Err(V::NumIMax(10))
-        );
-        assert_eq!(
-            num_i_max(10, &Field::of(Val::Num(None, Some(12), None))),
-            Err(V::NumIMax(10))
-        );
+        assert_eq!(num_i_max(10, &Field::of(Val::Num(None, Some(11), None))), Err(V::NumIMax(10)));
+        assert_eq!(num_i_max(10, &Field::of(Val::Num(None, Some(12), None))), Err(V::NumIMax(10)));
     }
 
     #[test]

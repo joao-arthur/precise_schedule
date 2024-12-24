@@ -72,8 +72,7 @@ pub mod stub {
                 Ok(())
             );
             assert_eq!(
-                ValidatorStub(Err(HashMap::from([("name",vec![V::StrMinLen(2)])])))
-                .validate(
+                ValidatorStub(Err(HashMap::from([("name", vec![V::StrMinLen(2)])]))).validate(
                     &HashMap::from([("name", vec![V::Str, V::StrMinLen(2)])]),
                     &Val::Str(String::from("George"))
                 ),

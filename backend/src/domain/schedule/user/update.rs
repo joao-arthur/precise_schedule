@@ -158,20 +158,14 @@ mod test {
         );
         assert_eq!(
             user_u(
-                &ValidatorStub(Err(HashMap::from([(
-                    "first_name",
-                    vec![V::Required]
-                )]))),
+                &ValidatorStub(Err(HashMap::from([("first_name", vec![V::Required])]))),
                 &UserRepoStub::default(),
                 &DateTimeGenStub(user_stub().updated_at, 1734555761),
                 &SessionServiceStub::default(),
                 user_stub().id,
                 user_u_stub()
             ),
-            Err(UserErr::Schema(HashMap::from([(
-                "first_name",
-                vec![V::Required]
-            )])))
+            Err(UserErr::Schema(HashMap::from([("first_name", vec![V::Required])])))
         );
         assert_eq!(
             user_u(

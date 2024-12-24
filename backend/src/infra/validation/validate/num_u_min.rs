@@ -1,5 +1,5 @@
 use crate::{
-    domain::validation::{V, Val},
+    domain::validation::{Val, V},
     infra::validation::Field,
 };
 
@@ -42,14 +42,8 @@ mod test {
 
     #[test]
     fn test_num_u_min_err() {
-        assert_eq!(
-            num_u_min(10, &Field::of(Val::Num(Some(9), None, None))),
-            Err(V::NumUMin(10))
-        );
-        assert_eq!(
-            num_u_min(10, &Field::of(Val::Num(Some(8), None, None))),
-            Err(V::NumUMin(10))
-        );
+        assert_eq!(num_u_min(10, &Field::of(Val::Num(Some(9), None, None))), Err(V::NumUMin(10)));
+        assert_eq!(num_u_min(10, &Field::of(Val::Num(Some(8), None, None))), Err(V::NumUMin(10)));
     }
 
     #[test]
