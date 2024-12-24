@@ -1,18 +1,17 @@
 use crate::domain::validation::Val;
 
-mod adapter;
+pub mod adapter;
 mod validate;
 pub mod validator_custom;
 
 struct Field {
-    name: &'static str,
     value: Val,
     has_required: bool,
 }
 
 impl Default for Field {
     fn default() -> Self {
-        Field { name: "foo", value: Val::None, has_required: false }
+        Field { value: Val::None, has_required: false }
     }
 }
 

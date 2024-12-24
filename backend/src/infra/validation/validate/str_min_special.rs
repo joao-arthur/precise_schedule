@@ -1,25 +1,25 @@
 use crate::{
-    domain::validation::{StrMinSpecialErr, Val},
+    domain::validation::{V, Val},
     infra::validation::Field,
 };
 
-pub fn str_min_special(valid: u32, f: &Field) -> Result<(), StrMinSpecialErr> {
+pub fn str_min_special(valid: u32, f: &Field) -> Result<(), V> {
     match &f.value {
         Val::Str(str_value) => {
             if str_value.chars().filter(|c| c.is_ascii_punctuation()).count() as u32 >= valid {
                 Ok(())
             } else {
-                Err(StrMinSpecialErr(f.name))
+                Err(V::StrMinSpecial(valid))
             }
         }
         Val::None => {
             if f.has_required {
-                Err(StrMinSpecialErr(f.name))
+                Err(V::StrMinSpecial(valid))
             } else {
                 Ok(())
             }
         }
-        _ => Err(StrMinSpecialErr(f.name)),
+        _ => Err(V::StrMinSpecial(valid)),
     }
 }
 
@@ -43,27 +43,27 @@ mod test {
     fn test_str_min_special_err() {
         assert_eq!(
             str_min_special(10, &Field::of(Val::Str(String::from("!@#$%¨&*(")))),
-            Err(StrMinSpecialErr("foo"))
+            Err(V::StrMinSpecial(10))
         );
         assert_eq!(
             str_min_special(10, &Field::of(Val::Str(String::from("pressure")))),
-            Err(StrMinSpecialErr("foo"))
+            Err(V::StrMinSpecial(10))
         );
     }
 
     #[test]
     fn test_str_min_special_type_err() {
-        assert_eq!(str_min_special(1, &f_num_u_stub()), Err(StrMinSpecialErr("foo")));
-        assert_eq!(str_min_special(1, &f_num_i_stub()), Err(StrMinSpecialErr("foo")));
-        assert_eq!(str_min_special(1, &f_num_f_stub()), Err(StrMinSpecialErr("foo")));
-        assert_eq!(str_min_special(1, &f_bool_stub()), Err(StrMinSpecialErr("foo")));
-        assert_eq!(str_min_special(1, &f_arr_stub()), Err(StrMinSpecialErr("foo")));
-        assert_eq!(str_min_special(1, &f_obj_stub()), Err(StrMinSpecialErr("foo")));
+        assert_eq!(str_min_special(1, &f_num_u_stub()), Err(V::StrMinSpecial(1)));
+        assert_eq!(str_min_special(1, &f_num_i_stub()), Err(V::StrMinSpecial(1)));
+        assert_eq!(str_min_special(1, &f_num_f_stub()), Err(V::StrMinSpecial(1)));
+        assert_eq!(str_min_special(1, &f_bool_stub()), Err(V::StrMinSpecial(1)));
+        assert_eq!(str_min_special(1, &f_arr_stub()), Err(V::StrMinSpecial(1)));
+        assert_eq!(str_min_special(1, &f_obj_stub()), Err(V::StrMinSpecial(1)));
     }
 
     #[test]
     fn test_str_min_special_required() {
         assert_eq!(str_min_special(1, &Field::default()), Ok(()));
-        assert_eq!(str_min_special(1, &Field::required()), Err(StrMinSpecialErr("foo")));
+        assert_eq!(str_min_special(1, &Field::required()), Err(V::StrMinSpecial(1)));
     }
 }

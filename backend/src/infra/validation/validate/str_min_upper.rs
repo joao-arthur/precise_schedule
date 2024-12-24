@@ -1,27 +1,25 @@
 use crate::{
-    domain::validation::{StrMinUpperErr, Val},
+    domain::validation::{V, Val},
     infra::validation::Field,
 };
 
-pub fn str_min_upper(valid: u32, f: &Field) -> Result<(), StrMinUpperErr> {
+pub fn str_min_upper(valid: u32, f: &Field) -> Result<(), V> {
     match &f.value {
         Val::Str(str_value) => {
-            if str_value.chars().filter(|c| c.is_alphabetic() && c.is_uppercase()).count() as u32
-                >= valid
-            {
+            if str_value.chars().filter(|c| c.is_alphabetic() && c.is_uppercase()).count() as u32 >= valid {
                 Ok(())
             } else {
-                Err(StrMinUpperErr(f.name))
+                Err(V::StrMinUpper(valid))
             }
         }
         Val::None => {
             if f.has_required {
-                Err(StrMinUpperErr(f.name))
+                Err(V::StrMinUpper(valid))
             } else {
                 Ok(())
             }
         }
-        _ => Err(StrMinUpperErr(f.name)),
+        _ => Err(V::StrMinUpper(valid)),
     }
 }
 
@@ -46,27 +44,27 @@ mod test {
     fn test_str_min_upper_err() {
         assert_eq!(
             str_min_upper(4, &Field::of(Val::Str(String::from("JOHn")))),
-            Err(StrMinUpperErr("foo"))
+            Err(V::StrMinUpper(4))
         );
         assert_eq!(
             str_min_upper(4, &Field::of(Val::Str(String::from("JOhn")))),
-            Err(StrMinUpperErr("foo"))
+            Err(V::StrMinUpper(4))
         );
     }
 
     #[test]
     fn test_str_min_upper_type_err() {
-        assert_eq!(str_min_upper(1, &f_num_u_stub()), Err(StrMinUpperErr("foo")));
-        assert_eq!(str_min_upper(1, &f_num_i_stub()), Err(StrMinUpperErr("foo")));
-        assert_eq!(str_min_upper(1, &f_num_f_stub()), Err(StrMinUpperErr("foo")));
-        assert_eq!(str_min_upper(1, &f_bool_stub()), Err(StrMinUpperErr("foo")));
-        assert_eq!(str_min_upper(1, &f_arr_stub()), Err(StrMinUpperErr("foo")));
-        assert_eq!(str_min_upper(1, &f_obj_stub()), Err(StrMinUpperErr("foo")));
+        assert_eq!(str_min_upper(1, &f_num_u_stub()), Err(V::StrMinUpper(1)));
+        assert_eq!(str_min_upper(1, &f_num_i_stub()), Err(V::StrMinUpper(1)));
+        assert_eq!(str_min_upper(1, &f_num_f_stub()), Err(V::StrMinUpper(1)));
+        assert_eq!(str_min_upper(1, &f_bool_stub()), Err(V::StrMinUpper(1)));
+        assert_eq!(str_min_upper(1, &f_arr_stub()), Err(V::StrMinUpper(1)));
+        assert_eq!(str_min_upper(1, &f_obj_stub()), Err(V::StrMinUpper(1)));
     }
 
     #[test]
     fn test_str_min_upper_required() {
         assert_eq!(str_min_upper(1, &Field::default()), Ok(()));
-        assert_eq!(str_min_upper(1, &Field::required()), Err(StrMinUpperErr("foo")));
+        assert_eq!(str_min_upper(1, &Field::required()), Err(V::StrMinUpper(1)));
     }
 }

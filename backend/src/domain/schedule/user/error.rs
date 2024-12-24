@@ -1,4 +1,4 @@
-use crate::domain::{database::DBErr, session::SessionErr, validation::SchemaErr};
+use crate::domain::{database::DBErr, session::SessionErr, validation::Schema};
 
 use super::{
     read::{UserCredNotFoundErr, UserIdNotFoundErr},
@@ -8,7 +8,7 @@ use super::{
 #[derive(PartialEq, Debug)]
 pub enum UserErr {
     DB(DBErr),
-    Schema(SchemaErr),
+    Schema(Schema),
     UserUniqueInfoField(UserUniqueInfoFieldErr),
     UserIdNotFound(UserIdNotFoundErr),
     UserCredNotFound(UserCredNotFoundErr),

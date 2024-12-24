@@ -1,25 +1,25 @@
 use crate::{
-    domain::validation::{StrMinLenErr, Val},
+    domain::validation::{V, Val},
     infra::validation::Field,
 };
 
-pub fn str_min_len(valid: u32, f: &Field) -> Result<(), StrMinLenErr> {
+pub fn str_min_len(valid: u32, f: &Field) -> Result<(), V> {
     match &f.value {
         Val::Str(str_value) => {
             if str_value.chars().count() as u32 >= valid {
                 Ok(())
             } else {
-                Err(StrMinLenErr(f.name))
+                Err(V::StrMinLen(valid))
             }
         }
         Val::None => {
             if f.has_required {
-                Err(StrMinLenErr(f.name))
+                Err(V::StrMinLen(valid))
             } else {
                 Ok(())
             }
         }
-        _ => Err(StrMinLenErr(f.name)),
+        _ => Err(V::StrMinLen(valid)),
     }
 }
 
@@ -45,27 +45,27 @@ mod test {
     fn test_str_min_len_err() {
         assert_eq!(
             str_min_len(10, &Field::of(Val::Str(String::from("Nevermore")))),
-            Err(StrMinLenErr("foo"))
+            Err(V::StrMinLen(10))
         );
         assert_eq!(
             str_min_len(10, &Field::of(Val::Str(String::from("Nevermor")))),
-            Err(StrMinLenErr("foo"))
+            Err(V::StrMinLen(10))
         );
     }
 
     #[test]
     fn test_str_min_len_type_err() {
-        assert_eq!(str_min_len(1, &f_num_u_stub()), Err(StrMinLenErr("foo")));
-        assert_eq!(str_min_len(1, &f_num_i_stub()), Err(StrMinLenErr("foo")));
-        assert_eq!(str_min_len(1, &f_num_f_stub()), Err(StrMinLenErr("foo")));
-        assert_eq!(str_min_len(1, &f_bool_stub()), Err(StrMinLenErr("foo")));
-        assert_eq!(str_min_len(1, &f_arr_stub()), Err(StrMinLenErr("foo")));
-        assert_eq!(str_min_len(1, &f_obj_stub()), Err(StrMinLenErr("foo")));
+        assert_eq!(str_min_len(1, &f_num_u_stub()), Err(V::StrMinLen(1)));
+        assert_eq!(str_min_len(1, &f_num_i_stub()), Err(V::StrMinLen(1)));
+        assert_eq!(str_min_len(1, &f_num_f_stub()), Err(V::StrMinLen(1)));
+        assert_eq!(str_min_len(1, &f_bool_stub()), Err(V::StrMinLen(1)));
+        assert_eq!(str_min_len(1, &f_arr_stub()), Err(V::StrMinLen(1)));
+        assert_eq!(str_min_len(1, &f_obj_stub()), Err(V::StrMinLen(1)));
     }
 
     #[test]
     fn test_str_min_len_required() {
         assert_eq!(str_min_len(1, &Field::default()), Ok(()));
-        assert_eq!(str_min_len(1, &Field::required()), Err(StrMinLenErr("foo")));
+        assert_eq!(str_min_len(1, &Field::required()), Err(V::StrMinLen(1)));
     }
 }

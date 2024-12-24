@@ -59,7 +59,7 @@ mod test {
             stub::{session_stub, SessionServiceStub},
             SessionEncodeErr, SessionErr,
         },
-        validation::{stub::ValidatorStub, RequiredErr, VErr},
+        validation::stub::ValidatorStub,
     };
 
     use super::*;
@@ -92,19 +92,13 @@ mod test {
         );
         assert_eq!(
             user_login(
-                &ValidatorStub(Err(HashMap::from([(
-                    String::from("first_name"),
-                    vec![VErr::Required(RequiredErr("first_name"))]
-                )]))),
+                &ValidatorStub(Err(HashMap::from([("first_name", vec![V::Required])]))),
                 &UserRepoStub::default(),
                 &DateTimeGenStub(String::from("2024-12-18T18:02Z"), 1734555761),
                 &SessionServiceStub::default(),
                 user_cred_stub()
             ),
-            Err(UserErr::Schema(HashMap::from([(
-                String::from("first_name"),
-                vec![VErr::Required(RequiredErr("first_name"))]
-            )])))
+            Err(UserErr::Schema(HashMap::from([("first_name",vec![V::Required])])))
         );
         assert_eq!(
             user_login(

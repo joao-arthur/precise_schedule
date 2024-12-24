@@ -1,25 +1,25 @@
 use crate::{
-    domain::validation::{StrExactLenErr, Val},
+    domain::validation::{V, Val},
     infra::validation::Field,
 };
 
-pub fn str_exact_len(valid: u32, f: &Field) -> Result<(), StrExactLenErr> {
+pub fn str_exact_len(valid: u32, f: &Field) -> Result<(), V> {
     match &f.value {
         Val::Str(str_value) => {
             if str_value.chars().count() as u32 == valid {
                 Ok(())
             } else {
-                Err(StrExactLenErr(f.name))
+                Err(V::StrExactLen(valid))
             }
         }
         Val::None => {
             if f.has_required {
-                Err(StrExactLenErr(f.name))
+                Err(V::StrExactLen(valid))
             } else {
                 Ok(())
             }
         }
-        _ => Err(StrExactLenErr(f.name)),
+        _ => Err(V::StrExactLen(valid)),
     }
 }
 
@@ -44,27 +44,27 @@ mod test {
     fn test_str_exact_len_err() {
         assert_eq!(
             str_exact_len(6, &Field::of(Val::Str(String::from("touch")))),
-            Err(StrExactLenErr("foo"))
+            Err(V::StrExactLen(6))
         );
         assert_eq!(
             str_exact_len(6, &Field::of(Val::Str(String::from("the sky")))),
-            Err(StrExactLenErr("foo"))
+            Err(V::StrExactLen(6))
         );
     }
 
     #[test]
     fn test_str_exact_len_type_err() {
-        assert_eq!(str_exact_len(1, &f_num_u_stub()), Err(StrExactLenErr("foo")));
-        assert_eq!(str_exact_len(1, &f_num_i_stub()), Err(StrExactLenErr("foo")));
-        assert_eq!(str_exact_len(1, &f_num_f_stub()), Err(StrExactLenErr("foo")));
-        assert_eq!(str_exact_len(1, &f_bool_stub()), Err(StrExactLenErr("foo")));
-        assert_eq!(str_exact_len(1, &f_arr_stub()), Err(StrExactLenErr("foo")));
-        assert_eq!(str_exact_len(1, &f_obj_stub()), Err(StrExactLenErr("foo")));
+        assert_eq!(str_exact_len(1, &f_num_u_stub()), Err(V::StrExactLen(1)));
+        assert_eq!(str_exact_len(1, &f_num_i_stub()), Err(V::StrExactLen(1)));
+        assert_eq!(str_exact_len(1, &f_num_f_stub()), Err(V::StrExactLen(1)));
+        assert_eq!(str_exact_len(1, &f_bool_stub()), Err(V::StrExactLen(1)));
+        assert_eq!(str_exact_len(1, &f_arr_stub()), Err(V::StrExactLen(1)));
+        assert_eq!(str_exact_len(1, &f_obj_stub()), Err(V::StrExactLen(1)));
     }
 
     #[test]
     fn test_str_exact_len_required() {
         assert_eq!(str_exact_len(1, &Field::default()), Ok(()));
-        assert_eq!(str_exact_len(1, &Field::required()), Err(StrExactLenErr("foo")));
+        assert_eq!(str_exact_len(1, &Field::required()), Err(V::StrExactLen(1)));
     }
 }

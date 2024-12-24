@@ -1,26 +1,26 @@
 use crate::{
-    domain::validation::{NumUMinErr, Val},
+    domain::validation::{V, Val},
     infra::validation::Field,
 };
 
-pub fn num_u_min(valid: u64, f: &Field) -> Result<(), NumUMinErr> {
+pub fn num_u_min(valid: u64, f: &Field) -> Result<(), V> {
     match f.value {
-        Val::Num(num_u, num_i, num_f) => {
+        Val::Num(num_u, _num_i, _num_f) => {
             if let Some(num_u) = num_u {
                 if num_u >= valid {
                     return Ok(());
                 }
             }
-            Err(NumUMinErr(f.name))
+            Err(V::NumUMin(valid))
         }
         Val::None => {
             if f.has_required {
-                Err(NumUMinErr(f.name))
+                Err(V::NumUMin(valid))
             } else {
                 Ok(())
             }
         }
-        _ => Err(NumUMinErr(f.name)),
+        _ => Err(V::NumUMin(valid)),
     }
 }
 
@@ -44,27 +44,27 @@ mod test {
     fn test_num_u_min_err() {
         assert_eq!(
             num_u_min(10, &Field::of(Val::Num(Some(9), None, None))),
-            Err(NumUMinErr("foo"))
+            Err(V::NumUMin(10))
         );
         assert_eq!(
             num_u_min(10, &Field::of(Val::Num(Some(8), None, None))),
-            Err(NumUMinErr("foo"))
+            Err(V::NumUMin(10))
         );
     }
 
     #[test]
     fn test_num_u_min_type_err() {
-        assert_eq!(num_u_min(42, &f_num_i_stub()), Err(NumUMinErr("foo")));
-        assert_eq!(num_u_min(42, &f_num_f_stub()), Err(NumUMinErr("foo")));
-        assert_eq!(num_u_min(42, &f_str_stub()), Err(NumUMinErr("foo")));
-        assert_eq!(num_u_min(42, &f_bool_stub()), Err(NumUMinErr("foo")));
-        assert_eq!(num_u_min(42, &f_arr_stub()), Err(NumUMinErr("foo")));
-        assert_eq!(num_u_min(42, &f_obj_stub()), Err(NumUMinErr("foo")));
+        assert_eq!(num_u_min(42, &f_num_i_stub()), Err(V::NumUMin(42)));
+        assert_eq!(num_u_min(42, &f_num_f_stub()), Err(V::NumUMin(42)));
+        assert_eq!(num_u_min(42, &f_str_stub()), Err(V::NumUMin(42)));
+        assert_eq!(num_u_min(42, &f_bool_stub()), Err(V::NumUMin(42)));
+        assert_eq!(num_u_min(42, &f_arr_stub()), Err(V::NumUMin(42)));
+        assert_eq!(num_u_min(42, &f_obj_stub()), Err(V::NumUMin(42)));
     }
 
     #[test]
     fn test_num_u_min_required() {
         assert_eq!(num_u_min(42, &Field::default()), Ok(()));
-        assert_eq!(num_u_min(42, &Field::required()), Err(NumUMinErr("foo")));
+        assert_eq!(num_u_min(42, &Field::required()), Err(V::NumUMin(42)));
     }
 }

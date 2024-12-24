@@ -1,25 +1,25 @@
 use crate::{
-    domain::validation::{NumIExactErr, Val},
+    domain::validation::{V, Val},
     infra::validation::Field,
 };
 
-pub fn num_i_exact(valid: i64, f: &Field) -> Result<(), NumIExactErr> {
+pub fn num_i_exact(valid: i64, f: &Field) -> Result<(), V> {
     match f.value {
-        Val::Num(num_u, num_i, num_f) => {
+        Val::Num(_num_u, num_i, _num_f) => {
             if num_i == Some(valid) {
                 Ok(())
             } else {
-                Err(NumIExactErr(f.name))
+                Err(V::NumIExact(valid))
             }
         }
         Val::None => {
             if f.has_required {
-                Err(NumIExactErr(f.name))
+                Err(V::NumIExact(valid))
             } else {
                 Ok(())
             }
         }
-        _ => Err(NumIExactErr(f.name)),
+        _ => Err(V::NumIExact(valid)),
     }
 }
 
@@ -42,27 +42,27 @@ mod test {
     fn test_num_i_exact_err() {
         assert_eq!(
             num_i_exact(-10, &Field::of(Val::Num(None, Some(-11), None))),
-            Err(NumIExactErr("foo"))
+            Err(V::NumIExact(-10))
         );
         assert_eq!(
             num_i_exact(-10, &Field::of(Val::Num(None, Some(-9), None))),
-            Err(NumIExactErr("foo"))
+            Err(V::NumIExact(-10))
         );
     }
 
     #[test]
     fn test_num_i_exact_type_err() {
-        assert_eq!(num_i_exact(-42, &f_num_u_stub()), Err(NumIExactErr("foo")));
-        assert_eq!(num_i_exact(-42, &f_num_f_stub()), Err(NumIExactErr("foo")));
-        assert_eq!(num_i_exact(-42, &f_str_stub()), Err(NumIExactErr("foo")));
-        assert_eq!(num_i_exact(-42, &f_bool_stub()), Err(NumIExactErr("foo")));
-        assert_eq!(num_i_exact(-42, &f_arr_stub()), Err(NumIExactErr("foo")));
-        assert_eq!(num_i_exact(-42, &f_obj_stub()), Err(NumIExactErr("foo")));
+        assert_eq!(num_i_exact(-42, &f_num_u_stub()), Err(V::NumIExact(-42)));
+        assert_eq!(num_i_exact(-42, &f_num_f_stub()), Err(V::NumIExact(-42)));
+        assert_eq!(num_i_exact(-42, &f_str_stub()), Err(V::NumIExact(-42)));
+        assert_eq!(num_i_exact(-42, &f_bool_stub()), Err(V::NumIExact(-42)));
+        assert_eq!(num_i_exact(-42, &f_arr_stub()), Err(V::NumIExact(-42)));
+        assert_eq!(num_i_exact(-42, &f_obj_stub()), Err(V::NumIExact(-42)));
     }
 
     #[test]
     fn test_num_i_exact_required() {
         assert_eq!(num_i_exact(-42, &Field::default()), Ok(()));
-        assert_eq!(num_i_exact(-42, &Field::required()), Err(NumIExactErr("foo")));
+        assert_eq!(num_i_exact(-42, &Field::required()), Err(V::NumIExact(-42)));
     }
 }

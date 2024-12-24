@@ -1,11 +1,11 @@
 use crate::{
-    domain::validation::{RequiredErr, Val},
+    domain::validation::{V, Val},
     infra::validation::Field,
 };
 
-pub fn required(f: &Field) -> Result<(), RequiredErr> {
+pub fn required(f: &Field) -> Result<(), V> {
     match f.value {
-        Val::None => Err(RequiredErr(f.name)),
+        Val::None => Err(V::Required),
         _ => Ok(()),
     }
 }
@@ -31,6 +31,6 @@ mod test {
 
     #[test]
     fn test_required_err() {
-        assert_eq!(required(&Field::of(Val::None)), Err(RequiredErr("foo")));
+        assert_eq!(required(&Field::of(Val::None)), Err(V::Required));
     }
 }

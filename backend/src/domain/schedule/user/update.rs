@@ -31,7 +31,7 @@ pub struct UserUResult {
 static USER_U_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
     HashMap::from([
         ("first_name", vec![V::Required, V::Str, V::StrMinLen(1), V::StrMaxLen(256)]),
-        ("birthdate", vec![V::Required, V::Str, V::Dt, V::DtMin(String::from("1970-01-01"))]),
+        ("birthdate", vec![V::Required, V::Str, V::Dt, V::DtMin("1970-01-01")]),
         ("email", vec![V::Required, V::Str, V::Email]),
         ("username", vec![V::Required, V::Str, V::StrMinLen(1), V::StrMaxLen(32)]),
         (
@@ -106,7 +106,7 @@ mod test {
             stub::{session_stub, SessionServiceStub},
             SessionEncodeErr, SessionErr,
         },
-        validation::{stub::ValidatorStub, RequiredErr, VErr},
+        validation::stub::ValidatorStub,
     };
 
     #[test]
@@ -159,8 +159,8 @@ mod test {
         assert_eq!(
             user_u(
                 &ValidatorStub(Err(HashMap::from([(
-                    String::from("first_name"),
-                    vec![VErr::Required(RequiredErr("first_name"))]
+                    "first_name",
+                    vec![V::Required]
                 )]))),
                 &UserRepoStub::default(),
                 &DateTimeGenStub(user_stub().updated_at, 1734555761),
@@ -169,8 +169,8 @@ mod test {
                 user_u_stub()
             ),
             Err(UserErr::Schema(HashMap::from([(
-                String::from("first_name"),
-                vec![VErr::Required(RequiredErr("first_name"))]
+                "first_name",
+                vec![V::Required]
             )])))
         );
         assert_eq!(

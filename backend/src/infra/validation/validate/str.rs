@@ -1,19 +1,19 @@
 use crate::{
-    domain::validation::{StrErr, Val},
+    domain::validation::{V, Val},
     infra::validation::Field,
 };
 
-pub fn str(f: &Field) -> Result<(), StrErr> {
+pub fn str(f: &Field) -> Result<(), V> {
     match &f.value {
         Val::Str(_value) => Ok(()),
         Val::None => {
             if f.has_required {
-                Err(StrErr(f.name))
+                Err(V::Str)
             } else {
                 Ok(())
             }
         }
-        _ => Err(StrErr(f.name)),
+        _ => Err(V::Str),
     }
 }
 
@@ -32,17 +32,17 @@ mod test {
 
     #[test]
     fn test_str_err() {
-        assert_eq!(str(&f_num_u_stub()), Err(StrErr("foo")));
-        assert_eq!(str(&f_num_i_stub()), Err(StrErr("foo")));
-        assert_eq!(str(&f_num_f_stub()), Err(StrErr("foo")));
-        assert_eq!(str(&f_bool_stub()), Err(StrErr("foo")));
-        assert_eq!(str(&f_arr_stub()), Err(StrErr("foo")));
-        assert_eq!(str(&f_obj_stub()), Err(StrErr("foo")));
+        assert_eq!(str(&f_num_u_stub()), Err(V::Str));
+        assert_eq!(str(&f_num_i_stub()), Err(V::Str));
+        assert_eq!(str(&f_num_f_stub()), Err(V::Str));
+        assert_eq!(str(&f_bool_stub()), Err(V::Str));
+        assert_eq!(str(&f_arr_stub()), Err(V::Str));
+        assert_eq!(str(&f_obj_stub()), Err(V::Str));
     }
 
     #[test]
     fn test_str_required() {
         assert_eq!(str(&Field::default()), Ok(()));
-        assert_eq!(str(&Field::required()), Err(StrErr("foo")));
+        assert_eq!(str(&Field::required()), Err(V::Str));
     }
 }

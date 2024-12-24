@@ -1,26 +1,26 @@
 use crate::{
-    domain::validation::{NumFMaxErr, Val},
+    domain::validation::{V, Val},
     infra::validation::Field,
 };
 
-pub fn num_f_max(valid: f64, f: &Field) -> Result<(), NumFMaxErr> {
+pub fn num_f_max(valid: f64, f: &Field) -> Result<(), V> {
     match f.value {
-        Val::Num(num_u, num_i, num_f) => {
+        Val::Num(_num_u, _num_i, num_f) => {
             if let Some(num_f) = num_f {
                 if num_f <= valid {
                     return Ok(());
                 }
             }
-            Err(NumFMaxErr(f.name))
+            Err(V::NumFMax(valid))
         }
         Val::None => {
             if f.has_required {
-                Err(NumFMaxErr(f.name))
+                Err(V::NumFMax(valid))
             } else {
                 Ok(())
             }
         }
-        _ => Err(NumFMaxErr(f.name)),
+        _ => Err(V::NumFMax(valid)),
     }
 }
 
@@ -45,27 +45,27 @@ mod test {
     fn test_num_f_max_err() {
         assert_eq!(
             num_f_max(10.0, &Field::of(Val::Num(None, None, Some(11.0)))),
-            Err(NumFMaxErr("foo"))
+            Err(V::NumFMax(10.0))
         );
         assert_eq!(
             num_f_max(10.0, &Field::of(Val::Num(None, None, Some(12.0)))),
-            Err(NumFMaxErr("foo"))
+            Err(V::NumFMax(10.0))
         );
     }
 
     #[test]
     fn test_num_f_max_type_err() {
-        assert_eq!(num_f_max(-42.0, &f_num_u_stub()), Err(NumFMaxErr("foo")));
-        assert_eq!(num_f_max(-42.0, &f_num_i_stub()), Err(NumFMaxErr("foo")));
-        assert_eq!(num_f_max(-42.0, &f_str_stub()), Err(NumFMaxErr("foo")));
-        assert_eq!(num_f_max(-42.0, &f_bool_stub()), Err(NumFMaxErr("foo")));
-        assert_eq!(num_f_max(-42.0, &f_arr_stub()), Err(NumFMaxErr("foo")));
-        assert_eq!(num_f_max(-42.0, &f_obj_stub()), Err(NumFMaxErr("foo")));
+        assert_eq!(num_f_max(-42.0, &f_num_u_stub()), Err(V::NumFMax(-42.0)));
+        assert_eq!(num_f_max(-42.0, &f_num_i_stub()), Err(V::NumFMax(-42.0)));
+        assert_eq!(num_f_max(-42.0, &f_str_stub()), Err(V::NumFMax(-42.0)));
+        assert_eq!(num_f_max(-42.0, &f_bool_stub()), Err(V::NumFMax(-42.0)));
+        assert_eq!(num_f_max(-42.0, &f_arr_stub()), Err(V::NumFMax(-42.0)));
+        assert_eq!(num_f_max(-42.0, &f_obj_stub()), Err(V::NumFMax(-42.0)));
     }
 
     #[test]
     fn test_num_f_max_required() {
         assert_eq!(num_f_max(-42.0, &Field::default()), Ok(()));
-        assert_eq!(num_f_max(-42.0, &Field::required()), Err(NumFMaxErr("foo")));
+        assert_eq!(num_f_max(-42.0, &Field::required()), Err(V::NumFMax(-42.0)));
     }
 }

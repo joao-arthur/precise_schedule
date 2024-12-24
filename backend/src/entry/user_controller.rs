@@ -1,7 +1,14 @@
+use std::collections::HashMap;
+use std::sync::LazyLock;
+
 use rocket::data::ToByteUnit;
 use rocket::serde::{self, json, Deserialize, Serialize};
 use rocket::{http::Status, post, response::status, Data};
 use serde_json::Value;
+
+use crate::domain::validation::{Schema, V};
+use crate::infra::validation::adapter::value_from_json_value;
+use crate::entry::deps::get_validator;
 
 #[derive(Deserialize, Serialize, Debug)]
 #[serde(crate = "rocket::serde")]
@@ -52,27 +59,38 @@ pub async fn endpoint_user_c(data: Data<'_>) {
             //);
         }
     };
+    
+    static USER_C_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
+        HashMap::from([
+            ("first_name", vec![V::Required, V::Str, V::StrMinLen(1), V::StrMaxLen(256)]),
+            ("birthdate", vec![V::Required, V::Str, V::Dt, V::DtMin("1970-01-01")]),
+            ("email", vec![V::Required, V::Str, V::Email]),
+            ("username", vec![V::Required, V::Str, V::StrMinLen(1), V::StrMaxLen(32)]),
+            (
+                "password",
+                vec![
+                    V::Required,
+                    V::Str,
+                    V::StrMinLen(1),
+                    V::StrMaxLen(32),
+                    V::StrMinUpper(1),
+                    V::StrMinLower(1),
+                    V::StrMinSpecial(1),
+                    V::StrMinNum(1),
+                ],
+            ),
+        ])
+    });
+    
     let json_value: Value = serde_json::from_str(&body).unwrap();
-    match &json_value {
-        Value::Object(map) => {
-            for (key, value) in map {
-                match value {
-                    Value::Null => {}
-                    Value::Bool(_bool) => {}
-                    Value::Number(num) => {
-                        if num.is_f64() {}
-                        if num.is_u64() {}
-                        if num.is_i64() {}
-                    }
-                    Value::String(_str) => {}
-                    Value::Array(_arr) => {}
-                    Value::Object(_obj) => {}
-                }
-                println!("Key: {}, Value: {}", key, value);
-            }
-        }
-        _ => println!("Expected a JSON object"),
-    }
+    
+
+
+    let internal_value = value_from_json_value(json_value);
+
+    let res = get_validator().validate(&USER_C_SCHEMA, &internal_value);
+    println!("{:?}", res);
+
     // Attempt to deserialize the JSON
     // let task: Result<User, _> = json::from_str(&body);
     // match task {

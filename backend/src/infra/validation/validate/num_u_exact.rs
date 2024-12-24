@@ -1,25 +1,25 @@
 use crate::{
-    domain::validation::{NumUExactErr, Val},
+    domain::validation::{V, Val},
     infra::validation::Field,
 };
 
-pub fn num_u_exact(valid: u64, f: &Field) -> Result<(), NumUExactErr> {
+pub fn num_u_exact(valid: u64, f: &Field) -> Result<(), V> {
     match f.value {
-        Val::Num(num_u, num_i, num_f) => {
+        Val::Num(num_u, _num_i, _num_f) => {
             if num_u == Some(valid) {
                 Ok(())
             } else {
-                Err(NumUExactErr(f.name))
+                Err(V::NumUExact(valid))
             }
         }
         Val::None => {
             if f.has_required {
-                Err(NumUExactErr(f.name))
+                Err(V::NumUExact(valid))
             } else {
                 Ok(())
             }
         }
-        _ => Err(NumUExactErr(f.name)),
+        _ => Err(V::NumUExact(valid)),
     }
 }
 
@@ -42,27 +42,27 @@ mod test {
     fn test_num_u_exact_err() {
         assert_eq!(
             num_u_exact(10, &Field::of(Val::Num(Some(11), None, None))),
-            Err(NumUExactErr("foo"))
+            Err(V::NumUExact(10))
         );
         assert_eq!(
             num_u_exact(10, &Field::of(Val::Num(Some(9), None, None))),
-            Err(NumUExactErr("foo"))
+            Err(V::NumUExact(10))
         );
     }
 
     #[test]
     fn test_num_u_exact_type_err() {
-        assert_eq!(num_u_exact(42, &f_num_i_stub()), Err(NumUExactErr("foo")));
-        assert_eq!(num_u_exact(42, &f_num_f_stub()), Err(NumUExactErr("foo")));
-        assert_eq!(num_u_exact(42, &f_str_stub()), Err(NumUExactErr("foo")));
-        assert_eq!(num_u_exact(42, &f_bool_stub()), Err(NumUExactErr("foo")));
-        assert_eq!(num_u_exact(42, &f_arr_stub()), Err(NumUExactErr("foo")));
-        assert_eq!(num_u_exact(42, &f_obj_stub()), Err(NumUExactErr("foo")));
+        assert_eq!(num_u_exact(42, &f_num_i_stub()), Err(V::NumUExact(42)));
+        assert_eq!(num_u_exact(42, &f_num_f_stub()), Err(V::NumUExact(42)));
+        assert_eq!(num_u_exact(42, &f_str_stub()), Err(V::NumUExact(42)));
+        assert_eq!(num_u_exact(42, &f_bool_stub()), Err(V::NumUExact(42)));
+        assert_eq!(num_u_exact(42, &f_arr_stub()), Err(V::NumUExact(42)));
+        assert_eq!(num_u_exact(42, &f_obj_stub()), Err(V::NumUExact(42)));
     }
 
     #[test]
     fn test_num_u_exact_required() {
         assert_eq!(num_u_exact(42, &Field::default()), Ok(()));
-        assert_eq!(num_u_exact(42, &Field::required()), Err(NumUExactErr("foo")));
+        assert_eq!(num_u_exact(42, &Field::required()), Err(V::NumUExact(42)));
     }
 }

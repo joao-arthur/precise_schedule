@@ -1,25 +1,25 @@
 use crate::{
-    domain::validation::{NumUErr, Val},
+    domain::validation::{V, Val},
     infra::validation::Field,
 };
 
-pub fn num_u(f: &Field) -> Result<(), NumUErr> {
+pub fn num_u(f: &Field) -> Result<(), V> {
     match f.value {
-        Val::Num(num_u, num_i, num_f) => {
+        Val::Num(num_u, _num_i, _num_f) => {
             if num_u.is_some() {
                 Ok(())
             } else {
-                Err(NumUErr(f.name))
+                Err(V::NumU)
             }
         }
         Val::None => {
             if f.has_required {
-                Err(NumUErr(f.name))
+                Err(V::NumU)
             } else {
                 Ok(())
             }
         }
-        _ => Err(NumUErr(f.name)),
+        _ => Err(V::NumU),
     }
 }
 
@@ -38,17 +38,17 @@ mod test {
 
     #[test]
     fn test_num_u_err() {
-        assert_eq!(num_u(&f_num_i_stub()), Err(NumUErr("foo")));
-        assert_eq!(num_u(&f_num_f_stub()), Err(NumUErr("foo")));
-        assert_eq!(num_u(&f_str_stub()), Err(NumUErr("foo")));
-        assert_eq!(num_u(&f_bool_stub()), Err(NumUErr("foo")));
-        assert_eq!(num_u(&f_arr_stub()), Err(NumUErr("foo")));
-        assert_eq!(num_u(&f_obj_stub()), Err(NumUErr("foo")));
+        assert_eq!(num_u(&f_num_i_stub()), Err(V::NumU));
+        assert_eq!(num_u(&f_num_f_stub()), Err(V::NumU));
+        assert_eq!(num_u(&f_str_stub()), Err(V::NumU));
+        assert_eq!(num_u(&f_bool_stub()), Err(V::NumU));
+        assert_eq!(num_u(&f_arr_stub()), Err(V::NumU));
+        assert_eq!(num_u(&f_obj_stub()), Err(V::NumU));
     }
 
     #[test]
     fn test_num_u_required() {
         assert_eq!(num_u(&Field::default()), Ok(()));
-        assert_eq!(num_u(&Field::required()), Err(NumUErr("foo")));
+        assert_eq!(num_u(&Field::required()), Err(V::NumU));
     }
 }

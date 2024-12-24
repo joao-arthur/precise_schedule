@@ -1,25 +1,25 @@
 use crate::{
-    domain::validation::{StrMaxLenErr, Val},
+    domain::validation::{V, Val},
     infra::validation::Field,
 };
 
-pub fn str_max_len(valid: u32, f: &Field) -> Result<(), StrMaxLenErr> {
+pub fn str_max_len(valid: u32, f: &Field) -> Result<(), V> {
     match &f.value {
         Val::Str(str_value) => {
             if str_value.chars().count() as u32 <= valid {
                 Ok(())
             } else {
-                Err(StrMaxLenErr(f.name))
+                Err(V::StrMaxLen(valid))
             }
         }
         Val::None => {
             if f.has_required {
-                Err(StrMaxLenErr(f.name))
+                Err(V::StrMaxLen(valid))
             } else {
                 Ok(())
             }
         }
-        _ => Err(StrMaxLenErr(f.name)),
+        _ => Err(V::StrMaxLen(valid)),
     }
 }
 
@@ -44,27 +44,27 @@ mod test {
     fn test_str_max_len_err() {
         assert_eq!(
             str_max_len(10, &Field::of(Val::Str(String::from("there is a ")))),
-            Err(StrMaxLenErr("foo"))
+            Err(V::StrMaxLen(10))
         );
         assert_eq!(
             str_max_len(10, &Field::of(Val::Str(String::from("light that n")))),
-            Err(StrMaxLenErr("foo"))
+            Err(V::StrMaxLen(10))
         );
     }
 
     #[test]
     fn test_str_max_len_type_err() {
-        assert_eq!(str_max_len(1, &f_num_u_stub()), Err(StrMaxLenErr("foo")));
-        assert_eq!(str_max_len(1, &f_num_i_stub()), Err(StrMaxLenErr("foo")));
-        assert_eq!(str_max_len(1, &f_num_f_stub()), Err(StrMaxLenErr("foo")));
-        assert_eq!(str_max_len(1, &f_bool_stub()), Err(StrMaxLenErr("foo")));
-        assert_eq!(str_max_len(1, &f_arr_stub()), Err(StrMaxLenErr("foo")));
-        assert_eq!(str_max_len(1, &f_obj_stub()), Err(StrMaxLenErr("foo")));
+        assert_eq!(str_max_len(1, &f_num_u_stub()), Err(V::StrMaxLen(1)));
+        assert_eq!(str_max_len(1, &f_num_i_stub()), Err(V::StrMaxLen(1)));
+        assert_eq!(str_max_len(1, &f_num_f_stub()), Err(V::StrMaxLen(1)));
+        assert_eq!(str_max_len(1, &f_bool_stub()), Err(V::StrMaxLen(1)));
+        assert_eq!(str_max_len(1, &f_arr_stub()), Err(V::StrMaxLen(1)));
+        assert_eq!(str_max_len(1, &f_obj_stub()), Err(V::StrMaxLen(1)));
     }
 
     #[test]
     fn test_str_max_len_required() {
         assert_eq!(str_max_len(1, &Field::default()), Ok(()));
-        assert_eq!(str_max_len(1, &Field::required()), Err(StrMaxLenErr("foo")));
+        assert_eq!(str_max_len(1, &Field::required()), Err(V::StrMaxLen(1)));
     }
 }

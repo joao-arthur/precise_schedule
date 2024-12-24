@@ -1,27 +1,27 @@
 use email_address::EmailAddress;
 
 use crate::{
-    domain::validation::{EmailErr, Val},
+    domain::validation::{V, Val},
     infra::validation::Field,
 };
 
-pub fn email(f: &Field) -> Result<(), EmailErr> {
+pub fn email(f: &Field) -> Result<(), V> {
     match &f.value {
         Val::Str(str_value) => {
             if EmailAddress::is_valid(str_value) {
                 Ok(())
             } else {
-                Err(EmailErr(f.name))
+                Err(V::Email)
             }
         }
         Val::None => {
             if f.has_required {
-                Err(EmailErr(f.name))
+                Err(V::Email)
             } else {
                 Ok(())
             }
         }
-        _ => Err(EmailErr(f.name)),
+        _ => Err(V::Email),
     }
 }
 
@@ -43,29 +43,26 @@ mod test {
 
     #[test]
     fn test_email_err() {
-        assert_eq!(email(&Field::of(Val::Str(String::from("paullivecom")))), Err(EmailErr("foo")));
-        assert_eq!(email(&Field::of(Val::Str(String::from("paullive.com")))), Err(EmailErr("foo")));
-        assert_eq!(
-            email(&Field::of(Val::Str(String::from("paul@liv@e.com")))),
-            Err(EmailErr("foo"))
-        );
-        assert_eq!(email(&Field::of(Val::Str(String::from("live.com")))), Err(EmailErr("foo")));
-        assert_eq!(email(&Field::of(Val::Str(String::from("@live.com")))), Err(EmailErr("foo")));
+        assert_eq!(email(&Field::of(Val::Str(String::from("paullivecom")))), Err(V::Email));
+        assert_eq!(email(&Field::of(Val::Str(String::from("paullive.com")))), Err(V::Email));
+        assert_eq!(email(&Field::of(Val::Str(String::from("paul@liv@e.com")))), Err(V::Email));
+        assert_eq!(email(&Field::of(Val::Str(String::from("live.com")))), Err(V::Email));
+        assert_eq!(email(&Field::of(Val::Str(String::from("@live.com")))), Err(V::Email));
     }
 
     #[test]
     fn test_email_type_err() {
-        assert_eq!(email(&f_num_u_stub()), Err(EmailErr("foo")));
-        assert_eq!(email(&f_num_i_stub()), Err(EmailErr("foo")));
-        assert_eq!(email(&f_num_f_stub()), Err(EmailErr("foo")));
-        assert_eq!(email(&f_bool_stub()), Err(EmailErr("foo")));
-        assert_eq!(email(&f_arr_stub()), Err(EmailErr("foo")));
-        assert_eq!(email(&f_obj_stub()), Err(EmailErr("foo")));
+        assert_eq!(email(&f_num_u_stub()), Err(V::Email));
+        assert_eq!(email(&f_num_i_stub()), Err(V::Email));
+        assert_eq!(email(&f_num_f_stub()), Err(V::Email));
+        assert_eq!(email(&f_bool_stub()), Err(V::Email));
+        assert_eq!(email(&f_arr_stub()), Err(V::Email));
+        assert_eq!(email(&f_obj_stub()), Err(V::Email));
     }
 
     #[test]
     fn test_email_required() {
         assert_eq!(email(&Field::default()), Ok(()));
-        assert_eq!(email(&Field::required()), Err(EmailErr("foo")));
+        assert_eq!(email(&Field::required()), Err(V::Email));
     }
 }
