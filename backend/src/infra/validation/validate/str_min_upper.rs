@@ -13,10 +13,10 @@ pub fn str_min_upper(valid: u32, f: &Field) -> Result<(), V> {
             }
         }
         Val::None => {
-            if f.has_required {
-                Err(V::StrMinUpper(valid))
-            } else {
+            if !f.has_required {
                 Ok(())
+            } else {
+                Err(V::StrMinUpper(valid))
             }
         }
         _ => Err(V::StrMinUpper(valid)),

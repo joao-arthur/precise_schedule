@@ -13,10 +13,10 @@ pub fn str_min_lower(valid: u32, f: &Field) -> Result<(), V> {
             }
         }
         Val::None => {
-            if f.has_required {
-                Err(V::StrMinLower(valid))
-            } else {
+            if !f.has_required {
                 Ok(())
+            } else {
+                Err(V::StrMinLower(valid))
             }
         }
         _ => Err(V::StrMinLower(valid)),

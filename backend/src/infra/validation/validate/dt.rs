@@ -12,10 +12,10 @@ pub fn dt(f: &Field) -> Result<(), V> {
             Ok(_) => Ok(()),
         },
         Val::None => {
-            if f.has_required {
-                Err(V::Dt)
-            } else {
+            if !f.has_required {
                 Ok(())
+            } else {
+                Err(V::Dt)
             }
         }
         _ => Err(V::Dt),

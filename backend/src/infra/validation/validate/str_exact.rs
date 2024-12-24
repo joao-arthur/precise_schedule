@@ -13,10 +13,10 @@ pub fn str_exact(valid: &'static str, f: &Field) -> Result<(), V> {
             }
         }
         Val::None => {
-            if f.has_required {
-                Err(V::StrExact(valid))
-            } else {
+            if !f.has_required {
                 Ok(())
+            } else {
+                Err(V::StrExact(valid))
             }
         }
         _ => Err(V::StrExact(valid)),

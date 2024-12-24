@@ -13,10 +13,10 @@ pub fn num_u_exact(valid: u64, f: &Field) -> Result<(), V> {
             }
         }
         Val::None => {
-            if f.has_required {
-                Err(V::NumUExact(valid))
-            } else {
+            if !f.has_required {
                 Ok(())
+            } else {
+                Err(V::NumUExact(valid))
             }
         }
         _ => Err(V::NumUExact(valid)),

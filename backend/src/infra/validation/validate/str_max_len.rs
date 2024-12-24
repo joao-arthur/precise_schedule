@@ -13,10 +13,10 @@ pub fn str_max_len(valid: u32, f: &Field) -> Result<(), V> {
             }
         }
         Val::None => {
-            if f.has_required {
-                Err(V::StrMaxLen(valid))
-            } else {
+            if !f.has_required {
                 Ok(())
+            } else {
+                Err(V::StrMaxLen(valid))
             }
         }
         _ => Err(V::StrMaxLen(valid)),

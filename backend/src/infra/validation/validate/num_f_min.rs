@@ -14,10 +14,10 @@ pub fn num_f_min(valid: f64, f: &Field) -> Result<(), V> {
             return Err(V::NumFMin(valid));
         }
         Val::None => {
-            if f.has_required {
-                Err(V::NumFMin(valid))
-            } else {
+            if !f.has_required {
                 Ok(())
+            } else {
+                Err(V::NumFMin(valid))
             }
         }
         _ => Err(V::NumFMin(valid)),

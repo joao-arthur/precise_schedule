@@ -14,10 +14,10 @@ pub fn num_f_max(valid: f64, f: &Field) -> Result<(), V> {
             Err(V::NumFMax(valid))
         }
         Val::None => {
-            if f.has_required {
-                Err(V::NumFMax(valid))
-            } else {
+            if !f.has_required {
                 Ok(())
+            } else {
+                Err(V::NumFMax(valid))
             }
         }
         _ => Err(V::NumFMax(valid)),

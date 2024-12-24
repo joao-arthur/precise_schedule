@@ -7,10 +7,10 @@ pub fn str(f: &Field) -> Result<(), V> {
     match &f.value {
         Val::Str(_value) => Ok(()),
         Val::None => {
-            if f.has_required {
-                Err(V::Str)
-            } else {
+            if !f.has_required {
                 Ok(())
+            } else {
+                Err(V::Str)
             }
         }
         _ => Err(V::Str),

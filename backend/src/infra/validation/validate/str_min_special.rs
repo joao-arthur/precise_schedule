@@ -13,10 +13,10 @@ pub fn str_min_special(valid: u32, f: &Field) -> Result<(), V> {
             }
         }
         Val::None => {
-            if f.has_required {
-                Err(V::StrMinSpecial(valid))
-            } else {
+            if !f.has_required {
                 Ok(())
+            } else {
+                Err(V::StrMinSpecial(valid))
             }
         }
         _ => Err(V::StrMinSpecial(valid)),

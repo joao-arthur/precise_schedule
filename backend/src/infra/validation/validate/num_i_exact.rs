@@ -13,10 +13,10 @@ pub fn num_i_exact(valid: i64, f: &Field) -> Result<(), V> {
             }
         }
         Val::None => {
-            if f.has_required {
-                Err(V::NumIExact(valid))
-            } else {
+            if !f.has_required {
                 Ok(())
+            } else {
+                Err(V::NumIExact(valid))
             }
         }
         _ => Err(V::NumIExact(valid)),

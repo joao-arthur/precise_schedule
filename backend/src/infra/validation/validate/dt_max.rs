@@ -23,10 +23,10 @@ pub fn dt_max(valid: &'static str, f: &Field) -> Result<(), V> {
             Ok(())
         }
         Val::None => {
-            if f.has_required {
-                Err(V::DtMax(valid))
-            } else {
+            if !f.has_required {
                 Ok(())
+            } else {
+                Err(V::DtMax(valid))
             }
         }
         _ => Err(V::DtMax(valid)),

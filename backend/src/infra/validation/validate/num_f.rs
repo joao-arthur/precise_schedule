@@ -13,10 +13,10 @@ pub fn num_f(f: &Field) -> Result<(), V> {
             }
         }
         Val::None => {
-            if f.has_required {
-                Err(V::NumF)
-            } else {
+            if !f.has_required {
                 Ok(())
+            } else {
+                Err(V::NumF)
             }
         }
         _ => Err(V::NumF),

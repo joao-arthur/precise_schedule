@@ -15,10 +15,10 @@ pub fn email(f: &Field) -> Result<(), V> {
             }
         }
         Val::None => {
-            if f.has_required {
-                Err(V::Email)
-            } else {
+            if !f.has_required {
                 Ok(())
+            } else {
+                Err(V::Email)
             }
         }
         _ => Err(V::Email),

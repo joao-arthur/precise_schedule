@@ -13,10 +13,10 @@ pub fn str_exact_len(valid: u32, f: &Field) -> Result<(), V> {
             }
         }
         Val::None => {
-            if f.has_required {
-                Err(V::StrExactLen(valid))
-            } else {
+            if !f.has_required {
                 Ok(())
+            } else {
+                Err(V::StrExactLen(valid))
             }
         }
         _ => Err(V::StrExactLen(valid)),

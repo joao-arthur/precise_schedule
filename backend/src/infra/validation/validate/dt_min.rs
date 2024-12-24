@@ -23,10 +23,10 @@ pub fn dt_min(valid: &'static str, f: &Field) -> Result<(), V> {
             Ok(())
         }
         Val::None => {
-            if f.has_required {
-                Err(V::DtMin(valid))
-            } else {
+            if !f.has_required {
                 Ok(())
+            } else {
+                Err(V::DtMin(valid))
             }
         }
         _ => Err(V::DtMin(valid)),
