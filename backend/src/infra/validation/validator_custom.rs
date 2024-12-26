@@ -108,10 +108,7 @@ mod test {
                     (String::from("birthdate"), Val::Str(String::from("")))
                 ]))
             ),
-            Err(HashMap::from([
-                ("name", vec![V::StrMinLen(1)]),
-                ("birthdate", vec![V::Dt])
-            ]))
+            Err(HashMap::from([("name", vec![V::StrMinLen(1)]), ("birthdate", vec![V::Dt])]))
         );
         assert_eq!(
             validate_schema(
@@ -122,8 +119,8 @@ mod test {
                 ]))
             ),
             Err(HashMap::from([
-                ("name",vec![V::Required,V::Str,V::StrMinLen(1),V::StrMaxLen(255)]),
-                ("birthdate",vec![ V::Required, V::Str, V::Dt,])
+                ("name", vec![V::Required, V::Str, V::StrMinLen(1), V::StrMaxLen(255)]),
+                ("birthdate", vec![V::Required, V::Str, V::Dt,])
             ]))
         );
     }

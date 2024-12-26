@@ -2,6 +2,9 @@ use std::collections::HashMap;
 use std::sync::LazyLock;
 
 use rocket::data::ToByteUnit;
+use rocket::http::HeaderMap;
+use rocket::response::content;
+use rocket::response::status::Custom;
 use rocket::serde::{self, json, Deserialize, Serialize};
 use rocket::{http::Status, post, response::status, Data};
 use serde_json::Value;
@@ -47,16 +50,15 @@ pub struct Session {
 }
 
 #[post("/", format = "application/json", data = "<data>")]
-pub async fn endpoint_user_c(data: Data<'_>) {
+pub async fn endpoint_user_c(data: Data<'_>) -> Custom<content::RawJson<String>> {
     let limit = 1.mebibytes();
     let body = match data.open(limit).into_string().await {
         Ok(body) => body.value,
         Err(_) => {
-            return;
-            //return status::Custom(
-            //    Status::PayloadTooLarge,
-            //    "Payload is too large.".to_string(),
-            //);
+            return status::Custom(
+                Status::PayloadTooLarge,
+                content::RawJson("Payload is too large.".to_owned()),
+            );
         }
     };
 
@@ -87,15 +89,16 @@ pub async fn endpoint_user_c(data: Data<'_>) {
 
     let res = get_validator().validate(&USER_C_SCHEMA, &internal_value);
     match res {
-        Ok(_data) => {}
+        Ok(_data) => { return status::Custom(Status::Ok, content::RawJson("".to_owned())); }
         Err(err) => {
             println!("{:?}", err);
             let sdfsdf: HashMap<&str, Vec<String>> = err
-            .into_iter()
-            .map(|f| (f.0, f.1.iter().map(|p| to_english(p)).collect::<Vec<String>>())).map(|f| f)
-            .collect();
-        println!("{:?}", sdfsdf);
-
+                .into_iter()
+                .map(|f| (f.0, f.1.iter().map(|p| to_english(p)).collect::<Vec<String>>()))
+                .map(|f| f)
+                .collect();
+            println!("{:?}", sdfsdf);
+            return status::Custom(Status::UnprocessableEntity, content::RawJson(serde_json::to_string(&sdfsdf).unwrap()));
         }
     }
 
