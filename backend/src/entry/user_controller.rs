@@ -11,7 +11,10 @@ use serde_json::Value;
 
 use crate::domain::validation::{Schema, V};
 use crate::entry::deps::get_validator;
-use crate::infra::validation::adapter::{to_english, value_from_json_value};
+use crate::infra::validation::adapter::{
+    to_english, to_portuguese, to_spanish, value_from_json_value,
+};
+use crate::{Language, Languages};
 
 #[derive(Deserialize, Serialize, Debug)]
 #[serde(crate = "rocket::serde")]
@@ -50,7 +53,7 @@ pub struct Session {
 }
 
 #[post("/", format = "application/json", data = "<data>")]
-pub async fn endpoint_user_c(data: Data<'_>) -> Custom<content::RawJson<String>> {
+pub async fn endpoint_user_c(data: Data<'_>, lg: Language) -> Custom<content::RawJson<String>> {
     let limit = 1.mebibytes();
     let body = match data.open(limit).into_string().await {
         Ok(body) => body.value,
@@ -89,16 +92,30 @@ pub async fn endpoint_user_c(data: Data<'_>) -> Custom<content::RawJson<String>>
 
     let res = get_validator().validate(&USER_C_SCHEMA, &internal_value);
     match res {
-        Ok(_data) => { return status::Custom(Status::Ok, content::RawJson("".to_owned())); }
+        Ok(_data) => {
+            return status::Custom(Status::Ok, content::RawJson("".to_owned()));
+        }
         Err(err) => {
-            println!("{:?}", err);
-            let sdfsdf: HashMap<&str, Vec<String>> = err
+            let erri18n: HashMap<&str, Vec<String>> = err
                 .into_iter()
-                .map(|f| (f.0, f.1.iter().map(|p| to_english(p)).collect::<Vec<String>>()))
+                .map(|f| {
+                    (
+                        f.0,
+                        f.1.iter()
+                            .map(|p| match lg.0 {
+                                Languages::English => to_english(p),
+                                Languages::Portuguese => to_portuguese(p),
+                                Languages::Spanish => to_spanish(p),
+                            })
+                            .collect::<Vec<String>>(),
+                    )
+                })
                 .map(|f| f)
                 .collect();
-            println!("{:?}", sdfsdf);
-            return status::Custom(Status::UnprocessableEntity, content::RawJson(serde_json::to_string(&sdfsdf).unwrap()));
+            return status::Custom(
+                Status::UnprocessableEntity,
+                content::RawJson(serde_json::to_string(&erri18n).unwrap()),
+            );
         }
     }
 

@@ -1,3 +1,6 @@
+use std::convert::Infallible;
+
+use accept_language::parse;
 use entry::{
     event_controller::{
         endpoint_event_appointment_c, endpoint_event_appointment_u, endpoint_event_birthday_c,
@@ -8,6 +11,10 @@ use entry::{
     health_controller::endpoint_health_r,
     user_controller::{endpoint_user_c, endpoint_user_login, endpoint_user_r, endpoint_user_u},
 };
+use rocket::{
+    request::{self, FromRequest},
+    Request,
+};
 
 pub mod domain;
 pub mod entry;
@@ -15,6 +22,43 @@ pub mod infra;
 
 #[macro_use]
 extern crate rocket;
+
+#[derive(Debug, PartialEq)]
+pub enum Languages {
+    English,
+    Portuguese,
+    Spanish,
+}
+
+#[derive(Debug, PartialEq)]
+struct Language(pub Languages);
+
+#[rocket::async_trait]
+impl<'r> FromRequest<'r> for Language {
+    type Error = Infallible;
+
+    async fn from_request(req: &'r Request<'_>) -> request::Outcome<Self, Self::Error> {
+        let user_languages = req.headers().get_one("Accept-Language");
+
+        match user_languages {
+            Some(t) => {
+                let user_languages = parse(t);
+                let lg = user_languages.get(0).cloned().unwrap_or(String::from("en"));
+                if lg == "en" || lg.starts_with("en-") {
+                    return request::Outcome::Success(Language(Languages::English));
+                }
+                if lg == "es" || lg.starts_with("es-") {
+                    return request::Outcome::Success(Language(Languages::Spanish));
+                }
+                if lg == "pt" || lg.starts_with("pt-") {
+                    return request::Outcome::Success(Language(Languages::Portuguese));
+                }
+                return request::Outcome::Success(Language(Languages::English));
+            }
+            None => request::Outcome::Success(Language(Languages::English)),
+        }
+    }
+}
 
 #[rocket::main]
 async fn main() -> Result<(), rocket::Error> {
@@ -41,7 +85,9 @@ async fn main() -> Result<(), rocket::Error> {
         .mount(
             "/user",
             routes![endpoint_user_c, endpoint_user_r, endpoint_user_u, endpoint_user_login],
-        ).launch().await?;
+        )
+        .launch()
+        .await?;
 
     Ok(())
 }

@@ -1,6 +1,6 @@
 use std::time::SystemTime;
 
-use chrono::{SecondsFormat, Utc};
+use chrono::Utc;
 use uuid::Uuid;
 
 use crate::domain::generator::{DateTimeGen, IdGen};
