@@ -16,3 +16,4 @@ regex = "1.11.1"
 
 jsonschema = "0.27.0"
 accept-language = "3.1.0"
+rust-i18n = "3.1.2"

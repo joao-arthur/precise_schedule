@@ -21,7 +21,7 @@ pub fn value_from_json_value(value: serde_json::Value) -> Val {
 
 pub fn to_english(v: &V) -> String {
     match v {
-        V::Required => String::from("Is required"),
+        V::Required => String::from(rust_i18n::t!("validation.required", locale = "en")),
         V::NumI => String::from("Must be an integer"),
         V::NumU => String::from("Must be an unsigned integer"),
         V::NumF => String::from("Must be a float"),
@@ -59,7 +59,7 @@ pub fn to_english(v: &V) -> String {
 
 pub fn to_spanish(v: &V) -> String {
     match v {
-        V::Required => String::from("Se requiere"),
+        V::Required => String::from(rust_i18n::t!("validation.required", locale = "es")),
         V::NumI => String::from("Debe ser un entero"),
         V::NumU => String::from("Debe ser un entero sin signo"),
         V::NumF => String::from("Debe ser un flotante"),
@@ -97,7 +97,7 @@ pub fn to_spanish(v: &V) -> String {
 
 pub fn to_portuguese(v: &V) -> String {
     match v {
-        V::Required => String::from("É obrigatório"),
+        V::Required => String::from(rust_i18n::t!("validation.required", locale = "pt")),
         V::NumI => String::from("Deve ser um inteiro"),
         V::NumU => String::from("Deve ser um inteiro sem sinal"),
         V::NumF => String::from("Deve ser um flutuante"),

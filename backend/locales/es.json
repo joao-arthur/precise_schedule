@@ -1,11 +1,11 @@
 {
     "_version": 1,
-    "validation.required":  "Se requiere",
-    "validation.num_i":  "Debe ser un entero",
-    "validation.num_u":  "Debe ser un entero sin signo",
-    "validation.num_f":  "Debe ser un flotante",
-    "validation.str":  "Debe ser una cadena",
-    "validation.bool":  "Debe ser un booleano",
+    "validation.required": "Se requiere",
+    "validation.num_i": "Debe ser un entero",
+    "validation.num_u": "Debe ser un entero sin signo",
+    "validation.num_f": "Debe ser un flotante",
+    "validation.str": "Debe ser una cadena",
+    "validation.bool": "Debe ser un booleano",
     "validation.num_i_exact": "Deve ser igual a {}",
     "validation.num_i_min": "Debe ser mayor o igual que {}",
     "validation.num_i_max": "Deve ser menor o igual que {}",
@@ -27,8 +27,8 @@
     "validation.str_min_num.plural": "Deve contener al menos {} numeros",
     "validation.str_min_special.singular": "Deve contener al menos 1 carácter de !\"#$%&'()*+,-./:;<=>?@[\\]^_`{{|}}~",
     "validation.str_min_special.plural": "Deve contener al menos {} caracteres de !\"#$%&'()*+,-./:;<=>?@[\\]^_`{{|}}~",
-    "validation.dt":  "Debe ser una fecha en el formato AAAA-MM-DD",
+    "validation.dt": "Debe ser una fecha en el formato AAAA-MM-DD",
     "validation.dt_min": "Debe ser mayor o igual que {}",
     "validation.dt_max": "Deve ser menor o igual que {}",
-    "validation.email":  "Debe ser un email válido"
+    "validation.email": "Debe ser un email válido"
 }

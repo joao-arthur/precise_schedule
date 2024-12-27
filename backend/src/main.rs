@@ -31,7 +31,7 @@ pub enum Languages {
 }
 
 #[derive(Debug, PartialEq)]
-struct Language(pub Languages);
+pub struct Language(pub Languages);
 
 #[rocket::async_trait]
 impl<'r> FromRequest<'r> for Language {
@@ -59,6 +59,8 @@ impl<'r> FromRequest<'r> for Language {
         }
     }
 }
+
+rust_i18n::i18n!("locales");
 
 #[rocket::main]
 async fn main() -> Result<(), rocket::Error> {
