@@ -1,4 +1,4 @@
-use crate::domain::validation::{Val, V};
+use crate::domain::{language::Language, validation::{Val, V}};
 
 pub fn value_from_json_value(value: serde_json::Value) -> Val {
     match value {
@@ -19,112 +19,51 @@ pub fn value_from_json_value(value: serde_json::Value) -> Val {
     }
 }
 
-pub fn to_english(v: &V) -> String {
+pub fn validation_i18n(v: &V, lg: &Language) -> String {
+    let locale = lg.to_iso_639_1();
     match v {
-        V::Required => String::from(rust_i18n::t!("validation.required", locale = "en")),
-        V::NumI => String::from("Must be an integer"),
-        V::NumU => String::from("Must be an unsigned integer"),
-        V::NumF => String::from("Must be a float"),
-        V::Str => String::from("Must be a string"),
-        V::Bool => String::from("Must be a boolean"),
-        V::NumIExact(v) => String::from(format!("Must be equal to {v}")),
-        V::NumIMin(v) => String::from(format!("Must be greater or equal to {v}")),
-        V::NumIMax(v) => String::from(format!("Must be smaller or equal to {v}")),
-        V::NumUExact(v) => String::from(format!("Must be equal to {v}")),
-        V::NumUMin(v) => String::from(format!("Must be greater or equal to {v}")),
-        V::NumUMax(v) => String::from(format!("Must be smaller or equal to {v}")),
-        V::NumFExact(v) => String::from(format!("Must be equal to {v}")),
-        V::NumFMin(v) => String::from(format!("Must be greater or equal to {v}")),
-        V::NumFMax(v) => String::from(format!("Must be smaller or equal to {v}")),
-        V::StrExact(v) => String::from(format!("Must be equal to {v}")),
-        V::StrExactLen(v) => String::from(format!("Length must be equal to {v}")),
-        V::StrMinLen(v) => String::from(format!("Length must be greater or equal to {v}")),
-        V::StrMaxLen(v) => String::from(format!("Length must be smaller or equal to {v}")),
-        V::StrMinUpper(v) => {
-            String::from(format!("Must contain at least {v} uppercase characters"))
-        }
-        V::StrMinLower(v) => {
-            String::from(format!("Must contain at least {v} lowercase characters"))
-        }
-        V::StrMinNum(v) => String::from(format!("Must contain at least {v} numbers")),
-        V::StrMinSpecial(v) => String::from(format!(
-            "Must contain at least {v} of !\"#$%&'()*+,-./:;<=>?@[\\]^_`{{|}}~"
-        )),
-        V::Dt => String::from("Must be a date in the format YYYY-MM-DD"),
-        V::DtMin(v) => String::from(format!("Must be greater or equal to {v}")),
-        V::DtMax(v) => String::from(format!("Must be smaller or equal to {v}")),
-        V::Email => String::from("Must be a valid email"),
-    }
-}
-
-pub fn to_spanish(v: &V) -> String {
-    match v {
-        V::Required => String::from(rust_i18n::t!("validation.required", locale = "es")),
-        V::NumI => String::from("Debe ser un entero"),
-        V::NumU => String::from("Debe ser un entero sin signo"),
-        V::NumF => String::from("Debe ser un flotante"),
-        V::Str => String::from("Debe ser una cadena"),
-        V::Bool => String::from("Debe ser un booleano"),
-        V::NumIExact(v) => String::from(format!("Deve ser igual a {v}")),
-        V::NumIMin(v) => String::from(format!("Debe ser mayor o igual que {v}")),
-        V::NumIMax(v) => String::from(format!("Deve ser menor o igual que {v}")),
-        V::NumUExact(v) => String::from(format!("Deve ser igual a {v}")),
-        V::NumUMin(v) => String::from(format!("Debe ser mayor o igual que {v}")),
-        V::NumUMax(v) => String::from(format!("Deve ser menor o igual que {v}")),
-        V::NumFExact(v) => String::from(format!("Deve ser igual a {v}")),
-        V::NumFMin(v) => String::from(format!("Debe ser mayor o igual que {v}")),
-        V::NumFMax(v) => String::from(format!("Deve ser menor o igual que {v}")),
-        V::StrExact(v) => String::from(format!("Deve ser igual a {v}")),
-        V::StrExactLen(v) => String::from(format!("La longitud deve ser igual a {v}")),
-        V::StrMinLen(v) => String::from(format!("La longitud deve ser mayor o igual que {v}")),
-        V::StrMaxLen(v) => String::from(format!("La longitud deve ser menor o igual que {v}")),
-        V::StrMinUpper(v) => {
-            String::from(format!("Deve contener al menos {v} carácter en minúscula"))
-        }
-        V::StrMinLower(v) => {
-            String::from(format!("Deve contener al menos {v} carácter en mayúscula"))
-        }
-        V::StrMinNum(v) => String::from(format!("Deve contener al menos {v} numeros")),
-        V::StrMinSpecial(v) => String::from(format!(
-            "Deve contener al menos {v} de !\"#$%&'()*+,-./:;<=>?@[\\]^_`{{|}}~"
-        )),
-        V::Dt => String::from("Debe ser una fecha en el formato AAAA-MM-DD"),
-        V::DtMin(v) => String::from(format!("Debe ser mayor o igual que {v}")),
-        V::DtMax(v) => String::from(format!("Deve ser menor o igual que {v}")),
-        V::Email => String::from("Debe ser un email válido"),
-    }
-}
-
-pub fn to_portuguese(v: &V) -> String {
-    match v {
-        V::Required => String::from(rust_i18n::t!("validation.required", locale = "pt")),
-        V::NumI => String::from("Deve ser um inteiro"),
-        V::NumU => String::from("Deve ser um inteiro sem sinal"),
-        V::NumF => String::from("Deve ser um flutuante"),
-        V::Str => String::from("Deve ser uma string"),
-        V::Bool => String::from("Deve ser um booleano"),
-        V::NumIExact(v) => String::from(format!("Deve ser igual a {v}")),
-        V::NumIMin(v) => String::from(format!("Deve ser maior ou igual a {v}")),
-        V::NumIMax(v) => String::from(format!("Deve ser menor ou igual a {v}")),
-        V::NumUExact(v) => String::from(format!("Deve ser igual a {v}")),
-        V::NumUMin(v) => String::from(format!("Deve ser maior ou igual a {v}")),
-        V::NumUMax(v) => String::from(format!("Deve ser menor ou igual a {v}")),
-        V::NumFExact(v) => String::from(format!("Deve ser igual a {v}")),
-        V::NumFMin(v) => String::from(format!("Deve ser maior ou igual a {v}")),
-        V::NumFMax(v) => String::from(format!("Deve ser menor ou igual a {v}")),
-        V::StrExact(v) => String::from(format!("Deve ser igual a {v}")),
-        V::StrExactLen(v) => String::from(format!("O comprimento deve ser igual a {v}")),
-        V::StrMinLen(v) => String::from(format!("O comprimento deve ser maior ou igual a {v}")),
-        V::StrMaxLen(v) => String::from(format!("O comprimento deve ser menor ou igual a {v}")),
-        V::StrMinUpper(v) => String::from(format!("Deve conter {v} caracteres minúsculos")),
-        V::StrMinLower(v) => String::from(format!("Deve conter {v} caracteres maiúsculos")),
-        V::StrMinNum(v) => String::from(format!("Deve conter {v} números")),
-        V::StrMinSpecial(v) => {
-            String::from(format!("Deve conter {v} de !\"#$%&'()*+,-./:;<=>?@[\\]^_`{{|}}~"))
-        }
-        V::Dt => String::from("Deve ser uma data no formato AAAA-MM-DD"),
-        V::DtMin(v) => String::from(format!("Deve ser maior ou igual a {v}")),
-        V::DtMax(v) => String::from(format!("Deve ser menor ou igual a {v}")),
-        V::Email => String::from("Deve ser um email válido"),
+        V::Required => String::from(rust_i18n::t!("validation.required", locale = locale)),
+        V::NumI => String::from(rust_i18n::t!("validation.num_i", locale = locale)),
+        V::NumU => String::from(rust_i18n::t!("validation.num_u", locale = locale)),
+        V::NumF => String::from(rust_i18n::t!("validation.num_f", locale = locale)),
+        V::Str => String::from(rust_i18n::t!("validation.str", locale = locale)),
+        V::Bool => String::from(rust_i18n::t!("validation.bool", locale = locale)),
+        V::NumIExact(v) => rust_i18n::t!("validation.num_i_exact", locale = locale).replace("{}", &format!("{v}")),
+        V::NumIMin(v) => rust_i18n::t!("validation.num_i_min", locale = locale).replace("{}", &format!("{v}")),
+        V::NumIMax(v) => rust_i18n::t!("validation.num_i_max", locale = locale).replace("{}", &format!("{v}")),
+        V::NumUExact(v) => rust_i18n::t!("validation.num_u_exact", locale = locale).replace("{}", &format!("{v}")),
+        V::NumUMin(v) => rust_i18n::t!("validation.num_u_min", locale = locale).replace("{}", &format!("{v}")),
+        V::NumUMax(v) => rust_i18n::t!("validation.num_u_max", locale = locale).replace("{}", &format!("{v}")),
+        V::NumFExact(v) => rust_i18n::t!("validation.num_f_exact", locale = locale).replace("{}", &format!("{v}")),
+        V::NumFMin(v) => rust_i18n::t!("validation.num_f_min", locale = locale).replace("{}", &format!("{v}")),
+        V::NumFMax(v) => rust_i18n::t!("validation.num_f_max", locale = locale).replace("{}", &format!("{v}")),
+        V::StrExact(v) => rust_i18n::t!("validation.str_exact", locale = locale).replace("{}", &format!("{v}")),
+        V::StrExactLen(v) => rust_i18n::t!("validation.str_exact_len", locale = locale).replace("{}", &format!("{v}")),
+        V::StrMinLen(v) => rust_i18n::t!("validation.str_min_len", locale = locale).replace("{}", &format!("{v}")),
+        V::StrMaxLen(v) => rust_i18n::t!("validation.str_max_len", locale = locale).replace("{}", &format!("{v}")),
+        V::StrMinUpper(v) => if *v > 1 {
+            String::from(rust_i18n::t!("validation.str_min_upper.plural", locale = locale)).replace("{}", &format!("{v}"))
+        } else {
+            String::from(rust_i18n::t!("validation.str_min_upper.singular", locale = locale)).replace("{}", &format!("{v}"))
+        },
+        V::StrMinLower(v) => if *v > 1 {
+            String::from(rust_i18n::t!("validation.str_min_lower.plural", locale = locale)).replace("{}", &format!("{v}"))
+        } else {
+            String::from(rust_i18n::t!("validation.str_min_lower.singular", locale = locale)).replace("{}", &format!("{v}"))
+        },
+        V::StrMinNum(v) => if *v > 1 {
+            String::from(rust_i18n::t!("validation.str_min_num.plural", locale = locale)).replace("{}", &format!("{v}"))
+        }else {
+            String::from(rust_i18n::t!("validation.str_min_num.singular", locale = locale)).replace("{}", &format!("{v}"))
+        },
+        V::StrMinSpecial(v) =>if *v > 1 {
+            String::from(rust_i18n::t!("validation.str_min_special.plural", locale = locale)).replace("{}", &format!("{v}"))
+        }else {
+            String::from(rust_i18n::t!("validation.str_min_special.singular", locale = locale)).replace("{}", &format!("{v}"))
+        },
+        V::Dt => String::from(rust_i18n::t!("validation.dt", locale = locale)),
+        V::DtMin(v) => String::from(rust_i18n::t!("validation.dt_min", locale = locale)).replace("{}", &format!("{v}")),
+        V::DtMax(v) => String::from(rust_i18n::t!("validation.dt_max", locale = locale)).replace("{}", &format!("{v}")),
+        V::Email => String::from(rust_i18n::t!("validation.email", locale = locale)),
     }
 }

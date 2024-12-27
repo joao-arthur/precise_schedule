@@ -1,6 +1,7 @@
 use std::convert::Infallible;
 
 use accept_language::parse;
+use domain::language::Language;
 use entry::{
     event_controller::{
         endpoint_event_appointment_c, endpoint_event_appointment_u, endpoint_event_birthday_c,
@@ -24,38 +25,21 @@ pub mod infra;
 extern crate rocket;
 
 #[derive(Debug, PartialEq)]
-pub enum Languages {
-    English,
-    Portuguese,
-    Spanish,
-}
-
-#[derive(Debug, PartialEq)]
-pub struct Language(pub Languages);
+pub struct LanguageGuard(pub Language);
 
 #[rocket::async_trait]
-impl<'r> FromRequest<'r> for Language {
+impl<'r> FromRequest<'r> for LanguageGuard {
     type Error = Infallible;
 
     async fn from_request(req: &'r Request<'_>) -> request::Outcome<Self, Self::Error> {
         let user_languages = req.headers().get_one("Accept-Language");
-
         match user_languages {
             Some(t) => {
                 let user_languages = parse(t);
                 let lg = user_languages.get(0).cloned().unwrap_or(String::from("en"));
-                if lg == "en" || lg.starts_with("en-") {
-                    return request::Outcome::Success(Language(Languages::English));
-                }
-                if lg == "es" || lg.starts_with("es-") {
-                    return request::Outcome::Success(Language(Languages::Spanish));
-                }
-                if lg == "pt" || lg.starts_with("pt-") {
-                    return request::Outcome::Success(Language(Languages::Portuguese));
-                }
-                return request::Outcome::Success(Language(Languages::English));
+                request::Outcome::Success(LanguageGuard(Language::from_iso_639_1(&lg)))
             }
-            None => request::Outcome::Success(Language(Languages::English)),
+            None => request::Outcome::Success(LanguageGuard(Language::English)),
         }
     }
 }

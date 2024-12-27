@@ -2,19 +2,19 @@ use std::collections::HashMap;
 use std::sync::LazyLock;
 
 use rocket::data::ToByteUnit;
-use rocket::http::HeaderMap;
 use rocket::response::content;
 use rocket::response::status::Custom;
-use rocket::serde::{self, json, Deserialize, Serialize};
+use rocket::serde::json::Json;
+use rocket::serde::{Deserialize, Serialize};
 use rocket::{http::Status, post, response::status, Data};
 use serde_json::Value;
 
 use crate::domain::validation::{Schema, V};
 use crate::entry::deps::get_validator;
 use crate::infra::validation::adapter::{
-    to_english, to_portuguese, to_spanish, value_from_json_value,
+    validation_i18n, value_from_json_value
 };
-use crate::{Language, Languages};
+use crate::LanguageGuard;
 
 #[derive(Deserialize, Serialize, Debug)]
 #[serde(crate = "rocket::serde")]
@@ -52,19 +52,24 @@ pub struct Session {
     pub token: String,
 }
 
+#[derive(Debug, PartialEq, Clone, Serialize, Deserialize)]
+#[serde(crate = "rocket::serde")]
+struct ErrorGeneric {
+    error: String
+}
+
 #[post("/", format = "application/json", data = "<data>")]
-pub async fn endpoint_user_c(data: Data<'_>, lg: Language) -> Custom<content::RawJson<String>> {
+pub async fn endpoint_user_c(data: Data<'_>, lg: LanguageGuard) -> Custom<content::RawJson<String>> {
     let limit = 1.mebibytes();
     let body = match data.open(limit).into_string().await {
         Ok(body) => body.value,
         Err(_) => {
             return status::Custom(
                 Status::PayloadTooLarge,
-                content::RawJson("Payload is too large.".to_owned()),
+                Json(ErrorGeneric { error: "The payload is too large".to_owned()}),
             );
         }
     };
-
     static USER_C_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
         HashMap::from([
             ("first_name", vec![V::Required, V::Str, V::StrMinLen(1), V::StrMaxLen(256)]),
@@ -86,31 +91,20 @@ pub async fn endpoint_user_c(data: Data<'_>, lg: Language) -> Custom<content::Ra
             ),
         ])
     });
-
     let json_value: Value = serde_json::from_str(&body).unwrap();
     let internal_value = value_from_json_value(json_value);
-
     let res = get_validator().validate(&USER_C_SCHEMA, &internal_value);
     match res {
         Ok(_data) => {
+
+
+
             return status::Custom(Status::Ok, content::RawJson("".to_owned()));
         }
         Err(err) => {
             let erri18n: HashMap<&str, Vec<String>> = err
                 .into_iter()
-                .map(|f| {
-                    (
-                        f.0,
-                        f.1.iter()
-                            .map(|p| match lg.0 {
-                                Languages::English => to_english(p),
-                                Languages::Portuguese => to_portuguese(p),
-                                Languages::Spanish => to_spanish(p),
-                            })
-                            .collect::<Vec<String>>(),
-                    )
-                })
-                .map(|f| f)
+                .map(|f| (f.0, f.1.iter().map(|p|validation_i18n(p, &lg.0)).collect::<Vec<String>>()))
                 .collect();
             return status::Custom(
                 Status::UnprocessableEntity,

@@ -35,13 +35,13 @@ pub mod stub {
     impl SessionService for SessionServiceStub {
         fn encode(
             &self,
-            user: &User,
-            date_time_gen: &dyn DateTimeGen,
+            _user: &User,
+            _date_time_gen: &dyn DateTimeGen,
         ) -> Result<Session, SessionErr> {
             self.0.clone()
         }
 
-        fn decode(&self, session: Session) -> Result<String, SessionErr> {
+        fn decode(&self, _session: Session) -> Result<String, SessionErr> {
             self.1.clone()
         }
     }
