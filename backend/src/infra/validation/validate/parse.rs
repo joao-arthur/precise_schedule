@@ -20,7 +20,7 @@ static ISO_DATE_RE: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(r"^([0-9]{4})-([0-9]{2})-([0-9]{2})T([0-9]{2}):([0-9]{2})Z$").unwrap()
 });
 
-pub fn parse_dt(s: &String) -> Result<InternalDT, ()> {
+pub fn parse_date(s: &String) -> Result<InternalDT, ()> {
     if let Some(caps) = DT_RE.captures(s) {
         let c: (&str, [&str; 3]) = caps.extract();
         let yyyy = c.1[0].parse::<u32>().map_err(|_| ())?;
@@ -32,7 +32,7 @@ pub fn parse_dt(s: &String) -> Result<InternalDT, ()> {
     }
 }
 
-pub fn parse_tm(s: &String) -> Result<InternalTM, ()> {
+pub fn parse_time(s: &String) -> Result<InternalTM, ()> {
     if let Some(caps) = TM_RE.captures(s) {
         let c: (&str, [&str; 2]) = caps.extract();
         let h = c.1[0].parse::<u8>().map_err(|_| ())?;
@@ -62,20 +62,17 @@ mod test {
     use super::*;
 
     #[test]
-    fn test_parse_dt() {
-        assert_eq!(parse_dt(&String::from("2029-12-31")), Ok(InternalDT(2029, 12, 31)));
+    fn test_parse_date() {
+        assert_eq!(parse_date(&String::from("2029-12-31")), Ok(InternalDT(2029, 12, 31)));
     }
 
     #[test]
-    fn test_parse_tm() {
-        assert_eq!(parse_tm(&String::from("06:11")), Ok(InternalTM(06, 11)));
+    fn test_parse_time() {
+        assert_eq!(parse_time(&String::from("06:11")), Ok(InternalTM(06, 11)));
     }
 
     #[test]
     fn test_parse_iso() {
-        assert_eq!(
-            parse_iso(&String::from("2029-12-31T06:11Z")),
-            Ok(InternalISO(2029, 12, 31, 06, 11))
-        );
+        assert_eq!(parse_iso(&String::from("2029-12-31T06:11Z")), Ok(InternalISO(2029, 12, 31, 06, 11)));
     }
 }

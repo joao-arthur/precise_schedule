@@ -4,7 +4,7 @@ use crate::domain::validation::{Schema, Val, Validator, V};
 
 use super::{
     validate::{
-        bool::bool, dt::dt, dt_max::dt_max, dt_min::dt_min, email::email, num_f::num_f,
+        bool::bool, date::date, date_max::date_max, date_min::date_min, email::email, num_f::num_f,
         num_f_exact::num_f_exact, num_f_max::num_f_max, num_f_min::num_f_min, num_i::num_i,
         num_i_exact::num_i_exact, num_i_max::num_i_max, num_i_min::num_i_min, num_u::num_u,
         num_u_exact::num_u_exact, num_u_max::num_u_max, num_u_min::num_u_min, required::required,
@@ -34,14 +34,15 @@ fn validate_schema(schema: &Schema, value: &Val) -> Result<(), Schema> {
                         V::NumF => num_f(&Field { value: value.clone(), has_required }),
                         V::Str => str(&Field { value: value.clone(), has_required }),
                         V::Bool => bool(&Field { value: value.clone(), has_required }),
+                        V::Date => date(&Field { value: value.clone(), has_required }),
                         V::NumIExact(v) => num_i_exact(*v, &Field { value: value.clone(), has_required }),
-                        V::NumIMin(v) => num_i_min(*v, &Field { value: value.clone(), has_required }),
-                        V::NumIMax(v) => num_i_max(*v, &Field { value: value.clone(), has_required }),
                         V::NumUExact(v) => num_u_exact(*v, &Field { value: value.clone(), has_required }),
-                        V::NumUMin(v) => num_u_min(*v, &Field { value: value.clone(), has_required }),
-                        V::NumUMax(v) => num_u_max(*v, &Field { value: value.clone(), has_required }),
                         V::NumFExact(v) => num_f_exact(*v, &Field { value: value.clone(), has_required }),
+                        V::NumIMin(v) => num_i_min(*v, &Field { value: value.clone(), has_required }),
+                        V::NumUMin(v) => num_u_min(*v, &Field { value: value.clone(), has_required }),
                         V::NumFMin(v) => num_f_min(*v, &Field { value: value.clone(), has_required }),
+                        V::NumIMax(v) => num_i_max(*v, &Field { value: value.clone(), has_required }),
+                        V::NumUMax(v) => num_u_max(*v, &Field { value: value.clone(), has_required }),
                         V::NumFMax(v) => num_f_max(*v, &Field { value: value.clone(), has_required }),
                         V::StrExact(v) => str_exact(v, &Field { value: value.clone(), has_required }),
                         V::StrExactLen(v) => str_exact_len(*v, &Field { value: value.clone(), has_required }),
@@ -51,9 +52,8 @@ fn validate_schema(schema: &Schema, value: &Val) -> Result<(), Schema> {
                         V::StrMinLower(v) => str_min_lower(*v, &Field { value: value.clone(), has_required }),
                         V::StrMinNum(v) => str_min_num(*v, &Field { value: value.clone(), has_required }),
                         V::StrMinSpecial(v) => str_min_special(*v, &Field { value: value.clone(), has_required }),
-                        V::Dt => dt(&Field { value: value.clone(), has_required }),
-                        V::DtMin(dt_min_v) => dt_min(dt_min_v, &Field { value: value.clone(), has_required }),
-                        V::DtMax(dt_max_v) => dt_max(dt_max_v, &Field { value: value.clone(), has_required }),
+                        V::DateMin(date_min_v) => date_min(date_min_v, &Field { value: value.clone(), has_required }),
+                        V::DateMax(date_max_v) => date_max(date_max_v, &Field { value: value.clone(), has_required }),
                         V::Email => email(&Field { value: value.clone(), has_required }),
                     })
                     .filter_map(|res| res.err())
@@ -88,7 +88,7 @@ mod test {
     fn test_validate_schema() {
         let schema = HashMap::from([
             ("name", vec![V::Required, V::Str, V::StrMinLen(1), V::StrMaxLen(255)]),
-            ("birthdate", vec![V::Required, V::Str, V::Dt]),
+            ("birthdate", vec![V::Required, V::Str, V::Date]),
         ]);
         assert_eq!(
             validate_schema(
@@ -108,7 +108,7 @@ mod test {
                     (String::from("birthdate"), Val::Str(String::from("")))
                 ]))
             ),
-            Err(HashMap::from([("name", vec![V::StrMinLen(1)]), ("birthdate", vec![V::Dt])]))
+            Err(HashMap::from([("name", vec![V::StrMinLen(1)]), ("birthdate", vec![V::Date])]))
         );
         assert_eq!(
             validate_schema(
@@ -120,7 +120,7 @@ mod test {
             ),
             Err(HashMap::from([
                 ("name", vec![V::Required, V::Str, V::StrMinLen(1), V::StrMaxLen(255)]),
-                ("birthdate", vec![V::Required, V::Str, V::Dt,])
+                ("birthdate", vec![V::Required, V::Str, V::Date,])
             ]))
         );
     }

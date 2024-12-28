@@ -23,7 +23,7 @@ pub struct AppointmentC {
 static APPOINTMENT_C_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
     HashMap::from([
         ("name", vec![V::Required, V::Str, V::StrMinLen(1), V::StrMaxLen(32)]),
-        ("day", vec![V::Required, V::Dt, V::DtMin("1970-01-01")]),
+        ("day", vec![V::Required, V::Date, V::DateMin("1970-01-01")]),
         ("begin", vec![V::Required /*V::Time*/]),
         ("end", vec![V::Required /*V::Time, V::Gt("begin")*/]),
         ("frequency", vec![/* V::Enum(vec!["1D", "2D", "1W", "1M", "3M", "6M", "1Y", "2Y"]) */]),

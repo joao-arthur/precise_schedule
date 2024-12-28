@@ -1,7 +1,7 @@
 pub mod bool;
-pub mod dt;
-pub mod dt_max;
-pub mod dt_min;
+pub mod date;
+pub mod date_max;
+pub mod date_min;
 pub mod email;
 pub mod num_f;
 pub mod num_f_exact;

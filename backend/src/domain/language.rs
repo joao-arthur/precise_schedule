@@ -37,7 +37,6 @@ mod test {
         assert_eq!(Language::from_iso_639_1("en"), Language::English);
         assert_eq!(Language::from_iso_639_1("pt"), Language::Portuguese);
         assert_eq!(Language::from_iso_639_1("es"), Language::Spanish);
-
         assert_eq!(Language::from_iso_639_1("en-US"), Language::English);
         assert_eq!(Language::from_iso_639_1("pt-BR"), Language::Portuguese);
         assert_eq!(Language::from_iso_639_1("es-AR"), Language::Spanish);
