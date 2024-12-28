@@ -1,20 +1,17 @@
 use std::collections::HashMap;
-use std::sync::LazyLock;
 
 use rocket::data::ToByteUnit;
-use rocket::response::content;
 use rocket::response::status::Custom;
 use rocket::serde::json::Json;
 use rocket::serde::{Deserialize, Serialize};
 use rocket::{http::Status, post, response::status, Data};
 use serde_json::Value;
 
-use crate::domain::schedule::user::create::{user_c, UserC};
-use crate::domain::validation::{Schema, V};
-use crate::entry::deps::{get_validator, get_date_time_gen, get_id_gen, get_session_service, get_user_repo};
-use crate::infra::validation::adapter::{
-    validation_i18n, value_from_json_value
+use crate::domain::schedule::user::create::{user_c, UserC, USER_C_SCHEMA};
+use crate::entry::deps::{
+    get_date_time_gen, get_id_gen, get_session_service, get_user_repo, get_validator,
 };
+use crate::infra::validation::adapter::{validation_i18n, value_from_json_value};
 use crate::LanguageGuard;
 
 #[derive(Deserialize, Serialize, Debug)]
@@ -56,13 +53,13 @@ pub struct Session {
 #[derive(Debug, PartialEq, Clone, Serialize, Deserialize)]
 #[serde(crate = "rocket::serde")]
 struct ErrorGeneric {
-    error: String
+    error: String,
 }
 
 #[post("/", format = "application/json", data = "<data>")]
 pub async fn endpoint_user_c(
     data: Data<'_>,
-    lg: LanguageGuard
+    lg: LanguageGuard,
 ) -> Result<Json<UserCResult>, Custom<String>> {
     let limit = 1.kilobytes();
     let body = match data.open(limit).into_bytes().await {
@@ -70,27 +67,24 @@ pub async fn endpoint_user_c(
             if body.len() >= limit {
                 return Err(status::Custom(
                     Status::PayloadTooLarge,
-                    serde_json::to_string(&ErrorGeneric { error: "The payload is too large".to_owned()}).unwrap(),
+                    serde_json::to_string(&ErrorGeneric {
+                        error: "The payload is too large".to_owned(),
+                    })
+                    .unwrap(),
                 ));
             }
             body.value
-        },
+        }
         Err(_) => {
             return Err(status::Custom(
                 Status::PayloadTooLarge,
-                serde_json::to_string(&ErrorGeneric { error: "The payload is too large".to_owned()}).unwrap(),
+                serde_json::to_string(&ErrorGeneric {
+                    error: "The payload is too large".to_owned(),
+                })
+                .unwrap(),
             ));
         }
     };
-    static USER_C_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
-        HashMap::from([
-            ("first_name", vec![V::Required, V::Str, V::StrMinLen(1), V::StrMaxLen(256)]),
-            ("birthdate", vec![V::Required, V::Str, V::Dt, V::DtMin("1970-01-01")]),
-            ("email", vec![V::Required, V::Str, V::Email]),
-            ("username", vec![V::Required, V::Str, V::StrMinLen(1), V::StrMaxLen(32)]),
-            ("password", vec![V::Required, V::Str, V::StrMinLen(1), V::StrMaxLen(32), V::StrMinUpper(1), V::StrMinLower(1), V::StrMinSpecial(1), V::StrMinNum(1)]),
-        ])
-    });
     let json_value: Value = serde_json::from_slice(&body).unwrap();
     let internal_value = value_from_json_value(json_value);
     let res = get_validator().validate(&USER_C_SCHEMA, &internal_value);
@@ -131,7 +125,9 @@ pub async fn endpoint_user_c(
         Err(err) => {
             let erri18n: HashMap<&str, Vec<String>> = err
                 .into_iter()
-                .map(|f| (f.0, f.1.iter().map(|p|validation_i18n(p, &lg.0)).collect::<Vec<String>>()))
+                .map(|f| {
+                    (f.0, f.1.iter().map(|p| validation_i18n(p, &lg.0)).collect::<Vec<String>>())
+                })
                 .collect();
             return Err(status::Custom(
                 Status::UnprocessableEntity,

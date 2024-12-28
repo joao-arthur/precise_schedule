@@ -13,6 +13,7 @@ use super::{
     unique_info::{user_c_unique_info_is_valid, UserUniqueInfo},
 };
 
+#[derive(Debug, PartialEq)]
 pub struct UserC {
     pub email: String,
     pub first_name: String,
@@ -27,7 +28,7 @@ pub struct UserCResult {
     pub session: Session,
 }
 
-static USER_C_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
+pub static USER_C_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
     HashMap::from([
         ("first_name", vec![V::Required, V::Str, V::StrMinLen(1), V::StrMaxLen(256)]),
         ("birthdate", vec![V::Required, V::Str, V::Dt, V::DtMin("1970-01-01")]),

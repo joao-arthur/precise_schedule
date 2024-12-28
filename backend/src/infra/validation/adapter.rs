@@ -1,4 +1,7 @@
-use crate::domain::{language::Language, validation::{Val, V}};
+use crate::domain::{
+    language::Language,
+    validation::{Val, V},
+};
 
 pub fn value_from_json_value(value: serde_json::Value) -> Val {
     match value {
@@ -41,29 +44,39 @@ pub fn validation_i18n(v: &V, lg: &Language) -> String {
         V::StrExactLen(v) => rust_i18n::t!("validation.str_exact_len", locale = locale).replace("{}", &format!("{v}")),
         V::StrMinLen(v) => rust_i18n::t!("validation.str_min_len", locale = locale).replace("{}", &format!("{v}")),
         V::StrMaxLen(v) => rust_i18n::t!("validation.str_max_len", locale = locale).replace("{}", &format!("{v}")),
-        V::StrMinUpper(v) => if *v > 1 {
-            String::from(rust_i18n::t!("validation.str_min_upper.plural", locale = locale)).replace("{}", &format!("{v}"))
-        } else {
-            String::from(rust_i18n::t!("validation.str_min_upper.singular", locale = locale)).replace("{}", &format!("{v}"))
-        },
-        V::StrMinLower(v) => if *v > 1 {
-            String::from(rust_i18n::t!("validation.str_min_lower.plural", locale = locale)).replace("{}", &format!("{v}"))
-        } else {
-            String::from(rust_i18n::t!("validation.str_min_lower.singular", locale = locale)).replace("{}", &format!("{v}"))
-        },
-        V::StrMinNum(v) => if *v > 1 {
-            String::from(rust_i18n::t!("validation.str_min_num.plural", locale = locale)).replace("{}", &format!("{v}"))
-        }else {
-            String::from(rust_i18n::t!("validation.str_min_num.singular", locale = locale)).replace("{}", &format!("{v}"))
-        },
-        V::StrMinSpecial(v) =>if *v > 1 {
-            String::from(rust_i18n::t!("validation.str_min_special.plural", locale = locale)).replace("{}", &format!("{v}"))
-        }else {
-            String::from(rust_i18n::t!("validation.str_min_special.singular", locale = locale)).replace("{}", &format!("{v}"))
-        },
+        V::StrMinUpper(v) => {
+            if *v > 1 {
+                String::from(rust_i18n::t!("validation.str_min_upper.plural", locale = locale)).replace("{}", &format!("{v}"))
+            } else {
+                String::from(rust_i18n::t!("validation.str_min_upper.singular", locale = locale)).replace("{}", &format!("{v}"))
+            }
+        }
+        V::StrMinLower(v) => {
+            if *v > 1 {
+                String::from(rust_i18n::t!("validation.str_min_lower.plural", locale = locale)).replace("{}", &format!("{v}"))
+            } else {
+                String::from(rust_i18n::t!("validation.str_min_lower.singular", locale = locale)).replace("{}", &format!("{v}"))
+            }
+        }
+        V::StrMinNum(v) => {
+            if *v > 1 {
+                String::from(rust_i18n::t!("validation.str_min_num.plural", locale = locale)).replace("{}", &format!("{v}"))
+            } else {
+                String::from(rust_i18n::t!("validation.str_min_num.singular", locale = locale)).replace("{}", &format!("{v}"))
+            }
+        }
+        V::StrMinSpecial(v) => {
+            if *v > 1 {
+                String::from(rust_i18n::t!("validation.str_min_special.plural", locale = locale)).replace("{}", &format!("{v}"))
+            } else {
+                String::from(rust_i18n::t!("validation.str_min_special.singular", locale = locale)).replace("{}", &format!("{v}"))
+            }
+        }
         V::Dt => String::from(rust_i18n::t!("validation.dt", locale = locale)),
-        V::DtMin(v) => String::from(rust_i18n::t!("validation.dt_min", locale = locale)).replace("{}", &format!("{v}")),
-        V::DtMax(v) => String::from(rust_i18n::t!("validation.dt_max", locale = locale)).replace("{}", &format!("{v}")),
+        V::DtMin(v) => String::from(rust_i18n::t!("validation.dt_min", locale = locale))
+            .replace("{}", &format!("{v}")),
+        V::DtMax(v) => String::from(rust_i18n::t!("validation.dt_max", locale = locale))
+            .replace("{}", &format!("{v}")),
         V::Email => String::from(rust_i18n::t!("validation.email", locale = locale)),
     }
 }

@@ -2,7 +2,7 @@
 pub enum Language {
     English,
     Portuguese,
-    Spanish
+    Spanish,
 }
 
 impl Language {
@@ -40,7 +40,7 @@ mod test {
 
         assert_eq!(Language::from_iso_639_1("en-US"), Language::English);
         assert_eq!(Language::from_iso_639_1("pt-BR"), Language::Portuguese);
-        assert_eq!(Language::from_iso_639_1("es-AR"), Language::Spanish);        
+        assert_eq!(Language::from_iso_639_1("es-AR"), Language::Spanish);
     }
 
     #[test]

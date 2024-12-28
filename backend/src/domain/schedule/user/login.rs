@@ -8,6 +8,7 @@ use crate::domain::{
 
 use super::{error::UserErr, read::user_r_by_cred, repo::UserRepo};
 
+#[derive(Debug, PartialEq)]
 pub struct UserCred {
     pub username: String,
     pub password: String,

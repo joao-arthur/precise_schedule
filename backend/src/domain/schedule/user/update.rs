@@ -14,6 +14,7 @@ use super::{
     unique_info::{user_u_unique_info_is_valid, UserUniqueInfo},
 };
 
+#[derive(Debug, PartialEq)]
 pub struct UserU {
     pub email: String,
     pub first_name: String,
