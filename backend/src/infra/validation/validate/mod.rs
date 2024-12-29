@@ -1,5 +1,6 @@
 pub mod bool;
 pub mod date;
+pub mod datetime;
 pub mod date_max;
 pub mod date_min;
 pub mod email;
@@ -26,6 +27,7 @@ pub mod str_min_lower;
 pub mod str_min_num;
 pub mod str_min_special;
 pub mod str_min_upper;
+pub mod time;
 
 #[cfg(test)]
 mod stub;
