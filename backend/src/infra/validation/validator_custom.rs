@@ -4,13 +4,7 @@ use crate::domain::validation::{Schema, Val, Validator, V};
 
 use super::{
     validate::{
-        bool::bool, date::date, date_max::date_max, date_min::date_min, email::email, num_f::num_f,
-        num_f_exact::num_f_exact, num_f_max::num_f_max, num_f_min::num_f_min, num_i::num_i,
-        num_i_exact::num_i_exact, num_i_max::num_i_max, num_i_min::num_i_min, num_u::num_u,
-        num_u_exact::num_u_exact, num_u_max::num_u_max, num_u_min::num_u_min, required::required,
-        str::str, str_exact::str_exact, str_exact_len::str_exact_len, str_max_len::str_max_len,
-        str_min_len::str_min_len, str_min_lower::str_min_lower, str_min_num::str_min_num,
-        str_min_special::str_min_special, str_min_upper::str_min_upper,
+        bool::bool, date::date, date_max::date_max, date_min::date_min, datetime::datetime, email::email, num_f::num_f, num_f_exact::num_f_exact, num_f_max::num_f_max, num_f_min::num_f_min, num_i::num_i, num_i_exact::num_i_exact, num_i_max::num_i_max, num_i_min::num_i_min, num_u::num_u, num_u_exact::num_u_exact, num_u_max::num_u_max, num_u_min::num_u_min, required::required, str::str, str_exact::str_exact, str_exact_len::str_exact_len, str_max_len::str_max_len, str_min_len::str_min_len, str_min_lower::str_min_lower, str_min_num::str_min_num, str_min_special::str_min_special, str_min_upper::str_min_upper, time::time
     },
     Field,
 };
@@ -35,6 +29,9 @@ fn validate_schema(schema: &Schema, value: &Val) -> Result<(), Schema> {
                         V::Str => str(&Field { value: value.clone(), has_required }),
                         V::Bool => bool(&Field { value: value.clone(), has_required }),
                         V::Date => date(&Field { value: value.clone(), has_required }),
+                        V::Time => time(&Field { value: value.clone(), has_required }),
+                        V::Datetime => datetime(&Field { value: value.clone(), has_required }),
+                        V::Email => email(&Field { value: value.clone(), has_required }),
                         V::NumIExact(v) => num_i_exact(*v, &Field { value: value.clone(), has_required }),
                         V::NumUExact(v) => num_u_exact(*v, &Field { value: value.clone(), has_required }),
                         V::NumFExact(v) => num_f_exact(*v, &Field { value: value.clone(), has_required }),
@@ -54,7 +51,6 @@ fn validate_schema(schema: &Schema, value: &Val) -> Result<(), Schema> {
                         V::StrMinSpecial(v) => str_min_special(*v, &Field { value: value.clone(), has_required }),
                         V::DateMin(date_min_v) => date_min(date_min_v, &Field { value: value.clone(), has_required }),
                         V::DateMax(date_max_v) => date_max(date_max_v, &Field { value: value.clone(), has_required }),
-                        V::Email => email(&Field { value: value.clone(), has_required }),
                     })
                     .filter_map(|res| res.err())
                     .collect();

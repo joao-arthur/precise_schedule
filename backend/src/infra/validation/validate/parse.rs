@@ -12,9 +12,9 @@ pub struct InternalTM(pub u8, pub u8);
 pub struct InternalISO(pub u32, pub u16, pub u16, pub u8, pub u8);
 
 static DT_RE: LazyLock<Regex> =
-    LazyLock::new(|| Regex::new(r"([0-9]{4})-([0-9]{2})-([0-9]{2})").unwrap());
+    LazyLock::new(|| Regex::new(r"^([0-9]{4})-([0-9]{2})-([0-9]{2})$").unwrap());
 
-static TM_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"([0-9]{2}):([0-9]{2})").unwrap());
+static TM_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^([0-9]{2}):([0-9]{2})$").unwrap());
 
 static ISO_DATE_RE: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(r"^([0-9]{4})-([0-9]{2})-([0-9]{2})T([0-9]{2}):([0-9]{2})Z$").unwrap()

@@ -76,7 +76,7 @@ pub fn validation_i18n(v: &V, lg: &Language) -> String {
                 String::from(rust_i18n::t!("validation.str_min_special.singular", locale = locale)).replace("{}", &format!("{v}"))
             }
         }
-        V::DateMin(v) => String::from(rust_i18n::t!("validation.dt_min", locale = locale)).replace("{}", &format!("{v}")),
-        V::DateMax(v) => String::from(rust_i18n::t!("validation.dt_max", locale = locale)).replace("{}", &format!("{v}")),
+        V::DateMin(v) => String::from(rust_i18n::t!("validation.min", locale = locale)).replace("{}", &format!("{v}")),
+        V::DateMax(v) => String::from(rust_i18n::t!("validation.max", locale = locale)).replace("{}", &format!("{v}")),
     }
 }
