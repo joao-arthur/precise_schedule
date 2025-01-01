@@ -6,6 +6,10 @@
     "validation.num_f": "Must be a float",
     "validation.str": "Must be a string",
     "validation.bool": "Must be a boolean",
+    "validation.date": "Must be a date in the format YYYY-MM-DD",
+    "validation.time": "Must be a time in the format HH:mm",
+    "validation.datetime": " YYYY-MM-DDT",
+    "validation.email": "Must be a valid email",
     "validation.exact": "Must be equal to {}",
     "validation.min": "Must be greater or equal to {}",
     "validation.max": "Must be smaller or equal to {}",
@@ -20,6 +24,11 @@
     "validation.str_min_num.plural": "Must contain at least {} numbers",
     "validation.str_min_special.singular": "Must contain at least 1 character of !\"#$%&'()*+,-./:;<=>?@[\\]^_`{{|}}~",
     "validation.str_min_special.plural": "Must contain at least {} characters of !\"#$%&'()*+,-./:;<=>?@[\\]^_`{{|}}~",
-    "validation.dt": "Must be a date in the format YYYY-MM-DD",
-    "validation.email": "Must be a valid email"
+    "validation.enum": "Must be one of {}",
+    "validation.eq": "Must be equals to the field '{}'",
+    "validation.ne": "Must be different to the field '{}'",
+    "validation.ge": "Must be greater or euqlas than the field '{}'",
+    "validation.gt": "Must be greater than the field '{}'",
+    "validation.le": "Must be smaller or euqlas than the field '{}'",
+    "validation.lt": "Must be smaller than the field '{}'"
 }

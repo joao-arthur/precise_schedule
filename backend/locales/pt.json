@@ -6,6 +6,10 @@
     "validation.num_f": "Deve ser um flutuante",
     "validation.str": "Deve ser uma string",
     "validation.bool": "Deve ser um booleano",
+    "validation.date": "Deve ser uma data no formato AAAA-MM-DD",
+    "validation.time": "Deve ser um horário no formato HH:mm",
+    "validation.datetime": "Deve ser um marca temporal no formato YYYY-MM-DDTHH:mmZ",
+    "validation.email": "Deve ser um email válido",
     "validation.exact": "Deve ser igual a {}",
     "validation.min": "Deve ser maior ou igual a {}",
     "validation.max": "Deve ser menor ou igual a {}",
@@ -20,6 +24,11 @@
     "validation.str_min_num.plural": "Deve conter {} números",
     "validation.str_min_special.singular": "Deve conter {} de !\"#$%&'()*+,-./:;<=>?@[\\]^_`{{|}}~",
     "validation.str_min_special.plural": "Deve conter {} de !\"#$%&'()*+,-./:;<=>?@[\\]^_`{{|}}~",
-    "validation.dt": "Deve ser uma data no formato AAAA-MM-DD",
-    "validation.email": "Deve ser um email válido"
+    "validation.enum": "Deve ser um dos valores {}",
+    "validation.eq": "Deve ser igual ao campo '{}'",
+    "validation.ne": "Deve ser diferente do campo '{}'",
+    "validation.ge": "Deve ser maior ou igual ao campo '{}'",
+    "validation.gt": "Deve ser maior que o campo '{}'",
+    "validation.le": "Deve ser menor ou igual ao campo '{}'",
+    "validation.lt": "Deve ser menor que o campo '{}'"
 }
