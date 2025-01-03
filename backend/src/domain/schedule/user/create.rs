@@ -30,21 +30,21 @@ pub struct UserCResult {
 
 pub static USER_C_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
     HashMap::from([
-        ("first_name", vec![V::Required, V::Str, V::StrMinLen(1), V::StrMaxLen(256)]),
-        ("birthdate", vec![V::Required, V::Str, V::Date, V::DateMin("1970-01-01")]),
-        ("email", vec![V::Required, V::Str, V::Email]),
-        ("username", vec![V::Required, V::Str, V::StrMinLen(1), V::StrMaxLen(32)]),
+        ("first_name", vec![V::Required, /*V::Str, V::StrMinLen(1), V::StrMaxLen(256)*/]),
+        ("birthdate", vec![V::Required, /*V::Str, V::Date, V::DateMin("1970-01-01")*/]),
+        ("email", vec![V::Required, /*V::Str, V::Email*/]),
+        ("username", vec![V::Required, /*V::Str, V::StrMinLen(1), V::StrMaxLen(32)*/]),
         (
             "password",
             vec![
                 V::Required,
-                V::Str,
-                V::StrMinLen(1),
-                V::StrMaxLen(32),
-                V::StrMinUpper(1),
-                V::StrMinLower(1),
-                V::StrMinSpecial(1),
-                V::StrMinNum(1),
+                // V::Str,
+                // V::StrMinLen(1),
+                // V::StrMaxLen(32),
+                // V::StrMinUpper(1),
+                // V::StrMinLower(1),
+                // V::StrMinSpecial(1),
+                // V::StrMinNum(1),
             ],
         ),
     ])

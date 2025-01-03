@@ -4,38 +4,38 @@ use std::collections::HashMap;
 pub enum V {
     Required,
     NumI,
-    NumU,
-    NumF,
-    Str,
-    Bool,
-    Date,
-    Time,
-    Datetime,
-    Email,
-    NumIExact(i64),
-    NumUExact(u64),
-    NumFExact(f64),
-    NumIMin(i64),
-    NumUMin(u64),
-    NumFMin(f64),
-    NumIMax(i64),
-    NumUMax(u64),
-    NumFMax(f64),
-    StrExact(&'static str),
-    StrExactLen(u32),
-    StrMinLen(u32),
-    StrMaxLen(u32),
-    StrMinUpper(u32),
-    StrMinLower(u32),
-    StrMinNum(u32),
-    StrMinSpecial(u32),
-    DateMin(&'static str),
-    DateMax(&'static str),
+    // NumU,
+    // NumF,
+    // Str,
+    // Bool,
+    // Date,
+    // Time,
+    // Datetime,
+    // Email,
+    // NumIExact(i64),
+    // NumUExact(u64),
+    // NumFExact(f64),
+    // NumIMin(i64),
+    // NumUMin(u64),
+    // NumFMin(f64),
+    // NumIMax(i64),
+    // NumUMax(u64),
+    // NumFMax(f64),
+    // StrExact(&'static str),
+    // StrExactLen(u32),
+    // StrMinLen(u32),
+    // StrMaxLen(u32),
+    // StrMinUpper(u32),
+    // StrMinLower(u32),
+    // StrMinNum(u32),
+    // StrMinSpecial(u32),
+    // DateMin(&'static str),
+    // DateMax(&'static str),
     // TimeMin(&'static str),
     // TimeMax(&'static str),
-    // DateTimeMin(&'static str),
-    // DateTimeMax(&'static str),
-    // Enum(&'static [&'static str]),
+    // DatetimeMin(&'static str),
+    // DatetimeMax(&'static str),
+    // Enumerated(&'static [&'static str]),
     // Eq(&'static str),
     // Ne(&'static str),
     // Ge(&'static str),
@@ -79,17 +79,17 @@ pub mod stub {
         fn test_validator_stub() {
             assert_eq!(
                 ValidatorStub(Ok(())).validate(
-                    &HashMap::from([("name", vec![V::Str, V::StrMinLen(2)])]),
+                    &HashMap::from([("name", vec![/*V::Str, V::StrMinLen(2)*/])]),
                     &Val::Str(String::from("George"))
                 ),
                 Ok(())
             );
             assert_eq!(
-                ValidatorStub(Err(HashMap::from([("name", vec![V::StrMinLen(2)])]))).validate(
-                    &HashMap::from([("name", vec![V::Str, V::StrMinLen(2)])]),
+                ValidatorStub(Err(HashMap::from([("name", vec![/*V::StrMinLen(2)])*/])]))).validate(
+                    &HashMap::from([("name", vec![/*V::Str, V::StrMinLen(2)*/])]),
                     &Val::Str(String::from("George"))
                 ),
-                Err(HashMap::from([("name", vec![V::StrMinLen(2)])]))
+                Err(HashMap::from([("name", vec![/*V::StrMinLen(2)*/])]))
             );
         }
     }

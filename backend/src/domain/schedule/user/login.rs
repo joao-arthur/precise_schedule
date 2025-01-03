@@ -16,18 +16,18 @@ pub struct UserCred {
 
 static USER_LOGIN_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
     HashMap::from([
-        ("username", vec![V::Required, V::Str, V::StrMinLen(1), V::StrMaxLen(32)]),
+        ("username", vec![V::Required, /*V::Str, V::StrMinLen(1), V::StrMaxLen(32)*/]),
         (
             "password",
             vec![
                 V::Required,
-                V::Str,
-                V::StrMinLen(1),
-                V::StrMaxLen(32),
-                V::StrMinUpper(1),
-                V::StrMinLower(1),
-                V::StrMinSpecial(1),
-                V::StrMinNum(1),
+                // V::Str,
+                // V::StrMinLen(1),
+                // V::StrMaxLen(32),
+                // V::StrMinUpper(1),
+                // V::StrMinLower(1),
+                // V::StrMinSpecial(1),
+                // V::StrMinNum(1),
             ],
         ),
     ])
