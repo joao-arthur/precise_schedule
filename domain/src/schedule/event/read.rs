@@ -58,7 +58,7 @@ pub fn event_r_info_by_user(
 
 #[cfg(test)]
 mod test {
-    use crate::domain::{
+    use crate::{
         database::DBErr,
         schedule::{
             event::stub::{event_info_stub, event_stub, EventRepoStub},

@@ -1,4 +1,4 @@
-use crate::domain::database::{DBErr, DBOp};
+use crate::database::{DBErr, DBOp};
 
 use super::{
     create::UserC,

@@ -1,4 +1,4 @@
-use crate::domain::generator::DateTimeGen;
+use crate::generator::DateTimeGen;
 
 use super::{
     error::EventErr,
@@ -46,7 +46,7 @@ pub fn event_u(
 
 #[cfg(test)]
 mod test {
-    use crate::domain::{
+    use crate::{
         database::DBErr,
         generator::stub::DateTimeGenStub,
         schedule::{

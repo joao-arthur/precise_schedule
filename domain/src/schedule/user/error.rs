@@ -1,4 +1,4 @@
-use crate::domain::{database::DBErr, session::SessionErr, validation::Schema};
+use crate::{database::DBErr, session::SessionErr, validation::Schema};
 
 use super::{
     read::{UserCredNotFoundErr, UserIdNotFoundErr},

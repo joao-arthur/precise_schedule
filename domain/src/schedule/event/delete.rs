@@ -9,7 +9,7 @@ pub fn event_d(repo: &dyn EventRepo, user_id: &str, id: &str) -> Result<Event, E
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::domain::{
+    use crate::{
         database::DBErr,
         schedule::{
             event::{

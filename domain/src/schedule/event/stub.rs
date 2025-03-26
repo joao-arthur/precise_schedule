@@ -1,4 +1,4 @@
-use crate::domain::database::{DBErr, DBOp};
+use crate::database::{DBErr, DBOp};
 
 use super::{
     create::EventC,
@@ -132,7 +132,7 @@ impl EventRepoStub {
 
 #[cfg(test)]
 mod test {
-    use crate::domain::schedule::user::stub::user_stub;
+    use crate::schedule::user::stub::user_stub;
 
     use super::*;
 

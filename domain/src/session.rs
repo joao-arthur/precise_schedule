@@ -62,7 +62,7 @@ pub mod stub {
     }
 
     mod test {
-        use crate::domain::{generator::stub::DateTimeGenStub, schedule::user::stub::user_stub};
+        use crate::{generator::stub::DateTimeGenStub, schedule::user::stub::user_stub};
 
         use super::*;
 

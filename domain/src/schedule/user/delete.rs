@@ -9,7 +9,7 @@ pub fn user_d(repo: &dyn UserRepo, id: String) -> Result<User, UserErr> {
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::domain::{
+    use crate::{
         database::DBErr,
         schedule::user::{
             read::UserIdNotFoundErr,

@@ -1,6 +1,6 @@
 use std::{collections::HashMap, sync::LazyLock};
 
-use crate::domain::{
+use crate::{
     generator::{DateTimeGen, IdGen},
     schedule::event::{
         create::{event_c, EventC},

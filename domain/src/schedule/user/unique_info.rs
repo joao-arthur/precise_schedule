@@ -74,7 +74,7 @@ pub fn user_u_unique_info_is_valid(
 
 #[cfg(test)]
 mod test {
-    use crate::domain::{
+    use crate::{
         database::DBErr,
         schedule::user::stub::{
             user_c_stub, user_stub, user_u_stub, user_unique_stub_1, user_unique_stub_2,

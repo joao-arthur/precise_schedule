@@ -1,6 +1,6 @@
 use std::{collections::HashMap, sync::LazyLock};
 
-use crate::domain::{
+use crate::{
     generator::{DateTimeGen, IdGen},
     session::{Session, SessionService},
     validation::{Schema, Val, Validator, V},
@@ -91,7 +91,7 @@ pub fn user_c(
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::domain::{
+    use crate::{
         database::DBErr,
         generator::stub::{DateTimeGenStub, IdGenStub},
         schedule::user::{

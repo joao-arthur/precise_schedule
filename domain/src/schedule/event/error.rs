@@ -1,4 +1,4 @@
-use crate::domain::{database::DBErr, validation::Schema};
+use crate::{database::DBErr, validation::Schema};
 
 use super::read::EventIdNotFoundErr;
 

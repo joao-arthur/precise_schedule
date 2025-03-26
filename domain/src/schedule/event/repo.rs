@@ -1,4 +1,4 @@
-use crate::domain::database::DBOp;
+use crate::database::DBOp;
 
 use super::model::Event;
 

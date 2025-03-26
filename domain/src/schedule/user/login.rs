@@ -1,6 +1,6 @@
 use std::{collections::HashMap, sync::LazyLock};
 
-use crate::domain::{
+use crate::{
     generator::DateTimeGen,
     session::{Session, SessionService},
     validation::{Schema, Val, Validator, V},
@@ -52,7 +52,7 @@ pub fn user_login(
 
 #[cfg(test)]
 mod test {
-    use crate::domain::{
+    use crate::{
         database::DBErr,
         generator::stub::DateTimeGenStub,
         schedule::user::stub::{user_cred_stub, UserRepoStub},

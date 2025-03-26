@@ -39,7 +39,7 @@ pub fn user_r_info_by_id(repo: &dyn UserRepo, id: &str) -> Result<UserInfo, User
 
 #[cfg(test)]
 mod test {
-    use crate::domain::{
+    use crate::{
         database::DBErr,
         schedule::user::stub::{user_cred_stub, user_info_stub, user_stub, UserRepoStub},
     };
