@@ -1,95 +1,62 @@
-use std::collections::HashMap;
 
-#[derive(Debug, PartialEq, Clone)]
-pub enum V {
-    Required,
-    NumI,
-    // NumU,
-    // NumF,
-    // Str,
-    // Bool,
-    // Date,
-    // Time,
-    // Datetime,
-    // Email,
-    // NumIExact(i64),
-    // NumUExact(u64),
-    // NumFExact(f64),
-    // NumIMin(i64),
-    // NumUMin(u64),
-    // NumFMin(f64),
-    // NumIMax(i64),
-    // NumUMax(u64),
-    // NumFMax(f64),
-    // StrExact(&'static str),
-    // StrExactLen(u32),
-    // StrMinLen(u32),
-    // StrMaxLen(u32),
-    // StrMinUpper(u32),
-    // StrMinLower(u32),
-    // StrMinNum(u32),
-    // StrMinSpecial(u32),
-    // DateMin(&'static str),
-    // DateMax(&'static str),
-    // TimeMin(&'static str),
-    // TimeMax(&'static str),
-    // DatetimeMin(&'static str),
-    // DatetimeMax(&'static str),
-    // Enumerated(&'static [&'static str]),
-    // Eq(&'static str),
-    // Ne(&'static str),
-    // Ge(&'static str),
-    // Gt(&'static str),
-    // Le(&'static str),
-    // Lt(&'static str),
-}
-
-#[derive(Debug, PartialEq, Clone)]
-pub enum Val {
-    None,
-    Num(Option<u64>, Option<i64>, Option<f64>),
-    Str(String),
-    Bool(bool),
-    Arr(Vec<Val>),
-    Obj(HashMap<String, Val>),
-}
-
-pub type Schema = HashMap<&'static str, Vec<V>>;
+use araucaria::{error::ErrWrap, validation::Validation, value::Value};
 
 pub trait Validator {
-    fn validate(&self, schema: &Schema, value: &Val) -> Result<(), Schema>;
+    fn validate(&self, validation: &Validation, value: &Value) -> Option<ErrWrap>;
 }
 
 #[cfg(test)]
 pub mod stub {
     use super::*;
 
-    pub struct ValidatorStub(pub Result<(), Schema>);
+    pub struct ValidatorStub(pub Option<ErrWrap>);
 
     impl Validator for ValidatorStub {
-        fn validate(&self, _schema: &Schema, _value: &Val) -> Result<(), Schema> {
+        fn validate(&self, _validation: &Validation, _value: &Value) -> Option<ErrWrap> {
             self.0.clone()
         }
     }
 
     mod test {
+        use std::collections::HashMap;
+
+        use araucaria::{error::Err, validation::{bool::BoolValidation, ObjValidation}};
+
         use super::*;
 
         #[test]
         fn test_validator_stub() {
             assert_eq!(
-                ValidatorStub(Ok(())).validate(
-                    &HashMap::from([("name", vec![/*V::Str, V::StrMinLen(2)*/])]),
-                    &Val::Str(String::from("George"))
+                ValidatorStub(None).validate(
+                    &Validation::Obj(ObjValidation {
+                        validation: HashMap::from([(
+                            "is",
+                            Validation::Bool(BoolValidation::default().required().eq(false))
+                        )]),
+                        required: false
+                    }),
+                    &Value::Obj(HashMap::from([(String::from("is"), Value::Bool(false))]))
                 ),
-                Ok(())
+                None
             );
             assert_eq!(
-                ValidatorStub(Err(HashMap::from([("name", vec![/*V::StrMinLen(2)])*/])]))).validate(
-                    &HashMap::from([("name", vec![/*V::Str, V::StrMinLen(2)*/])]),
-                    &Val::Str(String::from("George"))
+                ValidatorStub(ErrWrap::obj([(
+                    String::from("is"),
+                    ErrWrap::Arr(vec![Err::Bool, Err::Required, Err::Eq(Value::Bool(false))])
+                )])).validate(
+                    &Validation::Obj(ObjValidation {
+                        validation: HashMap::from([(
+                            "is",
+                            Validation::Bool(BoolValidation::default().required().eq(false))
+                        )]),
+                        required: false
+                    }),
+                    &Value::None
                 ),
-                Err(HashMap::from([("name", vec![/*V::StrMinLen(2)*/])]))
+                ErrWrap::obj([(
+                    String::from("is"),
+                    ErrWrap::Arr(vec![Err::Bool, Err::Required, Err::Eq(Value::Bool(false))])
+                )])
             );
         }
     }

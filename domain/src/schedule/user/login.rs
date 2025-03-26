@@ -1,9 +1,10 @@
 use std::{collections::HashMap, sync::LazyLock};
 
+use araucaria::{validation::{str::StrValidation, ObjValidation, Validation}, value::Value};
+
 use crate::{
     generator::DateTimeGen,
-    session::{Session, SessionService},
-    validation::{Schema, Val, Validator, V},
+    session::{Session, SessionService}, validation::Validator,
 };
 
 use super::{error::UserErr, read::user_r_by_cred, repo::UserRepo};
@@ -14,23 +15,28 @@ pub struct UserCred {
     pub password: String,
 }
 
-static USER_LOGIN_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
-    HashMap::from([
-        ("username", vec![V::Required, /*V::Str, V::StrMinLen(1), V::StrMaxLen(32)*/]),
-        (
-            "password",
-            vec![
-                V::Required,
-                // V::Str,
-                // V::StrMinLen(1),
-                // V::StrMaxLen(32),
-                // V::StrMinUpper(1),
-                // V::StrMinLower(1),
-                // V::StrMinSpecial(1),
-                // V::StrMinNum(1),
-            ],
-        ),
-    ])
+static USER_LOGIN_SCHEMA: LazyLock<Validation> = LazyLock::new(|| {
+    Validation::Obj(ObjValidation {
+        validation: HashMap::from([
+            (
+                "username",
+                Validation::Str(StrValidation::default().required().min_graphemes_len(1).max_graphemes_len(64))
+            ),
+            (
+                "password",
+                Validation::Str(StrValidation::default()
+                    .required()
+                    .min_graphemes_len(1)
+                    .max_graphemes_len(64)
+                    .min_uppercase_len(1)
+                    .min_lowercase_len(1)
+                    .min_number_len(1)
+                    .min_symbols_len(1)
+                ),
+            ),
+        ]),
+        required: true
+    })
 });
 
 pub fn user_login(

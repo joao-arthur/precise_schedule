@@ -1,5 +1,7 @@
 use std::{collections::HashMap, sync::LazyLock};
 
+use araucaria::validation::{bool::BoolValidation, date::DateValidation, email::EmailValidation, str::StrValidation, time::TimeValidation, ObjValidation, Validation};
+
 use crate::{
     generator::{DateTimeGen, IdGen},
     schedule::event::{
@@ -8,7 +10,7 @@ use crate::{
         model::{Event, EventCat, EventFreq},
         repo::EventRepo,
     },
-    validation::{Schema, Val, Validator, V},
+    validation::Validator,
 };
 
 pub struct AppointmentC {
@@ -20,15 +22,61 @@ pub struct AppointmentC {
     pub weekend_repeat: Option<bool>,
 }
 
-static APPOINTMENT_C_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
-    HashMap::from([
-        ("name", vec![V::Required /*V::Str, V::StrMinLen(1), V::StrMaxLen(32)*/]),
-        ("day", vec![V::Required /*V::Date, V::DateMin("1970-01-01")]*/]),
-        ("begin", vec![V::Required /*V::Time*/]),
-        ("end", vec![V::Required /*V::Time, V::Gt("begin")*/]),
-        ("frequency", vec![/* V::Enum(vec!["1D", "2D", "1W", "1M", "3M", "6M", "1Y", "2Y"]) */]),
-        ("weekend_repeat", vec![/*V::Bool*/]),
-    ])
+static USER_U_SCHEMA: LazyLock<Validation> = LazyLock::new(|| {
+    Validation::Obj(ObjValidation {
+        validation: HashMap::from([
+            (
+                "first_name",
+                Validation::Str(StrValidation::default().required().min_graphemes_len(1).max_graphemes_len(256))
+            ),
+            (
+                "birthdate",
+                Validation::Date(DateValidation::default().required().ge(String::from("1970-01-01")))
+            ),
+            ("email", Validation::Email(EmailValidation::default().required())),
+            (
+                "username",
+                Validation::Str(StrValidation::default().required().min_graphemes_len(1).max_graphemes_len(64))
+            ),
+            (
+                "password",
+                Validation::Str(StrValidation::default()
+                    .required()
+                    .min_graphemes_len(1)
+                    .max_graphemes_len(64)
+                    .min_uppercase_len(1)
+                    .min_lowercase_len(1)
+                    .min_number_len(1)
+                    .min_symbols_len(1)
+                ),
+            ),
+        ]),
+        required: true
+    })
+});
+
+static APPOINTMENT_C_SCHEMA: LazyLock<Validation> = LazyLock::new(|| {
+    Validation::Obj(ObjValidation {
+        validation: HashMap::from([
+            (
+                "name",
+                Validation::Str(StrValidation::default().required().min_graphemes_len(1).max_graphemes_len(32))
+            ),
+            (
+                "day",
+                Validation::Date(DateValidation::default().required().ge(String::from("1970-01-01")))
+            ),
+            ("begin", Validation::Time(TimeValidation::default().required())),
+            // todo gt("begin")
+            ("end", Validation::Time(TimeValidation::default().required())),
+            //("frequency", Validation::StrEnum(["1D", "2D", "1W", "1M", "3M", "6M", "1Y", "2Y"])),
+            (
+                "weekend_repeat",
+                Validation::Bool(BoolValidation::default()),
+            ),
+        ]),
+        required: true
+    })
 });
 
 pub fn event_c_from_appointment_c(event: AppointmentC) -> EventC {

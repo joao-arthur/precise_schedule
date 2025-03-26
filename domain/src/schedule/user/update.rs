@@ -1,9 +1,10 @@
 use std::{collections::HashMap, sync::LazyLock};
 
+use araucaria::validation::{date::DateValidation, email::EmailValidation, str::StrValidation, ObjValidation, Validation};
+
 use crate::{
     generator::DateTimeGen,
-    session::{Session, SessionService},
-    validation::{Schema, Val, Validator, V},
+    session::{Session, SessionService}, validation::Validator,
 };
 
 use super::{
@@ -29,33 +30,37 @@ pub struct UserUResult {
     pub session: Session,
 }
 
-static USER_U_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
-    HashMap::from([
-        ("first_name", vec![V::Required, /*V::Str, V::StrMinLen(1), V::StrMaxLen(256)*/]),
-        ("birthdate", vec![V::Required, /*V::Str, V::Date, V::DateMin("1970-01-01")*/]),
-        ("email", vec![V::Required, /*V::Str, V::Email*/]),
-        ("username", vec![V::Required, /*V::Str, V::StrMinLen(1), V::StrMaxLen(32)*/]),
-        (
-            "password",
-            vec![
-                V::Required,
-                V::Str {
-                    len: range(1, 32),
-                    lower: min(1),
-                    special: min(1),
-                }
-
-                Str().len
-                //V::Str,
-                //V::StrMinLen(1),
-                //V::StrMaxLen(32),
-                //V::StrMinUpper(1),
-                //V::StrMinLower(1),
-                //V::StrMinSpecial(1),
-                //V::StrMinNum(1),
-            ],
-        ),
-    ])
+static USER_U_SCHEMA: LazyLock<Validation> = LazyLock::new(|| {
+    Validation::Obj(ObjValidation {
+        validation: HashMap::from([
+            (
+                "first_name",
+                Validation::Str(StrValidation::default().required().min_graphemes_len(1).max_graphemes_len(256))
+            ),
+            (
+                "birthdate",
+                Validation::Date(DateValidation::default().required().ge(String::from("1970-01-01")))
+            ),
+            ("email", Validation::Email(EmailValidation::default().required())),
+            (
+                "username",
+                Validation::Str(StrValidation::default().required().min_graphemes_len(1).max_graphemes_len(64))
+            ),
+            (
+                "password",
+                Validation::Str(StrValidation::default()
+                    .required()
+                    .min_graphemes_len(1)
+                    .max_graphemes_len(64)
+                    .min_uppercase_len(1)
+                    .min_lowercase_len(1)
+                    .min_number_len(1)
+                    .min_symbols_len(1)
+                ),
+            ),
+        ]),
+        required: true
+    })
 });
 
 fn user_from_u(user_u: UserU, user: User, updated_at: String) -> User {

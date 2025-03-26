@@ -1,4 +1,6 @@
-use crate::{database::DBErr, session::SessionErr, validation::Schema};
+use araucaria::error::ErrWrap;
+
+use crate::{database::DBErr, session::SessionErr};
 
 use super::{
     read::{UserCredNotFoundErr, UserIdNotFoundErr},
@@ -8,7 +10,7 @@ use super::{
 #[derive(PartialEq, Debug)]
 pub enum UserErr {
     DB(DBErr),
-    Schema(Schema),
+    Schema(ErrWrap),
     UserUniqueInfoField(UserUniqueInfoFieldErr),
     UserIdNotFound(UserIdNotFoundErr),
     UserCredNotFound(UserCredNotFoundErr),
