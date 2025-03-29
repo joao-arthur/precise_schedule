@@ -4,7 +4,7 @@ use araucaria::validation::{date::DateValidation, email::EmailValidation, str::S
 
 use crate::{
     generator::{DateTimeGen, IdGen},
-    session::{Session, SessionService}, validation::Validator,
+    session::{Session, SessionService},
 };
 
 use super::{
@@ -76,21 +76,12 @@ fn user_from_c(user_c: UserC, id: String, created_at: String) -> User {
 }
 
 pub fn user_c(
-    validator: &dyn Validator,
     repo: &dyn UserRepo,
     id_gen: &dyn IdGen,
     date_time_gen: &dyn DateTimeGen,
     session_service: &dyn SessionService,
     user_c: UserC,
 ) -> Result<UserCResult, UserErr> {
-    let input_value = Val::Obj(HashMap::from([
-        (String::from("first_name"), Val::Str(user_c.first_name.clone())),
-        (String::from("birthdate"), Val::Str(user_c.birthdate.clone())),
-        (String::from("email"), Val::Str(user_c.email.clone())),
-        (String::from("username"), Val::Str(user_c.username.clone())),
-        (String::from("password"), Val::Str(user_c.password.clone())),
-    ]));
-    validator.validate(&USER_C_SCHEMA, &input_value).map_err(UserErr::Schema)?;
     user_c_unique_info_is_valid(repo, &UserUniqueInfo::from(&user_c))?;
     let id = id_gen.gen();
     let now = date_time_gen.now_as_iso();
@@ -114,7 +105,6 @@ mod test {
             stub::{session_stub, SessionServiceStub},
             SessionEncodeErr, SessionErr,
         },
-        validation::stub::ValidatorStub,
     };
 
     #[test]
@@ -129,7 +119,6 @@ mod test {
     fn test_user_c_ok() {
         assert_eq!(
             user_c(
-                &ValidatorStub(Ok(())),
                 &UserRepoStub::default(),
                 &IdGenStub(user_stub().id),
                 &DateTimeGenStub(user_stub().created_at, 1734555761),
@@ -144,7 +133,6 @@ mod test {
     fn test_user_c_err() {
         assert_eq!(
             user_c(
-                &ValidatorStub(Ok(())),
                 &UserRepoStub::of_db_err(),
                 &IdGenStub(user_stub().id),
                 &DateTimeGenStub(user_stub().created_at, 1734555761),
@@ -155,18 +143,6 @@ mod test {
         );
         assert_eq!(
             user_c(
-                &ValidatorStub(Err(HashMap::from([("first_name", vec![V::Required])]))),
-                &UserRepoStub::default(),
-                &IdGenStub(user_stub().id),
-                &DateTimeGenStub(user_stub().created_at, 1734555761),
-                &SessionServiceStub::default(),
-                user_c_stub()
-            ),
-            Err(UserErr::Schema(HashMap::from([("first_name", vec![V::Required])])))
-        );
-        assert_eq!(
-            user_c(
-                &ValidatorStub(Ok(())),
                 &UserRepoStub::of_unique_info(UserUniqueInfoCount { username: 2, email: 2 }),
                 &IdGenStub(user_stub().id),
                 &DateTimeGenStub(user_stub().created_at, 1734555761),
@@ -180,7 +156,6 @@ mod test {
         );
         assert_eq!(
             user_c(
-                &ValidatorStub(Ok(())),
                 &UserRepoStub::default(),
                 &IdGenStub(user_stub().id),
                 &DateTimeGenStub(user_stub().created_at, 1734555761),

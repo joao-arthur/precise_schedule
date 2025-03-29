@@ -1,7 +1,7 @@
 use jsonwebtoken::{decode, encode, Algorithm, DecodingKey, EncodingKey, Header, Validation};
 use rocket::serde::{Deserialize, Serialize};
 
-use crate::domain::{
+use domain::{
     generator::DateTimeGen,
     schedule::user::model::User,
     session::{Session, SessionDecodeErr, SessionEncodeErr, SessionErr, SessionService},
@@ -59,7 +59,7 @@ impl SessionService for SessionServiceJWT {
 mod test {
     use std::sync::LazyLock;
 
-    use crate::domain::{generator::stub::DateTimeGenStub, schedule::user::stub::user_stub};
+    use domain::{generator::stub::DateTimeGenStub, schedule::user::stub::user_stub};
 
     use super::*;
 

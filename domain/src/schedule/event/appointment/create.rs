@@ -10,7 +10,6 @@ use crate::{
         model::{Event, EventCat, EventFreq},
         repo::EventRepo,
     },
-    validation::Validator,
 };
 
 pub struct AppointmentC {
@@ -22,40 +21,7 @@ pub struct AppointmentC {
     pub weekend_repeat: Option<bool>,
 }
 
-static USER_U_SCHEMA: LazyLock<Validation> = LazyLock::new(|| {
-    Validation::Obj(ObjValidation {
-        validation: HashMap::from([
-            (
-                "first_name",
-                Validation::Str(StrValidation::default().required().min_graphemes_len(1).max_graphemes_len(256))
-            ),
-            (
-                "birthdate",
-                Validation::Date(DateValidation::default().required().ge(String::from("1970-01-01")))
-            ),
-            ("email", Validation::Email(EmailValidation::default().required())),
-            (
-                "username",
-                Validation::Str(StrValidation::default().required().min_graphemes_len(1).max_graphemes_len(64))
-            ),
-            (
-                "password",
-                Validation::Str(StrValidation::default()
-                    .required()
-                    .min_graphemes_len(1)
-                    .max_graphemes_len(64)
-                    .min_uppercase_len(1)
-                    .min_lowercase_len(1)
-                    .min_number_len(1)
-                    .min_symbols_len(1)
-                ),
-            ),
-        ]),
-        required: true
-    })
-});
-
-static APPOINTMENT_C_SCHEMA: LazyLock<Validation> = LazyLock::new(|| {
+pub static APPOINTMENT_C_SCHEMA: LazyLock<Validation> = LazyLock::new(|| {
     Validation::Obj(ObjValidation {
         validation: HashMap::from([
             (
@@ -91,34 +57,12 @@ pub fn event_c_from_appointment_c(event: AppointmentC) -> EventC {
 }
 
 pub fn event_appointment_c(
-    validator: &dyn Validator,
     repo: &dyn EventRepo,
     id_gen: &dyn IdGen,
     date_time_gen: &dyn DateTimeGen,
     appointment_c_model: AppointmentC,
     user_id: String,
 ) -> Result<Event, EventErr> {
-    let input_value = Val::Obj(HashMap::from([
-        (String::from("name"), Val::Str(appointment_c_model.name.clone())),
-        (String::from("day"), Val::Str(appointment_c_model.day.clone())),
-        (String::from("begin"), Val::Str(appointment_c_model.begin.clone())),
-        (String::from("end"), Val::Str(appointment_c_model.end.clone())),
-        (
-            String::from("frequency"),
-            match appointment_c_model.frequency.clone() {
-                Some(v) => Val::Str(v),
-                None => Val::None,
-            },
-        ),
-        (
-            String::from("weekend_repeat"),
-            match appointment_c_model.weekend_repeat.clone() {
-                Some(v) => Val::Bool(v),
-                None => Val::None,
-            },
-        ),
-    ]));
-    validator.validate(&APPOINTMENT_C_SCHEMA, &input_value).map_err(EventErr::Schema)?;
     let event_c_model = event_c_from_appointment_c(appointment_c_model);
     return event_c(repo, id_gen, date_time_gen, event_c_model, user_id);
 }

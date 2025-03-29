@@ -4,7 +4,7 @@ use araucaria::validation::{date::DateValidation, email::EmailValidation, str::S
 
 use crate::{
     generator::DateTimeGen,
-    session::{Session, SessionService}, validation::Validator,
+    session::{Session, SessionService},
 };
 
 use super::{
@@ -30,7 +30,7 @@ pub struct UserUResult {
     pub session: Session,
 }
 
-static USER_U_SCHEMA: LazyLock<Validation> = LazyLock::new(|| {
+pub static USER_U_SCHEMA: LazyLock<Validation> = LazyLock::new(|| {
     Validation::Obj(ObjValidation {
         validation: HashMap::from([
             (
@@ -76,21 +76,12 @@ fn user_from_u(user_u: UserU, user: User, updated_at: String) -> User {
 }
 
 pub fn user_u(
-    validator: &dyn Validator,
     repo: &dyn UserRepo,
     date_time_gen: &dyn DateTimeGen,
     session_service: &dyn SessionService,
     id: String,
     user_u: UserU,
 ) -> Result<UserUResult, UserErr> {
-    let input_value = Val::Obj(HashMap::from([
-        (String::from("first_name"), Val::Str(user_u.first_name.clone())),
-        (String::from("birthdate"), Val::Str(user_u.birthdate.clone())),
-        (String::from("email"), Val::Str(user_u.email.clone())),
-        (String::from("username"), Val::Str(user_u.username.clone())),
-        (String::from("password"), Val::Str(user_u.password.clone())),
-    ]));
-    validator.validate(&USER_U_SCHEMA, &input_value).map_err(UserErr::Schema)?;
     let old_user = user_r_by_id(repo, &id)?;
     user_u_unique_info_is_valid(
         repo,
@@ -119,7 +110,6 @@ mod test {
             stub::{session_stub, SessionServiceStub},
             SessionEncodeErr, SessionErr,
         },
-        validation::stub::ValidatorStub,
     };
 
     #[test]
@@ -134,7 +124,6 @@ mod test {
     fn test_user_u_ok() {
         assert_eq!(
             user_u(
-                &ValidatorStub(Ok(())),
                 &UserRepoStub::default(),
                 &DateTimeGenStub(user_stub().updated_at, 1734555761),
                 &SessionServiceStub::default(),
@@ -149,7 +138,6 @@ mod test {
     fn test_user_u_err() {
         assert_eq!(
             user_u(
-                &ValidatorStub(Ok(())),
                 &UserRepoStub::of_db_err(),
                 &DateTimeGenStub(user_stub().updated_at, 1734555761),
                 &SessionServiceStub::default(),
@@ -160,7 +148,6 @@ mod test {
         );
         assert_eq!(
             user_u(
-                &ValidatorStub(Ok(())),
                 &UserRepoStub::of_none(),
                 &DateTimeGenStub(user_stub().updated_at, 1734555761),
                 &SessionServiceStub::default(),
@@ -171,18 +158,6 @@ mod test {
         );
         assert_eq!(
             user_u(
-                &ValidatorStub(Err(HashMap::from([("first_name", vec![V::Required])]))),
-                &UserRepoStub::default(),
-                &DateTimeGenStub(user_stub().updated_at, 1734555761),
-                &SessionServiceStub::default(),
-                user_stub().id,
-                user_u_stub()
-            ),
-            Err(UserErr::Schema(HashMap::from([("first_name", vec![V::Required])])))
-        );
-        assert_eq!(
-            user_u(
-                &ValidatorStub(Ok(())),
                 &UserRepoStub::of_unique_info(UserUniqueInfoCount { username: 2, email: 2 }),
                 &DateTimeGenStub(user_stub().updated_at, 1734555761),
                 &SessionServiceStub::default(),
@@ -196,7 +171,6 @@ mod test {
         );
         assert_eq!(
             user_u(
-                &ValidatorStub(Ok(())),
                 &UserRepoStub::default(),
                 &DateTimeGenStub(user_stub().updated_at, 1734555761),
                 &SessionServiceStub::of_session_err(),

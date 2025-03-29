@@ -7,7 +7,7 @@ use rocket::serde::{Deserialize, Serialize};
 use rocket::{http::Status, post, response::status, Data};
 use serde_json::Value;
 
-use crate::domain::schedule::user::create::{user_c, UserC, USER_C_SCHEMA};
+use domain::schedule::user::create::{user_c, UserC, USER_C_SCHEMA};
 use crate::entry::deps::{
     get_date_time_gen, get_id_gen, get_session_service, get_user_repo, get_validator,
 };
@@ -100,7 +100,6 @@ pub async fn endpoint_user_c(
             };
             let repo = get_user_repo();
             let temp = user_c(
-                get_validator(),
                 repo,
                 get_id_gen(),
                 get_date_time_gen(),
@@ -123,16 +122,20 @@ pub async fn endpoint_user_c(
             }));
         }
         Err(err) => {
-            let erri18n: HashMap<&str, Vec<String>> = err
-                .into_iter()
-                .map(|f| {
-                    (f.0, f.1.iter().map(|p| validation_i18n(p, &lg.0)).collect::<Vec<String>>())
-                })
-                .collect();
             return Err(status::Custom(
                 Status::UnprocessableEntity,
-                serde_json::to_string(&erri18n).unwrap(),
+                String::from(""),
             ));
+        //    let erri18n: HashMap<&str, Vec<String>> = err
+        //        .into_iter()
+        //        .map(|f| {
+        //            (f.0, f.1.iter().map(|p| validation_i18n(p, &lg.0)).collect::<Vec<String>>())
+        //        })
+        //        .collect();
+        //    return Err(status::Custom(
+        //        Status::UnprocessableEntity,
+        //        serde_json::to_string(&erri18n).unwrap(),
+        //    ));
         }
     }
 }

@@ -7,6 +7,4 @@ pub mod read;
 pub mod repo;
 pub mod unique_info;
 pub mod update;
-
-#[cfg(test)]
 pub mod stub;

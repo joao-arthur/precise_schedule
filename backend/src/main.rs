@@ -17,7 +17,6 @@ use rocket::{
     Request,
 };
 
-pub mod domain;
 pub mod entry;
 pub mod infra;
 

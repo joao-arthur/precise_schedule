@@ -3,7 +3,7 @@ use std::time::SystemTime;
 use chrono::Utc;
 use uuid::Uuid;
 
-use crate::domain::generator::{DateTimeGen, IdGen};
+use domain::generator::{DateTimeGen, IdGen};
 
 pub struct IdGenUUID4;
 

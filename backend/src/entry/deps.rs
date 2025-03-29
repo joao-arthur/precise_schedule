@@ -1,18 +1,17 @@
 use std::sync::OnceLock;
 
-use crate::{
-    domain::{
-        generator::{DateTimeGen, IdGen},
-        schedule::user::repo::UserRepo,
-        session::SessionService,
-        validation::Validator,
-    },
-    infra::{
-        generator::{DateTimeGenImpl, IdGenUUID4},
-        schedule::user::repo::UserRepoMemory,
-        session::SessionServiceJWT,
-        validation::validator_custom::ValidatorCustom,
-    },
+use domain::{
+    generator::{DateTimeGen, IdGen},
+    schedule::user::repo::UserRepo,
+    session::SessionService,
+    validation::Validator,
+};
+
+use crate::infra::{
+    generator::{DateTimeGenImpl, IdGenUUID4},
+    schedule::user::repo::UserRepoMemory,
+    session::SessionServiceJWT,
+    validation::validator_custom::ValidatorCustom,
 };
 
 static USER_REPO: OnceLock<UserRepoMemory> = OnceLock::new();

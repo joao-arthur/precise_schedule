@@ -2,21 +2,21 @@
 use araucaria::{error::ErrWrap, validation::Validation, value::Value};
 
 pub trait Validator {
-    fn validate(&self, validation: &Validation, value: &Value) -> Option<ErrWrap>;
+    fn validate(&self, validation: &Validation, value: &Value) -> Result<(), ErrWrap>;
 }
 
-#[cfg(test)]
 pub mod stub {
     use super::*;
 
-    pub struct ValidatorStub(pub Option<ErrWrap>);
+    pub struct ValidatorStub(pub Result<(), ErrWrap>);
 
     impl Validator for ValidatorStub {
-        fn validate(&self, _validation: &Validation, _value: &Value) -> Option<ErrWrap> {
+        fn validate(&self, _validation: &Validation, _value: &Value) -> Result<(), ErrWrap> {
             self.0.clone()
         }
     }
 
+    #[cfg(test)]
     mod test {
         use std::collections::HashMap;
 
@@ -27,7 +27,7 @@ pub mod stub {
         #[test]
         fn test_validator_stub() {
             assert_eq!(
-                ValidatorStub(None).validate(
+                ValidatorStub(Ok(())).validate(
                     &Validation::Obj(ObjValidation {
                         validation: HashMap::from([(
                             "is",
@@ -37,13 +37,13 @@ pub mod stub {
                     }),
                     &Value::Obj(HashMap::from([(String::from("is"), Value::Bool(false))]))
                 ),
-                None
+                Ok(())
             );
             assert_eq!(
-                ValidatorStub(ErrWrap::obj([(
+                ValidatorStub(Err(ErrWrap::Obj(HashMap::from([(
                     String::from("is"),
                     ErrWrap::Arr(vec![Err::Bool, Err::Required, Err::Eq(Value::Bool(false))])
-                )])).validate(
+                )])))).validate(
                     &Validation::Obj(ObjValidation {
                         validation: HashMap::from([(
                             "is",
@@ -53,10 +53,10 @@ pub mod stub {
                     }),
                     &Value::None
                 ),
-                ErrWrap::obj([(
+                Err(ErrWrap::Obj(HashMap::from([(
                     String::from("is"),
                     ErrWrap::Arr(vec![Err::Bool, Err::Required, Err::Eq(Value::Bool(false))])
-                )])
+                )])))
             );
         }
     }

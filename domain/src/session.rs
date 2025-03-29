@@ -22,7 +22,6 @@ pub trait SessionService {
     fn decode(&self, session: Session) -> Result<String, SessionErr>;
 }
 
-#[cfg(test)]
 pub mod stub {
     use super::*;
 
@@ -61,6 +60,7 @@ pub mod stub {
         }
     }
 
+    #[cfg(test)]
     mod test {
         use crate::{generator::stub::DateTimeGenStub, schedule::user::stub::user_stub};
 

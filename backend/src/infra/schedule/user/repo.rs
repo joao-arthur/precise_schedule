@@ -1,6 +1,6 @@
 use std::cell::RefCell;
 
-use crate::domain::{
+use domain::{
     database::DBOp,
     schedule::user::{
         login::UserCred,
@@ -68,7 +68,7 @@ impl UserRepo for UserRepoMemory {
 
 #[cfg(test)]
 mod test {
-    use crate::domain::schedule::user::stub::{
+    use domain::schedule::user::stub::{
         user_after_u_stub, user_cred_stub, user_stub, user_unique_stub_3,
     };
 

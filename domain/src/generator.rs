@@ -7,7 +7,6 @@ pub trait DateTimeGen {
     fn now_as_epoch(&self) -> u64;
 }
 
-#[cfg(test)]
 pub mod stub {
     use super::*;
 
@@ -31,6 +30,7 @@ pub mod stub {
         }
     }
 
+    #[cfg(test)]
     mod test {
         use super::*;
 
