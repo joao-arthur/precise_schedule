@@ -1,6 +1,8 @@
 use std::{collections::HashMap, sync::LazyLock};
 
-use araucaria::validation::{date::DateValidation, email::EmailValidation, str::StrValidation, ObjValidation, Validation};
+use araucaria::validation::{
+    date::DateValidation, email::EmailValidation, str::StrValidation, ObjValidation, Validation,
+};
 
 use crate::{
     generator::{DateTimeGen, IdGen},
@@ -30,36 +32,39 @@ pub struct UserCResult {
 }
 
 pub static USER_C_SCHEMA: LazyLock<Validation> = LazyLock::new(|| {
-    Validation::Obj(ObjValidation {
-        validation: HashMap::from([
+    Validation::Obj(
+        ObjValidation::default().validation(HashMap::from([
             (
                 "first_name",
-                Validation::Str(StrValidation::default().required().min_graphemes_len(1).max_graphemes_len(256))
+                Validation::Str(
+                    StrValidation::default().min_graphemes_len(1).max_graphemes_len(256),
+                ),
             ),
             (
                 "birthdate",
-                Validation::Date(DateValidation::default().required().ge(String::from("1970-01-01")))
+                Validation::Date(DateValidation::default().ge(String::from("1970-01-01"))),
             ),
-            ("email", Validation::Email(EmailValidation::default().required())),
+            ("email", Validation::Email(EmailValidation::default())),
             (
                 "username",
-                Validation::Str(StrValidation::default().required().min_graphemes_len(1).max_graphemes_len(64))
+                Validation::Str(
+                    StrValidation::default().min_graphemes_len(1).max_graphemes_len(64),
+                ),
             ),
             (
                 "password",
-                Validation::Str(StrValidation::default()
-                    .required()
-                    .min_graphemes_len(1)
-                    .max_graphemes_len(64)
-                    .min_uppercase_len(1)
-                    .min_lowercase_len(1)
-                    .min_number_len(1)
-                    .min_symbols_len(1)
+                Validation::Str(
+                    StrValidation::default()
+                        .min_graphemes_len(1)
+                        .max_graphemes_len(64)
+                        .min_uppercase_len(1)
+                        .min_lowercase_len(1)
+                        .min_number_len(1)
+                        .min_symbols_len(1),
                 ),
             ),
-        ]),
-        required: true
-    })
+        ])),
+    )
 });
 
 fn user_from_c(user_c: UserC, id: String, created_at: String) -> User {

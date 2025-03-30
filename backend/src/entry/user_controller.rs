@@ -11,7 +11,7 @@ use domain::schedule::user::create::{user_c, UserC, USER_C_SCHEMA};
 use crate::entry::deps::{
     get_date_time_gen, get_id_gen, get_session_service, get_user_repo, get_validator,
 };
-use crate::infra::validation::adapter::{validation_i18n, value_from_json_value};
+use crate::infra::validation::{validation_i18n, value_from_json_value};
 use crate::LanguageGuard;
 
 #[derive(Deserialize, Serialize, Debug)]
@@ -87,45 +87,42 @@ pub async fn endpoint_user_c(
     };
     let json_value: Value = serde_json::from_slice(&body).unwrap();
     let internal_value = value_from_json_value(json_value);
-    let res = get_validator().validate(&USER_C_SCHEMA, &internal_value);
-    match res {
-        Ok(_data) => {
-            let ff: UserCCDD = serde_json::from_slice(&body).unwrap();
-            let user = UserC {
-                email: ff.email.to_string(),
-                first_name: ff.first_name.to_string(),
-                birthdate: ff.birthdate.to_string(),
-                username: ff.username.to_string(),
-                password: ff.password.to_string(),
-            };
-            let repo = get_user_repo();
-            let temp = user_c(
-                repo,
-                get_id_gen(),
-                get_date_time_gen(),
-                get_session_service(),
-                user,
-            )
-            .unwrap();
-            return Ok(Json(UserCResult {
-                user: User {
-                    id: temp.user.id.clone(),
-                    first_name: temp.user.first_name.clone(),
-                    birthdate: temp.user.birthdate.clone(),
-                    email: temp.user.email.clone(),
-                    username: temp.user.username.clone(),
-                    created_at: temp.user.created_at.clone(),
-                    password: temp.user.password.clone(),
-                    updated_at: temp.user.updated_at.clone(),
-                },
-                session: Session { token: temp.session.token },
-            }));
-        }
-        Err(err) => {
-            return Err(status::Custom(
-                Status::UnprocessableEntity,
-                String::from(""),
-            ));
+    if let Err(err) = get_validator().validate(&USER_C_SCHEMA, &internal_value) {
+        return Err(status::Custom(
+            Status::UnprocessableEntity,
+            String::from(""),
+        ));
+    }
+    let ff: UserCCDD = serde_json::from_slice(&body).unwrap();
+    let user = UserC {
+        email: ff.email.to_string(),
+        first_name: ff.first_name.to_string(),
+        birthdate: ff.birthdate.to_string(),
+        username: ff.username.to_string(),
+        password: ff.password.to_string(),
+    };
+    let repo = get_user_repo();
+    let temp = user_c(
+        repo,
+        get_id_gen(),
+        get_date_time_gen(),
+        get_session_service(),
+        user,
+    )
+    .unwrap();
+    return Ok(Json(UserCResult {
+        user: User {
+            id: temp.user.id.clone(),
+            first_name: temp.user.first_name.clone(),
+            birthdate: temp.user.birthdate.clone(),
+            email: temp.user.email.clone(),
+            username: temp.user.username.clone(),
+            created_at: temp.user.created_at.clone(),
+            password: temp.user.password.clone(),
+            updated_at: temp.user.updated_at.clone(),
+        },
+        session: Session { token: temp.session.token },
+    }));
         //    let erri18n: HashMap<&str, Vec<String>> = err
         //        .into_iter()
         //        .map(|f| {
@@ -136,8 +133,6 @@ pub async fn endpoint_user_c(
         //        Status::UnprocessableEntity,
         //        serde_json::to_string(&erri18n).unwrap(),
         //    ));
-        }
-    }
 }
 
 #[put("/", format = "application/json")]

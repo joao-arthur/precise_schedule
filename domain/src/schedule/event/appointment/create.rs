@@ -1,6 +1,9 @@
 use std::{collections::HashMap, sync::LazyLock};
 
-use araucaria::validation::{bool::BoolValidation, date::DateValidation, email::EmailValidation, str::StrValidation, time::TimeValidation, ObjValidation, Validation};
+use araucaria::validation::{
+    bool::BoolValidation, date::DateValidation, str::StrValidation, time::TimeValidation,
+    ObjValidation, Validation,
+};
 
 use crate::{
     generator::{DateTimeGen, IdGen},
@@ -22,27 +25,18 @@ pub struct AppointmentC {
 }
 
 pub static APPOINTMENT_C_SCHEMA: LazyLock<Validation> = LazyLock::new(|| {
-    Validation::Obj(ObjValidation {
-        validation: HashMap::from([
-            (
-                "name",
-                Validation::Str(StrValidation::default().required().min_graphemes_len(1).max_graphemes_len(32))
-            ),
-            (
-                "day",
-                Validation::Date(DateValidation::default().required().ge(String::from("1970-01-01")))
-            ),
-            ("begin", Validation::Time(TimeValidation::default().required())),
-            // todo gt("begin")
-            ("end", Validation::Time(TimeValidation::default().required())),
-            //("frequency", Validation::StrEnum(["1D", "2D", "1W", "1M", "3M", "6M", "1Y", "2Y"])),
-            (
-                "weekend_repeat",
-                Validation::Bool(BoolValidation::default()),
-            ),
-        ]),
-        required: true
-    })
+    Validation::Obj(ObjValidation::default().validation(HashMap::from([
+        (
+            "name",
+            Validation::Str(StrValidation::default().min_graphemes_len(1).max_graphemes_len(32)),
+        ),
+        ("day", Validation::Date(DateValidation::default().ge(String::from("1970-01-01")))),
+        ("begin", Validation::Time(TimeValidation::default())),
+        // todo end gt("begin")
+        ("end", Validation::Time(TimeValidation::default())),
+        //("frequency", Validation::StrEnum(["1D", "2D", "1W", "1M", "3M", "6M", "1Y", "2Y"])),
+        ("weekend_repeat", Validation::Bool(BoolValidation::default())),
+    ])))
 });
 
 pub fn event_c_from_appointment_c(event: AppointmentC) -> EventC {

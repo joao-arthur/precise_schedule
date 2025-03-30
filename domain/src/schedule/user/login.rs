@@ -16,27 +16,28 @@ pub struct UserCred {
 }
 
 pub static USER_LOGIN_SCHEMA: LazyLock<Validation> = LazyLock::new(|| {
-    Validation::Obj(ObjValidation {
-        validation: HashMap::from([
+    Validation::Obj(
+        ObjValidation::default().validation(HashMap::from([
             (
                 "username",
-                Validation::Str(StrValidation::default().required().min_graphemes_len(1).max_graphemes_len(64))
+                Validation::Str(
+                    StrValidation::default().min_graphemes_len(1).max_graphemes_len(64),
+                ),
             ),
             (
                 "password",
-                Validation::Str(StrValidation::default()
-                    .required()
-                    .min_graphemes_len(1)
-                    .max_graphemes_len(64)
-                    .min_uppercase_len(1)
-                    .min_lowercase_len(1)
-                    .min_number_len(1)
-                    .min_symbols_len(1)
+                Validation::Str(
+                    StrValidation::default()
+                        .min_graphemes_len(1)
+                        .max_graphemes_len(64)
+                        .min_uppercase_len(1)
+                        .min_lowercase_len(1)
+                        .min_number_len(1)
+                        .min_symbols_len(1),
                 ),
             ),
-        ]),
-        required: true
-    })
+        ])),
+    )
 });
 
 pub fn user_login(

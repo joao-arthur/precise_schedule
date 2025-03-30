@@ -1,17 +1,16 @@
-
-use araucaria::{error::ErrWrap, validation::Validation, value::Value};
+use araucaria::{error::SchemaErr, validation::Validation, value::Value};
 
 pub trait Validator {
-    fn validate(&self, validation: &Validation, value: &Value) -> Result<(), ErrWrap>;
+    fn validate(&self, validation: &Validation, value: &Value) -> Result<(), SchemaErr>;
 }
 
 pub mod stub {
     use super::*;
 
-    pub struct ValidatorStub(pub Result<(), ErrWrap>);
+    pub struct ValidatorStub(pub Result<(), SchemaErr>);
 
     impl Validator for ValidatorStub {
-        fn validate(&self, _validation: &Validation, _value: &Value) -> Result<(), ErrWrap> {
+        fn validate(&self, _validation: &Validation, _value: &Value) -> Result<(), SchemaErr> {
             self.0.clone()
         }
     }
@@ -20,7 +19,10 @@ pub mod stub {
     mod test {
         use std::collections::HashMap;
 
-        use araucaria::{error::Err, validation::{bool::BoolValidation, ObjValidation}};
+        use araucaria::{
+            error::ValidationErr,
+            validation::{bool::BoolValidation, ObjValidation},
+        };
 
         use super::*;
 
@@ -31,7 +33,7 @@ pub mod stub {
                     &Validation::Obj(ObjValidation {
                         validation: HashMap::from([(
                             "is",
-                            Validation::Bool(BoolValidation::default().required().eq(false))
+                            Validation::Bool(BoolValidation::default().eq(false))
                         )]),
                         required: false
                     }),
@@ -40,22 +42,31 @@ pub mod stub {
                 Ok(())
             );
             assert_eq!(
-                ValidatorStub(Err(ErrWrap::Obj(HashMap::from([(
+                ValidatorStub(Err(SchemaErr::Obj(HashMap::from([(
                     String::from("is"),
-                    ErrWrap::Arr(vec![Err::Bool, Err::Required, Err::Eq(Value::Bool(false))])
-                )])))).validate(
+                    SchemaErr::Arr(vec![
+                        ValidationErr::Bool,
+                        ValidationErr::Required,
+                        ValidationErr::Eq(Value::Bool(false))
+                    ])
+                )]))))
+                .validate(
                     &Validation::Obj(ObjValidation {
                         validation: HashMap::from([(
                             "is",
-                            Validation::Bool(BoolValidation::default().required().eq(false))
+                            Validation::Bool(BoolValidation::default().eq(false))
                         )]),
                         required: false
                     }),
                     &Value::None
                 ),
-                Err(ErrWrap::Obj(HashMap::from([(
+                Err(SchemaErr::Obj(HashMap::from([(
                     String::from("is"),
-                    ErrWrap::Arr(vec![Err::Bool, Err::Required, Err::Eq(Value::Bool(false))])
+                    SchemaErr::Arr(vec![
+                        ValidationErr::Bool,
+                        ValidationErr::Required,
+                        ValidationErr::Eq(Value::Bool(false))
+                    ])
                 )])))
             );
         }
