@@ -9,4 +9,4 @@ crate-type = ["rlib"]
 bench = false
 
 [dependencies]
-araucaria = { git = "https://github.com/joao-arthur/araucaria", rev = "9cd2626e5847b53d0facc1eb22e24a317a41fbf4" }
+araucaria = { git = "https://github.com/joao-arthur/araucaria", rev = "d38d6bc411babf4ad3a3272225e725f112698059" }

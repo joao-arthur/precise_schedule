@@ -35,24 +35,24 @@ pub static USER_C_SCHEMA: LazyLock<Validation> = LazyLock::new(|| {
     Validation::Obj(
         ObjValidation::default().validation(HashMap::from([
             (
-                "first_name",
+                String::from("first_name"),
                 Validation::Str(
                     StrValidation::default().min_graphemes_len(1).max_graphemes_len(256),
                 ),
             ),
             (
-                "birthdate",
+                String::from("birthdate"),
                 Validation::Date(DateValidation::default().ge(String::from("1970-01-01"))),
             ),
-            ("email", Validation::Email(EmailValidation::default())),
+            (String::from("email"), Validation::Email(EmailValidation::default())),
             (
-                "username",
+                String::from("username"),
                 Validation::Str(
                     StrValidation::default().min_graphemes_len(1).max_graphemes_len(64),
                 ),
             ),
             (
-                "password",
+                String::from("password"),
                 Validation::Str(
                     StrValidation::default()
                         .min_graphemes_len(1)

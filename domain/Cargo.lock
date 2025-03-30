@@ -5,7 +5,7 @@ version = 4
 [[package]]
 name = "araucaria"
 version = "1.0.0"
-source = "git+https://github.com/joao-arthur/araucaria?rev=9cd2626e5847b53d0facc1eb22e24a317a41fbf4#9cd2626e5847b53d0facc1eb22e24a317a41fbf4"
+source = "git+https://github.com/joao-arthur/araucaria?rev=d38d6bc411babf4ad3a3272225e725f112698059#d38d6bc411babf4ad3a3272225e725f112698059"
 
 [[package]]
 name = "domain"

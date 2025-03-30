@@ -27,15 +27,15 @@ pub struct AppointmentC {
 pub static APPOINTMENT_C_SCHEMA: LazyLock<Validation> = LazyLock::new(|| {
     Validation::Obj(ObjValidation::default().validation(HashMap::from([
         (
-            "name",
+            String::from("name"),
             Validation::Str(StrValidation::default().min_graphemes_len(1).max_graphemes_len(32)),
         ),
-        ("day", Validation::Date(DateValidation::default().ge(String::from("1970-01-01")))),
-        ("begin", Validation::Time(TimeValidation::default())),
+        (String::from("day"), Validation::Date(DateValidation::default().ge(String::from("1970-01-01")))),
+        (String::from("begin"), Validation::Time(TimeValidation::default())),
         // todo end gt("begin")
-        ("end", Validation::Time(TimeValidation::default())),
-        //("frequency", Validation::StrEnum(["1D", "2D", "1W", "1M", "3M", "6M", "1Y", "2Y"])),
-        ("weekend_repeat", Validation::Bool(BoolValidation::default())),
+        (String::from("end"), Validation::Time(TimeValidation::default())),
+        //(String::from("frequency"), Validation::StrEnum(["1D", "2D", "1W", "1M", "3M", "6M", "1Y", "2Y"])),
+        (String::from("weekend_repeat"), Validation::Bool(BoolValidation::default())),
     ])))
 });
 

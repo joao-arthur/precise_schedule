@@ -86,12 +86,9 @@ pub async fn endpoint_user_c(
         }
     };
     let json_value: Value = serde_json::from_slice(&body).unwrap();
-    let internal_value = value_from_json_value(json_value);
+    let internal_value = value_from_json_value(&json_value, Some(&USER_C_SCHEMA));
     if let Err(err) = get_validator().validate(&USER_C_SCHEMA, &internal_value) {
-        return Err(status::Custom(
-            Status::UnprocessableEntity,
-            String::from(""),
-        ));
+        return Err(status::Custom(Status::UnprocessableEntity, validation_i18n(&err, &lg.0)));
     }
     let ff: UserCCDD = serde_json::from_slice(&body).unwrap();
     let user = UserC {

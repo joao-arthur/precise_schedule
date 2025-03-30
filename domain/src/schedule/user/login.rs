@@ -19,13 +19,13 @@ pub static USER_LOGIN_SCHEMA: LazyLock<Validation> = LazyLock::new(|| {
     Validation::Obj(
         ObjValidation::default().validation(HashMap::from([
             (
-                "username",
+                String::from("username"),
                 Validation::Str(
                     StrValidation::default().min_graphemes_len(1).max_graphemes_len(64),
                 ),
             ),
             (
-                "password",
+                String::from("password"),
                 Validation::Str(
                     StrValidation::default()
                         .min_graphemes_len(1)

@@ -32,7 +32,7 @@ pub mod stub {
                 ValidatorStub(Ok(())).validate(
                     &Validation::Obj(ObjValidation {
                         validation: HashMap::from([(
-                            "is",
+                            String::from("is"),
                             Validation::Bool(BoolValidation::default().eq(false))
                         )]),
                         required: false
@@ -44,7 +44,7 @@ pub mod stub {
             assert_eq!(
                 ValidatorStub(Err(SchemaErr::Obj(HashMap::from([(
                     String::from("is"),
-                    SchemaErr::Arr(vec![
+                    SchemaErr::validation([
                         ValidationErr::Bool,
                         ValidationErr::Required,
                         ValidationErr::Eq(Value::Bool(false))
@@ -53,7 +53,7 @@ pub mod stub {
                 .validate(
                     &Validation::Obj(ObjValidation {
                         validation: HashMap::from([(
-                            "is",
+                            String::from("is"),
                             Validation::Bool(BoolValidation::default().eq(false))
                         )]),
                         required: false
@@ -62,7 +62,7 @@ pub mod stub {
                 ),
                 Err(SchemaErr::Obj(HashMap::from([(
                     String::from("is"),
-                    SchemaErr::Arr(vec![
+                    SchemaErr::validation([
                         ValidationErr::Bool,
                         ValidationErr::Required,
                         ValidationErr::Eq(Value::Bool(false))
