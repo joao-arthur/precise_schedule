@@ -129,18 +129,12 @@ mod test {
     use super::*;
     #[test]
     fn test_event() {
-        assert_eq!(
-            DtEvt::of(Dt::of(2024, 11, 22), Freq::M6),
-            DtEvt { dt: Dt { y: Y(2024), m: M::Nov, d: D(22) }, freq: Some(Freq::M6) }
-        );
+        assert_eq!(DtEvt::of(Dt::of(2024, 11, 22), Freq::M6), DtEvt { dt: Dt { y: Y(2024), m: M::Nov, d: D(22) }, freq: Some(Freq::M6) });
     }
 
     #[test]
     fn test_closest_rep_none() {
-        assert_eq!(
-            closest_rep(DtEvt { dt: Dt::of(2000, 01, 01), freq: None }, Dt::of(2023, 08, 01)),
-            None
-        );
+        assert_eq!(closest_rep(DtEvt { dt: Dt::of(2000, 01, 01), freq: None }, Dt::of(2023, 08, 01)), None);
     }
 
     #[test]
@@ -378,11 +372,7 @@ mod test {
     #[test]
     fn test_rep_between_1d() {
         assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2023, 07, 01), Freq::D1),
-                Dt::of(2023, 08, 01),
-                Dt::of(2023, 08, 31)
-            ),
+            rep_between(DtEvt::of(Dt::of(2023, 07, 01), Freq::D1), Dt::of(2023, 08, 01), Dt::of(2023, 08, 31)),
             vec![
                 Dt::of(2023, 08, 01),
                 Dt::of(2023, 08, 02),
@@ -418,11 +408,7 @@ mod test {
             ],
         );
         assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2023, 07, 20), Freq::D1),
-                Dt::of(2023, 07, 01),
-                Dt::of(2023, 07, 31)
-            ),
+            rep_between(DtEvt::of(Dt::of(2023, 07, 20), Freq::D1), Dt::of(2023, 07, 01), Dt::of(2023, 07, 31)),
             vec![
                 Dt::of(2023, 07, 20),
                 Dt::of(2023, 07, 21),
@@ -443,11 +429,7 @@ mod test {
     #[test]
     fn test_rep_between_2d() {
         assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2023, 07, 01), Freq::D2),
-                Dt::of(2023, 08, 01),
-                Dt::of(2023, 08, 31)
-            ),
+            rep_between(DtEvt::of(Dt::of(2023, 07, 01), Freq::D2), Dt::of(2023, 08, 01), Dt::of(2023, 08, 31)),
             vec![
                 Dt::of(2023, 08, 02),
                 Dt::of(2023, 08, 04),
@@ -467,388 +449,91 @@ mod test {
             ],
         );
         assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2023, 07, 20), Freq::D2),
-                Dt::of(2023, 07, 01),
-                Dt::of(2023, 07, 31)
-            ),
-            vec![
-                Dt::of(2023, 07, 20),
-                Dt::of(2023, 07, 22),
-                Dt::of(2023, 07, 24),
-                Dt::of(2023, 07, 26),
-                Dt::of(2023, 07, 28),
-                Dt::of(2023, 07, 30)
-            ],
+            rep_between(DtEvt::of(Dt::of(2023, 07, 20), Freq::D2), Dt::of(2023, 07, 01), Dt::of(2023, 07, 31)),
+            vec![Dt::of(2023, 07, 20), Dt::of(2023, 07, 22), Dt::of(2023, 07, 24), Dt::of(2023, 07, 26), Dt::of(2023, 07, 28), Dt::of(2023, 07, 30)],
         );
     }
 
     #[test]
     fn test_rep_between_1w() {
         assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2023, 07, 01), Freq::W1),
-                Dt::of(2023, 08, 01),
-                Dt::of(2023, 08, 31)
-            ),
-            vec![
-                Dt::of(2023, 08, 05),
-                Dt::of(2023, 08, 12),
-                Dt::of(2023, 08, 19),
-                Dt::of(2023, 08, 26)
-            ]
+            rep_between(DtEvt::of(Dt::of(2023, 07, 01), Freq::W1), Dt::of(2023, 08, 01), Dt::of(2023, 08, 31)),
+            vec![Dt::of(2023, 08, 05), Dt::of(2023, 08, 12), Dt::of(2023, 08, 19), Dt::of(2023, 08, 26)]
         );
         assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2023, 08, 16), Freq::W1),
-                Dt::of(2023, 08, 01),
-                Dt::of(2023, 08, 31)
-            ),
+            rep_between(DtEvt::of(Dt::of(2023, 08, 16), Freq::W1), Dt::of(2023, 08, 01), Dt::of(2023, 08, 31)),
             vec![Dt::of(2023, 08, 16), Dt::of(2023, 08, 23), Dt::of(2023, 08, 30)]
         );
     }
 
     #[test]
     fn test_rep_between_1m() {
-        assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2023, 06, 10), Freq::M1),
-                Dt::of(2023, 08, 01),
-                Dt::of(2023, 08, 31)
-            ),
-            [Dt::of(2023, 08, 10)]
-        );
-        assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2020, 01, 28), Freq::M1),
-                Dt::of(2020, 02, 01),
-                Dt::of(2020, 02, 29)
-            ),
-            [Dt::of(2020, 02, 28)]
-        );
-        assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2020, 01, 29), Freq::M1),
-                Dt::of(2020, 02, 01),
-                Dt::of(2020, 02, 29)
-            ),
-            [Dt::of(2020, 02, 29)]
-        );
-        assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2020, 01, 30), Freq::M1),
-                Dt::of(2020, 02, 01),
-                Dt::of(2020, 02, 29)
-            ),
-            [Dt::of(2020, 02, 29)]
-        );
-        assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2020, 01, 31), Freq::M1),
-                Dt::of(2020, 02, 01),
-                Dt::of(2020, 02, 29)
-            ),
-            [Dt::of(2020, 02, 29)]
-        );
-        assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2023, 08, 10), Freq::M1),
-                Dt::of(2023, 08, 01),
-                Dt::of(2023, 08, 31)
-            ),
-            [Dt::of(2023, 08, 10)]
-        );
+        assert_eq!(rep_between(DtEvt::of(Dt::of(2023, 06, 10), Freq::M1), Dt::of(2023, 08, 01), Dt::of(2023, 08, 31)), [Dt::of(2023, 08, 10)]);
+        assert_eq!(rep_between(DtEvt::of(Dt::of(2020, 01, 28), Freq::M1), Dt::of(2020, 02, 01), Dt::of(2020, 02, 29)), [Dt::of(2020, 02, 28)]);
+        assert_eq!(rep_between(DtEvt::of(Dt::of(2020, 01, 29), Freq::M1), Dt::of(2020, 02, 01), Dt::of(2020, 02, 29)), [Dt::of(2020, 02, 29)]);
+        assert_eq!(rep_between(DtEvt::of(Dt::of(2020, 01, 30), Freq::M1), Dt::of(2020, 02, 01), Dt::of(2020, 02, 29)), [Dt::of(2020, 02, 29)]);
+        assert_eq!(rep_between(DtEvt::of(Dt::of(2020, 01, 31), Freq::M1), Dt::of(2020, 02, 01), Dt::of(2020, 02, 29)), [Dt::of(2020, 02, 29)]);
+        assert_eq!(rep_between(DtEvt::of(Dt::of(2023, 08, 10), Freq::M1), Dt::of(2023, 08, 01), Dt::of(2023, 08, 31)), [Dt::of(2023, 08, 10)]);
     }
 
     #[test]
     fn test_rep_between_3m() {
-        assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2020, 01, 28), Freq::M3),
-                Dt::of(2020, 03, 01),
-                Dt::of(2020, 03, 31)
-            ),
-            []
-        );
-        assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2020, 01, 28), Freq::M3),
-                Dt::of(2020, 04, 01),
-                Dt::of(2020, 04, 30)
-            ),
-            vec![Dt::of(2020, 04, 28)]
-        );
-        assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2020, 01, 29), Freq::M3),
-                Dt::of(2020, 04, 01),
-                Dt::of(2020, 04, 30)
-            ),
-            vec![Dt::of(2020, 04, 29)]
-        );
-        assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2020, 01, 30), Freq::M3),
-                Dt::of(2020, 04, 01),
-                Dt::of(2020, 04, 30)
-            ),
-            vec![Dt::of(2020, 04, 30)]
-        );
-        assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2020, 01, 31), Freq::M3),
-                Dt::of(2020, 04, 01),
-                Dt::of(2020, 04, 30)
-            ),
-            vec![Dt::of(2020, 04, 30)]
-        );
-        assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2020, 04, 10), Freq::M3),
-                Dt::of(2020, 04, 01),
-                Dt::of(2020, 04, 30)
-            ),
-            vec![Dt::of(2020, 04, 10)]
-        );
+        assert_eq!(rep_between(DtEvt::of(Dt::of(2020, 01, 28), Freq::M3), Dt::of(2020, 03, 01), Dt::of(2020, 03, 31)), []);
+        assert_eq!(rep_between(DtEvt::of(Dt::of(2020, 01, 28), Freq::M3), Dt::of(2020, 04, 01), Dt::of(2020, 04, 30)), vec![Dt::of(2020, 04, 28)]);
+        assert_eq!(rep_between(DtEvt::of(Dt::of(2020, 01, 29), Freq::M3), Dt::of(2020, 04, 01), Dt::of(2020, 04, 30)), vec![Dt::of(2020, 04, 29)]);
+        assert_eq!(rep_between(DtEvt::of(Dt::of(2020, 01, 30), Freq::M3), Dt::of(2020, 04, 01), Dt::of(2020, 04, 30)), vec![Dt::of(2020, 04, 30)]);
+        assert_eq!(rep_between(DtEvt::of(Dt::of(2020, 01, 31), Freq::M3), Dt::of(2020, 04, 01), Dt::of(2020, 04, 30)), vec![Dt::of(2020, 04, 30)]);
+        assert_eq!(rep_between(DtEvt::of(Dt::of(2020, 04, 10), Freq::M3), Dt::of(2020, 04, 01), Dt::of(2020, 04, 30)), vec![Dt::of(2020, 04, 10)]);
     }
 
     #[test]
     fn test_rep_between_6m() {
-        assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2020, 01, 31), Freq::M6),
-                Dt::of(2020, 03, 01),
-                Dt::of(2020, 03, 31)
-            ),
-            []
-        );
-        assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2020, 01, 31), Freq::M6),
-                Dt::of(2020, 07, 01),
-                Dt::of(2020, 07, 31)
-            ),
-            vec![Dt::of(2020, 07, 31)]
-        );
-        assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2020, 07, 31), Freq::M6),
-                Dt::of(2021, 01, 01),
-                Dt::of(2021, 01, 31)
-            ),
-            vec![Dt::of(2021, 01, 31)]
-        );
-        assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2023, 06, 29), Freq::M6),
-                Dt::of(2023, 06, 01),
-                Dt::of(2023, 06, 30)
-            ),
-            vec![Dt::of(2023, 06, 29)]
-        );
+        assert_eq!(rep_between(DtEvt::of(Dt::of(2020, 01, 31), Freq::M6), Dt::of(2020, 03, 01), Dt::of(2020, 03, 31)), []);
+        assert_eq!(rep_between(DtEvt::of(Dt::of(2020, 01, 31), Freq::M6), Dt::of(2020, 07, 01), Dt::of(2020, 07, 31)), vec![Dt::of(2020, 07, 31)]);
+        assert_eq!(rep_between(DtEvt::of(Dt::of(2020, 07, 31), Freq::M6), Dt::of(2021, 01, 01), Dt::of(2021, 01, 31)), vec![Dt::of(2021, 01, 31)]);
+        assert_eq!(rep_between(DtEvt::of(Dt::of(2023, 06, 29), Freq::M6), Dt::of(2023, 06, 01), Dt::of(2023, 06, 30)), vec![Dt::of(2023, 06, 29)]);
     }
 
     #[test]
     fn test_rep_between_1y() {
-        assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2019, 02, 28), Freq::Y1),
-                Dt::of(2020, 01, 01),
-                Dt::of(2020, 01, 31)
-            ),
-            []
-        );
-        assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2019, 02, 28), Freq::Y1),
-                Dt::of(2025, 02, 01),
-                Dt::of(2025, 02, 28)
-            ),
-            vec![Dt::of(2025, 02, 28)]
-        );
-        assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2020, 02, 29), Freq::Y1),
-                Dt::of(2025, 02, 01),
-                Dt::of(2025, 02, 28)
-            ),
-            vec![Dt::of(2025, 02, 28)]
-        );
-        assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2021, 02, 28), Freq::Y1),
-                Dt::of(2025, 02, 01),
-                Dt::of(2025, 02, 28)
-            ),
-            vec![Dt::of(2025, 02, 28)]
-        );
-        assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2022, 02, 28), Freq::Y1),
-                Dt::of(2025, 02, 01),
-                Dt::of(2025, 02, 28)
-            ),
-            vec![Dt::of(2025, 02, 28)]
-        );
-        assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2021, 11, 11), Freq::Y1),
-                Dt::of(2021, 11, 01),
-                Dt::of(2021, 11, 30)
-            ),
-            vec![Dt::of(2021, 11, 11)]
-        );
+        assert_eq!(rep_between(DtEvt::of(Dt::of(2019, 02, 28), Freq::Y1), Dt::of(2020, 01, 01), Dt::of(2020, 01, 31)), []);
+        assert_eq!(rep_between(DtEvt::of(Dt::of(2019, 02, 28), Freq::Y1), Dt::of(2025, 02, 01), Dt::of(2025, 02, 28)), vec![Dt::of(2025, 02, 28)]);
+        assert_eq!(rep_between(DtEvt::of(Dt::of(2020, 02, 29), Freq::Y1), Dt::of(2025, 02, 01), Dt::of(2025, 02, 28)), vec![Dt::of(2025, 02, 28)]);
+        assert_eq!(rep_between(DtEvt::of(Dt::of(2021, 02, 28), Freq::Y1), Dt::of(2025, 02, 01), Dt::of(2025, 02, 28)), vec![Dt::of(2025, 02, 28)]);
+        assert_eq!(rep_between(DtEvt::of(Dt::of(2022, 02, 28), Freq::Y1), Dt::of(2025, 02, 01), Dt::of(2025, 02, 28)), vec![Dt::of(2025, 02, 28)]);
+        assert_eq!(rep_between(DtEvt::of(Dt::of(2021, 11, 11), Freq::Y1), Dt::of(2021, 11, 01), Dt::of(2021, 11, 30)), vec![Dt::of(2021, 11, 11)]);
     }
 
     #[test]
     fn test_rep_between_2y() {
-        assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2020, 01, 31), Freq::Y2),
-                Dt::of(2020, 07, 01),
-                Dt::of(2020, 07, 30)
-            ),
-            []
-        );
-        assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2020, 01, 31), Freq::Y2),
-                Dt::of(2022, 01, 01),
-                Dt::of(2022, 01, 31)
-            ),
-            vec![Dt::of(2022, 01, 31)]
-        );
-        assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2020, 07, 15), Freq::Y2),
-                Dt::of(2020, 07, 01),
-                Dt::of(2021, 07, 31)
-            ),
-            vec![Dt::of(2020, 07, 15)]
-        );
+        assert_eq!(rep_between(DtEvt::of(Dt::of(2020, 01, 31), Freq::Y2), Dt::of(2020, 07, 01), Dt::of(2020, 07, 30)), []);
+        assert_eq!(rep_between(DtEvt::of(Dt::of(2020, 01, 31), Freq::Y2), Dt::of(2022, 01, 01), Dt::of(2022, 01, 31)), vec![Dt::of(2022, 01, 31)]);
+        assert_eq!(rep_between(DtEvt::of(Dt::of(2020, 07, 15), Freq::Y2), Dt::of(2020, 07, 01), Dt::of(2021, 07, 31)), vec![Dt::of(2020, 07, 15)]);
     }
 
     #[test]
     fn test_rep_between_none() {
-        assert_eq!(
-            rep_between(
-                DtEvt { dt: Dt::of(2000, 01, 01), freq: None },
-                Dt::of(2023, 08, 01),
-                Dt::of(2023, 08, 31)
-            ),
-            vec![]
-        );
-        assert_eq!(
-            rep_between(
-                DtEvt { dt: Dt::of(2023, 08, 22), freq: None },
-                Dt::of(2023, 08, 01),
-                Dt::of(2023, 08, 31)
-            ),
-            [Dt::of(2023, 08, 22)]
-        );
+        assert_eq!(rep_between(DtEvt { dt: Dt::of(2000, 01, 01), freq: None }, Dt::of(2023, 08, 01), Dt::of(2023, 08, 31)), vec![]);
+        assert_eq!(rep_between(DtEvt { dt: Dt::of(2023, 08, 22), freq: None }, Dt::of(2023, 08, 01), Dt::of(2023, 08, 31)), [Dt::of(2023, 08, 22)]);
     }
 
     #[test]
     fn test_rep_between_between_repetition() {
-        assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2008, 03, 01), Freq::M3),
-                Dt::of(2008, 04, 01),
-                Dt::of(2008, 04, 30)
-            ),
-            []
-        );
-        assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2009, 04, 01), Freq::M6),
-                Dt::of(2009, 08, 01),
-                Dt::of(2009, 08, 31)
-            ),
-            []
-        );
-        assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2010, 05, 01), Freq::Y1),
-                Dt::of(2011, 04, 01),
-                Dt::of(2011, 04, 30)
-            ),
-            []
-        );
-        assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2011, 06, 01), Freq::Y2),
-                Dt::of(2012, 06, 01),
-                Dt::of(2012, 06, 30)
-            ),
-            []
-        );
+        assert_eq!(rep_between(DtEvt::of(Dt::of(2008, 03, 01), Freq::M3), Dt::of(2008, 04, 01), Dt::of(2008, 04, 30)), []);
+        assert_eq!(rep_between(DtEvt::of(Dt::of(2009, 04, 01), Freq::M6), Dt::of(2009, 08, 01), Dt::of(2009, 08, 31)), []);
+        assert_eq!(rep_between(DtEvt::of(Dt::of(2010, 05, 01), Freq::Y1), Dt::of(2011, 04, 01), Dt::of(2011, 04, 30)), []);
+        assert_eq!(rep_between(DtEvt::of(Dt::of(2011, 06, 01), Freq::Y2), Dt::of(2012, 06, 01), Dt::of(2012, 06, 30)), []);
     }
 
     #[test]
     fn test_rep_between_before_date() {
-        assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2000, 01, 01), Freq::D1),
-                Dt::of(1999, 12, 01),
-                Dt::of(1999, 12, 31)
-            ),
-            []
-        );
-        assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2023, 06, 01), Freq::D2),
-                Dt::of(2023, 05, 01),
-                Dt::of(2023, 05, 31)
-            ),
-            []
-        );
-        assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2023, 07, 01), Freq::W1),
-                Dt::of(2023, 06, 01),
-                Dt::of(2023, 06, 30)
-            ),
-            []
-        );
-        assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2021, 04, 01), Freq::M1),
-                Dt::of(2021, 03, 01),
-                Dt::of(2021, 03, 31)
-            ),
-            []
-        );
-        assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2008, 03, 01), Freq::M3),
-                Dt::of(2008, 02, 01),
-                Dt::of(2008, 02, 29)
-            ),
-            []
-        );
-        assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2009, 10, 01), Freq::M6),
-                Dt::of(2009, 09, 01),
-                Dt::of(2009, 09, 30)
-            ),
-            []
-        );
-        assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2010, 09, 01), Freq::Y1),
-                Dt::of(2010, 08, 01),
-                Dt::of(2010, 08, 31)
-            ),
-            []
-        );
-        assert_eq!(
-            rep_between(
-                DtEvt::of(Dt::of(2011, 08, 01), Freq::Y2),
-                Dt::of(2011, 07, 01),
-                Dt::of(2011, 07, 31)
-            ),
-            []
-        );
+        assert_eq!(rep_between(DtEvt::of(Dt::of(2000, 01, 01), Freq::D1), Dt::of(1999, 12, 01), Dt::of(1999, 12, 31)), []);
+        assert_eq!(rep_between(DtEvt::of(Dt::of(2023, 06, 01), Freq::D2), Dt::of(2023, 05, 01), Dt::of(2023, 05, 31)), []);
+        assert_eq!(rep_between(DtEvt::of(Dt::of(2023, 07, 01), Freq::W1), Dt::of(2023, 06, 01), Dt::of(2023, 06, 30)), []);
+        assert_eq!(rep_between(DtEvt::of(Dt::of(2021, 04, 01), Freq::M1), Dt::of(2021, 03, 01), Dt::of(2021, 03, 31)), []);
+        assert_eq!(rep_between(DtEvt::of(Dt::of(2008, 03, 01), Freq::M3), Dt::of(2008, 02, 01), Dt::of(2008, 02, 29)), []);
+        assert_eq!(rep_between(DtEvt::of(Dt::of(2009, 10, 01), Freq::M6), Dt::of(2009, 09, 01), Dt::of(2009, 09, 30)), []);
+        assert_eq!(rep_between(DtEvt::of(Dt::of(2010, 09, 01), Freq::Y1), Dt::of(2010, 08, 01), Dt::of(2010, 08, 31)), []);
+        assert_eq!(rep_between(DtEvt::of(Dt::of(2011, 08, 01), Freq::Y2), Dt::of(2011, 07, 01), Dt::of(2011, 07, 31)), []);
     }
 }

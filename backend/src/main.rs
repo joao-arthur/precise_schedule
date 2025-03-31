@@ -4,9 +4,8 @@ use accept_language::parse;
 use domain::language::Language;
 use entry::{
     event_controller::{
-        endpoint_event_appointment_c, endpoint_event_appointment_u, endpoint_event_birthday_c,
-        endpoint_event_birthday_u, endpoint_event_d, endpoint_event_date_c, endpoint_event_date_u,
-        endpoint_event_meeting_c, endpoint_event_meeting_u, endpoint_event_party_c,
+        endpoint_event_appointment_c, endpoint_event_appointment_u, endpoint_event_birthday_c, endpoint_event_birthday_u, endpoint_event_d,
+        endpoint_event_date_c, endpoint_event_date_u, endpoint_event_meeting_c, endpoint_event_meeting_u, endpoint_event_party_c,
         endpoint_event_party_u, endpoint_event_r_many, endpoint_event_r_one,
     },
     health_controller::endpoint_health_r,
@@ -67,10 +66,7 @@ async fn main() -> Result<(), rocket::Error> {
                 endpoint_event_r_one
             ],
         )
-        .mount(
-            "/user",
-            routes![endpoint_user_c, endpoint_user_r, endpoint_user_u, endpoint_user_login],
-        )
+        .mount("/user", routes![endpoint_user_c, endpoint_user_r, endpoint_user_u, endpoint_user_login])
         .launch()
         .await?;
 

@@ -1,5 +1,5 @@
-use araucaria::{error::{SchemaErr}, validation::Validation, value::Value};
-use domain::{validation::Validator, language::Language};
+use araucaria::{error::SchemaErr, validation::Validation, value::Value};
+use domain::{language::Language, validation::Validator};
 
 pub struct ValidatorCustom;
 
@@ -12,7 +12,6 @@ impl Validator for ValidatorCustom {
 pub fn value_from_json_value(value: &serde_json::Value, validation: Option<&Validation>) -> Value {
     araucaria_plugins::deserialize::value_from_json_value(value, validation)
 }
-
 
 pub fn validation_i18n(err: &SchemaErr, lg: &Language) -> String {
     let locale = lg.to_iso_639_1();

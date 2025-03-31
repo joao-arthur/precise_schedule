@@ -7,12 +7,10 @@ use rocket::serde::{Deserialize, Serialize};
 use rocket::{http::Status, post, response::status, Data};
 use serde_json::Value;
 
-use domain::schedule::user::create::{user_c, UserC, USER_C_SCHEMA};
-use crate::entry::deps::{
-    get_date_time_gen, get_id_gen, get_session_service, get_user_repo, get_validator,
-};
+use crate::entry::deps::{get_date_time_gen, get_id_gen, get_session_service, get_user_repo, get_validator};
 use crate::infra::validation::{validation_i18n, value_from_json_value};
 use crate::LanguageGuard;
+use domain::schedule::user::create::{user_c, UserC, USER_C_SCHEMA};
 
 #[derive(Deserialize, Serialize, Debug)]
 #[serde(crate = "rocket::serde")]
@@ -57,20 +55,14 @@ struct ErrorGeneric {
 }
 
 #[post("/", format = "application/json", data = "<data>")]
-pub async fn endpoint_user_c(
-    data: Data<'_>,
-    lg: LanguageGuard,
-) -> Result<Json<UserCResult>, Custom<String>> {
+pub async fn endpoint_user_c(data: Data<'_>, lg: LanguageGuard) -> Result<Json<UserCResult>, Custom<String>> {
     let limit = 1.kilobytes();
     let body = match data.open(limit).into_bytes().await {
         Ok(body) => {
             if body.len() >= limit {
                 return Err(status::Custom(
                     Status::PayloadTooLarge,
-                    serde_json::to_string(&ErrorGeneric {
-                        error: "The payload is too large".to_owned(),
-                    })
-                    .unwrap(),
+                    serde_json::to_string(&ErrorGeneric { error: "The payload is too large".to_owned() }).unwrap(),
                 ));
             }
             body.value
@@ -78,10 +70,7 @@ pub async fn endpoint_user_c(
         Err(_) => {
             return Err(status::Custom(
                 Status::PayloadTooLarge,
-                serde_json::to_string(&ErrorGeneric {
-                    error: "The payload is too large".to_owned(),
-                })
-                .unwrap(),
+                serde_json::to_string(&ErrorGeneric { error: "The payload is too large".to_owned() }).unwrap(),
             ));
         }
     };
@@ -99,14 +88,7 @@ pub async fn endpoint_user_c(
         password: ff.password.to_string(),
     };
     let repo = get_user_repo();
-    let temp = user_c(
-        repo,
-        get_id_gen(),
-        get_date_time_gen(),
-        get_session_service(),
-        user,
-    )
-    .unwrap();
+    let temp = user_c(repo, get_id_gen(), get_date_time_gen(), get_session_service(), user).unwrap();
     return Ok(Json(UserCResult {
         user: User {
             id: temp.user.id.clone(),
@@ -120,16 +102,16 @@ pub async fn endpoint_user_c(
         },
         session: Session { token: temp.session.token },
     }));
-        //    let erri18n: HashMap<&str, Vec<String>> = err
-        //        .into_iter()
-        //        .map(|f| {
-        //            (f.0, f.1.iter().map(|p| validation_i18n(p, &lg.0)).collect::<Vec<String>>())
-        //        })
-        //        .collect();
-        //    return Err(status::Custom(
-        //        Status::UnprocessableEntity,
-        //        serde_json::to_string(&erri18n).unwrap(),
-        //    ));
+    //    let erri18n: HashMap<&str, Vec<String>> = err
+    //        .into_iter()
+    //        .map(|f| {
+    //            (f.0, f.1.iter().map(|p| validation_i18n(p, &lg.0)).collect::<Vec<String>>())
+    //        })
+    //        .collect();
+    //    return Err(status::Custom(
+    //        Status::UnprocessableEntity,
+    //        serde_json::to_string(&erri18n).unwrap(),
+    //    ));
 }
 
 #[put("/", format = "application/json")]

@@ -136,11 +136,7 @@ impl UserRepo for UserRepoStub {
 
 impl Default for UserRepoStub {
     fn default() -> Self {
-        UserRepoStub {
-            err: false,
-            user: Some(user_stub()),
-            user_unique_count: UserUniqueInfoCount { email: 0, username: 0 },
-        }
+        UserRepoStub { err: false, user: Some(user_stub()), user_unique_count: UserUniqueInfoCount { email: 0, username: 0 } }
     }
 }
 
@@ -169,10 +165,7 @@ mod test {
         assert_eq!(UserRepoStub::default().d(&user_stub().id), Ok(()));
         assert_eq!(UserRepoStub::default().r_by_id(&user_stub().id), Ok(Some(user_stub())));
         assert_eq!(UserRepoStub::default().r_by_cred(&user_cred_stub()), Ok(Some(user_stub())));
-        assert_eq!(
-            UserRepoStub::default().r_count_unique_info(&user_unique_stub_1()),
-            Ok(UserUniqueInfoCount { email: 0, username: 0 })
-        );
+        assert_eq!(UserRepoStub::default().r_count_unique_info(&user_unique_stub_1()), Ok(UserUniqueInfoCount { email: 0, username: 0 }));
     }
 
     #[test]
@@ -182,10 +175,7 @@ mod test {
         assert_eq!(UserRepoStub::of_db_err().d(&user_stub().id), Err(DBErr));
         assert_eq!(UserRepoStub::of_db_err().r_by_id(&user_stub().id), Err(DBErr));
         assert_eq!(UserRepoStub::of_db_err().r_by_cred(&user_cred_stub()), Err(DBErr));
-        assert_eq!(
-            UserRepoStub::of_db_err().r_count_unique_info(&user_unique_stub_1()),
-            Err(DBErr)
-        );
+        assert_eq!(UserRepoStub::of_db_err().r_count_unique_info(&user_unique_stub_1()), Err(DBErr));
     }
 
     #[test]
@@ -197,8 +187,7 @@ mod test {
     #[test]
     fn test_user_repo_stub_of_unique_info() {
         assert_eq!(
-            UserRepoStub::of_unique_info(UserUniqueInfoCount { username: 1, email: 0 })
-                .r_count_unique_info(&user_unique_stub_1()),
+            UserRepoStub::of_unique_info(UserUniqueInfoCount { username: 1, email: 0 }).r_count_unique_info(&user_unique_stub_1()),
             Ok(UserUniqueInfoCount { username: 1, email: 0 })
         );
     }

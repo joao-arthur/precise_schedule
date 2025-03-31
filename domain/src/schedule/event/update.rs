@@ -30,13 +30,7 @@ pub fn event_from_u(event_u: EventU, event: Event, updated_at: String) -> Event 
     }
 }
 
-pub fn event_u(
-    repo: &dyn EventRepo,
-    date_time_gen: &dyn DateTimeGen,
-    event_u: EventU,
-    event_id: String,
-    user_id: String,
-) -> Result<Event, EventErr> {
+pub fn event_u(repo: &dyn EventRepo, date_time_gen: &dyn DateTimeGen, event_u: EventU, event_id: String, user_id: String) -> Result<Event, EventErr> {
     let old_event = event_r_by_id(repo, &user_id, &event_id)?;
     let now = date_time_gen.now_as_iso();
     let event = event_from_u(event_u, old_event, now);
@@ -59,10 +53,7 @@ mod test {
 
     #[test]
     fn test_event_from_u() {
-        assert_eq!(
-            event_from_u(event_u_stub(), event_stub(), event_stub().updated_at),
-            event_after_u_stub()
-        );
+        assert_eq!(event_from_u(event_u_stub(), event_stub(), event_stub().updated_at), event_after_u_stub());
     }
 
     #[test]

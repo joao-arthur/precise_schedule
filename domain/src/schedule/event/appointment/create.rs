@@ -1,9 +1,6 @@
 use std::{collections::HashMap, sync::LazyLock};
 
-use araucaria::validation::{
-    bool::BoolValidation, date::DateValidation, str::StrValidation, time::TimeValidation,
-    ObjValidation, Validation,
-};
+use araucaria::validation::{bool::BoolValidation, date::DateValidation, str::StrValidation, time::TimeValidation, ObjValidation, Validation};
 
 use crate::{
     generator::{DateTimeGen, IdGen},
@@ -26,10 +23,7 @@ pub struct AppointmentC {
 
 pub static APPOINTMENT_C_SCHEMA: LazyLock<Validation> = LazyLock::new(|| {
     Validation::Obj(ObjValidation::default().validation(HashMap::from([
-        (
-            String::from("name"),
-            Validation::Str(StrValidation::default().min_graphemes_len(1).max_graphemes_len(32)),
-        ),
+        (String::from("name"), Validation::Str(StrValidation::default().min_graphemes_len(1).max_graphemes_len(32))),
         (String::from("day"), Validation::Date(DateValidation::default().ge(String::from("1970-01-01")))),
         (String::from("begin"), Validation::Time(TimeValidation::default())),
         // todo end gt("begin")

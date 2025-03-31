@@ -22,21 +22,12 @@ mod test {
 
     #[test]
     fn test_event_d_ok() {
-        assert_eq!(
-            event_d(&EventRepoStub::default(), &user_stub().id, &event_stub().id),
-            Ok(event_stub())
-        );
+        assert_eq!(event_d(&EventRepoStub::default(), &user_stub().id, &event_stub().id), Ok(event_stub()));
     }
 
     #[test]
     fn test_event_d_err() {
-        assert_eq!(
-            event_d(&EventRepoStub::of_db_err(), &user_stub().id, &event_stub().id),
-            Err(EventErr::DB(DBErr))
-        );
-        assert_eq!(
-            event_d(&EventRepoStub::of_none(), &user_stub().id, &event_stub().id),
-            Err(EventErr::EventIdNotFound(EventIdNotFoundErr))
-        );
+        assert_eq!(event_d(&EventRepoStub::of_db_err(), &user_stub().id, &event_stub().id), Err(EventErr::DB(DBErr)));
+        assert_eq!(event_d(&EventRepoStub::of_none(), &user_stub().id, &event_stub().id), Err(EventErr::EventIdNotFound(EventIdNotFoundErr)));
     }
 }

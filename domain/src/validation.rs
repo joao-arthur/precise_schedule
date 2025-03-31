@@ -31,10 +31,7 @@ pub mod stub {
             assert_eq!(
                 ValidatorStub(Ok(())).validate(
                     &Validation::Obj(ObjValidation {
-                        validation: HashMap::from([(
-                            String::from("is"),
-                            Validation::Bool(BoolValidation::default().eq(false))
-                        )]),
+                        validation: HashMap::from([(String::from("is"), Validation::Bool(BoolValidation::default().eq(false)))]),
                         required: false
                     }),
                     &Value::Obj(HashMap::from([(String::from("is"), Value::Bool(false))]))
@@ -44,29 +41,18 @@ pub mod stub {
             assert_eq!(
                 ValidatorStub(Err(SchemaErr::Obj(HashMap::from([(
                     String::from("is"),
-                    SchemaErr::validation([
-                        ValidationErr::Bool,
-                        ValidationErr::Required,
-                        ValidationErr::Eq(Value::Bool(false))
-                    ])
+                    SchemaErr::validation([ValidationErr::Bool, ValidationErr::Required, ValidationErr::Eq(Value::Bool(false))])
                 )]))))
                 .validate(
                     &Validation::Obj(ObjValidation {
-                        validation: HashMap::from([(
-                            String::from("is"),
-                            Validation::Bool(BoolValidation::default().eq(false))
-                        )]),
+                        validation: HashMap::from([(String::from("is"), Validation::Bool(BoolValidation::default().eq(false)))]),
                         required: false
                     }),
                     &Value::None
                 ),
                 Err(SchemaErr::Obj(HashMap::from([(
                     String::from("is"),
-                    SchemaErr::validation([
-                        ValidationErr::Bool,
-                        ValidationErr::Required,
-                        ValidationErr::Eq(Value::Bool(false))
-                    ])
+                    SchemaErr::validation([ValidationErr::Bool, ValidationErr::Required, ValidationErr::Eq(Value::Bool(false))])
                 )])))
             );
         }

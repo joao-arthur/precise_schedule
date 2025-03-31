@@ -32,12 +32,8 @@ impl SessionService for SessionServiceJWT {
             exp: (date_time_gen.now_as_epoch() + 60 * 60 * 2) as usize,
             iat: date_time_gen.now_as_epoch() as usize,
         };
-        let token = encode(
-            &Header::new(Algorithm::HS512),
-            &claims,
-            &EncodingKey::from_secret(SECRET.as_ref()),
-        )
-        .map_err(|_| SessionErr::Encode(SessionEncodeErr))?;
+        let token = encode(&Header::new(Algorithm::HS512), &claims, &EncodingKey::from_secret(SECRET.as_ref()))
+            .map_err(|_| SessionErr::Encode(SessionEncodeErr))?;
         Ok(Session { token })
     }
 
@@ -45,12 +41,8 @@ impl SessionService for SessionServiceJWT {
         let mut validation = Validation::new(Algorithm::HS512);
         validation.set_audience(&[String::from("precise_schedule_server")]);
         validation.set_issuer(&[String::from("precise_schedule")]);
-        let token_data = decode::<Claims>(
-            &session.token,
-            &DecodingKey::from_secret(SECRET.as_ref()),
-            &validation,
-        )
-        .map_err(|_| SessionErr::Decode(SessionDecodeErr))?;
+        let token_data = decode::<Claims>(&session.token, &DecodingKey::from_secret(SECRET.as_ref()), &validation)
+            .map_err(|_| SessionErr::Decode(SessionDecodeErr))?;
         Ok(token_data.claims.sub)
     }
 }
@@ -75,13 +67,7 @@ mod test {
 
     #[test]
     fn test_session_encode() {
-        assert_eq!(
-            SessionServiceJWT.encode(
-                &user_stub(),
-                &DateTimeGenStub(String::from("2099-12-18T18:02Z"), 4101300161)
-            ),
-            Ok(SESSION.clone())
-        );
+        assert_eq!(SessionServiceJWT.encode(&user_stub(), &DateTimeGenStub(String::from("2099-12-18T18:02Z"), 4101300161)), Ok(SESSION.clone()));
     }
 
     #[test]

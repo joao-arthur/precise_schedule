@@ -141,10 +141,7 @@ mod test {
         assert_eq!(EventRepoStub::default().c(&event_stub()), Ok(()));
         assert_eq!(EventRepoStub::default().u(&event_stub()), Ok(()));
         assert_eq!(EventRepoStub::default().d(&event_stub().id), Ok(()));
-        assert_eq!(
-            EventRepoStub::default().r_by_id(&user_stub().id, &event_stub().id),
-            Ok(Some(event_stub()))
-        );
+        assert_eq!(EventRepoStub::default().r_by_id(&user_stub().id, &event_stub().id), Ok(Some(event_stub())));
     }
 
     #[test]
@@ -152,10 +149,7 @@ mod test {
         assert_eq!(EventRepoStub::of_db_err().c(&event_stub()), Err(DBErr));
         assert_eq!(EventRepoStub::of_db_err().u(&event_stub()), Err(DBErr));
         assert_eq!(EventRepoStub::of_db_err().d(&event_stub().id), Err(DBErr));
-        assert_eq!(
-            EventRepoStub::of_db_err().r_by_id(&user_stub().id, &event_stub().id),
-            Err(DBErr)
-        );
+        assert_eq!(EventRepoStub::of_db_err().r_by_id(&user_stub().id, &event_stub().id), Err(DBErr));
     }
 
     #[test]

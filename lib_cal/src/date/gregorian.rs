@@ -200,11 +200,7 @@ impl ops::Sub<interval::W> for Dt {
 
 impl Ord for Dt {
     fn cmp(&self, other: &Self) -> cmp::Ordering {
-        self.y
-            .0
-            .cmp(&other.y.0)
-            .then(self.m.to_u8().cmp(&other.m.to_u8()))
-            .then(self.d.0.cmp(&other.d.0))
+        self.y.0.cmp(&other.y.0).then(self.m.to_u8().cmp(&other.m.to_u8())).then(self.d.0.cmp(&other.d.0))
     }
 }
 

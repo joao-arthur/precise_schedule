@@ -60,10 +60,7 @@ mod test {
 
     #[test]
     fn test_event_from_c() {
-        assert_eq!(
-            event_from_c(event_c_stub(), event_stub().id, user_stub().id, event_stub().created_at),
-            event_after_c_stub()
-        );
+        assert_eq!(event_from_c(event_c_stub(), event_stub().id, user_stub().id, event_stub().created_at), event_after_c_stub());
     }
 
     #[test]

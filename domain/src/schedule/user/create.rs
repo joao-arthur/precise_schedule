@@ -1,8 +1,6 @@
 use std::{collections::HashMap, sync::LazyLock};
 
-use araucaria::validation::{
-    date::DateValidation, email::EmailValidation, str::StrValidation, ObjValidation, Validation,
-};
+use araucaria::validation::{date::DateValidation, email::EmailValidation, str::StrValidation, ObjValidation, Validation};
 
 use crate::{
     generator::{DateTimeGen, IdGen},
@@ -34,23 +32,10 @@ pub struct UserCResult {
 pub static USER_C_SCHEMA: LazyLock<Validation> = LazyLock::new(|| {
     Validation::Obj(
         ObjValidation::default().validation(HashMap::from([
-            (
-                String::from("first_name"),
-                Validation::Str(
-                    StrValidation::default().min_graphemes_len(1).max_graphemes_len(256),
-                ),
-            ),
-            (
-                String::from("birthdate"),
-                Validation::Date(DateValidation::default().ge(String::from("1970-01-01"))),
-            ),
+            (String::from("first_name"), Validation::Str(StrValidation::default().min_graphemes_len(1).max_graphemes_len(256))),
+            (String::from("birthdate"), Validation::Date(DateValidation::default().ge(String::from("1970-01-01")))),
             (String::from("email"), Validation::Email(EmailValidation::default())),
-            (
-                String::from("username"),
-                Validation::Str(
-                    StrValidation::default().min_graphemes_len(1).max_graphemes_len(64),
-                ),
-            ),
+            (String::from("username"), Validation::Str(StrValidation::default().min_graphemes_len(1).max_graphemes_len(64))),
             (
                 String::from("password"),
                 Validation::Str(
@@ -114,10 +99,7 @@ mod test {
 
     #[test]
     fn test_user_from_c() {
-        assert_eq!(
-            user_from_c(user_c_stub(), user_stub().id, user_stub().created_at),
-            user_after_c_stub()
-        );
+        assert_eq!(user_from_c(user_c_stub(), user_stub().id, user_stub().created_at), user_after_c_stub());
     }
 
     #[test]
@@ -154,10 +136,7 @@ mod test {
                 &SessionServiceStub::default(),
                 user_c_stub()
             ),
-            Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr {
-                username: true,
-                email: true
-            }))
+            Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr { username: true, email: true }))
         );
         assert_eq!(
             user_c(

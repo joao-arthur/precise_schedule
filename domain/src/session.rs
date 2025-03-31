@@ -32,11 +32,7 @@ pub mod stub {
     pub struct SessionServiceStub(pub Result<Session, SessionErr>, pub Result<String, SessionErr>);
 
     impl SessionService for SessionServiceStub {
-        fn encode(
-            &self,
-            _user: &User,
-            _date_time_gen: &dyn DateTimeGen,
-        ) -> Result<Session, SessionErr> {
+        fn encode(&self, _user: &User, _date_time_gen: &dyn DateTimeGen) -> Result<Session, SessionErr> {
             self.0.clone()
         }
 
@@ -53,10 +49,7 @@ pub mod stub {
 
     impl SessionServiceStub {
         pub fn of_session_err() -> Self {
-            SessionServiceStub(
-                Err(SessionErr::Encode(SessionEncodeErr)),
-                Err(SessionErr::Decode(SessionDecodeErr)),
-            )
+            SessionServiceStub(Err(SessionErr::Encode(SessionEncodeErr)), Err(SessionErr::Decode(SessionDecodeErr)))
         }
     }
 
@@ -69,27 +62,15 @@ pub mod stub {
         #[test]
         fn test_session_service_stub() {
             assert_eq!(
-                SessionServiceStub::default().encode(
-                    &user_stub(),
-                    &DateTimeGenStub(String::from("2024-12-18T18:02Z"), 1734555761)
-                ),
+                SessionServiceStub::default().encode(&user_stub(), &DateTimeGenStub(String::from("2024-12-18T18:02Z"), 1734555761)),
                 Ok(session_stub())
             );
+            assert_eq!(SessionServiceStub::default().decode(session_stub()), Ok(String::from("id")));
             assert_eq!(
-                SessionServiceStub::default().decode(session_stub()),
-                Ok(String::from("id"))
-            );
-            assert_eq!(
-                SessionServiceStub::of_session_err().encode(
-                    &user_stub(),
-                    &DateTimeGenStub(String::from("2024-12-18T18:02Z"), 1734555761)
-                ),
+                SessionServiceStub::of_session_err().encode(&user_stub(), &DateTimeGenStub(String::from("2024-12-18T18:02Z"), 1734555761)),
                 Err(SessionErr::Encode(SessionEncodeErr))
             );
-            assert_eq!(
-                SessionServiceStub::of_session_err().decode(session_stub()),
-                Err(SessionErr::Decode(SessionDecodeErr))
-            );
+            assert_eq!(SessionServiceStub::of_session_err().decode(session_stub()), Err(SessionErr::Decode(SessionDecodeErr)));
         }
     }
 }
