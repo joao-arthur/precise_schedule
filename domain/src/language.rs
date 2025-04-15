@@ -30,7 +30,7 @@ impl Language {
 
 #[cfg(test)]
 mod test {
-    use super::*;
+    use super::Language;
 
     #[test]
     fn test_from_iso_639_1() {

@@ -61,9 +61,13 @@ impl UserRepo for UserRepoMemory {
 
 #[cfg(test)]
 mod test {
-    use domain::schedule::user::stub::{user_after_u_stub, user_cred_stub, user_stub, user_unique_stub_3};
+    use domain::schedule::user::{
+        repo::UserRepo,
+        stub::{user_after_u_stub, user_cred_stub, user_stub, user_unique_stub_3},
+        unique_info::UserUniqueInfoCount,
+    };
 
-    use super::*;
+    use super::UserRepoMemory;
 
     #[test]
     fn test_user_repo_memory() {

@@ -28,7 +28,7 @@ mod test {
         f_arr_stub, f_bool_stub, f_num_f_stub, f_num_i_stub, f_num_u_stub, f_obj_stub,
     };
 
-    use super::*;
+    use super::datetime;
 
     #[test]
     fn test_date_ok() {

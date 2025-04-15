@@ -47,16 +47,18 @@ pub fn event_c(
 
 #[cfg(test)]
 mod test {
+    use super::{event_c, event_from_c};
     use crate::{
         database::DBErr,
         generator::stub::{DateTimeGenStub, IdGenStub},
         schedule::{
-            event::stub::{event_after_c_stub, event_c_stub, event_stub, EventRepoStub},
+            event::{
+                error::EventErr,
+                stub::{event_after_c_stub, event_c_stub, event_stub, EventRepoStub},
+            },
             user::stub::user_stub,
         },
     };
-
-    use super::*;
 
     #[test]
     fn test_event_from_c() {

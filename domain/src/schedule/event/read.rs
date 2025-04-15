@@ -48,15 +48,17 @@ pub fn event_r_info_by_user(repo: &dyn EventRepo, user_id: &str) -> Result<Vec<E
 
 #[cfg(test)]
 mod test {
+    use super::{event_r_by_id, event_r_by_user, event_r_info_by_id, event_r_info_by_user, EventIdNotFoundErr, EventInfo};
     use crate::{
         database::DBErr,
         schedule::{
-            event::stub::{event_info_stub, event_stub, EventRepoStub},
+            event::{
+                error::EventErr,
+                stub::{event_info_stub, event_stub, EventRepoStub},
+            },
             user::stub::user_stub,
         },
     };
-
-    use super::*;
 
     #[test]
     fn test_event_info() {

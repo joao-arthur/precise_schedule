@@ -8,11 +8,12 @@ pub fn event_d(repo: &dyn EventRepo, user_id: &str, id: &str) -> Result<Event, E
 
 #[cfg(test)]
 mod test {
-    use super::*;
+    use super::event_d;
     use crate::{
         database::DBErr,
         schedule::{
             event::{
+                error::EventErr,
                 read::EventIdNotFoundErr,
                 stub::{event_stub, EventRepoStub},
             },

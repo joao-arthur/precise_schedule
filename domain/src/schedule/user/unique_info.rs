@@ -61,12 +61,14 @@ pub fn user_u_unique_info_is_valid(repo: &dyn UserRepo, user: &UserUniqueInfo, o
 
 #[cfg(test)]
 mod test {
+    use super::{user_c_unique_info_is_valid, user_u_unique_info_is_valid, UserUniqueInfo, UserUniqueInfoCount, UserUniqueInfoFieldErr};
     use crate::{
         database::DBErr,
-        schedule::user::stub::{user_c_stub, user_stub, user_u_stub, user_unique_stub_1, user_unique_stub_2, UserRepoStub},
+        schedule::user::{
+            error::UserErr,
+            stub::{user_c_stub, user_stub, user_u_stub, user_unique_stub_1, user_unique_stub_2, UserRepoStub},
+        },
     };
-
-    use super::*;
 
     #[test]
     fn test_unique_info() {
@@ -80,12 +82,12 @@ mod test {
 
     #[test]
     fn test_user_c_unique_info_is_valid_ok() {
-        assert_eq!(user_c_unique_info_is_valid(&UserRepoStub::default(), &user_unique_stub_1()), Ok(()),);
+        assert_eq!(user_c_unique_info_is_valid(&UserRepoStub::default(), &user_unique_stub_1()), Ok(()));
     }
 
     #[test]
     fn test_user_c_unique_info_is_valid_err() {
-        assert_eq!(user_c_unique_info_is_valid(&UserRepoStub::of_db_err(), &user_unique_stub_1()), Err(UserErr::DB(DBErr)),);
+        assert_eq!(user_c_unique_info_is_valid(&UserRepoStub::of_db_err(), &user_unique_stub_1()), Err(UserErr::DB(DBErr)));
         assert_eq!(
             user_c_unique_info_is_valid(&UserRepoStub::of_unique_info(UserUniqueInfoCount { username: 1, email: 0 }), &user_unique_stub_1()),
             Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr { username: true, email: false })),
@@ -102,7 +104,7 @@ mod test {
 
     #[test]
     fn test_user_u_unique_info_is_valid_ok() {
-        assert_eq!(user_u_unique_info_is_valid(&UserRepoStub::default(), &user_unique_stub_1(), &user_unique_stub_1(),), Ok(()),);
+        assert_eq!(user_u_unique_info_is_valid(&UserRepoStub::default(), &user_unique_stub_1(), &user_unique_stub_1()), Ok(()));
         assert_eq!(
             user_u_unique_info_is_valid(
                 &UserRepoStub::of_unique_info(UserUniqueInfoCount { username: 1, email: 0 }),
@@ -143,12 +145,12 @@ mod test {
             ),
             Ok(()),
         );
-        assert_eq!(user_u_unique_info_is_valid(&UserRepoStub::default(), &user_unique_stub_2(), &user_unique_stub_1(),), Ok(()),);
+        assert_eq!(user_u_unique_info_is_valid(&UserRepoStub::default(), &user_unique_stub_2(), &user_unique_stub_1()), Ok(()));
     }
 
     #[test]
     fn test_user_u_unique_info_is_valid_err() {
-        assert_eq!(user_u_unique_info_is_valid(&UserRepoStub::of_db_err(), &user_unique_stub_2(), &user_unique_stub_1(),), Err(UserErr::DB(DBErr)),);
+        assert_eq!(user_u_unique_info_is_valid(&UserRepoStub::of_db_err(), &user_unique_stub_2(), &user_unique_stub_1()), Err(UserErr::DB(DBErr)));
         assert_eq!(
             user_u_unique_info_is_valid(
                 &UserRepoStub::of_unique_info(UserUniqueInfoCount { username: 1, email: 0 }),

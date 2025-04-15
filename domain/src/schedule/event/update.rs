@@ -40,16 +40,18 @@ pub fn event_u(repo: &dyn EventRepo, date_time_gen: &dyn DateTimeGen, event_u: E
 
 #[cfg(test)]
 mod test {
+    use super::{event_from_u, event_u};
     use crate::{
         database::DBErr,
         generator::stub::DateTimeGenStub,
         schedule::{
-            event::stub::{event_after_u_stub, event_stub, event_u_stub, EventRepoStub},
+            event::{
+                error::EventErr,
+                stub::{event_after_u_stub, event_stub, event_u_stub, EventRepoStub},
+            },
             user::stub::user_stub,
         },
     };
-
-    use super::*;
 
     #[test]
     fn test_event_from_u() {

@@ -30,26 +30,18 @@ pub struct UserCResult {
 }
 
 pub static USER_C_SCHEMA: LazyLock<Validation> = LazyLock::new(|| {
-    Validation::Obj(
-        ObjValidation::default().validation(HashMap::from([
-            (String::from("first_name"), Validation::Str(StrValidation::default().min_graphemes_len(1).max_graphemes_len(256))),
-            (String::from("birthdate"), Validation::Date(DateValidation::default().ge(String::from("1970-01-01")))),
-            (String::from("email"), Validation::Email(EmailValidation::default())),
-            (String::from("username"), Validation::Str(StrValidation::default().min_graphemes_len(1).max_graphemes_len(64))),
-            (
-                String::from("password"),
-                Validation::Str(
-                    StrValidation::default()
-                        .min_graphemes_len(1)
-                        .max_graphemes_len(64)
-                        .min_uppercase_len(1)
-                        .min_lowercase_len(1)
-                        .min_number_len(1)
-                        .min_symbols_len(1),
-                ),
+    Validation::Obj(ObjValidation::default().validation(HashMap::from([
+        (String::from("first_name"), Validation::Str(StrValidation::default().graphemes_len_btwn(1, 256))),
+        (String::from("birthdate"), Validation::Date(DateValidation::default().ge(String::from("1970-01-01")))),
+        (String::from("email"), Validation::Email(EmailValidation::default())),
+        (String::from("username"), Validation::Str(StrValidation::default().graphemes_len_btwn(1, 64))),
+        (
+            String::from("password"),
+            Validation::Str(
+                StrValidation::default().graphemes_len_btwn(1, 64).uppercase_len_gt(1).lowercase_len_gt(1).numbers_len_gt(1).symbols_len_gt(1),
             ),
-        ])),
-    )
+        ),
+    ])))
 });
 
 fn user_from_c(user_c: UserC, id: String, created_at: String) -> User {
@@ -83,11 +75,12 @@ pub fn user_c(
 
 #[cfg(test)]
 mod test {
-    use super::*;
+    use super::{user_c, user_from_c, UserCResult};
     use crate::{
         database::DBErr,
         generator::stub::{DateTimeGenStub, IdGenStub},
         schedule::user::{
+            error::UserErr,
             stub::{user_after_c_stub, user_c_stub, user_stub, UserRepoStub},
             unique_info::{UserUniqueInfoCount, UserUniqueInfoFieldErr},
         },

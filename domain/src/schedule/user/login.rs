@@ -16,23 +16,15 @@ pub struct UserCred {
 }
 
 pub static USER_LOGIN_SCHEMA: LazyLock<Validation> = LazyLock::new(|| {
-    Validation::Obj(
-        ObjValidation::default().validation(HashMap::from([
-            (String::from("username"), Validation::Str(StrValidation::default().min_graphemes_len(1).max_graphemes_len(64))),
-            (
-                String::from("password"),
-                Validation::Str(
-                    StrValidation::default()
-                        .min_graphemes_len(1)
-                        .max_graphemes_len(64)
-                        .min_uppercase_len(1)
-                        .min_lowercase_len(1)
-                        .min_number_len(1)
-                        .min_symbols_len(1),
-                ),
+    Validation::Obj(ObjValidation::default().validation(HashMap::from([
+        (String::from("username"), Validation::Str(StrValidation::default().graphemes_len_btwn(1, 64))),
+        (
+            String::from("password"),
+            Validation::Str(
+                StrValidation::default().graphemes_len_btwn(1, 64).uppercase_len_gt(1).lowercase_len_gt(1).numbers_len_gt(1).symbols_len_gt(1),
             ),
-        ])),
-    )
+        ),
+    ])))
 });
 
 pub fn user_login(
@@ -48,17 +40,19 @@ pub fn user_login(
 
 #[cfg(test)]
 mod test {
+    use super::user_login;
     use crate::{
         database::DBErr,
         generator::stub::DateTimeGenStub,
-        schedule::user::stub::{user_cred_stub, UserRepoStub},
+        schedule::user::{
+            error::UserErr,
+            stub::{user_cred_stub, UserRepoStub},
+        },
         session::{
             stub::{session_stub, SessionServiceStub},
             SessionEncodeErr, SessionErr,
         },
     };
-
-    use super::*;
 
     #[test]
     fn test_user_login_ok() {

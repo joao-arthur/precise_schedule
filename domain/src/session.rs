@@ -23,7 +23,9 @@ pub trait SessionService {
 }
 
 pub mod stub {
-    use super::*;
+    use crate::{generator::DateTimeGen, schedule::user::model::User};
+
+    use super::{Session, SessionDecodeErr, SessionEncodeErr, SessionErr, SessionService};
 
     pub fn session_stub() -> Session {
         Session { token: String::from("TOKEN") }
@@ -55,9 +57,8 @@ pub mod stub {
 
     #[cfg(test)]
     mod test {
+        use super::{session_stub, SessionDecodeErr, SessionEncodeErr, SessionErr, SessionService, SessionServiceStub};
         use crate::{generator::stub::DateTimeGenStub, schedule::user::stub::user_stub};
-
-        use super::*;
 
         #[test]
         fn test_session_service_stub() {

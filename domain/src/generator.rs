@@ -8,7 +8,7 @@ pub trait DateTimeGen {
 }
 
 pub mod stub {
-    use super::*;
+    use super::{DateTimeGen, IdGen};
 
     pub struct IdGenStub(pub String);
 
@@ -32,7 +32,7 @@ pub mod stub {
 
     #[cfg(test)]
     mod test {
-        use super::*;
+        use super::{DateTimeGen, DateTimeGenStub, IdGen, IdGenStub};
 
         #[test]
         fn test_id_gen_stub() {

@@ -34,12 +34,14 @@ pub fn user_r_info_by_id(repo: &dyn UserRepo, id: &str) -> Result<UserInfo, User
 
 #[cfg(test)]
 mod test {
+    use super::{user_r_by_cred, user_r_by_id, user_r_info_by_id, UserCredNotFoundErr, UserIdNotFoundErr, UserInfo};
     use crate::{
         database::DBErr,
-        schedule::user::stub::{user_cred_stub, user_info_stub, user_stub, UserRepoStub},
+        schedule::user::{
+            error::UserErr,
+            stub::{user_cred_stub, user_info_stub, user_stub, UserRepoStub},
+        },
     };
-
-    use super::*;
 
     #[test]
     fn test_user_info() {

@@ -132,9 +132,11 @@ impl EventRepoStub {
 
 #[cfg(test)]
 mod test {
-    use crate::schedule::user::stub::user_stub;
-
-    use super::*;
+    use super::{event_stub, EventRepoStub};
+    use crate::{
+        database::DBErr,
+        schedule::{event::repo::EventRepo, user::stub::user_stub},
+    };
 
     #[test]
     fn test_user_repo_stub_default() {

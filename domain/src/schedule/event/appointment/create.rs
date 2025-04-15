@@ -23,11 +23,10 @@ pub struct AppointmentC {
 
 pub static APPOINTMENT_C_SCHEMA: LazyLock<Validation> = LazyLock::new(|| {
     Validation::Obj(ObjValidation::default().validation(HashMap::from([
-        (String::from("name"), Validation::Str(StrValidation::default().min_graphemes_len(1).max_graphemes_len(32))),
+        (String::from("name"), Validation::Str(StrValidation::default().graphemes_len_btwn(1, 32))),
         (String::from("day"), Validation::Date(DateValidation::default().ge(String::from("1970-01-01")))),
-        (String::from("begin"), Validation::Time(TimeValidation::default())),
-        // todo end gt("begin")
-        (String::from("end"), Validation::Time(TimeValidation::default())),
+        (String::from("begin"), Validation::Time(TimeValidation::default().lt_field(String::from("end")))),
+        (String::from("end"), Validation::Time(TimeValidation::default().gt_field(String::from("begin")))),
         //(String::from("frequency"), Validation::StrEnum(["1D", "2D", "1W", "1M", "3M", "6M", "1Y", "2Y"])),
         (String::from("weekend_repeat"), Validation::Bool(BoolValidation::default())),
     ])))
@@ -57,7 +56,11 @@ pub fn event_appointment_c(
 
 #[cfg(test)]
 mod test {
-    use super::*;
+    use super::{event_c_from_appointment_c, AppointmentC};
+    use crate::schedule::event::{
+        create::EventC,
+        model::{EventCat, EventFreq},
+    };
 
     #[test]
     fn test_event_c_from_appointment() {

@@ -23,7 +23,7 @@ mod test {
         f_arr_stub, f_bool_stub, f_num_f_stub, f_num_i_stub, f_num_u_stub, f_obj_stub, f_str_stub,
     };
 
-    use super::*;
+    use super::str;
 
     #[test]
     fn test_str_ok() {

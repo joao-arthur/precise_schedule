@@ -51,9 +51,13 @@ impl SessionService for SessionServiceJWT {
 mod test {
     use std::sync::LazyLock;
 
-    use domain::{generator::stub::DateTimeGenStub, schedule::user::stub::user_stub};
+    use domain::{
+        generator::stub::DateTimeGenStub,
+        schedule::user::stub::user_stub,
+        session::{Session, SessionService},
+    };
 
-    use super::*;
+    use super::SessionServiceJWT;
 
     static SESSION: LazyLock<Session> = LazyLock::new(|| {
         Session {

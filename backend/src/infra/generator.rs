@@ -31,9 +31,10 @@ impl DateTimeGen for DateTimeGenImpl {
 mod test {
     use std::sync::LazyLock;
 
+    use domain::generator::{DateTimeGen, IdGen};
     use regex::Regex;
 
-    use super::*;
+    use super::{DateTimeGenImpl, IdGenUUID4, TimeGenUnix};
 
     const EPOCH_2024: u64 = 1704067200;
     static UUID_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$").unwrap());

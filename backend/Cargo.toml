@@ -5,8 +5,8 @@ edition = "2021"
 license = "AGPL-3.0"
 
 [dependencies]
-araucaria = { git = "https://github.com/joao-arthur/araucaria", rev = "d38d6bc411babf4ad3a3272225e725f112698059" }
-araucaria_plugins = { git = "https://github.com/joao-arthur/araucaria_plugins", rev = "3e7380ea0f31960261949f66ade7cf5d21e2c1f7" }
+araucaria = { git = "https://github.com/joao-arthur/araucaria", rev = "f3f84240b335b0058c7dfd159c94b8c8de2d4dde" }
+araucaria_plugins = { git = "https://github.com/joao-arthur/araucaria_plugins", rev = "2c4b011b3482b44035b9795a84a5ff9a1db31f4a" }
 domain = { path = "../domain" }
 rocket = { version = "0.5.1", features = ["json"] }
 serde_json = "1.0.140"

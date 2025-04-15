@@ -59,7 +59,7 @@ pub fn parse_iso(s: &String) -> Result<InternalISO, ()> {
 
 #[cfg(test)]
 mod test {
-    use super::*;
+    use super::{parse_date, parse_time, parse_iso};
 
     #[test]
     fn test_parse_date() {

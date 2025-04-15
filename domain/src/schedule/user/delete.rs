@@ -8,10 +8,11 @@ pub fn user_d(repo: &dyn UserRepo, id: String) -> Result<User, UserErr> {
 
 #[cfg(test)]
 mod test {
-    use super::*;
+    use super::user_d;
     use crate::{
         database::DBErr,
         schedule::user::{
+            error::UserErr,
             read::UserIdNotFoundErr,
             stub::{user_stub, UserRepoStub},
         },

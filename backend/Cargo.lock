@@ -50,18 +50,19 @@ dependencies = [
 [[package]]
 name = "araucaria"
 version = "1.0.0"
-source = "git+https://github.com/joao-arthur/araucaria?rev=d38d6bc411babf4ad3a3272225e725f112698059#d38d6bc411babf4ad3a3272225e725f112698059"
+source = "git+https://github.com/joao-arthur/araucaria?rev=f3f84240b335b0058c7dfd159c94b8c8de2d4dde#f3f84240b335b0058c7dfd159c94b8c8de2d4dde"
 
 [[package]]
 name = "araucaria_plugins"
 version = "1.0.0"
-source = "git+https://github.com/joao-arthur/araucaria_plugins?rev=3e7380ea0f31960261949f66ade7cf5d21e2c1f7#3e7380ea0f31960261949f66ade7cf5d21e2c1f7"
+source = "git+https://github.com/joao-arthur/araucaria_plugins?rev=2c4b011b3482b44035b9795a84a5ff9a1db31f4a#2c4b011b3482b44035b9795a84a5ff9a1db31f4a"
 dependencies = [
  "araucaria",
  "email_address",
  "regex",
  "serde",
  "serde_json",
+ "unicode-segmentation",
 ]
 
 [[package]]
@@ -1837,6 +1838,12 @@ name = "unicode-ident"
 version = "1.0.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "adb9e6ca4f869e1180728b7950e35922a7fc6397f7b641499e8f3ef06e50dc83"
+
+[[package]]
+name = "unicode-segmentation"
+version = "1.12.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f6ccf251212114b54433ec949fd6a7841275f9ada20dddd2f29e9ceea4501493"
 
 [[package]]
 name = "unicode-xid"

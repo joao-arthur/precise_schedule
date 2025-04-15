@@ -19,7 +19,7 @@ pub trait DB {
 
 #[cfg(test)]
 pub mod test {
-    use super::*;
+    use super::{DBErr, DBOp, DB};
 
     pub struct DBStub(DBOp<()>);
 

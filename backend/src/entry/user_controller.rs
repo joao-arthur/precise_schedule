@@ -1,5 +1,3 @@
-use std::collections::HashMap;
-
 use rocket::data::ToByteUnit;
 use rocket::response::status::Custom;
 use rocket::serde::json::Json;
@@ -7,9 +5,11 @@ use rocket::serde::{Deserialize, Serialize};
 use rocket::{http::Status, post, response::status, Data};
 use serde_json::Value;
 
-use crate::entry::deps::{get_date_time_gen, get_id_gen, get_session_service, get_user_repo, get_validator};
-use crate::infra::validation::{validation_i18n, value_from_json_value};
-use crate::LanguageGuard;
+use crate::{
+    entry::deps::{get_date_time_gen, get_id_gen, get_session_service, get_user_repo, get_validator},
+    infra::validation::{validation_i18n, value_from_json_value},
+    LanguageGuard,
+};
 use domain::schedule::user::create::{user_c, UserC, USER_C_SCHEMA};
 
 #[derive(Deserialize, Serialize, Debug)]

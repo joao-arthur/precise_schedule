@@ -52,7 +52,7 @@ pub struct Event {
 
 #[cfg(test)]
 mod test {
-    use super::*;
+    use super::EventFreq;
 
     #[test]
     fn test_event_frequency_parse() {

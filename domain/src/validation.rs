@@ -5,7 +5,9 @@ pub trait Validator {
 }
 
 pub mod stub {
-    use super::*;
+    use araucaria::{error::SchemaErr, validation::Validation, value::Value};
+
+    use super::Validator;
 
     pub struct ValidatorStub(pub Result<(), SchemaErr>);
 
@@ -20,11 +22,13 @@ pub mod stub {
         use std::collections::HashMap;
 
         use araucaria::{
-            error::ValidationErr,
-            validation::{bool::BoolValidation, ObjValidation},
+            error::{SchemaErr, ValidationErr},
+            operation::{Operand, OperandValue, Operation},
+            validation::{bool::BoolValidation, ObjValidation, Validation},
+            value::Value,
         };
 
-        use super::*;
+        use super::{Validator, ValidatorStub};
 
         #[test]
         fn test_validator_stub() {
@@ -41,7 +45,11 @@ pub mod stub {
             assert_eq!(
                 ValidatorStub(Err(SchemaErr::Obj(HashMap::from([(
                     String::from("is"),
-                    SchemaErr::validation([ValidationErr::Bool, ValidationErr::Required, ValidationErr::Eq(Value::Bool(false))])
+                    SchemaErr::validation([
+                        ValidationErr::Bool,
+                        ValidationErr::Required,
+                        ValidationErr::Operation(Operation::Eq(Operand::Value(OperandValue::Bool(false))))
+                    ])
                 )]))))
                 .validate(
                     &Validation::Obj(ObjValidation {
@@ -52,7 +60,11 @@ pub mod stub {
                 ),
                 Err(SchemaErr::Obj(HashMap::from([(
                     String::from("is"),
-                    SchemaErr::validation([ValidationErr::Bool, ValidationErr::Required, ValidationErr::Eq(Value::Bool(false))])
+                    SchemaErr::validation([
+                        ValidationErr::Bool,
+                        ValidationErr::Required,
+                        ValidationErr::Operation(Operation::Eq(Operand::Value(OperandValue::Bool(false))))
+                    ])
                 )])))
             );
         }
