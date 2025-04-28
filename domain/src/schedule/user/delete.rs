@@ -14,7 +14,7 @@ mod test {
         schedule::user::{
             error::UserErr,
             read::UserIdNotFoundErr,
-            stub::{user_stub, UserRepoStub},
+            stub::{UserRepoStub, user_stub},
         },
     };
 

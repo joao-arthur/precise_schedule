@@ -36,7 +36,10 @@ pub mod stub {
 
         #[test]
         fn test_id_gen_stub() {
-            assert_eq!(IdGenStub(String::from("1aa4b955-2e7b-47d8-8ce2-758389cb1789")).generate(), String::from("1aa4b955-2e7b-47d8-8ce2-758389cb1789"));
+            assert_eq!(
+                IdGenStub(String::from("1aa4b955-2e7b-47d8-8ce2-758389cb1789")).generate(),
+                String::from("1aa4b955-2e7b-47d8-8ce2-758389cb1789")
+            );
         }
 
         #[test]

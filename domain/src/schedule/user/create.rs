@@ -1,6 +1,6 @@
-use std::{collections::HashMap, sync::LazyLock};
+use std::{collections::BTreeMap, sync::LazyLock};
 
-use araucaria::validation::{date::DateValidation, email::EmailValidation, str::StrValidation, ObjValidation, Validation};
+use araucaria::validation::{DateValidation, EmailValidation, ObjValidation, StrValidation, Validation};
 
 use crate::{
     generator::{DateTimeGen, IdGen},
@@ -11,7 +11,7 @@ use super::{
     error::UserErr,
     model::User,
     repo::UserRepo,
-    unique_info::{user_c_unique_info_is_valid, UserUniqueInfo},
+    unique_info::{UserUniqueInfo, user_c_unique_info_is_valid},
 };
 
 #[derive(Debug, PartialEq)]
@@ -30,7 +30,7 @@ pub struct UserCResult {
 }
 
 pub static USER_C_SCHEMA: LazyLock<Validation> = LazyLock::new(|| {
-    Validation::Obj(ObjValidation::default().validation(HashMap::from([
+    Validation::Obj(ObjValidation::default().validation(BTreeMap::from([
         (String::from("first_name"), Validation::Str(StrValidation::default().chars_len_btwn(1, 256))),
         (String::from("birthdate"), Validation::Date(DateValidation::default().ge(String::from("1970-01-01")))),
         (String::from("email"), Validation::Email(EmailValidation::default())),
@@ -65,7 +65,7 @@ pub fn user_c(
     user_c: UserC,
 ) -> Result<UserCResult, UserErr> {
     user_c_unique_info_is_valid(repo, &UserUniqueInfo::from(&user_c))?;
-    let id = id_gen.gererate();
+    let id = id_gen.generate();
     let now = date_time_gen.now_as_iso();
     let user = user_from_c(user_c, id, now);
     repo.c(&user).map_err(UserErr::DB)?;
@@ -75,18 +75,18 @@ pub fn user_c(
 
 #[cfg(test)]
 mod test {
-    use super::{user_c, user_from_c, UserCResult};
+    use super::{UserCResult, user_c, user_from_c};
     use crate::{
         database::DBErr,
         generator::stub::{DateTimeGenStub, IdGenStub},
         schedule::user::{
             error::UserErr,
-            stub::{user_after_c_stub, user_c_stub, user_stub, UserRepoStub},
+            stub::{UserRepoStub, user_after_c_stub, user_c_stub, user_stub},
             unique_info::{UserUniqueInfoCount, UserUniqueInfoFieldErr},
         },
         session::{
-            stub::{session_stub, SessionServiceStub},
             SessionEncodeErr, SessionErr,
+            stub::{SessionServiceStub, session_stub},
         },
     };
 

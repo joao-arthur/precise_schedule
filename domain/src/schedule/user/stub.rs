@@ -156,7 +156,7 @@ impl UserRepoStub {
 
 #[cfg(test)]
 mod test {
-    use super::{user_cred_stub, user_stub, user_unique_stub_1, UserRepoStub};
+    use super::{UserRepoStub, user_cred_stub, user_stub, user_unique_stub_1};
     use crate::{
         database::DBErr,
         schedule::user::{repo::UserRepo, unique_info::UserUniqueInfoCount},

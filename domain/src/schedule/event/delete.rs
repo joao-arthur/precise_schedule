@@ -15,7 +15,7 @@ mod test {
             event::{
                 error::EventErr,
                 read::EventIdNotFoundErr,
-                stub::{event_stub, EventRepoStub},
+                stub::{EventRepoStub, event_stub},
             },
             user::stub::user_stub,
         },

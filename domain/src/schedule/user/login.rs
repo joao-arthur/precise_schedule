@@ -1,6 +1,6 @@
-use std::{collections::HashMap, sync::LazyLock};
+use std::{collections::BTreeMap, sync::LazyLock};
 
-use araucaria::validation::{str::StrValidation, ObjValidation, Validation};
+use araucaria::validation::{ObjValidation, StrValidation, Validation};
 
 use crate::{
     generator::DateTimeGen,
@@ -16,7 +16,7 @@ pub struct UserCred {
 }
 
 pub static USER_LOGIN_SCHEMA: LazyLock<Validation> = LazyLock::new(|| {
-    Validation::Obj(ObjValidation::default().validation(HashMap::from([
+    Validation::Obj(ObjValidation::default().validation(BTreeMap::from([
         (String::from("username"), Validation::Str(StrValidation::default().chars_len_btwn(1, 64))),
         (
             String::from("password"),
@@ -46,11 +46,11 @@ mod test {
         generator::stub::DateTimeGenStub,
         schedule::user::{
             error::UserErr,
-            stub::{user_cred_stub, UserRepoStub},
+            stub::{UserRepoStub, user_cred_stub},
         },
         session::{
-            stub::{session_stub, SessionServiceStub},
             SessionEncodeErr, SessionErr,
+            stub::{SessionServiceStub, session_stub},
         },
     };
 

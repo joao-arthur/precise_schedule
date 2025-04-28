@@ -57,7 +57,7 @@ pub mod stub {
 
     #[cfg(test)]
     mod test {
-        use super::{session_stub, SessionDecodeErr, SessionEncodeErr, SessionErr, SessionService, SessionServiceStub};
+        use super::{SessionDecodeErr, SessionEncodeErr, SessionErr, SessionService, SessionServiceStub, session_stub};
         use crate::{generator::stub::DateTimeGenStub, schedule::user::stub::user_stub};
 
         #[test]

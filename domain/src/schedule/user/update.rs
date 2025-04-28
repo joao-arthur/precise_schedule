@@ -1,6 +1,6 @@
-use std::{collections::HashMap, sync::LazyLock};
+use std::{collections::BTreeMap, sync::LazyLock};
 
-use araucaria::validation::{date::DateValidation, email::EmailValidation, str::StrValidation, ObjValidation, Validation};
+use araucaria::validation::{DateValidation, EmailValidation, ObjValidation, StrValidation, Validation};
 
 use crate::{
     generator::DateTimeGen,
@@ -12,7 +12,7 @@ use super::{
     model::User,
     read::user_r_by_id,
     repo::UserRepo,
-    unique_info::{user_u_unique_info_is_valid, UserUniqueInfo},
+    unique_info::{UserUniqueInfo, user_u_unique_info_is_valid},
 };
 
 #[derive(Debug, PartialEq)]
@@ -31,7 +31,7 @@ pub struct UserUResult {
 }
 
 pub static USER_U_SCHEMA: LazyLock<Validation> = LazyLock::new(|| {
-    Validation::Obj(ObjValidation::default().validation(HashMap::from([
+    Validation::Obj(ObjValidation::default().validation(BTreeMap::from([
         (String::from("first_name"), Validation::Str(StrValidation::default().chars_len_btwn(1, 256))),
         (String::from("birthdate"), Validation::Date(DateValidation::default().ge(String::from("1970-01-01")))),
         (String::from("email"), Validation::Email(EmailValidation::default())),
@@ -75,19 +75,19 @@ pub fn user_u(
 
 #[cfg(test)]
 mod test {
-    use super::{user_from_u, user_u, UserUResult};
+    use super::{UserUResult, user_from_u, user_u};
     use crate::{
         database::DBErr,
         generator::stub::DateTimeGenStub,
         schedule::user::{
             error::UserErr,
             read::UserIdNotFoundErr,
-            stub::{user_after_u_stub, user_stub, user_u_stub, UserRepoStub},
+            stub::{UserRepoStub, user_after_u_stub, user_stub, user_u_stub},
             unique_info::{UserUniqueInfoCount, UserUniqueInfoFieldErr},
         },
         session::{
-            stub::{session_stub, SessionServiceStub},
             SessionEncodeErr, SessionErr,
+            stub::{SessionServiceStub, session_stub},
         },
     };
 

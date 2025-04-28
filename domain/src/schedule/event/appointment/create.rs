@@ -1,11 +1,11 @@
-use std::{collections::HashMap, sync::LazyLock};
+use std::{collections::BTreeMap, sync::LazyLock};
 
-use araucaria::validation::{bool::BoolValidation, date::DateValidation, str::StrValidation, time::TimeValidation, ObjValidation, Validation};
+use araucaria::validation::{BoolValidation, DateValidation, EnumValidation, EnumValues, ObjValidation, StrValidation, TimeValidation, Validation};
 
 use crate::{
     generator::{DateTimeGen, IdGen},
     schedule::event::{
-        create::{event_c, EventC},
+        create::{EventC, event_c},
         error::EventErr,
         model::{Event, EventCat, EventFreq},
         repo::EventRepo,
@@ -22,12 +22,24 @@ pub struct AppointmentC {
 }
 
 pub static APPOINTMENT_C_SCHEMA: LazyLock<Validation> = LazyLock::new(|| {
-    Validation::Obj(ObjValidation::default().validation(HashMap::from([
+    Validation::Obj(ObjValidation::default().validation(BTreeMap::from([
         (String::from("name"), Validation::Str(StrValidation::default().chars_len_btwn(1, 32))),
         (String::from("day"), Validation::Date(DateValidation::default().ge(String::from("1970-01-01")))),
         (String::from("begin"), Validation::Time(TimeValidation::default().lt_field(String::from("end")))),
         (String::from("end"), Validation::Time(TimeValidation::default().gt_field(String::from("begin")))),
-        //(String::from("frequency"), Validation::StrEnum(["1D", "2D", "1W", "1M", "3M", "6M", "1Y", "2Y"])),
+        (
+            String::from("frequency"),
+            Validation::Enum(EnumValidation::from(vec![
+                "1D".to_string(),
+                "2D".to_string(),
+                "1W".to_string(),
+                "1M".to_string(),
+                "3M".to_string(),
+                "6M".to_string(),
+                "1Y".to_string(),
+                "2Y".to_string(),
+            ])),
+        ),
         (String::from("weekend_repeat"), Validation::Bool(BoolValidation::default())),
     ])))
 });
@@ -56,7 +68,7 @@ pub fn event_appointment_c(
 
 #[cfg(test)]
 mod test {
-    use super::{event_c_from_appointment_c, AppointmentC};
+    use super::{AppointmentC, event_c_from_appointment_c};
     use crate::schedule::event::{
         create::EventC,
         model::{EventCat, EventFreq},

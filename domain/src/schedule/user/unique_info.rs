@@ -61,12 +61,12 @@ pub fn user_u_unique_info_is_valid(repo: &dyn UserRepo, user: &UserUniqueInfo, o
 
 #[cfg(test)]
 mod test {
-    use super::{user_c_unique_info_is_valid, user_u_unique_info_is_valid, UserUniqueInfo, UserUniqueInfoCount, UserUniqueInfoFieldErr};
+    use super::{UserUniqueInfo, UserUniqueInfoCount, UserUniqueInfoFieldErr, user_c_unique_info_is_valid, user_u_unique_info_is_valid};
     use crate::{
         database::DBErr,
         schedule::user::{
             error::UserErr,
-            stub::{user_c_stub, user_stub, user_u_stub, user_unique_stub_1, user_unique_stub_2, UserRepoStub},
+            stub::{UserRepoStub, user_c_stub, user_stub, user_u_stub, user_unique_stub_1, user_unique_stub_2},
         },
     };
 

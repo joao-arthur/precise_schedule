@@ -19,12 +19,12 @@ pub mod stub {
 
     #[cfg(test)]
     mod test {
-        use std::collections::HashMap;
+        use std::collections::BTreeMap;
 
         use araucaria::{
             error::{SchemaErr, ValidationErr},
             operation::{Operand, OperandValue, Operation},
-            validation::{bool::BoolValidation, ObjValidation, Validation},
+            validation::{BoolValidation, ObjValidation, Validation},
             value::Value,
         };
 
@@ -35,17 +35,17 @@ pub mod stub {
             assert_eq!(
                 ValidatorStub(Ok(())).validate(
                     &Validation::Obj(ObjValidation {
-                        validation: HashMap::from([(String::from("is"), Validation::Bool(BoolValidation::default().eq(false)))]),
+                        validation: BTreeMap::from([(String::from("is"), Validation::Bool(BoolValidation::default().eq(false)))]),
                         required: false
                     }),
-                    &Value::Obj(HashMap::from([(String::from("is"), Value::Bool(false))]))
+                    &Value::Obj(BTreeMap::from([(String::from("is"), Value::Bool(false))]))
                 ),
                 Ok(())
             );
             assert_eq!(
-                ValidatorStub(Err(SchemaErr::Obj(HashMap::from([(
+                ValidatorStub(Err(SchemaErr::Obj(BTreeMap::from([(
                     String::from("is"),
-                    SchemaErr::validation([
+                    SchemaErr::arr([
                         ValidationErr::Bool,
                         ValidationErr::Required,
                         ValidationErr::Operation(Operation::Eq(Operand::Value(OperandValue::Bool(false))))
@@ -53,14 +53,14 @@ pub mod stub {
                 )]))))
                 .validate(
                     &Validation::Obj(ObjValidation {
-                        validation: HashMap::from([(String::from("is"), Validation::Bool(BoolValidation::default().eq(false)))]),
+                        validation: BTreeMap::from([(String::from("is"), Validation::Bool(BoolValidation::default().eq(false)))]),
                         required: false
                     }),
                     &Value::None
                 ),
-                Err(SchemaErr::Obj(HashMap::from([(
+                Err(SchemaErr::Obj(BTreeMap::from([(
                     String::from("is"),
-                    SchemaErr::validation([
+                    SchemaErr::arr([
                         ValidationErr::Bool,
                         ValidationErr::Required,
                         ValidationErr::Operation(Operation::Eq(Operand::Value(OperandValue::Bool(false))))

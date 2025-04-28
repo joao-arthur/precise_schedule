@@ -47,7 +47,7 @@ mod test {
         schedule::{
             event::{
                 error::EventErr,
-                stub::{event_after_u_stub, event_stub, event_u_stub, EventRepoStub},
+                stub::{EventRepoStub, event_after_u_stub, event_stub, event_u_stub},
             },
             user::stub::user_stub,
         },

@@ -38,7 +38,7 @@ pub fn event_c(
     event_c: EventC,
     user_id: String,
 ) -> Result<Event, EventErr> {
-    let id = id_gen.gererate();
+    let id = id_gen.generate();
     let now = date_time_gen.now_as_iso();
     let event = event_from_c(event_c, id, user_id, now);
     repo.c(&event).map_err(EventErr::DB)?;
@@ -54,7 +54,7 @@ mod test {
         schedule::{
             event::{
                 error::EventErr,
-                stub::{event_after_c_stub, event_c_stub, event_stub, EventRepoStub},
+                stub::{EventRepoStub, event_after_c_stub, event_c_stub, event_stub},
             },
             user::stub::user_stub,
         },
