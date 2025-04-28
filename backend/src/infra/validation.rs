@@ -5,12 +5,12 @@ pub struct ValidatorCustom;
 
 impl Validator for ValidatorCustom {
     fn validate(&self, validation: &Validation, value: &Value) -> Result<(), SchemaErr> {
-        araucaria_plugins::validate::validate(validation, value)
+        araucaria_plugins::validate::validate(validation, value, value, false)
     }
 }
 
-pub fn value_from_json_value(value: &serde_json::Value, validation: Option<&Validation>) -> Value {
-    araucaria_plugins::deserialize::value_from_json_value(value, validation)
+pub fn value_from_json_and_schema(value: &serde_json::Value, validation: &Validation) -> Value {
+    araucaria_plugins::deserialize::value_from_json_and_schema(value, validation)
 }
 
 pub fn validation_i18n(err: &SchemaErr, lg: &Language) -> String {
@@ -21,7 +21,7 @@ pub fn validation_i18n(err: &SchemaErr, lg: &Language) -> String {
 
 #[cfg(test)]
 mod test {
-    use araucaria::validation::bool::BoolValidation;
+    use araucaria::validation::BoolValidation;
 
     use super::*;
 
