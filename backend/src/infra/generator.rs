@@ -12,7 +12,7 @@ pub struct DateTimeGenImpl;
 pub struct TimeGenUnix;
 
 impl IdGen for IdGenUUID4 {
-    fn gen(&self) -> String {
+    fn generate(&self) -> String {
         Uuid::new_v4().to_string()
     }
 }
@@ -42,7 +42,7 @@ mod test {
 
     #[test]
     fn test_id_gen_uuid4() {
-        let id = IdGenUUID4.gen();
+        let id = IdGenUUID4.generate();
         assert!(UUID_RE.is_match(&id));
     }
 

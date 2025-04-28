@@ -12,8 +12,8 @@ use entry::{
     user_controller::{endpoint_user_c, endpoint_user_login, endpoint_user_r, endpoint_user_u},
 };
 use rocket::{
-    request::{self, FromRequest},
     Request,
+    request::{self, FromRequest},
 };
 
 pub mod entry;

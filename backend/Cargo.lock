@@ -50,6 +50,11 @@ dependencies = [
 [[package]]
 name = "araucaria"
 version = "1.0.0"
+source = "git+https://github.com/joao-arthur/araucaria?rev=300b4eeed0af3362882ab7ce8559cfc342dfffe6#300b4eeed0af3362882ab7ce8559cfc342dfffe6"
+
+[[package]]
+name = "araucaria"
+version = "1.0.0"
 source = "git+https://github.com/joao-arthur/araucaria?rev=f3f84240b335b0058c7dfd159c94b8c8de2d4dde#f3f84240b335b0058c7dfd159c94b8c8de2d4dde"
 
 [[package]]
@@ -57,7 +62,7 @@ name = "araucaria_plugins"
 version = "1.0.0"
 source = "git+https://github.com/joao-arthur/araucaria_plugins?rev=2c4b011b3482b44035b9795a84a5ff9a1db31f4a#2c4b011b3482b44035b9795a84a5ff9a1db31f4a"
 dependencies = [
- "araucaria",
+ "araucaria 1.0.0 (git+https://github.com/joao-arthur/araucaria?rev=f3f84240b335b0058c7dfd159c94b8c8de2d4dde)",
  "email_address",
  "regex",
  "serde",
@@ -130,7 +135,7 @@ name = "backend"
 version = "1.0.0"
 dependencies = [
  "accept-language",
- "araucaria",
+ "araucaria 1.0.0 (git+https://github.com/joao-arthur/araucaria?rev=f3f84240b335b0058c7dfd159c94b8c8de2d4dde)",
  "araucaria_plugins",
  "chrono",
  "domain",
@@ -345,7 +350,7 @@ dependencies = [
 name = "domain"
 version = "1.0.0"
 dependencies = [
- "araucaria",
+ "araucaria 1.0.0 (git+https://github.com/joao-arthur/araucaria?rev=300b4eeed0af3362882ab7ce8559cfc342dfffe6)",
 ]
 
 [[package]]
