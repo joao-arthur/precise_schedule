@@ -31,14 +31,14 @@ pub struct UserCResult {
 
 pub static USER_C_SCHEMA: LazyLock<Validation> = LazyLock::new(|| {
     Validation::Obj(ObjValidation::default().validation(HashMap::from([
-        (String::from("first_name"), Validation::Str(StrValidation::default().graphemes_len_btwn(1, 256))),
+        (String::from("first_name"), Validation::Str(StrValidation::default().chars_len_btwn(1, 256))),
         (String::from("birthdate"), Validation::Date(DateValidation::default().ge(String::from("1970-01-01")))),
         (String::from("email"), Validation::Email(EmailValidation::default())),
-        (String::from("username"), Validation::Str(StrValidation::default().graphemes_len_btwn(1, 64))),
+        (String::from("username"), Validation::Str(StrValidation::default().chars_len_btwn(1, 64))),
         (
             String::from("password"),
             Validation::Str(
-                StrValidation::default().graphemes_len_btwn(1, 64).uppercase_len_gt(1).lowercase_len_gt(1).numbers_len_gt(1).symbols_len_gt(1),
+                StrValidation::default().chars_len_btwn(1, 64).uppercase_len_gt(1).lowercase_len_gt(1).numbers_len_gt(1).symbols_len_gt(1),
             ),
         ),
     ])))
@@ -65,7 +65,7 @@ pub fn user_c(
     user_c: UserC,
 ) -> Result<UserCResult, UserErr> {
     user_c_unique_info_is_valid(repo, &UserUniqueInfo::from(&user_c))?;
-    let id = id_gen.gen();
+    let id = id_gen.gererate();
     let now = date_time_gen.now_as_iso();
     let user = user_from_c(user_c, id, now);
     repo.c(&user).map_err(UserErr::DB)?;

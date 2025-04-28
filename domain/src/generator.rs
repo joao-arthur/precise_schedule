@@ -1,5 +1,5 @@
 pub trait IdGen {
-    fn gen(&self) -> String;
+    fn generate(&self) -> String;
 }
 
 pub trait DateTimeGen {
@@ -13,7 +13,7 @@ pub mod stub {
     pub struct IdGenStub(pub String);
 
     impl IdGen for IdGenStub {
-        fn gen(&self) -> String {
+        fn generate(&self) -> String {
             self.0.clone()
         }
     }
@@ -36,7 +36,7 @@ pub mod stub {
 
         #[test]
         fn test_id_gen_stub() {
-            assert_eq!(IdGenStub(String::from("1aa4b955-2e7b-47d8-8ce2-758389cb1789")).gen(), String::from("1aa4b955-2e7b-47d8-8ce2-758389cb1789"));
+            assert_eq!(IdGenStub(String::from("1aa4b955-2e7b-47d8-8ce2-758389cb1789")).generate(), String::from("1aa4b955-2e7b-47d8-8ce2-758389cb1789"));
         }
 
         #[test]

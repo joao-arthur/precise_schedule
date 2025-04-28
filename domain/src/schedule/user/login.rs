@@ -17,11 +17,11 @@ pub struct UserCred {
 
 pub static USER_LOGIN_SCHEMA: LazyLock<Validation> = LazyLock::new(|| {
     Validation::Obj(ObjValidation::default().validation(HashMap::from([
-        (String::from("username"), Validation::Str(StrValidation::default().graphemes_len_btwn(1, 64))),
+        (String::from("username"), Validation::Str(StrValidation::default().chars_len_btwn(1, 64))),
         (
             String::from("password"),
             Validation::Str(
-                StrValidation::default().graphemes_len_btwn(1, 64).uppercase_len_gt(1).lowercase_len_gt(1).numbers_len_gt(1).symbols_len_gt(1),
+                StrValidation::default().chars_len_btwn(1, 64).uppercase_len_gt(1).lowercase_len_gt(1).numbers_len_gt(1).symbols_len_gt(1),
             ),
         ),
     ])))

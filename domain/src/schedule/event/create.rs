@@ -38,7 +38,7 @@ pub fn event_c(
     event_c: EventC,
     user_id: String,
 ) -> Result<Event, EventErr> {
-    let id = id_gen.gen();
+    let id = id_gen.gererate();
     let now = date_time_gen.now_as_iso();
     let event = event_from_c(event_c, id, user_id, now);
     repo.c(&event).map_err(EventErr::DB)?;

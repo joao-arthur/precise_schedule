@@ -23,7 +23,7 @@ pub struct AppointmentC {
 
 pub static APPOINTMENT_C_SCHEMA: LazyLock<Validation> = LazyLock::new(|| {
     Validation::Obj(ObjValidation::default().validation(HashMap::from([
-        (String::from("name"), Validation::Str(StrValidation::default().graphemes_len_btwn(1, 32))),
+        (String::from("name"), Validation::Str(StrValidation::default().chars_len_btwn(1, 32))),
         (String::from("day"), Validation::Date(DateValidation::default().ge(String::from("1970-01-01")))),
         (String::from("begin"), Validation::Time(TimeValidation::default().lt_field(String::from("end")))),
         (String::from("end"), Validation::Time(TimeValidation::default().gt_field(String::from("begin")))),

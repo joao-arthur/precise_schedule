@@ -1,12 +1,11 @@
 [package]
 name = "domain"
 version = "1.0.0"
-edition = "2021"
+edition = "2024"
 license = "AGPL-3.0"
 
 [lib]
 crate-type = ["rlib"]
-bench = false
 
 [dependencies]
 araucaria = { git = "https://github.com/joao-arthur/araucaria", rev = "f3f84240b335b0058c7dfd159c94b8c8de2d4dde" }

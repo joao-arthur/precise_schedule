@@ -32,14 +32,14 @@ pub struct UserUResult {
 
 pub static USER_U_SCHEMA: LazyLock<Validation> = LazyLock::new(|| {
     Validation::Obj(ObjValidation::default().validation(HashMap::from([
-        (String::from("first_name"), Validation::Str(StrValidation::default().graphemes_len_btwn(1, 256))),
+        (String::from("first_name"), Validation::Str(StrValidation::default().chars_len_btwn(1, 256))),
         (String::from("birthdate"), Validation::Date(DateValidation::default().ge(String::from("1970-01-01")))),
         (String::from("email"), Validation::Email(EmailValidation::default())),
-        (String::from("username"), Validation::Str(StrValidation::default().graphemes_len_btwn(1, 64))),
+        (String::from("username"), Validation::Str(StrValidation::default().chars_len_btwn(1, 64))),
         (
             String::from("password"),
             Validation::Str(
-                StrValidation::default().graphemes_len_btwn(1, 64).uppercase_len_gt(1).lowercase_len_gt(1).numbers_len_gt(1).symbols_len_gt(1),
+                StrValidation::default().chars_len_btwn(1, 64).uppercase_len_gt(1).lowercase_len_gt(1).numbers_len_gt(1).symbols_len_gt(1),
             ),
         ),
     ])))
