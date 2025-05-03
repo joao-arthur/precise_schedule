@@ -1,6 +1,6 @@
 use std::{collections::BTreeMap, sync::LazyLock};
 
-use araucaria::validation::{BoolValidation, DateValidation, EnumValidation, EnumValues, ObjValidation, StrValidation, TimeValidation, Validation};
+use araucaria::validation::{BoolValidation, DateValidation, EnumValidation, ObjValidation, StrValidation, TimeValidation, Validation};
 
 use crate::{
     generator::{DateTimeGen, IdGen},
@@ -27,19 +27,7 @@ pub static APPOINTMENT_C_SCHEMA: LazyLock<Validation> = LazyLock::new(|| {
         (String::from("day"), Validation::Date(DateValidation::default().ge(String::from("1970-01-01")))),
         (String::from("begin"), Validation::Time(TimeValidation::default().lt_field(String::from("end")))),
         (String::from("end"), Validation::Time(TimeValidation::default().gt_field(String::from("begin")))),
-        (
-            String::from("frequency"),
-            Validation::Enum(EnumValidation::from(vec![
-                "1D".to_string(),
-                "2D".to_string(),
-                "1W".to_string(),
-                "1M".to_string(),
-                "3M".to_string(),
-                "6M".to_string(),
-                "1Y".to_string(),
-                "2Y".to_string(),
-            ])),
-        ),
+        (String::from("frequency"), Validation::Enum(EnumValidation::from(["1D", "2D", "1W", "1M", "3M", "6M", "1Y", "2Y"]))),
         (String::from("weekend_repeat"), Validation::Bool(BoolValidation::default())),
     ])))
 });

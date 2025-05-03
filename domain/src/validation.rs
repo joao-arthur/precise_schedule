@@ -30,43 +30,23 @@ pub mod stub {
 
         use super::{Validator, ValidatorStub};
 
+        const REQUIRED: ValidationErr = ValidationErr::Required;
+        const BOOL: ValidationErr = ValidationErr::Bool;
+
         #[test]
         fn test_validator_stub() {
-            assert_eq!(
-                ValidatorStub(Ok(())).validate(
-                    &Validation::Obj(ObjValidation {
-                        validation: BTreeMap::from([(String::from("is"), Validation::Bool(BoolValidation::default().eq(false)))]),
-                        required: false
-                    }),
-                    &Value::Obj(BTreeMap::from([(String::from("is"), Value::Bool(false))]))
-                ),
-                Ok(())
+            let v = Validation::Obj(
+                ObjValidation::default()
+                    .optional()
+                    .validation(BTreeMap::from([(String::from("is"), Validation::Bool(BoolValidation::default().eq(false)))])),
             );
-            assert_eq!(
-                ValidatorStub(Err(SchemaErr::Obj(BTreeMap::from([(
-                    String::from("is"),
-                    SchemaErr::arr([
-                        ValidationErr::Bool,
-                        ValidationErr::Required,
-                        ValidationErr::Operation(Operation::Eq(Operand::Value(OperandValue::Bool(false))))
-                    ])
-                )]))))
-                .validate(
-                    &Validation::Obj(ObjValidation {
-                        validation: BTreeMap::from([(String::from("is"), Validation::Bool(BoolValidation::default().eq(false)))]),
-                        required: false
-                    }),
-                    &Value::None
-                ),
-                Err(SchemaErr::Obj(BTreeMap::from([(
-                    String::from("is"),
-                    SchemaErr::arr([
-                        ValidationErr::Bool,
-                        ValidationErr::Required,
-                        ValidationErr::Operation(Operation::Eq(Operand::Value(OperandValue::Bool(false))))
-                    ])
-                )])))
-            );
+            let value = Value::Obj(BTreeMap::from([(String::from("is"), Value::Bool(false))]));
+            let err = SchemaErr::obj([(
+                String::from("is"),
+                SchemaErr::validation([REQUIRED, BOOL, ValidationErr::Operation(Operation::Eq(Operand::Value(OperandValue::Bool(false))))]),
+            )]);
+            assert_eq!(ValidatorStub(Ok(())).validate(&v, &value), Ok(()));
+            assert_eq!(ValidatorStub(Err(err.clone())).validate(&v, &Value::None), Err(err.clone()));
         }
     }
 }
