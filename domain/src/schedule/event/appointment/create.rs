@@ -23,12 +23,12 @@ pub struct AppointmentC {
 
 pub static APPOINTMENT_C_SCHEMA: LazyLock<Validation> = LazyLock::new(|| {
     Validation::Obj(ObjValidation::default().validation(BTreeMap::from([
-        (String::from("name"), Validation::Str(StrValidation::default().chars_len_btwn(1, 32))),
-        (String::from("day"), Validation::Date(DateValidation::default().ge(String::from("1970-01-01")))),
-        (String::from("begin"), Validation::Time(TimeValidation::default().lt_field(String::from("end")))),
-        (String::from("end"), Validation::Time(TimeValidation::default().gt_field(String::from("begin")))),
-        (String::from("frequency"), Validation::Enum(EnumValidation::from(["1D", "2D", "1W", "1M", "3M", "6M", "1Y", "2Y"]))),
-        (String::from("weekend_repeat"), Validation::Bool(BoolValidation::default())),
+        ("name".into(), Validation::Str(StrValidation::default().chars_len_btwn(1, 32))),
+        ("day".into(), Validation::Date(DateValidation::default().ge("1970-01-01".into()))),
+        ("begin".into(), Validation::Time(TimeValidation::default().lt_field("end".into()))),
+        ("end".into(), Validation::Time(TimeValidation::default().gt_field("begin".into()))),
+        ("frequency".into(), Validation::Enum(EnumValidation::from(["1D", "2D", "1W", "1M", "3M", "6M", "1Y", "2Y"]))),
+        ("weekend_repeat".into(), Validation::Bool(BoolValidation::default())),
     ])))
 });
 
@@ -65,17 +65,17 @@ mod test {
     #[test]
     fn test_event_c_from_appointment() {
         let appointment = AppointmentC {
-            name: String::from("Dentist"),
-            day: String::from("2024-03-31"),
-            begin: String::from("18:00"),
-            end: String::from("22:00"),
-            frequency: Some(String::from("2D")),
+            name: "Dentist".into(),
+            day: "2024-03-31".into(),
+            begin: "18:00".into(),
+            end: "22:00".into(),
+            frequency: Some("2D".into()),
             weekend_repeat: Some(true),
         };
         let create_event = EventC {
-            name: String::from("Dentist"),
-            begin: String::from("2024-03-31T18:00Z"),
-            end: String::from("2024-03-31T22:00Z"),
+            name: "Dentist".into(),
+            begin: "2024-03-31T18:00Z".into(),
+            end: "2024-03-31T22:00Z".into(),
             category: EventCat::Appointment,
             frequency: Some(EventFreq::D2),
             weekend_repeat: Some(true),

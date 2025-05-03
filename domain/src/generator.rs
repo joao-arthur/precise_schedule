@@ -36,16 +36,13 @@ pub mod stub {
 
         #[test]
         fn test_id_gen_stub() {
-            assert_eq!(
-                IdGenStub(String::from("1aa4b955-2e7b-47d8-8ce2-758389cb1789")).generate(),
-                String::from("1aa4b955-2e7b-47d8-8ce2-758389cb1789")
-            );
+            assert_eq!(IdGenStub("1aa4b955-2e7b-47d8-8ce2-758389cb1789".into()).generate(), "1aa4b955-2e7b-47d8-8ce2-758389cb1789".to_string());
         }
 
         #[test]
         fn test_date_time_gen_stub() {
-            assert_eq!(DateTimeGenStub(String::from("2025-04-18T10:23Z"), 1734555761).now_as_iso(), String::from("2025-04-18T10:23Z"));
-            assert_eq!(DateTimeGenStub(String::from("2025-04-18T10:23Z"), 1734555761).now_as_epoch(), 1734555761);
+            assert_eq!(DateTimeGenStub("2025-04-18T10:23Z".into(), 1734555761).now_as_iso(), "2025-04-18T10:23Z".to_string());
+            assert_eq!(DateTimeGenStub("2025-04-18T10:23Z".into(), 1734555761).now_as_epoch(), 1734555761);
         }
     }
 }

@@ -17,9 +17,9 @@ pub struct UserCred {
 
 pub static USER_LOGIN_SCHEMA: LazyLock<Validation> = LazyLock::new(|| {
     Validation::Obj(ObjValidation::default().validation(BTreeMap::from([
-        (String::from("username"), Validation::Str(StrValidation::default().chars_len_btwn(1, 64))),
+        ("username".into(), Validation::Str(StrValidation::default().chars_len_btwn(1, 64))),
         (
-            String::from("password"),
+            "password".into(),
             Validation::Str(
                 StrValidation::default().chars_len_btwn(1, 64).uppercase_len_gt(1).lowercase_len_gt(1).numbers_len_gt(1).symbols_len_gt(1),
             ),
@@ -59,7 +59,7 @@ mod test {
         assert_eq!(
             user_login(
                 &UserRepoStub::default(),
-                &DateTimeGenStub(String::from("2024-12-18T18:02Z"), 1734555761),
+                &DateTimeGenStub("2024-12-18T18:02Z".into(), 1734555761),
                 &SessionServiceStub::default(),
                 user_cred_stub()
             ),
@@ -72,7 +72,7 @@ mod test {
         assert_eq!(
             user_login(
                 &UserRepoStub::of_db_err(),
-                &DateTimeGenStub(String::from("2024-12-18T18:02Z"), 1734555761),
+                &DateTimeGenStub("2024-12-18T18:02Z".into(), 1734555761),
                 &SessionServiceStub::default(),
                 user_cred_stub()
             ),
@@ -81,7 +81,7 @@ mod test {
         assert_eq!(
             user_login(
                 &UserRepoStub::default(),
-                &DateTimeGenStub(String::from("2024-12-18T18:02Z"), 1734555761),
+                &DateTimeGenStub("2024-12-18T18:02Z".into(), 1734555761),
                 &SessionServiceStub::of_session_err(),
                 user_cred_stub()
             ),

@@ -10,24 +10,24 @@ use super::{
 
 pub fn event_stub() -> Event {
     Event {
-        id: String::from("6d470410-5e51-40d1-bd13-0bb6a99de95e"),
-        name: String::from("Dentist"),
-        begin: String::from("2024-03-31T18:00Z"),
-        end: String::from("2024-03-31T22:00Z"),
+        id: "6d470410-5e51-40d1-bd13-0bb6a99de95e".into(),
+        name: "Dentist".into(),
+        begin: "2024-03-31T18:00Z".into(),
+        end: "2024-03-31T22:00Z".into(),
         category: EventCat::Appointment,
         frequency: Some(EventFreq::D2),
         weekend_repeat: Some(true),
-        user: String::from("a6edc906-2f9f-5fb2-a373-efac406f0ef2"),
-        created_at: String::from("2025-02-05T22:49Z"),
-        updated_at: String::from("2025-04-18T10:23Z"),
+        user: "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
+        created_at: "2025-02-05T22:49Z".into(),
+        updated_at: "2025-04-18T10:23Z".into(),
     }
 }
 
 pub fn event_c_stub() -> EventC {
     EventC {
-        name: String::from("Dentist"),
-        begin: String::from("2024-03-31T18:00Z"),
-        end: String::from("2024-03-31T22:00Z"),
+        name: "Dentist".into(),
+        begin: "2024-03-31T18:00Z".into(),
+        end: "2024-03-31T22:00Z".into(),
         category: EventCat::Appointment,
         frequency: Some(EventFreq::D2),
         weekend_repeat: Some(true),
@@ -36,9 +36,9 @@ pub fn event_c_stub() -> EventC {
 
 pub fn event_u_stub() -> EventU {
     EventU {
-        name: String::from("Medical physicist"),
-        begin: String::from("2025-08-11T10:00Z"),
-        end: String::from("2025-08-11T11:00Z"),
+        name: "Medical physicist".into(),
+        begin: "2025-08-11T10:00Z".into(),
+        end: "2025-08-11T11:00Z".into(),
         category: EventCat::Appointment,
         frequency: None,
         weekend_repeat: None,
@@ -46,14 +46,14 @@ pub fn event_u_stub() -> EventU {
 }
 
 pub fn event_after_c_stub() -> Event {
-    Event { updated_at: String::from("2025-02-05T22:49Z"), ..event_stub() }
+    Event { updated_at: "2025-02-05T22:49Z".into(), ..event_stub() }
 }
 
 pub fn event_after_u_stub() -> Event {
     Event {
-        name: String::from("Medical physicist"),
-        begin: String::from("2025-08-11T10:00Z"),
-        end: String::from("2025-08-11T11:00Z"),
+        name: "Medical physicist".into(),
+        begin: "2025-08-11T10:00Z".into(),
+        end: "2025-08-11T11:00Z".into(),
         category: EventCat::Appointment,
         frequency: None,
         weekend_repeat: None,
@@ -63,9 +63,9 @@ pub fn event_after_u_stub() -> Event {
 
 pub fn event_info_stub() -> EventInfo {
     EventInfo {
-        name: String::from("Dentist"),
-        begin: String::from("2024-03-31T18:00Z"),
-        end: String::from("2024-03-31T22:00Z"),
+        name: "Dentist".into(),
+        begin: "2024-03-31T18:00Z".into(),
+        end: "2024-03-31T22:00Z".into(),
         category: EventCat::Appointment,
         frequency: Some(EventFreq::D2),
         weekend_repeat: Some(true),

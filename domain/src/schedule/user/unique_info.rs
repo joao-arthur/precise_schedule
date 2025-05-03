@@ -72,12 +72,9 @@ mod test {
 
     #[test]
     fn test_unique_info() {
-        assert_eq!(UserUniqueInfo::from(&user_stub()), UserUniqueInfo { username: String::from("paul_mc"), email: String::from("paul@gmail.com") });
-        assert_eq!(UserUniqueInfo::from(&user_c_stub()), UserUniqueInfo { username: String::from("paul_mc"), email: String::from("paul@gmail.com") });
-        assert_eq!(
-            UserUniqueInfo::from(&user_u_stub()),
-            UserUniqueInfo { username: String::from("john_lennon"), email: String::from("john@gmail.com") }
-        )
+        assert_eq!(UserUniqueInfo::from(&user_stub()), UserUniqueInfo { username: "paul_mc".into(), email: "paul@gmail.com".into() });
+        assert_eq!(UserUniqueInfo::from(&user_c_stub()), UserUniqueInfo { username: "paul_mc".into(), email: "paul@gmail.com".into() });
+        assert_eq!(UserUniqueInfo::from(&user_u_stub()), UserUniqueInfo { username: "john_lennon".into(), email: "john@gmail.com".into() })
     }
 
     #[test]

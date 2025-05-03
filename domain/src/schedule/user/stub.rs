@@ -12,76 +12,71 @@ use super::{
 
 pub fn user_stub() -> User {
     User {
-        id: String::from("a6edc906-2f9f-5fb2-a373-efac406f0ef2"),
-        email: String::from("paul@gmail.com"),
-        first_name: String::from("Paul McCartney"),
-        birthdate: String::from("1942-06-18"),
-        username: String::from("paul_mc"),
-        password: String::from("asdf!@#123"),
-        created_at: String::from("2024-03-01T11:26Z"),
-        updated_at: String::from("2024-07-03T22:49Z"),
+        id: "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
+        email: "paul@gmail.com".into(),
+        first_name: "Paul McCartney".into(),
+        birthdate: "1942-06-18".into(),
+        username: "paul_mc".into(),
+        password: "asdf!@#123".into(),
+        created_at: "2024-03-01T11:26Z".into(),
+        updated_at: "2024-07-03T22:49Z".into(),
     }
 }
 
 pub fn user_cred_stub() -> UserCred {
-    UserCred { username: String::from("paul_mc"), password: String::from("asdf!@#123") }
+    UserCred { username: "paul_mc".into(), password: "asdf!@#123".into() }
 }
 
 pub fn user_c_stub() -> UserC {
     UserC {
-        email: String::from("paul@gmail.com"),
-        first_name: String::from("Paul McCartney"),
-        birthdate: String::from("1942-06-18"),
-        username: String::from("paul_mc"),
-        password: String::from("asdf!@#123"),
+        email: "paul@gmail.com".into(),
+        first_name: "Paul McCartney".into(),
+        birthdate: "1942-06-18".into(),
+        username: "paul_mc".into(),
+        password: "asdf!@#123".into(),
     }
 }
 
 pub fn user_after_c_stub() -> User {
-    User { updated_at: String::from("2024-03-01T11:26Z"), ..user_stub() }
+    User { updated_at: "2024-03-01T11:26Z".into(), ..user_stub() }
 }
 
 pub fn user_u_stub() -> UserU {
     UserU {
-        email: String::from("john@gmail.com"),
-        first_name: String::from("John Lennon"),
-        birthdate: String::from("1940-10-09"),
-        username: String::from("john_lennon"),
-        password: String::from("abcd!@#$4321"),
+        email: "john@gmail.com".into(),
+        first_name: "John Lennon".into(),
+        birthdate: "1940-10-09".into(),
+        username: "john_lennon".into(),
+        password: "abcd!@#$4321".into(),
     }
 }
 
 pub fn user_after_u_stub() -> User {
     User {
-        email: String::from("john@gmail.com"),
-        first_name: String::from("John Lennon"),
-        birthdate: String::from("1940-10-09"),
-        username: String::from("john_lennon"),
-        password: String::from("abcd!@#$4321"),
-        updated_at: String::from("2024-07-03T22:49Z"),
+        email: "john@gmail.com".into(),
+        first_name: "John Lennon".into(),
+        birthdate: "1940-10-09".into(),
+        username: "john_lennon".into(),
+        password: "abcd!@#$4321".into(),
+        updated_at: "2024-07-03T22:49Z".into(),
         ..user_stub()
     }
 }
 
 pub fn user_unique_stub_1() -> UserUniqueInfo {
-    UserUniqueInfo { username: String::from("john123"), email: String::from("john@gmail.com") }
+    UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() }
 }
 
 pub fn user_unique_stub_2() -> UserUniqueInfo {
-    UserUniqueInfo { username: String::from("peter987"), email: String::from("peter@gmail.com") }
+    UserUniqueInfo { username: "peter987".into(), email: "peter@gmail.com".into() }
 }
 
 pub fn user_unique_stub_3() -> UserUniqueInfo {
-    UserUniqueInfo { username: String::from("paul_mc"), email: String::from("paul@gmail.com") }
+    UserUniqueInfo { username: "paul_mc".into(), email: "paul@gmail.com".into() }
 }
 
 pub fn user_info_stub() -> UserInfo {
-    UserInfo {
-        email: String::from("paul@gmail.com"),
-        first_name: String::from("Paul McCartney"),
-        birthdate: String::from("1942-06-18"),
-        username: String::from("paul_mc"),
-    }
+    UserInfo { email: "paul@gmail.com".into(), first_name: "Paul McCartney".into(), birthdate: "1942-06-18".into(), username: "paul_mc".into() }
 }
 
 pub struct UserRepoStub {

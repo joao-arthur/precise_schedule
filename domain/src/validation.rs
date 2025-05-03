@@ -38,11 +38,11 @@ pub mod stub {
             let v = Validation::Obj(
                 ObjValidation::default()
                     .optional()
-                    .validation(BTreeMap::from([(String::from("is"), Validation::Bool(BoolValidation::default().eq(false)))])),
+                    .validation(BTreeMap::from([("is".into(), Validation::Bool(BoolValidation::default().eq(false)))])),
             );
-            let value = Value::Obj(BTreeMap::from([(String::from("is"), Value::Bool(false))]));
+            let value = Value::Obj(BTreeMap::from([("is".into(), Value::Bool(false))]));
             let err = SchemaErr::obj([(
-                String::from("is"),
+                "is".into(),
                 SchemaErr::validation([REQUIRED, BOOL, ValidationErr::Operation(Operation::Eq(Operand::Value(OperandValue::Bool(false))))]),
             )]);
             assert_eq!(ValidatorStub(Ok(())).validate(&v, &value), Ok(()));

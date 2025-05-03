@@ -28,7 +28,7 @@ pub mod stub {
     use super::{Session, SessionDecodeErr, SessionEncodeErr, SessionErr, SessionService};
 
     pub fn session_stub() -> Session {
-        Session { token: String::from("TOKEN") }
+        Session { token: "TOKEN".into() }
     }
 
     pub struct SessionServiceStub(pub Result<Session, SessionErr>, pub Result<String, SessionErr>);
@@ -45,7 +45,7 @@ pub mod stub {
 
     impl Default for SessionServiceStub {
         fn default() -> Self {
-            SessionServiceStub(Ok(session_stub()), Ok(String::from("id")))
+            SessionServiceStub(Ok(session_stub()), Ok("id".into()))
         }
     }
 
@@ -63,12 +63,12 @@ pub mod stub {
         #[test]
         fn test_session_service_stub() {
             assert_eq!(
-                SessionServiceStub::default().encode(&user_stub(), &DateTimeGenStub(String::from("2024-12-18T18:02Z"), 1734555761)),
+                SessionServiceStub::default().encode(&user_stub(), &DateTimeGenStub("2024-12-18T18:02Z".into(), 1734555761)),
                 Ok(session_stub())
             );
-            assert_eq!(SessionServiceStub::default().decode(session_stub()), Ok(String::from("id")));
+            assert_eq!(SessionServiceStub::default().decode(session_stub()), Ok("id".into()));
             assert_eq!(
-                SessionServiceStub::of_session_err().encode(&user_stub(), &DateTimeGenStub(String::from("2024-12-18T18:02Z"), 1734555761)),
+                SessionServiceStub::of_session_err().encode(&user_stub(), &DateTimeGenStub("2024-12-18T18:02Z".into(), 1734555761)),
                 Err(SessionErr::Encode(SessionEncodeErr))
             );
             assert_eq!(SessionServiceStub::of_session_err().decode(session_stub()), Err(SessionErr::Decode(SessionDecodeErr)));

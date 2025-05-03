@@ -37,11 +37,11 @@ pub mod test {
 
     #[test]
     fn test_db_stub() {
-        assert_eq!(DBStub(Ok(())).c(String::from("")), Ok(()));
-        assert_eq!(DBStub(Err(DBErr)).c(String::from("")), Err(DBErr));
-        assert_eq!(DBStub(Ok(())).u(String::from("")), Ok(()));
-        assert_eq!(DBStub(Err(DBErr)).u(String::from("")), Err(DBErr));
-        assert_eq!(DBStub(Ok(())).d(String::from("")), Ok(()));
-        assert_eq!(DBStub(Err(DBErr)).d(String::from("")), Err(DBErr));
+        assert_eq!(DBStub(Ok(())).c("".into()), Ok(()));
+        assert_eq!(DBStub(Err(DBErr)).c("".into()), Err(DBErr));
+        assert_eq!(DBStub(Ok(())).u("".into()), Ok(()));
+        assert_eq!(DBStub(Err(DBErr)).u("".into()), Err(DBErr));
+        assert_eq!(DBStub(Ok(())).d("".into()), Ok(()));
+        assert_eq!(DBStub(Err(DBErr)).d("".into()), Err(DBErr));
     }
 }
