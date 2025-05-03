@@ -21,7 +21,7 @@ pub struct AppointmentC {
     pub weekend_repeat: Option<bool>,
 }
 
-pub static APPOINTMENT_C_SCHEMA: LazyLock<Validation> = LazyLock::new(|| {
+pub static APPOINTMENT_CREATE_SCHEMA: LazyLock<Validation> = LazyLock::new(|| {
     Validation::Obj(ObjValidation::default().validation(BTreeMap::from([
         ("name".into(), Validation::Str(StrValidation::default().chars_len_btwn(1, 32))),
         ("day".into(), Validation::Date(DateValidation::default().ge("1970-01-01".into()))),

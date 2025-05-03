@@ -1,3 +1,6 @@
+use std::collections::BTreeMap;
+
+use araucaria::validation::*;
 use rocket::data::ToByteUnit;
 use rocket::response::status::Custom;
 use rocket::serde::json::Json;
@@ -10,7 +13,7 @@ use crate::{
     entry::deps::{get_date_time_gen, get_id_gen, get_session_service, get_user_repo, get_validator},
     infra::validation::{validation_i18n, value_from_json_and_schema},
 };
-use domain::schedule::user::create::{USER_C_SCHEMA, UserC, user_c};
+use domain::schedule::user::create::{USER_CREATE_SCHEMA, UserC, user_c};
 
 #[derive(Deserialize, Serialize, Debug)]
 #[serde(crate = "rocket::serde")]
@@ -75,8 +78,8 @@ pub async fn endpoint_user_c(data: Data<'_>, lg: LanguageGuard) -> Result<Json<U
         }
     };
     let json_value: Value = serde_json::from_slice(&body).unwrap();
-    let internal_value = value_from_json_and_schema(&json_value, &USER_C_SCHEMA);
-    if let Err(err) = get_validator().validate(&USER_C_SCHEMA, &internal_value) {
+    let internal_value = value_from_json_and_schema(&json_value, &USER_CREATE_SCHEMA);
+    if let Err(err) = get_validator().validate(&USER_CREATE_SCHEMA, &internal_value) {
         return Err(status::Custom(Status::UnprocessableEntity, validation_i18n(&err, &lg.0)));
     }
     let ff: UserCCDD = serde_json::from_slice(&body).unwrap();

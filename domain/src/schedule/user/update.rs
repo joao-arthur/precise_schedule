@@ -30,7 +30,7 @@ pub struct UserUResult {
     pub session: Session,
 }
 
-pub static USER_U_SCHEMA: LazyLock<Validation> = LazyLock::new(|| {
+pub static USER_UPDATE_SCHEMA: LazyLock<Validation> = LazyLock::new(|| {
     Validation::Obj(ObjValidation::default().validation(BTreeMap::from([
         ("first_name".into(), Validation::Str(StrValidation::default().chars_len_btwn(1, 256))),
         ("birthdate".into(), Validation::Date(DateValidation::default().ge("1970-01-01".into()))),
@@ -39,7 +39,7 @@ pub static USER_U_SCHEMA: LazyLock<Validation> = LazyLock::new(|| {
         (
             "password".into(),
             Validation::Str(
-                StrValidation::default().chars_len_btwn(1, 64).uppercase_len_gt(1).lowercase_len_gt(1).numbers_len_gt(1).symbols_len_gt(1),
+                StrValidation::default().chars_len_btwn(1, 64).uppercase_len_ge(1).lowercase_len_ge(1).numbers_len_ge(1).symbols_len_ge(1),
             ),
         ),
     ])))

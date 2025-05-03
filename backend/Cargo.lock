@@ -50,12 +50,12 @@ dependencies = [
 [[package]]
 name = "araucaria"
 version = "1.0.0"
-source = "git+https://github.com/joao-arthur/araucaria?rev=300b4eeed0af3362882ab7ce8559cfc342dfffe6#300b4eeed0af3362882ab7ce8559cfc342dfffe6"
+source = "git+https://github.com/joao-arthur/araucaria?rev=412a260b182232be3d373f42cb079bff84e5e199#412a260b182232be3d373f42cb079bff84e5e199"
 
 [[package]]
 name = "araucaria_plugins"
 version = "1.0.0"
-source = "git+https://github.com/joao-arthur/araucaria_plugins?rev=c7bb425212f8e120a1202f50eac222003f89e49b#c7bb425212f8e120a1202f50eac222003f89e49b"
+source = "git+https://github.com/joao-arthur/araucaria_plugins?rev=f07f6e1dbebc987d12fca2b94bcd40353acaf45a#f07f6e1dbebc987d12fca2b94bcd40353acaf45a"
 dependencies = [
  "araucaria",
  "chrono",
