@@ -8,7 +8,7 @@ pub mod meeting;
 pub mod model;
 pub mod party;
 pub mod read;
-pub mod repo;
+pub mod repository;
 pub mod stub;
 pub mod travel;
 pub mod update;

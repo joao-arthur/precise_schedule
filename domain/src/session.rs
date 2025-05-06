@@ -1,4 +1,4 @@
-use super::{generator::DateTimeGen, schedule::user::model::User};
+use super::{generator::DateTimeGenerator, schedule::user::model::User};
 
 #[derive(Debug, PartialEq, Clone)]
 pub struct Session {
@@ -18,12 +18,12 @@ pub enum SessionErr {
 }
 
 pub trait SessionService {
-    fn encode(&self, user: &User, date_time_gen: &dyn DateTimeGen) -> Result<Session, SessionErr>;
+    fn encode(&self, user: &User, date_time_generator: &dyn DateTimeGenerator) -> Result<Session, SessionErr>;
     fn decode(&self, session: Session) -> Result<String, SessionErr>;
 }
 
 pub mod stub {
-    use crate::{generator::DateTimeGen, schedule::user::model::User};
+    use crate::{generator::DateTimeGenerator, schedule::user::model::User};
 
     use super::{Session, SessionDecodeErr, SessionEncodeErr, SessionErr, SessionService};
 
@@ -34,7 +34,7 @@ pub mod stub {
     pub struct SessionServiceStub(pub Result<Session, SessionErr>, pub Result<String, SessionErr>);
 
     impl SessionService for SessionServiceStub {
-        fn encode(&self, _user: &User, _date_time_gen: &dyn DateTimeGen) -> Result<Session, SessionErr> {
+        fn encode(&self, _user: &User, _date_time_gen: &dyn DateTimeGenerator) -> Result<Session, SessionErr> {
             self.0.clone()
         }
 
@@ -58,17 +58,17 @@ pub mod stub {
     #[cfg(test)]
     mod test {
         use super::{SessionDecodeErr, SessionEncodeErr, SessionErr, SessionService, SessionServiceStub, session_stub};
-        use crate::{generator::stub::DateTimeGenStub, schedule::user::stub::user_stub};
+        use crate::{generator::stub::DateTimeGeneratorStub, schedule::user::stub::user_stub};
 
         #[test]
         fn test_session_service_stub() {
             assert_eq!(
-                SessionServiceStub::default().encode(&user_stub(), &DateTimeGenStub("2024-12-18T18:02Z".into(), 1734555761)),
+                SessionServiceStub::default().encode(&user_stub(), &DateTimeGeneratorStub("2024-12-18T18:02Z".into(), 1734555761)),
                 Ok(session_stub())
             );
             assert_eq!(SessionServiceStub::default().decode(session_stub()), Ok("id".into()));
             assert_eq!(
-                SessionServiceStub::of_session_err().encode(&user_stub(), &DateTimeGenStub("2024-12-18T18:02Z".into(), 1734555761)),
+                SessionServiceStub::of_session_err().encode(&user_stub(), &DateTimeGeneratorStub("2024-12-18T18:02Z".into(), 1734555761)),
                 Err(SessionErr::Encode(SessionEncodeErr))
             );
             assert_eq!(SessionServiceStub::of_session_err().decode(session_stub()), Err(SessionErr::Decode(SessionDecodeErr)));

@@ -1,4 +1,4 @@
-pub struct AppointmentU {
+pub struct AppointmentUpdate {
     pub name: String,
     pub day: String,
     pub begin: String,
@@ -7,4 +7,4 @@ pub struct AppointmentU {
     pub weekend_repeat: Option<bool>,
 }
 
-pub fn event_appointment_u() {}
+pub fn event_appointment_update() {}

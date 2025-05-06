@@ -12,9 +12,9 @@ impl fmt::Display for DBErr {
 pub type DBOp<T> = Result<T, DBErr>;
 
 pub trait DB {
-    fn c(&self, ent: String) -> DBOp<()>;
-    fn u(&self, ent: String) -> DBOp<()>;
-    fn d(&self, ent: String) -> DBOp<()>;
+    fn create(&self, ent: String) -> DBOp<()>;
+    fn update(&self, ent: String) -> DBOp<()>;
+    fn delete(&self, ent: String) -> DBOp<()>;
 }
 
 #[cfg(test)]
@@ -24,24 +24,24 @@ pub mod test {
     pub struct DBStub(DBOp<()>);
 
     impl DB for DBStub {
-        fn c(&self, _: String) -> DBOp<()> {
+        fn create(&self, _: String) -> DBOp<()> {
             self.0.clone()
         }
-        fn u(&self, _: String) -> DBOp<()> {
+        fn update(&self, _: String) -> DBOp<()> {
             self.0.clone()
         }
-        fn d(&self, _: String) -> DBOp<()> {
+        fn delete(&self, _: String) -> DBOp<()> {
             self.0.clone()
         }
     }
 
     #[test]
     fn test_db_stub() {
-        assert_eq!(DBStub(Ok(())).c("".into()), Ok(()));
-        assert_eq!(DBStub(Err(DBErr)).c("".into()), Err(DBErr));
-        assert_eq!(DBStub(Ok(())).u("".into()), Ok(()));
-        assert_eq!(DBStub(Err(DBErr)).u("".into()), Err(DBErr));
-        assert_eq!(DBStub(Ok(())).d("".into()), Ok(()));
-        assert_eq!(DBStub(Err(DBErr)).d("".into()), Err(DBErr));
+        assert_eq!(DBStub(Ok(())).create("".into()), Ok(()));
+        assert_eq!(DBStub(Err(DBErr)).create("".into()), Err(DBErr));
+        assert_eq!(DBStub(Ok(())).update("".into()), Ok(()));
+        assert_eq!(DBStub(Err(DBErr)).update("".into()), Err(DBErr));
+        assert_eq!(DBStub(Ok(())).delete("".into()), Ok(()));
+        assert_eq!(DBStub(Err(DBErr)).delete("".into()), Err(DBErr));
     }
 }

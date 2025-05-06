@@ -1,84 +1,84 @@
-use crate::generator::DateTimeGen;
+use crate::generator::DateTimeGenerator;
 
 use super::{
     error::EventErr,
-    model::{Event, EventCat, EventFreq},
-    read::event_r_by_id,
-    repo::EventRepo,
+    model::{Event, EventCategory, EventFrequency},
+    read::event_read_by_id,
+    repository::EventRepo,
 };
 
 #[derive(Debug, PartialEq)]
-pub struct EventU {
+pub struct EventUpdate {
     pub name: String,
     pub begin: String,
     pub end: String,
-    pub category: EventCat,
-    pub frequency: Option<EventFreq>,
+    pub category: EventCategory,
+    pub frequency: Option<EventFrequency>,
     pub weekend_repeat: Option<bool>,
 }
 
-pub fn event_from_u(event_u: EventU, event: Event, updated_at: String) -> Event {
+pub fn event_from_update(event_update: EventUpdate, event: Event, updated_at: String) -> Event {
     Event {
-        name: event_u.name,
-        begin: event_u.begin,
-        end: event_u.end,
-        category: event_u.category,
-        frequency: event_u.frequency,
-        weekend_repeat: event_u.weekend_repeat,
+        name: event_update.name,
+        begin: event_update.begin,
+        end: event_update.end,
+        category: event_update.category,
+        frequency: event_update.frequency,
+        weekend_repeat: event_update.weekend_repeat,
         updated_at,
         ..event
     }
 }
 
-pub fn event_u(repo: &dyn EventRepo, date_time_gen: &dyn DateTimeGen, event_u: EventU, event_id: String, user_id: String) -> Result<Event, EventErr> {
-    let old_event = event_r_by_id(repo, &user_id, &event_id)?;
-    let now = date_time_gen.now_as_iso();
-    let event = event_from_u(event_u, old_event, now);
-    repo.u(&event).map_err(EventErr::DB)?;
+pub fn event_update(repository: &dyn EventRepo, date_time_generator: &dyn DateTimeGenerator, event_update: EventUpdate, event_id: String, user_id: String) -> Result<Event, EventErr> {
+    let old_event = event_read_by_id(repository, &user_id, &event_id)?;
+    let now = date_time_generator.now_as_iso();
+    let event = event_from_update(event_update, old_event, now);
+    repository.update(&event).map_err(EventErr::DB)?;
     Ok(event)
 }
 
 #[cfg(test)]
 mod test {
-    use super::{event_from_u, event_u};
+    use super::{event_from_update, event_update};
     use crate::{
         database::DBErr,
-        generator::stub::DateTimeGenStub,
+        generator::stub::DateTimeGeneratorStub,
         schedule::{
             event::{
                 error::EventErr,
-                stub::{EventRepoStub, event_after_u_stub, event_stub, event_u_stub},
+                stub::{EventRepoStub, event_after_update_stub, event_stub, event_update_stub},
             },
             user::stub::user_stub,
         },
     };
 
     #[test]
-    fn test_event_from_u() {
-        assert_eq!(event_from_u(event_u_stub(), event_stub(), event_stub().updated_at), event_after_u_stub());
+    fn test_event_from_update() {
+        assert_eq!(event_from_update(event_update_stub(), event_stub(), event_stub().updated_at), event_after_update_stub());
     }
 
     #[test]
-    fn test_event_u_ok() {
+    fn test_event_update_ok() {
         assert_eq!(
-            event_u(
+            event_update(
                 &EventRepoStub::default(),
-                &DateTimeGenStub(event_stub().updated_at, 1734555761),
-                event_u_stub(),
+                &DateTimeGeneratorStub(event_stub().updated_at, 1734555761),
+                event_update_stub(),
                 user_stub().id,
                 event_stub().id
             ),
-            Ok(event_after_u_stub())
+            Ok(event_after_update_stub())
         );
     }
 
     #[test]
-    fn test_user_u_err() {
+    fn test_user_update_err() {
         assert_eq!(
-            event_u(
+            event_update(
                 &EventRepoStub::of_db_err(),
-                &DateTimeGenStub(user_stub().updated_at, 1734555761),
-                event_u_stub(),
+                &DateTimeGeneratorStub(user_stub().updated_at, 1734555761),
+                event_update_stub(),
                 user_stub().id,
                 event_stub().id
             ),

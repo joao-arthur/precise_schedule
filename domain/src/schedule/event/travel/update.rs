@@ -1,1 +1,1 @@
-pub fn event_travel_u() {}
+pub fn event_travel_update() {}

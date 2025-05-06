@@ -1,1 +1,1 @@
-pub fn event_party_c() {}
+pub fn event_party_create() {}

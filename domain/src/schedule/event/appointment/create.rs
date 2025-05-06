@@ -3,16 +3,16 @@ use std::{collections::BTreeMap, sync::LazyLock};
 use araucaria::validation::{BoolValidation, DateValidation, EnumValidation, ObjValidation, StrValidation, TimeValidation, Validation};
 
 use crate::{
-    generator::{DateTimeGen, IdGen},
+    generator::{DateTimeGenerator, IdGenerator},
     schedule::event::{
-        create::{EventC, event_c},
+        create::{EventCreate, event_create},
         error::EventErr,
-        model::{Event, EventCat, EventFreq},
-        repo::EventRepo,
+        model::{Event, EventCategory, EventFrequency},
+        repository::EventRepo,
     },
 };
 
-pub struct AppointmentC {
+pub struct AppointmentCreate {
     pub name: String,
     pub day: String,
     pub begin: String,
@@ -32,39 +32,39 @@ pub static APPOINTMENT_CREATE_SCHEMA: LazyLock<Validation> = LazyLock::new(|| {
     ])))
 });
 
-pub fn event_c_from_appointment_c(event: AppointmentC) -> EventC {
-    EventC {
-        name: event.name,
-        begin: format!("{}T{}Z", event.day, event.begin),
-        end: format!("{}T{}Z", event.day, event.end),
-        category: EventCat::Appointment,
-        frequency: event.frequency.and_then(|freq| EventFreq::parse(&freq)),
-        weekend_repeat: event.weekend_repeat,
+pub fn event_create_from_appointment_create(model: AppointmentCreate) -> EventCreate {
+    EventCreate {
+        name: model.name,
+        begin: format!("{}T{}Z", model.day, model.begin),
+        end: format!("{}T{}Z", model.day, model.end),
+        category: EventCategory::Appointment,
+        frequency: model.frequency.and_then(|freq| EventFrequency::parse(&freq)),
+        weekend_repeat: model.weekend_repeat,
     }
 }
 
-pub fn event_appointment_c(
-    repo: &dyn EventRepo,
-    id_gen: &dyn IdGen,
-    date_time_gen: &dyn DateTimeGen,
-    appointment_c_model: AppointmentC,
+pub fn event_appointment_create(
+    repository: &dyn EventRepo,
+    id_generator: &dyn IdGenerator,
+    date_time_generator: &dyn DateTimeGenerator,
+    model: AppointmentCreate,
     user_id: String,
 ) -> Result<Event, EventErr> {
-    let event_c_model = event_c_from_appointment_c(appointment_c_model);
-    return event_c(repo, id_gen, date_time_gen, event_c_model, user_id);
+    let event_create_model = event_create_from_appointment_create(model);
+    return event_create(repository, id_generator, date_time_generator, event_create_model, user_id);
 }
 
 #[cfg(test)]
 mod test {
-    use super::{AppointmentC, event_c_from_appointment_c};
+    use super::{AppointmentCreate, event_create_from_appointment_create};
     use crate::schedule::event::{
-        create::EventC,
-        model::{EventCat, EventFreq},
+        create::EventCreate,
+        model::{EventCategory, EventFrequency},
     };
 
     #[test]
-    fn test_event_c_from_appointment() {
-        let appointment = AppointmentC {
+    fn test_event_create_from_appointment() {
+        let appointment = AppointmentCreate {
             name: "Dentist".into(),
             day: "2024-03-31".into(),
             begin: "18:00".into(),
@@ -72,14 +72,14 @@ mod test {
             frequency: Some("2D".into()),
             weekend_repeat: Some(true),
         };
-        let create_event = EventC {
+        let create_event = EventCreate {
             name: "Dentist".into(),
             begin: "2024-03-31T18:00Z".into(),
             end: "2024-03-31T22:00Z".into(),
-            category: EventCat::Appointment,
-            frequency: Some(EventFreq::D2),
+            category: EventCategory::Appointment,
+            frequency: Some(EventFrequency::D2),
             weekend_repeat: Some(true),
         };
-        assert_eq!(event_c_from_appointment_c(appointment), create_event);
+        assert_eq!(event_create_from_appointment_create(appointment), create_event);
     }
 }

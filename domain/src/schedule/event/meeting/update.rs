@@ -1,1 +1,1 @@
-pub fn event_meeting_u() {}
+pub fn event_meeting_update() {}

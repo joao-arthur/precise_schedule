@@ -35,7 +35,7 @@ pub mod stub {
 
         #[test]
         fn test_validator_stub() {
-            let v = Validation::Obj(
+            let v = Validation::from(
                 ObjValidation::default()
                     .optional()
                     .validation(BTreeMap::from([("is".into(), Validation::Bool(BoolValidation::default().eq(false)))])),

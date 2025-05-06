@@ -1,4 +1,4 @@
-use super::{create::UserC, error::UserErr, model::User, repo::UserRepo, update::UserU};
+use super::{create::UserCreate, error::UserErr, model::User, repository::UserRepository, update::UserUpdate};
 
 #[derive(Debug, PartialEq)]
 pub struct UserUniqueInfo {
@@ -12,14 +12,14 @@ impl From<&User> for UserUniqueInfo {
     }
 }
 
-impl From<&UserC> for UserUniqueInfo {
-    fn from(user: &UserC) -> Self {
+impl From<&UserCreate> for UserUniqueInfo {
+    fn from(user: &UserCreate) -> Self {
         UserUniqueInfo { username: user.username.clone(), email: user.email.clone() }
     }
 }
 
-impl From<&UserU> for UserUniqueInfo {
-    fn from(user: &UserU) -> Self {
+impl From<&UserUpdate> for UserUniqueInfo {
+    fn from(user: &UserUpdate) -> Self {
         UserUniqueInfo { username: user.username.clone(), email: user.email.clone() }
     }
 }
@@ -36,8 +36,8 @@ pub struct UserUniqueInfoFieldErr {
     pub email: bool,
 }
 
-pub fn user_c_unique_info_is_valid(repo: &dyn UserRepo, user: &UserUniqueInfo) -> Result<(), UserErr> {
-    let unique_info = repo.r_count_unique_info(&user).map_err(UserErr::DB)?;
+pub fn user_create_unique_info_is_valid(repository: &dyn UserRepository, user: &UserUniqueInfo) -> Result<(), UserErr> {
+    let unique_info = repository.read_count_unique_info(&user).map_err(UserErr::DB)?;
     let username_err = unique_info.username > 0;
     let email_err = unique_info.email > 0;
     if username_err || email_err {
@@ -46,11 +46,11 @@ pub fn user_c_unique_info_is_valid(repo: &dyn UserRepo, user: &UserUniqueInfo) -
     Ok(())
 }
 
-pub fn user_u_unique_info_is_valid(repo: &dyn UserRepo, user: &UserUniqueInfo, old_user: &UserUniqueInfo) -> Result<(), UserErr> {
+pub fn user_update_unique_info_is_valid(repository: &dyn UserRepository, user: &UserUniqueInfo, old_user: &UserUniqueInfo) -> Result<(), UserErr> {
     if user.username == old_user.username && user.email == old_user.email {
         return Ok(());
     }
-    let unique_info = repo.r_count_unique_info(&user).map_err(UserErr::DB)?;
+    let unique_info = repository.read_count_unique_info(&user).map_err(UserErr::DB)?;
     let username_err = user.username != old_user.username && unique_info.username > 0;
     let email_err = user.email != old_user.email && unique_info.email > 0;
     if username_err || email_err {
@@ -61,114 +61,114 @@ pub fn user_u_unique_info_is_valid(repo: &dyn UserRepo, user: &UserUniqueInfo, o
 
 #[cfg(test)]
 mod test {
-    use super::{UserUniqueInfo, UserUniqueInfoCount, UserUniqueInfoFieldErr, user_c_unique_info_is_valid, user_u_unique_info_is_valid};
+    use super::{UserUniqueInfo, UserUniqueInfoCount, UserUniqueInfoFieldErr, user_create_unique_info_is_valid, user_update_unique_info_is_valid};
     use crate::{
         database::DBErr,
         schedule::user::{
             error::UserErr,
-            stub::{UserRepoStub, user_c_stub, user_stub, user_u_stub, user_unique_stub_1, user_unique_stub_2},
+            stub::{UserRepositoryStub, user_create_stub, user_stub, user_update_stub, user_unique_info_stub_1, user_unique_info_stub_2},
         },
     };
 
     #[test]
     fn test_unique_info() {
         assert_eq!(UserUniqueInfo::from(&user_stub()), UserUniqueInfo { username: "paul_mc".into(), email: "paul@gmail.com".into() });
-        assert_eq!(UserUniqueInfo::from(&user_c_stub()), UserUniqueInfo { username: "paul_mc".into(), email: "paul@gmail.com".into() });
-        assert_eq!(UserUniqueInfo::from(&user_u_stub()), UserUniqueInfo { username: "john_lennon".into(), email: "john@gmail.com".into() })
+        assert_eq!(UserUniqueInfo::from(&user_create_stub()), UserUniqueInfo { username: "paul_mc".into(), email: "paul@gmail.com".into() });
+        assert_eq!(UserUniqueInfo::from(&user_update_stub()), UserUniqueInfo { username: "john_lennon".into(), email: "john@gmail.com".into() })
     }
 
     #[test]
-    fn test_user_c_unique_info_is_valid_ok() {
-        assert_eq!(user_c_unique_info_is_valid(&UserRepoStub::default(), &user_unique_stub_1()), Ok(()));
+    fn test_user_create_unique_info_is_valid_ok() {
+        assert_eq!(user_create_unique_info_is_valid(&UserRepositoryStub::default(), &user_unique_info_stub_1()), Ok(()));
     }
 
     #[test]
-    fn test_user_c_unique_info_is_valid_err() {
-        assert_eq!(user_c_unique_info_is_valid(&UserRepoStub::of_db_err(), &user_unique_stub_1()), Err(UserErr::DB(DBErr)));
+    fn test_user_create_unique_info_is_valid_err() {
+        assert_eq!(user_create_unique_info_is_valid(&UserRepositoryStub::of_db_err(), &user_unique_info_stub_1()), Err(UserErr::DB(DBErr)));
         assert_eq!(
-            user_c_unique_info_is_valid(&UserRepoStub::of_unique_info(UserUniqueInfoCount { username: 1, email: 0 }), &user_unique_stub_1()),
+            user_create_unique_info_is_valid(&UserRepositoryStub::of_unique_info(UserUniqueInfoCount { username: 1, email: 0 }), &user_unique_info_stub_1()),
             Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr { username: true, email: false })),
         );
         assert_eq!(
-            user_c_unique_info_is_valid(&UserRepoStub::of_unique_info(UserUniqueInfoCount { username: 0, email: 1 }), &user_unique_stub_1()),
+            user_create_unique_info_is_valid(&UserRepositoryStub::of_unique_info(UserUniqueInfoCount { username: 0, email: 1 }), &user_unique_info_stub_1()),
             Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr { username: false, email: true })),
         );
         assert_eq!(
-            user_c_unique_info_is_valid(&UserRepoStub::of_unique_info(UserUniqueInfoCount { username: 1, email: 1 }), &user_unique_stub_1()),
+            user_create_unique_info_is_valid(&UserRepositoryStub::of_unique_info(UserUniqueInfoCount { username: 1, email: 1 }), &user_unique_info_stub_1()),
             Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr { username: true, email: true })),
         );
     }
 
     #[test]
-    fn test_user_u_unique_info_is_valid_ok() {
-        assert_eq!(user_u_unique_info_is_valid(&UserRepoStub::default(), &user_unique_stub_1(), &user_unique_stub_1()), Ok(()));
+    fn test_user_update_unique_info_is_valid_ok() {
+        assert_eq!(user_update_unique_info_is_valid(&UserRepositoryStub::default(), &user_unique_info_stub_1(), &user_unique_info_stub_1()), Ok(()));
         assert_eq!(
-            user_u_unique_info_is_valid(
-                &UserRepoStub::of_unique_info(UserUniqueInfoCount { username: 1, email: 0 }),
-                &user_unique_stub_1(),
-                &user_unique_stub_1(),
+            user_update_unique_info_is_valid(
+                &UserRepositoryStub::of_unique_info(UserUniqueInfoCount { username: 1, email: 0 }),
+                &user_unique_info_stub_1(),
+                &user_unique_info_stub_1(),
             ),
             Ok(()),
         );
         assert_eq!(
-            user_u_unique_info_is_valid(
-                &UserRepoStub::of_unique_info(UserUniqueInfoCount { username: 0, email: 1 }),
-                &user_unique_stub_1(),
-                &user_unique_stub_1(),
+            user_update_unique_info_is_valid(
+                &UserRepositoryStub::of_unique_info(UserUniqueInfoCount { username: 0, email: 1 }),
+                &user_unique_info_stub_1(),
+                &user_unique_info_stub_1(),
             ),
             Ok(()),
         );
         assert_eq!(
-            user_u_unique_info_is_valid(
-                &UserRepoStub::of_unique_info(UserUniqueInfoCount { username: 1, email: 1 }),
-                &user_unique_stub_1(),
-                &user_unique_stub_1(),
+            user_update_unique_info_is_valid(
+                &UserRepositoryStub::of_unique_info(UserUniqueInfoCount { username: 1, email: 1 }),
+                &user_unique_info_stub_1(),
+                &user_unique_info_stub_1(),
             ),
             Ok(()),
         );
         assert_eq!(
-            user_u_unique_info_is_valid(
-                &UserRepoStub::of_unique_info(UserUniqueInfoCount { username: 2, email: 1 }),
-                &user_unique_stub_1(),
-                &user_unique_stub_1(),
+            user_update_unique_info_is_valid(
+                &UserRepositoryStub::of_unique_info(UserUniqueInfoCount { username: 2, email: 1 }),
+                &user_unique_info_stub_1(),
+                &user_unique_info_stub_1(),
             ),
             Ok(()),
         );
         assert_eq!(
-            user_u_unique_info_is_valid(
-                &UserRepoStub::of_unique_info(UserUniqueInfoCount { username: 1, email: 2 }),
-                &user_unique_stub_1(),
-                &user_unique_stub_1(),
+            user_update_unique_info_is_valid(
+                &UserRepositoryStub::of_unique_info(UserUniqueInfoCount { username: 1, email: 2 }),
+                &user_unique_info_stub_1(),
+                &user_unique_info_stub_1(),
             ),
             Ok(()),
         );
-        assert_eq!(user_u_unique_info_is_valid(&UserRepoStub::default(), &user_unique_stub_2(), &user_unique_stub_1()), Ok(()));
+        assert_eq!(user_update_unique_info_is_valid(&UserRepositoryStub::default(), &user_unique_info_stub_2(), &user_unique_info_stub_1()), Ok(()));
     }
 
     #[test]
-    fn test_user_u_unique_info_is_valid_err() {
-        assert_eq!(user_u_unique_info_is_valid(&UserRepoStub::of_db_err(), &user_unique_stub_2(), &user_unique_stub_1()), Err(UserErr::DB(DBErr)));
+    fn test_user_update_unique_info_is_valid_err() {
+        assert_eq!(user_update_unique_info_is_valid(&UserRepositoryStub::of_db_err(), &user_unique_info_stub_2(), &user_unique_info_stub_1()), Err(UserErr::DB(DBErr)));
         assert_eq!(
-            user_u_unique_info_is_valid(
-                &UserRepoStub::of_unique_info(UserUniqueInfoCount { username: 1, email: 0 }),
-                &user_unique_stub_2(),
-                &user_unique_stub_1(),
+            user_update_unique_info_is_valid(
+                &UserRepositoryStub::of_unique_info(UserUniqueInfoCount { username: 1, email: 0 }),
+                &user_unique_info_stub_2(),
+                &user_unique_info_stub_1(),
             ),
             Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr { username: true, email: false })),
         );
         assert_eq!(
-            user_u_unique_info_is_valid(
-                &UserRepoStub::of_unique_info(UserUniqueInfoCount { username: 0, email: 1 }),
-                &user_unique_stub_2(),
-                &user_unique_stub_1(),
+            user_update_unique_info_is_valid(
+                &UserRepositoryStub::of_unique_info(UserUniqueInfoCount { username: 0, email: 1 }),
+                &user_unique_info_stub_2(),
+                &user_unique_info_stub_1(),
             ),
             Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr { username: false, email: true })),
         );
         assert_eq!(
-            user_u_unique_info_is_valid(
-                &UserRepoStub::of_unique_info(UserUniqueInfoCount { username: 1, email: 1 }),
-                &user_unique_stub_2(),
-                &user_unique_stub_1(),
+            user_update_unique_info_is_valid(
+                &UserRepositoryStub::of_unique_info(UserUniqueInfoCount { username: 1, email: 1 }),
+                &user_unique_info_stub_2(),
+                &user_unique_info_stub_1(),
             ),
             Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr { username: true, email: true })),
         );

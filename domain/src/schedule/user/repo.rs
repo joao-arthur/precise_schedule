@@ -1,16 +1,16 @@
 use crate::database::DBOp;
 
 use super::{
-    login::UserCred,
+    login::UserCredentials,
     model::User,
     unique_info::{UserUniqueInfo, UserUniqueInfoCount},
 };
 
-pub trait UserRepo {
-    fn c(&self, user: &User) -> DBOp<()>;
-    fn u(&self, user: &User) -> DBOp<()>;
-    fn d(&self, id: &str) -> DBOp<()>;
-    fn r_by_cred(&self, cred: &UserCred) -> DBOp<Option<User>>;
-    fn r_by_id(&self, id: &str) -> DBOp<Option<User>>;
-    fn r_count_unique_info(&self, user_unique_info: &UserUniqueInfo) -> DBOp<UserUniqueInfoCount>;
+pub trait UserRepository {
+    fn create(&self, user: &User) -> DBOp<()>;
+    fn update(&self, user: &User) -> DBOp<()>;
+    fn delete(&self, id: &str) -> DBOp<()>;
+    fn read_by_credentials(&self, credentials: &UserCredentials) -> DBOp<Option<User>>;
+    fn read_by_id(&self, id: &str) -> DBOp<Option<User>>;
+    fn read_count_unique_info(&self, user_unique_info: &UserUniqueInfo) -> DBOp<UserUniqueInfoCount>;
 }

@@ -3,7 +3,7 @@ use araucaria::error::SchemaErr;
 use crate::{database::DBErr, session::SessionErr};
 
 use super::{
-    read::{UserCredNotFoundErr, UserIdNotFoundErr},
+    read::{UserCredentialsNotFoundErr, UserIdNotFoundErr},
     unique_info::UserUniqueInfoFieldErr,
 };
 
@@ -13,6 +13,6 @@ pub enum UserErr {
     Schema(SchemaErr),
     UserUniqueInfoField(UserUniqueInfoFieldErr),
     UserIdNotFound(UserIdNotFoundErr),
-    UserCredNotFound(UserCredNotFoundErr),
+    UserCredentialsNotFound(UserCredentialsNotFoundErr),
     Session(SessionErr),
 }

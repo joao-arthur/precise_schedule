@@ -1,11 +1,11 @@
 use crate::database::{DBErr, DBOp};
 
 use super::{
-    create::EventC,
-    model::{Event, EventCat, EventFreq},
+    create::EventCreate,
+    model::{Event, EventCategory, EventFrequency},
     read::EventInfo,
-    repo::EventRepo,
-    update::EventU,
+    repository::EventRepo,
+    update::EventUpdate,
 };
 
 pub fn event_stub() -> Event {
@@ -14,8 +14,8 @@ pub fn event_stub() -> Event {
         name: "Dentist".into(),
         begin: "2024-03-31T18:00Z".into(),
         end: "2024-03-31T22:00Z".into(),
-        category: EventCat::Appointment,
-        frequency: Some(EventFreq::D2),
+        category: EventCategory::Appointment,
+        frequency: Some(EventFrequency::D2),
         weekend_repeat: Some(true),
         user: "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
         created_at: "2025-02-05T22:49Z".into(),
@@ -23,38 +23,38 @@ pub fn event_stub() -> Event {
     }
 }
 
-pub fn event_c_stub() -> EventC {
-    EventC {
+pub fn event_create_stub() -> EventCreate {
+    EventCreate {
         name: "Dentist".into(),
         begin: "2024-03-31T18:00Z".into(),
         end: "2024-03-31T22:00Z".into(),
-        category: EventCat::Appointment,
-        frequency: Some(EventFreq::D2),
+        category: EventCategory::Appointment,
+        frequency: Some(EventFrequency::D2),
         weekend_repeat: Some(true),
     }
 }
 
-pub fn event_u_stub() -> EventU {
-    EventU {
+pub fn event_update_stub() -> EventUpdate {
+    EventUpdate {
         name: "Medical physicist".into(),
         begin: "2025-08-11T10:00Z".into(),
         end: "2025-08-11T11:00Z".into(),
-        category: EventCat::Appointment,
+        category: EventCategory::Appointment,
         frequency: None,
         weekend_repeat: None,
     }
 }
 
-pub fn event_after_c_stub() -> Event {
+pub fn event_after_create_stub() -> Event {
     Event { updated_at: "2025-02-05T22:49Z".into(), ..event_stub() }
 }
 
-pub fn event_after_u_stub() -> Event {
+pub fn event_after_update_stub() -> Event {
     Event {
         name: "Medical physicist".into(),
         begin: "2025-08-11T10:00Z".into(),
         end: "2025-08-11T11:00Z".into(),
-        category: EventCat::Appointment,
+        category: EventCategory::Appointment,
         frequency: None,
         weekend_repeat: None,
         ..event_stub()
@@ -66,8 +66,8 @@ pub fn event_info_stub() -> EventInfo {
         name: "Dentist".into(),
         begin: "2024-03-31T18:00Z".into(),
         end: "2024-03-31T22:00Z".into(),
-        category: EventCat::Appointment,
-        frequency: Some(EventFreq::D2),
+        category: EventCategory::Appointment,
+        frequency: Some(EventFrequency::D2),
         weekend_repeat: Some(true),
     }
 }
@@ -78,28 +78,28 @@ pub struct EventRepoStub {
 }
 
 impl EventRepo for EventRepoStub {
-    fn c(&self, _: &Event) -> DBOp<()> {
+    fn create(&self, _: &Event) -> DBOp<()> {
         if self.err {
             return Err(DBErr);
         }
         Ok(())
     }
 
-    fn u(&self, _: &Event) -> DBOp<()> {
+    fn update(&self, _: &Event) -> DBOp<()> {
         if self.err {
             return Err(DBErr);
         }
         Ok(())
     }
 
-    fn d(&self, _: &str) -> DBOp<()> {
+    fn delete(&self, _: &str) -> DBOp<()> {
         if self.err {
             return Err(DBErr);
         }
         Ok(())
     }
 
-    fn r_by_id(&self, _: &str, __: &str) -> DBOp<Option<Event>> {
+    fn read_by_id(&self, _: &str, __: &str) -> DBOp<Option<Event>> {
         if self.err {
             return Err(DBErr);
         }
@@ -135,27 +135,27 @@ mod test {
     use super::{EventRepoStub, event_stub};
     use crate::{
         database::DBErr,
-        schedule::{event::repo::EventRepo, user::stub::user_stub},
+        schedule::{event::repository::EventRepo, user::stub::user_stub},
     };
 
     #[test]
     fn test_user_repo_stub_default() {
-        assert_eq!(EventRepoStub::default().c(&event_stub()), Ok(()));
-        assert_eq!(EventRepoStub::default().u(&event_stub()), Ok(()));
-        assert_eq!(EventRepoStub::default().d(&event_stub().id), Ok(()));
-        assert_eq!(EventRepoStub::default().r_by_id(&user_stub().id, &event_stub().id), Ok(Some(event_stub())));
+        assert_eq!(EventRepoStub::default().create(&event_stub()), Ok(()));
+        assert_eq!(EventRepoStub::default().update(&event_stub()), Ok(()));
+        assert_eq!(EventRepoStub::default().delete(&event_stub().id), Ok(()));
+        assert_eq!(EventRepoStub::default().read_by_id(&user_stub().id, &event_stub().id), Ok(Some(event_stub())));
     }
 
     #[test]
     fn test_user_repo_stub_of_bd_err() {
-        assert_eq!(EventRepoStub::of_db_err().c(&event_stub()), Err(DBErr));
-        assert_eq!(EventRepoStub::of_db_err().u(&event_stub()), Err(DBErr));
-        assert_eq!(EventRepoStub::of_db_err().d(&event_stub().id), Err(DBErr));
-        assert_eq!(EventRepoStub::of_db_err().r_by_id(&user_stub().id, &event_stub().id), Err(DBErr));
+        assert_eq!(EventRepoStub::of_db_err().create(&event_stub()), Err(DBErr));
+        assert_eq!(EventRepoStub::of_db_err().update(&event_stub()), Err(DBErr));
+        assert_eq!(EventRepoStub::of_db_err().delete(&event_stub().id), Err(DBErr));
+        assert_eq!(EventRepoStub::of_db_err().read_by_id(&user_stub().id, &event_stub().id), Err(DBErr));
     }
 
     #[test]
     fn test_user_repo_stub_from_1() {
-        assert_eq!(EventRepoStub::of_none().r_by_id(&user_stub().id, &event_stub().id), Ok(None));
+        assert_eq!(EventRepoStub::of_none().read_by_id(&user_stub().id, &event_stub().id), Ok(None));
     }
 }

@@ -3,19 +3,19 @@ use std::{collections::BTreeMap, sync::LazyLock};
 use araucaria::validation::{DateValidation, EmailValidation, ObjValidation, StrValidation, Validation};
 
 use crate::{
-    generator::{DateTimeGen, IdGen},
+    generator::{DateTimeGenerator, IdGenerator},
     session::{Session, SessionService},
 };
 
 use super::{
     error::UserErr,
     model::User,
-    repo::UserRepo,
-    unique_info::{UserUniqueInfo, user_c_unique_info_is_valid},
+    repository::UserRepository,
+    unique_info::{UserUniqueInfo, user_create_unique_info_is_valid},
 };
 
 #[derive(Debug, PartialEq)]
-pub struct UserC {
+pub struct UserCreate {
     pub email: String,
     pub first_name: String,
     pub birthdate: String,
@@ -24,7 +24,7 @@ pub struct UserC {
 }
 
 #[derive(Debug, PartialEq)]
-pub struct UserCResult {
+pub struct UserCreateResult {
     pub user: User,
     pub session: Session,
 }
@@ -44,44 +44,44 @@ pub static USER_CREATE_SCHEMA: LazyLock<Validation> = LazyLock::new(|| {
     ])))
 });
 
-fn user_from_c(user_c: UserC, id: String, created_at: String) -> User {
+fn user_from_create(model: UserCreate, id: String, created_at: String) -> User {
     User {
         id,
-        first_name: user_c.first_name,
-        birthdate: user_c.birthdate,
-        email: user_c.email,
-        username: user_c.username,
-        password: user_c.password,
+        first_name: model.first_name,
+        birthdate: model.birthdate,
+        email: model.email,
+        username: model.username,
+        password: model.password,
         created_at: created_at.clone(),
         updated_at: created_at,
     }
 }
 
-pub fn user_c(
-    repo: &dyn UserRepo,
-    id_gen: &dyn IdGen,
-    date_time_gen: &dyn DateTimeGen,
+pub fn user_create(
+    repository: &dyn UserRepository,
+    id_generator: &dyn IdGenerator,
+    date_time_generator: &dyn DateTimeGenerator,
     session_service: &dyn SessionService,
-    user_c: UserC,
-) -> Result<UserCResult, UserErr> {
-    user_c_unique_info_is_valid(repo, &UserUniqueInfo::from(&user_c))?;
-    let id = id_gen.generate();
-    let now = date_time_gen.now_as_iso();
-    let user = user_from_c(user_c, id, now);
-    repo.c(&user).map_err(UserErr::DB)?;
-    let session = session_service.encode(&user, date_time_gen).map_err(UserErr::Session)?;
-    Ok(UserCResult { user, session })
+    model: UserCreate,
+) -> Result<UserCreateResult, UserErr> {
+    user_create_unique_info_is_valid(repository, &UserUniqueInfo::from(&model))?;
+    let id = id_generator.generate();
+    let now = date_time_generator.now_as_iso();
+    let user = user_from_create(model, id, now);
+    repository.create(&user).map_err(UserErr::DB)?;
+    let session = session_service.encode(&user, date_time_generator).map_err(UserErr::Session)?;
+    Ok(UserCreateResult { user, session })
 }
 
 #[cfg(test)]
 mod test {
-    use super::{UserCResult, user_c, user_from_c};
+    use super::{UserCreateResult, user_create, user_from_create};
     use crate::{
         database::DBErr,
-        generator::stub::{DateTimeGenStub, IdGenStub},
+        generator::stub::{DateTimeGeneratorStub, IdGeneratorStub},
         schedule::user::{
             error::UserErr,
-            stub::{UserRepoStub, user_after_c_stub, user_c_stub, user_stub},
+            stub::{UserRepositoryStub, user_after_create_stub, user_create_stub, user_stub},
             unique_info::{UserUniqueInfoCount, UserUniqueInfoFieldErr},
         },
         session::{
@@ -91,53 +91,53 @@ mod test {
     };
 
     #[test]
-    fn test_user_from_c() {
-        assert_eq!(user_from_c(user_c_stub(), user_stub().id, user_stub().created_at), user_after_c_stub());
+    fn test_user_from_create() {
+        assert_eq!(user_from_create(user_create_stub(), user_stub().id, user_stub().created_at), user_after_create_stub());
     }
 
     #[test]
-    fn test_user_c_ok() {
+    fn test_user_create_ok() {
         assert_eq!(
-            user_c(
-                &UserRepoStub::default(),
-                &IdGenStub(user_stub().id),
-                &DateTimeGenStub(user_stub().created_at, 1734555761),
+            user_create(
+                &UserRepositoryStub::default(),
+                &IdGeneratorStub(user_stub().id),
+                &DateTimeGeneratorStub(user_stub().created_at, 1734555761),
                 &SessionServiceStub::default(),
-                user_c_stub()
+                user_create_stub()
             ),
-            Ok(UserCResult { user: user_after_c_stub(), session: session_stub() })
+            Ok(UserCreateResult { user: user_after_create_stub(), session: session_stub() })
         );
     }
 
     #[test]
-    fn test_user_c_err() {
+    fn test_user_create_err() {
         assert_eq!(
-            user_c(
-                &UserRepoStub::of_db_err(),
-                &IdGenStub(user_stub().id),
-                &DateTimeGenStub(user_stub().created_at, 1734555761),
+            user_create(
+                &UserRepositoryStub::of_db_err(),
+                &IdGeneratorStub(user_stub().id),
+                &DateTimeGeneratorStub(user_stub().created_at, 1734555761),
                 &SessionServiceStub::default(),
-                user_c_stub()
+                user_create_stub()
             ),
             Err(UserErr::DB(DBErr))
         );
         assert_eq!(
-            user_c(
-                &UserRepoStub::of_unique_info(UserUniqueInfoCount { username: 2, email: 2 }),
-                &IdGenStub(user_stub().id),
-                &DateTimeGenStub(user_stub().created_at, 1734555761),
+            user_create(
+                &UserRepositoryStub::of_unique_info(UserUniqueInfoCount { username: 2, email: 2 }),
+                &IdGeneratorStub(user_stub().id),
+                &DateTimeGeneratorStub(user_stub().created_at, 1734555761),
                 &SessionServiceStub::default(),
-                user_c_stub()
+                user_create_stub()
             ),
             Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr { username: true, email: true }))
         );
         assert_eq!(
-            user_c(
-                &UserRepoStub::default(),
-                &IdGenStub(user_stub().id),
-                &DateTimeGenStub(user_stub().created_at, 1734555761),
+            user_create(
+                &UserRepositoryStub::default(),
+                &IdGeneratorStub(user_stub().id),
+                &DateTimeGeneratorStub(user_stub().created_at, 1734555761),
                 &SessionServiceStub::of_session_err(),
-                user_c_stub()
+                user_create_stub()
             ),
             Err(UserErr::Session(SessionErr::Encode(SessionEncodeErr)))
         );

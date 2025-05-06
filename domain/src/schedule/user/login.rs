@@ -3,14 +3,14 @@ use std::{collections::BTreeMap, sync::LazyLock};
 use araucaria::validation::{ObjValidation, StrValidation, Validation};
 
 use crate::{
-    generator::DateTimeGen,
+    generator::DateTimeGenerator,
     session::{Session, SessionService},
 };
 
-use super::{error::UserErr, read::user_r_by_cred, repo::UserRepo};
+use super::{error::UserErr, read::user_read_by_credentials, repository::UserRepository};
 
 #[derive(Debug, PartialEq)]
-pub struct UserCred {
+pub struct UserCredentials {
     pub username: String,
     pub password: String,
 }
@@ -28,13 +28,13 @@ pub static USER_LOGIN_SCHEMA: LazyLock<Validation> = LazyLock::new(|| {
 });
 
 pub fn user_login(
-    repo: &dyn UserRepo,
-    date_time_gen: &dyn DateTimeGen,
+    repository: &dyn UserRepository,
+    date_time_generator: &dyn DateTimeGenerator,
     session_service: &dyn SessionService,
-    user_cred: UserCred,
+    user_credentials: UserCredentials,
 ) -> Result<Session, UserErr> {
-    let user = user_r_by_cred(repo, &user_cred)?;
-    let session = session_service.encode(&user, date_time_gen).map_err(UserErr::Session)?;
+    let user = user_read_by_credentials(repository, &user_credentials)?;
+    let session = session_service.encode(&user, date_time_generator).map_err(UserErr::Session)?;
     Ok(session)
 }
 
@@ -43,10 +43,10 @@ mod test {
     use super::user_login;
     use crate::{
         database::DBErr,
-        generator::stub::DateTimeGenStub,
+        generator::stub::DateTimeGeneratorStub,
         schedule::user::{
             error::UserErr,
-            stub::{UserRepoStub, user_cred_stub},
+            stub::{UserRepositoryStub, user_credentials_stub},
         },
         session::{
             SessionEncodeErr, SessionErr,
@@ -58,10 +58,10 @@ mod test {
     fn test_user_login_ok() {
         assert_eq!(
             user_login(
-                &UserRepoStub::default(),
-                &DateTimeGenStub("2024-12-18T18:02Z".into(), 1734555761),
+                &UserRepositoryStub::default(),
+                &DateTimeGeneratorStub("2024-12-18T18:02Z".into(), 1734555761),
                 &SessionServiceStub::default(),
-                user_cred_stub()
+                user_credentials_stub()
             ),
             Ok(session_stub())
         );
@@ -71,19 +71,19 @@ mod test {
     fn test_user_login_err() {
         assert_eq!(
             user_login(
-                &UserRepoStub::of_db_err(),
-                &DateTimeGenStub("2024-12-18T18:02Z".into(), 1734555761),
+                &UserRepositoryStub::of_db_err(),
+                &DateTimeGeneratorStub("2024-12-18T18:02Z".into(), 1734555761),
                 &SessionServiceStub::default(),
-                user_cred_stub()
+                user_credentials_stub()
             ),
             Err(UserErr::DB(DBErr))
         );
         assert_eq!(
             user_login(
-                &UserRepoStub::default(),
-                &DateTimeGenStub("2024-12-18T18:02Z".into(), 1734555761),
+                &UserRepositoryStub::default(),
+                &DateTimeGeneratorStub("2024-12-18T18:02Z".into(), 1734555761),
                 &SessionServiceStub::of_session_err(),
-                user_cred_stub()
+                user_credentials_stub()
             ),
             Err(UserErr::Session(SessionErr::Encode(SessionEncodeErr)))
         );

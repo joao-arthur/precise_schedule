@@ -1,92 +1,92 @@
-use crate::generator::{DateTimeGen, IdGen};
+use crate::generator::{DateTimeGenerator, IdGenerator};
 
 use super::{
     error::EventErr,
-    model::{Event, EventCat, EventFreq},
-    repo::EventRepo,
+    model::{Event, EventCategory, EventFrequency},
+    repository::EventRepo,
 };
 
 #[derive(Debug, PartialEq)]
-pub struct EventC {
+pub struct EventCreate {
     pub name: String,
     pub begin: String,
     pub end: String,
-    pub category: EventCat,
-    pub frequency: Option<EventFreq>,
+    pub category: EventCategory,
+    pub frequency: Option<EventFrequency>,
     pub weekend_repeat: Option<bool>,
 }
 
-pub fn event_from_c(event_c: EventC, id: String, user_id: String, created_at: String) -> Event {
+pub fn event_from_create(model: EventCreate, id: String, user_id: String, created_at: String) -> Event {
     Event {
         id,
-        name: event_c.name,
-        begin: event_c.begin,
-        end: event_c.end,
-        category: event_c.category,
-        frequency: event_c.frequency,
-        weekend_repeat: event_c.weekend_repeat,
-        user: user_id,
+        name: model.name,
+        begin: model.begin,
+        end: model.end,
+        category: model.category,
+        frequency: model.frequency,
+        weekend_repeat: model.weekend_repeat,
+        user: user_id.into(),
         created_at: created_at.clone(),
         updated_at: created_at,
     }
 }
 
-pub fn event_c(
-    repo: &dyn EventRepo,
-    id_gen: &dyn IdGen,
-    date_time_gen: &dyn DateTimeGen,
-    event_c: EventC,
+pub fn event_create(
+    repository: &dyn EventRepo,
+    id_generator: &dyn IdGenerator,
+    date_time_generator: &dyn DateTimeGenerator,
+    event_create: EventCreate,
     user_id: String,
 ) -> Result<Event, EventErr> {
-    let id = id_gen.generate();
-    let now = date_time_gen.now_as_iso();
-    let event = event_from_c(event_c, id, user_id, now);
-    repo.c(&event).map_err(EventErr::DB)?;
+    let id = id_generator.generate();
+    let now = date_time_generator.now_as_iso();
+    let event = event_from_create(event_create, id, user_id, now);
+    repository.create(&event).map_err(EventErr::DB)?;
     Ok(event)
 }
 
 #[cfg(test)]
 mod test {
-    use super::{event_c, event_from_c};
+    use super::{event_create, event_from_create};
     use crate::{
         database::DBErr,
-        generator::stub::{DateTimeGenStub, IdGenStub},
+        generator::stub::{DateTimeGeneratorStub, IdGeneratorStub},
         schedule::{
             event::{
                 error::EventErr,
-                stub::{EventRepoStub, event_after_c_stub, event_c_stub, event_stub},
+                stub::{EventRepoStub, event_after_create_stub, event_create_stub, event_stub},
             },
             user::stub::user_stub,
         },
     };
 
     #[test]
-    fn test_event_from_c() {
-        assert_eq!(event_from_c(event_c_stub(), event_stub().id, user_stub().id, event_stub().created_at), event_after_c_stub());
+    fn test_event_from_create() {
+        assert_eq!(event_from_create(event_create_stub(), event_stub().id, user_stub().id, event_stub().created_at), event_after_create_stub());
     }
 
     #[test]
-    fn test_event_c_ok() {
+    fn test_event_create_ok() {
         assert_eq!(
-            event_c(
+            event_create(
                 &EventRepoStub::default(),
-                &IdGenStub(event_stub().id),
-                &DateTimeGenStub(event_stub().created_at, 1734555761),
-                event_c_stub(),
+                &IdGeneratorStub(event_stub().id),
+                &DateTimeGeneratorStub(event_stub().created_at, 1734555761),
+                event_create_stub(),
                 user_stub().id
             ),
-            Ok(event_after_c_stub())
+            Ok(event_after_create_stub())
         );
     }
 
     #[test]
-    fn test_user_c_err() {
+    fn test_user_create_err() {
         assert_eq!(
-            event_c(
+            event_create(
                 &EventRepoStub::of_db_err(),
-                &IdGenStub(user_stub().id),
-                &DateTimeGenStub(user_stub().created_at, 1734555761),
-                event_c_stub(),
+                &IdGeneratorStub(user_stub().id),
+                &DateTimeGeneratorStub(user_stub().created_at, 1734555761),
+                event_create_stub(),
                 user_stub().id
             ),
             Err(EventErr::DB(DBErr))

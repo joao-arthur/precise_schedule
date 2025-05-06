@@ -1,1 +1,1 @@
-pub fn event_meeting_c() {}
+pub fn event_meeting_create() {}
