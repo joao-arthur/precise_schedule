@@ -29,11 +29,11 @@ impl Language {
 }
 
 #[cfg(test)]
-mod test {
+mod tests {
     use super::Language;
 
     #[test]
-    fn test_from_iso_639_1() {
+    fn from_iso_639_1() {
         assert_eq!(Language::from_iso_639_1("en"), Language::English);
         assert_eq!(Language::from_iso_639_1("pt"), Language::Portuguese);
         assert_eq!(Language::from_iso_639_1("es"), Language::Spanish);
@@ -43,7 +43,7 @@ mod test {
     }
 
     #[test]
-    fn test_to_iso_639_1() {
+    fn to_iso_639_1() {
         assert_eq!(Language::English.to_iso_639_1(), "en");
         assert_eq!(Language::Portuguese.to_iso_639_1(), "pt");
         assert_eq!(Language::Spanish.to_iso_639_1(), "es");

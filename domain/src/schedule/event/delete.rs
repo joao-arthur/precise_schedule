@@ -7,7 +7,7 @@ pub fn event_delete(repository: &dyn EventRepository, user_id: &str, id: &str) -
 }
 
 #[cfg(test)]
-mod test {
+mod tests {
     use super::event_delete;
     use crate::{
         database::DBErr,
@@ -22,12 +22,12 @@ mod test {
     };
 
     #[test]
-    fn test_event_delete_ok() {
+    fn event_delete_ok() {
         assert_eq!(event_delete(&EventRepositoryStub::default(), &user_stub().id, &event_stub().id), Ok(event_stub()));
     }
 
     #[test]
-    fn test_event_delete_err() {
+    fn event_delete_err() {
         assert_eq!(event_delete(&EventRepositoryStub::of_db_err(), &user_stub().id, &event_stub().id), Err(EventErr::DB(DBErr)));
         assert_eq!(event_delete(&EventRepositoryStub::of_none(), &user_stub().id, &event_stub().id), Err(EventErr::EventIdNotFound(EventIdNotFoundErr)));
     }

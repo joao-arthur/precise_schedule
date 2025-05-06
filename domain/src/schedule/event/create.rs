@@ -35,18 +35,18 @@ pub fn event_create(
     repository: &dyn EventRepository,
     id_generator: &dyn IdGenerator,
     date_time_generator: &dyn DateTimeGenerator,
-    event_create: EventCreate,
+    model: EventCreate,
     user_id: String,
 ) -> Result<Event, EventErr> {
     let id = id_generator.generate();
     let now = date_time_generator.now_as_iso();
-    let event = event_from_create(event_create, id, user_id, now);
+    let event = event_from_create(model, id, user_id, now);
     repository.create(&event).map_err(EventErr::DB)?;
     Ok(event)
 }
 
 #[cfg(test)]
-mod test {
+mod tests {
     use super::{event_create, event_from_create};
     use crate::{
         database::DBErr,
@@ -66,7 +66,7 @@ mod test {
     }
 
     #[test]
-    fn test_event_create_ok() {
+    fn event_create_ok() {
         assert_eq!(
             event_create(
                 &EventRepositoryStub::default(),
@@ -80,7 +80,7 @@ mod test {
     }
 
     #[test]
-    fn test_user_create_err() {
+    fn user_create_err() {
         assert_eq!(
             event_create(
                 &EventRepositoryStub::of_db_err(),

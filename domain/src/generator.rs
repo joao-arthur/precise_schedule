@@ -31,16 +31,16 @@ pub mod stub {
     }
 
     #[cfg(test)]
-    mod test {
+    mod tests {
         use super::{DateTimeGenerator, DateTimeGeneratorStub, IdGenerator, IdGeneratorStub};
 
         #[test]
-        fn test_id_gen_stub() {
+        fn id_gen_stub() {
             assert_eq!(IdGeneratorStub("1aa4b955-2e7b-47d8-8ce2-758389cb1789".into()).generate(), "1aa4b955-2e7b-47d8-8ce2-758389cb1789".to_string());
         }
 
         #[test]
-        fn test_date_time_gen_stub() {
+        fn date_time_gen_stub() {
             assert_eq!(DateTimeGeneratorStub("2025-04-18T10:23Z".into(), 1734555761).now_as_iso(), "2025-04-18T10:23Z".to_string());
             assert_eq!(DateTimeGeneratorStub("2025-04-18T10:23Z".into(), 1734555761).now_as_unix_epoch(), 1734555761);
         }

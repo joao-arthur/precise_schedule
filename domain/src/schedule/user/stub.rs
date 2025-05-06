@@ -150,7 +150,7 @@ impl UserRepositoryStub {
 }
 
 #[cfg(test)]
-mod test {
+mod tests {
     use super::{UserRepositoryStub, user_credentials_stub, user_stub, user_unique_info_stub_1};
     use crate::{
         database::DBErr,
@@ -158,7 +158,7 @@ mod test {
     };
 
     #[test]
-    fn test_user_repo_stub_default() {
+    fn user_repo_stub_default() {
         assert_eq!(UserRepositoryStub::default().create(&user_stub()), Ok(()));
         assert_eq!(UserRepositoryStub::default().update(&user_stub()), Ok(()));
         assert_eq!(UserRepositoryStub::default().delete(&user_stub().id), Ok(()));
@@ -168,7 +168,7 @@ mod test {
     }
 
     #[test]
-    fn test_user_repo_stub_of_bd_err() {
+    fn user_repo_stub_of_bd_err() {
         assert_eq!(UserRepositoryStub::of_db_err().create(&user_stub()), Err(DBErr));
         assert_eq!(UserRepositoryStub::of_db_err().update(&user_stub()), Err(DBErr));
         assert_eq!(UserRepositoryStub::of_db_err().delete(&user_stub().id), Err(DBErr));
@@ -178,13 +178,13 @@ mod test {
     }
 
     #[test]
-    fn test_user_repo_stub_of_none() {
+    fn user_repo_stub_of_none() {
         assert_eq!(UserRepositoryStub::of_none().read_by_credentials(&user_credentials_stub()), Ok(None));
         assert_eq!(UserRepositoryStub::of_none().read_by_id(&user_stub().id), Ok(None));
     }
 
     #[test]
-    fn test_user_repo_stub_of_unique_info() {
+    fn user_repo_stub_of_unique_info() {
         assert_eq!(
             UserRepositoryStub::of_unique_info(UserUniqueInfoCount { username: 1, email: 0 }).read_count_unique_info(&user_unique_info_stub_1()),
             Ok(UserUniqueInfoCount { username: 1, email: 0 })

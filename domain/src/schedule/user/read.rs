@@ -33,7 +33,7 @@ pub fn user_read_info_by_id(repository: &dyn UserRepository, id: &str) -> Result
 }
 
 #[cfg(test)]
-mod test {
+mod tests {
     use super::{UserCredentialsNotFoundErr, UserIdNotFoundErr, UserInfo, user_read_by_credentials, user_read_by_id, user_read_info_by_id};
     use crate::{
         database::DBErr,
@@ -44,26 +44,26 @@ mod test {
     };
 
     #[test]
-    fn test_user_info() {
+    fn user_info() {
         assert_eq!(UserInfo::from(user_stub()), user_info_stub());
     }
 
     #[test]
-    fn test_user_read_ok() {
+    fn user_read_ok() {
         assert_eq!(user_read_by_credentials(&UserRepositoryStub::default(), &user_credentials_stub()), Ok(user_stub()));
         assert_eq!(user_read_by_id(&UserRepositoryStub::default(), &user_stub().id), Ok(user_stub()));
         assert_eq!(user_read_info_by_id(&UserRepositoryStub::default(), &user_stub().id), Ok(user_info_stub()));
     }
 
     #[test]
-    fn test_user_read_db_err() {
+    fn user_read_db_err() {
         assert_eq!(user_read_by_credentials(&UserRepositoryStub::of_db_err(), &user_credentials_stub()), Err(UserErr::DB(DBErr)));
         assert_eq!(user_read_by_id(&UserRepositoryStub::of_db_err(), &user_stub().id), Err(UserErr::DB(DBErr)));
         assert_eq!(user_read_info_by_id(&UserRepositoryStub::of_db_err(), &user_stub().id), Err(UserErr::DB(DBErr)));
     }
 
     #[test]
-    fn test_user_read_not_found() {
+    fn user_read_not_found() {
         assert_eq!(user_read_by_credentials(&UserRepositoryStub::of_none(), &user_credentials_stub()), Err(UserErr::UserCredentialsNotFound(UserCredentialsNotFoundErr)));
         assert_eq!(user_read_by_id(&UserRepositoryStub::of_none(), &user_stub().id), Err(UserErr::UserIdNotFound(UserIdNotFoundErr)));
         assert_eq!(user_read_info_by_id(&UserRepositoryStub::of_none(), &user_stub().id), Err(UserErr::UserIdNotFound(UserIdNotFoundErr)));

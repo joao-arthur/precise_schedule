@@ -18,7 +18,7 @@ pub mod stub {
     }
 
     #[cfg(test)]
-    mod test {
+    mod tests {
         use std::collections::BTreeMap;
 
         use araucaria::{
@@ -34,7 +34,7 @@ pub mod stub {
         const BOOL: ValidationErr = ValidationErr::Bool;
 
         #[test]
-        fn test_validator_stub() {
+        fn validator_stub() {
             let v = Validation::from(
                 ObjValidation::default()
                     .optional()

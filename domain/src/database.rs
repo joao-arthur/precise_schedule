@@ -18,7 +18,7 @@ pub trait DB {
 }
 
 #[cfg(test)]
-pub mod test {
+pub mod tests {
     use super::{DB, DBErr, DBOp};
 
     pub struct DBStub(DBOp<()>);
@@ -36,7 +36,7 @@ pub mod test {
     }
 
     #[test]
-    fn test_db_stub() {
+    fn db_stub() {
         assert_eq!(DBStub(Ok(())).create("".into()), Ok(()));
         assert_eq!(DBStub(Err(DBErr)).create("".into()), Err(DBErr));
         assert_eq!(DBStub(Ok(())).update("".into()), Ok(()));

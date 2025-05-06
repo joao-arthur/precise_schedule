@@ -60,7 +60,7 @@ pub fn user_update_unique_info_is_valid(repository: &dyn UserRepository, user: &
 }
 
 #[cfg(test)]
-mod test {
+mod tests {
     use super::{UserUniqueInfo, UserUniqueInfoCount, UserUniqueInfoFieldErr, user_create_unique_info_is_valid, user_update_unique_info_is_valid};
     use crate::{
         database::DBErr,
@@ -71,19 +71,19 @@ mod test {
     };
 
     #[test]
-    fn test_unique_info() {
+    fn unique_info() {
         assert_eq!(UserUniqueInfo::from(&user_stub()), UserUniqueInfo { username: "paul_mc".into(), email: "paul@gmail.com".into() });
         assert_eq!(UserUniqueInfo::from(&user_create_stub()), UserUniqueInfo { username: "paul_mc".into(), email: "paul@gmail.com".into() });
         assert_eq!(UserUniqueInfo::from(&user_update_stub()), UserUniqueInfo { username: "john_lennon".into(), email: "john@gmail.com".into() })
     }
 
     #[test]
-    fn test_user_create_unique_info_is_valid_ok() {
+    fn user_create_unique_info_is_valid_ok() {
         assert_eq!(user_create_unique_info_is_valid(&UserRepositoryStub::default(), &user_unique_info_stub_1()), Ok(()));
     }
 
     #[test]
-    fn test_user_create_unique_info_is_valid_err() {
+    fn user_create_unique_info_is_valid_err() {
         assert_eq!(user_create_unique_info_is_valid(&UserRepositoryStub::of_db_err(), &user_unique_info_stub_1()), Err(UserErr::DB(DBErr)));
         assert_eq!(
             user_create_unique_info_is_valid(&UserRepositoryStub::of_unique_info(UserUniqueInfoCount { username: 1, email: 0 }), &user_unique_info_stub_1()),
@@ -100,7 +100,7 @@ mod test {
     }
 
     #[test]
-    fn test_user_update_unique_info_is_valid_ok() {
+    fn user_update_unique_info_is_valid_ok() {
         assert_eq!(user_update_unique_info_is_valid(&UserRepositoryStub::default(), &user_unique_info_stub_1(), &user_unique_info_stub_1()), Ok(()));
         assert_eq!(
             user_update_unique_info_is_valid(
@@ -146,7 +146,7 @@ mod test {
     }
 
     #[test]
-    fn test_user_update_unique_info_is_valid_err() {
+    fn user_update_unique_info_is_valid_err() {
         assert_eq!(user_update_unique_info_is_valid(&UserRepositoryStub::of_db_err(), &user_unique_info_stub_2(), &user_unique_info_stub_1()), Err(UserErr::DB(DBErr)));
         assert_eq!(
             user_update_unique_info_is_valid(

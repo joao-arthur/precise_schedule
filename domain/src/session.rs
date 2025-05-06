@@ -56,12 +56,12 @@ pub mod stub {
     }
 
     #[cfg(test)]
-    mod test {
+    mod tests {
         use super::{SessionDecodeErr, SessionEncodeErr, SessionErr, SessionService, SessionServiceStub, session_stub};
         use crate::{generator::stub::DateTimeGeneratorStub, schedule::user::stub::user_stub};
 
         #[test]
-        fn test_session_service_stub() {
+        fn session_service_stub() {
             assert_eq!(
                 SessionServiceStub::default().encode(&user_stub(), &DateTimeGeneratorStub("2024-12-18T18:02Z".into(), 1734555761)),
                 Ok(session_stub())

@@ -7,7 +7,7 @@ pub fn user_delete(repository: &dyn UserRepository, id: String) -> Result<User, 
 }
 
 #[cfg(test)]
-mod test {
+mod tests {
     use super::user_delete;
     
     use crate::{
@@ -20,12 +20,12 @@ mod test {
     };
 
     #[test]
-    fn test_user_delete_ok() {
+    fn user_delete_ok() {
         assert_eq!(user_delete(&UserRepositoryStub::default(), user_stub().id), Ok(user_stub()));
     }
 
     #[test]
-    fn test_user_delete_err() {
+    fn user_delete_err() {
         assert_eq!(user_delete(&UserRepositoryStub::of_db_err(), user_stub().id), Err(UserErr::DB(DBErr)));
         assert_eq!(user_delete(&UserRepositoryStub::of_none(), user_stub().id), Err(UserErr::UserIdNotFound(UserIdNotFoundErr)));
     }

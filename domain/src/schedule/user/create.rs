@@ -74,7 +74,7 @@ pub fn user_create(
 }
 
 #[cfg(test)]
-mod test {
+mod tests {
     use super::{UserCreateResult, user_create, user_from_create};
     use crate::{
         database::DBErr,
@@ -96,7 +96,7 @@ mod test {
     }
 
     #[test]
-    fn test_user_create_ok() {
+    fn user_create_ok() {
         assert_eq!(
             user_create(
                 &UserRepositoryStub::default(),
@@ -110,7 +110,7 @@ mod test {
     }
 
     #[test]
-    fn test_user_create_err() {
+    fn user_create_err() {
         assert_eq!(
             user_create(
                 &UserRepositoryStub::of_db_err(),

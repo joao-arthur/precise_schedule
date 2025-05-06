@@ -39,7 +39,7 @@ pub fn user_login(
 }
 
 #[cfg(test)]
-mod test {
+mod tests {
     use super::user_login;
     use crate::{
         database::DBErr,
@@ -55,7 +55,7 @@ mod test {
     };
 
     #[test]
-    fn test_user_login_ok() {
+    fn user_login_ok() {
         assert_eq!(
             user_login(
                 &UserRepositoryStub::default(),
@@ -68,7 +68,7 @@ mod test {
     }
 
     #[test]
-    fn test_user_login_err() {
+    fn user_login_err() {
         assert_eq!(
             user_login(
                 &UserRepositoryStub::of_db_err(),

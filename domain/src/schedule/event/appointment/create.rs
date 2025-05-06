@@ -55,7 +55,7 @@ pub fn event_appointment_create(
 }
 
 #[cfg(test)]
-mod test {
+mod tests {
     use super::{AppointmentCreate, event_create_from_appointment_create};
     use crate::schedule::event::{
         create::EventCreate,
@@ -63,7 +63,7 @@ mod test {
     };
 
     #[test]
-    fn test_event_create_from_appointment() {
+    fn event_create_from_appointment() {
         let appointment = AppointmentCreate {
             name: "Dentist".into(),
             day: "2024-03-31".into(),

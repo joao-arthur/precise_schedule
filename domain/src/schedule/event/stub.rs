@@ -131,7 +131,7 @@ impl EventRepositoryStub {
 }
 
 #[cfg(test)]
-mod test {
+mod tests {
     use super::{EventRepositoryStub, event_stub};
     use crate::{
         database::DBErr,
@@ -139,7 +139,7 @@ mod test {
     };
 
     #[test]
-    fn test_user_repo_stub_default() {
+    fn user_repo_stub_default() {
         assert_eq!(EventRepositoryStub::default().create(&event_stub()), Ok(()));
         assert_eq!(EventRepositoryStub::default().update(&event_stub()), Ok(()));
         assert_eq!(EventRepositoryStub::default().delete(&event_stub().id), Ok(()));
@@ -147,7 +147,7 @@ mod test {
     }
 
     #[test]
-    fn test_user_repo_stub_of_bd_err() {
+    fn user_repo_stub_of_bd_err() {
         assert_eq!(EventRepositoryStub::of_db_err().create(&event_stub()), Err(DBErr));
         assert_eq!(EventRepositoryStub::of_db_err().update(&event_stub()), Err(DBErr));
         assert_eq!(EventRepositoryStub::of_db_err().delete(&event_stub().id), Err(DBErr));
@@ -155,7 +155,7 @@ mod test {
     }
 
     #[test]
-    fn test_user_repo_stub_from_1() {
+    fn user_repo_stub_from_1() {
         assert_eq!(EventRepositoryStub::of_none().read_by_id(&user_stub().id, &event_stub().id), Ok(None));
     }
 }

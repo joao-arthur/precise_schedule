@@ -74,7 +74,7 @@ pub fn user_update(
 }
 
 #[cfg(test)]
-mod test {
+mod tests {
     use super::{UserUResult, user_from_update, user_update};
     use crate::{
         database::DBErr,
@@ -97,7 +97,7 @@ mod test {
     }
 
     #[test]
-    fn test_user_update_ok() {
+    fn user_update_ok() {
         assert_eq!(
             user_update(
                 &UserRepositoryStub::default(),
@@ -111,7 +111,7 @@ mod test {
     }
 
     #[test]
-    fn test_user_update_err() {
+    fn user_update_err() {
         assert_eq!(
             user_update(
                 &UserRepositoryStub::of_db_err(),

@@ -47,7 +47,7 @@ pub fn event_read_info_by_user(repository: &dyn EventRepository, user_id: &str) 
 }
 
 #[cfg(test)]
-mod test {
+mod tests {
     use super::{EventIdNotFoundErr, EventInfo, event_read_by_id, event_read_by_user, event_read_info_by_id, event_read_info_by_user};
     use crate::{
         database::DBErr,
@@ -61,12 +61,12 @@ mod test {
     };
 
     #[test]
-    fn test_event_info() {
+    fn event_info() {
         assert_eq!(EventInfo::from(event_stub()), event_info_stub());
     }
 
     #[test]
-    fn test_event_read_ok() {
+    fn event_read_ok() {
         assert_eq!(event_read_by_id(&EventRepositoryStub::default(), &user_stub().id, &event_stub().id), Ok(event_stub()));
         assert_eq!(event_read_info_by_id(&EventRepositoryStub::default(), &user_stub().id, &event_stub().id), Ok(event_info_stub()));
         assert_eq!(event_read_by_user(&EventRepositoryStub::default(), &user_stub().id), Ok(vec![event_stub()]));
@@ -74,7 +74,7 @@ mod test {
     }
 
     #[test]
-    fn test_event_read_db_err() {
+    fn event_read_db_err() {
         assert_eq!(event_read_by_id(&EventRepositoryStub::of_db_err(), &user_stub().id, &event_stub().id), Err(EventErr::DB(DBErr)));
         assert_eq!(event_read_info_by_id(&EventRepositoryStub::of_db_err(), &user_stub().id, &event_stub().id), Err(EventErr::DB(DBErr)));
         assert_eq!(event_read_by_user(&EventRepositoryStub::of_db_err(), &user_stub().id), Err(EventErr::DB(DBErr)));
@@ -82,7 +82,7 @@ mod test {
     }
 
     #[test]
-    fn test_event_read_not_found() {
+    fn event_read_not_found() {
         assert_eq!(event_read_by_id(&EventRepositoryStub::of_none(), &user_stub().id, &event_stub().id), Err(EventErr::EventIdNotFound(EventIdNotFoundErr)));
         assert_eq!(
             event_read_info_by_id(&EventRepositoryStub::of_none(), &user_stub().id, &event_stub().id),

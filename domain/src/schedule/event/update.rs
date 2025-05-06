@@ -39,7 +39,7 @@ pub fn event_update(repository: &dyn EventRepository, date_time_generator: &dyn 
 }
 
 #[cfg(test)]
-mod test {
+mod tests {
     use super::{event_from_update, event_update};
     use crate::{
         database::DBErr,
@@ -59,7 +59,7 @@ mod test {
     }
 
     #[test]
-    fn test_event_update_ok() {
+    fn event_update_ok() {
         assert_eq!(
             event_update(
                 &EventRepositoryStub::default(),
@@ -73,7 +73,7 @@ mod test {
     }
 
     #[test]
-    fn test_user_update_err() {
+    fn user_update_err() {
         assert_eq!(
             event_update(
                 &EventRepositoryStub::of_db_err(),
