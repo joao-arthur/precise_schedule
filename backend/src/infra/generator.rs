@@ -3,26 +3,26 @@ use std::time::SystemTime;
 use chrono::Utc;
 use uuid::Uuid;
 
-use domain::generator::{DateTimeGen, IdGen};
+use domain::generator::{DateTimeGenerator, IdGenerator};
 
-pub struct IdGenUUID4;
+pub struct IdGeneratorUUID4;
 
-pub struct DateTimeGenImpl;
+pub struct DateTimeGeneratorImpl;
 
-pub struct TimeGenUnix;
+pub struct TimeGeneratorUnix;
 
-impl IdGen for IdGenUUID4 {
+impl IdGenerator for IdGeneratorUUID4 {
     fn generate(&self) -> String {
         Uuid::new_v4().to_string()
     }
 }
 
-impl DateTimeGen for DateTimeGenImpl {
+impl DateTimeGenerator for DateTimeGeneratorImpl {
     fn now_as_iso(&self) -> String {
         Utc::now().format("%Y-%m-%dT%H:%MZ").to_string()
     }
 
-    fn now_as_epoch(&self) -> u64 {
+    fn now_as_unix_epoch(&self) -> u64 {
         SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap().as_secs()
     }
 }
@@ -31,10 +31,10 @@ impl DateTimeGen for DateTimeGenImpl {
 mod test {
     use std::sync::LazyLock;
 
-    use domain::generator::{DateTimeGen, IdGen};
+    use domain::generator::{DateTimeGenerator, IdGenerator};
     use regex::Regex;
 
-    use super::{DateTimeGenImpl, IdGenUUID4, TimeGenUnix};
+    use super::{DateTimeGeneratorImpl, IdGeneratorUUID4, TimeGeneratorUnix};
 
     const EPOCH_2024: u64 = 1704067200;
     static UUID_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$").unwrap());
@@ -42,18 +42,18 @@ mod test {
 
     #[test]
     fn test_id_gen_uuid4() {
-        let id = IdGenUUID4.generate();
+        let id = IdGeneratorUUID4.generate();
         assert!(UUID_RE.is_match(&id));
     }
 
     #[test]
     fn test_date_time_gen_now_as_iso() {
-        let curr_as_iso = DateTimeGenImpl.now_as_iso();
+        let curr_as_iso = DateTimeGeneratorImpl.now_as_iso();
         assert!(ISO_DATE_RE.is_match(&curr_as_iso));
     }
 
     #[test]
-    fn test_date_time_gen_now_as_epoch() {
-        assert!(DateTimeGenImpl.now_as_epoch() > EPOCH_2024)
+    fn test_date_time_gen_now_as_unix_epoch() {
+        assert!(DateTimeGeneratorImpl.now_as_unix_epoch() > EPOCH_2024)
     }
 }

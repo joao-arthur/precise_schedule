@@ -50,12 +50,12 @@ dependencies = [
 [[package]]
 name = "araucaria"
 version = "1.0.0"
-source = "git+https://github.com/joao-arthur/araucaria?rev=412a260b182232be3d373f42cb079bff84e5e199#412a260b182232be3d373f42cb079bff84e5e199"
+source = "git+https://github.com/joao-arthur/araucaria?rev=e32a8774832a90e8014469dd26c986c0f883c7d2#e32a8774832a90e8014469dd26c986c0f883c7d2"
 
 [[package]]
 name = "araucaria_plugins"
 version = "1.0.0"
-source = "git+https://github.com/joao-arthur/araucaria_plugins?rev=f07f6e1dbebc987d12fca2b94bcd40353acaf45a#f07f6e1dbebc987d12fca2b94bcd40353acaf45a"
+source = "git+https://github.com/joao-arthur/araucaria_plugins?rev=0a4e4dcbb234c6859586be890beab8355246d039#0a4e4dcbb234c6859586be890beab8355246d039"
 dependencies = [
  "araucaria",
  "chrono",
@@ -141,6 +141,7 @@ dependencies = [
  "regex",
  "rocket",
  "rust-i18n",
+ "serde",
  "serde_json",
  "uuid",
 ]

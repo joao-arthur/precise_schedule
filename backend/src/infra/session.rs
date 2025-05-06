@@ -2,13 +2,12 @@ use jsonwebtoken::{Algorithm, DecodingKey, EncodingKey, Header, Validation, deco
 use rocket::serde::{Deserialize, Serialize};
 
 use domain::{
-    generator::DateTimeGen,
+    generator::DateTimeGenerator,
     schedule::user::model::User,
     session::{Session, SessionDecodeErr, SessionEncodeErr, SessionErr, SessionService},
 };
 
 #[derive(Debug, Serialize, Deserialize)]
-#[serde(crate = "rocket::serde")]
 struct Claims {
     username: String,
     sub: String,
@@ -23,14 +22,14 @@ const SECRET: &str = "your-secret-key";
 pub struct SessionServiceJWT;
 
 impl SessionService for SessionServiceJWT {
-    fn encode(&self, user: &User, date_time_gen: &dyn DateTimeGen) -> Result<Session, SessionErr> {
+    fn encode(&self, user: &User, date_time_gen: &dyn DateTimeGenerator) -> Result<Session, SessionErr> {
         let claims = Claims {
             username: user.username.clone(),
             sub: user.id.clone(),
             aud: String::from("precise_schedule_server"),
             iss: String::from("precise_schedule"),
-            exp: (date_time_gen.now_as_epoch() + 60 * 60 * 2) as usize,
-            iat: date_time_gen.now_as_epoch() as usize,
+            exp: (date_time_gen.now_as_unix_epoch() + 60 * 60 * 2) as usize,
+            iat: date_time_gen.now_as_unix_epoch() as usize,
         };
         let token = encode(&Header::new(Algorithm::HS512), &claims, &EncodingKey::from_secret(SECRET.as_ref()))
             .map_err(|_| SessionErr::Encode(SessionEncodeErr))?;
@@ -52,7 +51,7 @@ mod test {
     use std::sync::LazyLock;
 
     use domain::{
-        generator::stub::DateTimeGenStub,
+        generator::stub::DateTimeGeneratorStub,
         schedule::user::stub::user_stub,
         session::{Session, SessionService},
     };
@@ -71,7 +70,7 @@ mod test {
 
     #[test]
     fn test_session_encode() {
-        assert_eq!(SessionServiceJWT.encode(&user_stub(), &DateTimeGenStub(String::from("2099-12-18T18:02Z"), 4101300161)), Ok(SESSION.clone()));
+        assert_eq!(SessionServiceJWT.encode(&user_stub(), &DateTimeGeneratorStub(String::from("2099-12-18T18:02Z"), 4101300161)), Ok(SESSION.clone()));
     }
 
     #[test]
