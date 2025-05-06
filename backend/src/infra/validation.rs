@@ -22,7 +22,7 @@ pub fn language_to_locale(lg: &Language) -> araucaria::locale::Locale {
 }
 
 pub fn validation_i18n(err: &SchemaErr, lg: &Language) -> String {
-    let locale =match lg {
+    let locale = match lg {
         Language::English => araucaria_plugins::locale::locale_en_long(),
         Language::Portuguese => araucaria_plugins::locale::locale_pt_long(),
         Language::Spanish => araucaria_plugins::locale::locale_es_long(),

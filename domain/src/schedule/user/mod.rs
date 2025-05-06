@@ -1,6 +1,6 @@
 pub mod create;
 pub mod delete;
-mod error;
+pub mod error;
 pub mod login;
 pub mod model;
 pub mod read;
