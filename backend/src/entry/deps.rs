@@ -20,7 +20,7 @@ static DATE_TIME_GEN: OnceLock<DateTimeGeneratorImpl> = OnceLock::new();
 static VALIDATOR: OnceLock<ValidatorCustom> = OnceLock::new();
 static SESSION_SERVICE: OnceLock<SessionServiceJWT> = OnceLock::new();
 
-pub fn get_user_repo() -> &'static dyn UserRepository {
+pub fn get_user_repository() -> &'static dyn UserRepository {
     USER_REPO.get_or_init(|| UserRepositoryMemory::default())
 }
 

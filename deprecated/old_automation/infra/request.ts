@@ -12,7 +12,7 @@ function customFetch<T>({ resource, method, body }: Params): Promise<Res<T>> {
     const Authorization = State.getState().getToken();
 
     return fetch(
-        `http://localhost:8080/${resource}`,
+        `http://localhost:8000/${resource}`,
         {
             headers: Object.assign(
                 {},

@@ -14,7 +14,7 @@ use serde::{Deserialize, Deserializer, Serialize};
 
 use crate::{
     LanguageGuard,
-    entry::deps::{get_date_time_gen, get_id_gen, get_session_service, get_user_repo},
+    entry::deps::{get_date_time_gen, get_id_gen, get_session_service, get_user_repository},
     infra::validation::language_to_locale,
 };
 
@@ -29,23 +29,6 @@ pub struct User {
     pub password: String,
     pub updated_at: String,
 }
-
-#[derive(Debug, PartialEq, Serialize, Deserialize)]
-pub struct UserCResult {
-    pub user: User,
-    pub session: Session,
-}
-
-#[derive(Debug, PartialEq, Clone, Serialize, Deserialize)]
-pub struct Session {
-    pub token: String,
-}
-
-#[derive(Debug, PartialEq, Clone, Serialize, Deserialize)]
-struct ErrorGeneric {
-    error: String,
-}
-
 
 #[derive(Deserialize)]
 #[serde(remote = "UserCreate")]
@@ -68,8 +51,24 @@ impl<'de> Deserialize<'de> for UserCreateWrapper {
     }
 }
 
+#[derive(Debug, PartialEq, Serialize)]
+pub struct UserCreateResult {
+    pub user: User,
+    pub session: Session,
+}
+
+#[derive(Debug, PartialEq, Clone, Serialize)]
+pub struct Session {
+    pub token: String,
+}
+
+#[derive(Debug, PartialEq, Clone, Serialize)]
+struct ErrorGeneric {
+    error: String,
+}
+
 #[post("/", format = "application/json", data = "<data>")]
-pub async fn endpoint_user_create(data: Data<'_>, lg: LanguageGuard) -> Result<Json<UserCResult>, Custom<String>> {
+pub async fn endpoint_user_create(data: Data<'_>, lg: LanguageGuard) -> Result<Json<UserCreateResult>, Custom<String>> {
     let limit = 1.kilobytes();
     let body = match data.open(limit).into_bytes().await {
         Ok(body) => {
@@ -89,22 +88,14 @@ pub async fn endpoint_user_create(data: Data<'_>, lg: LanguageGuard) -> Result<J
         }
     };
     let json_value: Value = serde_json::from_slice(&body).unwrap();
-
     let result = araucaria_plugins::deserialize::deserialize_from_json::<UserCreateWrapper>(json_value, &USER_CREATE_SCHEMA, &language_to_locale(&lg.0));
     if let Err(err) = result {
-        return Err(status::Custom(Status::UnprocessableEntity, err));
+        return Err(status::Custom(Status::UnprocessableEntity, serde_json::to_string(&err).unwrap()));
     }
-    let user_erf = result.unwrap().0;
-    let user = UserCreate {
-        email: user_erf.email.to_string(),
-        first_name: user_erf.first_name.to_string(),
-        birthdate: user_erf.birthdate.to_string(),
-        username: user_erf.username.to_string(),
-        password: user_erf.password.to_string(),
-    };
-    let repo = get_user_repo();
-    let temp = user_create(repo, get_id_gen(), get_date_time_gen(), get_session_service(), user).unwrap();
-    return Ok(Json(UserCResult {
+    let user = result.unwrap().0;
+    let repository = get_user_repository();
+    let temp = user_create(repository, get_id_gen(), get_date_time_gen(), get_session_service(), user).unwrap();
+    return Ok(Json(UserCreateResult {
         user: User {
             id: temp.user.id.clone(),
             first_name: temp.user.first_name.clone(),
@@ -117,16 +108,6 @@ pub async fn endpoint_user_create(data: Data<'_>, lg: LanguageGuard) -> Result<J
         },
         session: Session { token: temp.session.token },
     }));
-    //    let erri18n: HashMap<&str, Vec<String>> = err
-    //        .into_iter()
-    //        .map(|f| {
-    //            (f.0, f.1.iter().map(|p| validation_i18n(p, &lg.0)).collect::<Vec<String>>())
-    //        })
-    //        .collect();
-    //    return Err(status::Custom(
-    //        Status::UnprocessableEntity,
-    //        serde_json::to_string(&erri18n).unwrap(),
-    //    ));
 }
 
 #[put("/", format = "application/json")]

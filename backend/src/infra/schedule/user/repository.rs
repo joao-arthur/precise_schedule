@@ -71,35 +71,35 @@ mod test {
 
     #[test]
     fn test_user_repo_memory() {
-        let repo = UserRepositoryMemory::default();
+        let repository = UserRepositoryMemory::default();
 
-        assert_eq!(repo.read_by_id(&user_stub().id), Ok(None));
-        assert_eq!(repo.read_by_credentials(&user_credentials_stub()), Ok(None));
-        assert_eq!(repo.read_count_unique_info(&user_unique_info_stub_3()), Ok(UserUniqueInfoCount { username: 0, email: 0 }));
+        assert_eq!(repository.read_by_id(&user_stub().id), Ok(None));
+        assert_eq!(repository.read_by_credentials(&user_credentials_stub()), Ok(None));
+        assert_eq!(repository.read_count_unique_info(&user_unique_info_stub_3()), Ok(UserUniqueInfoCount { username: 0, email: 0 }));
 
-        assert_eq!(repo.delete(&user_stub().id), Ok(()));
-        assert_eq!(repo.update(&user_stub()), Ok(()));
+        assert_eq!(repository.delete(&user_stub().id), Ok(()));
+        assert_eq!(repository.update(&user_stub()), Ok(()));
 
-        assert_eq!(repo.read_by_id(&user_stub().id), Ok(None));
-        assert_eq!(repo.read_by_credentials(&user_credentials_stub()), Ok(None));
-        assert_eq!(repo.read_count_unique_info(&user_unique_info_stub_3()), Ok(UserUniqueInfoCount { username: 0, email: 0 }));
+        assert_eq!(repository.read_by_id(&user_stub().id), Ok(None));
+        assert_eq!(repository.read_by_credentials(&user_credentials_stub()), Ok(None));
+        assert_eq!(repository.read_count_unique_info(&user_unique_info_stub_3()), Ok(UserUniqueInfoCount { username: 0, email: 0 }));
 
-        assert_eq!(repo.create(&user_stub()), Ok(()));
+        assert_eq!(repository.create(&user_stub()), Ok(()));
 
-        assert_eq!(repo.read_by_id(&user_stub().id), Ok(Some(user_stub())));
-        assert_eq!(repo.read_by_credentials(&user_credentials_stub()), Ok(Some(user_stub())));
-        assert_eq!(repo.read_count_unique_info(&user_unique_info_stub_3()), Ok(UserUniqueInfoCount { username: 1, email: 1 }));
+        assert_eq!(repository.read_by_id(&user_stub().id), Ok(Some(user_stub())));
+        assert_eq!(repository.read_by_credentials(&user_credentials_stub()), Ok(Some(user_stub())));
+        assert_eq!(repository.read_count_unique_info(&user_unique_info_stub_3()), Ok(UserUniqueInfoCount { username: 1, email: 1 }));
 
-        assert_eq!(repo.update(&user_after_update_stub()), Ok(()));
+        assert_eq!(repository.update(&user_after_update_stub()), Ok(()));
 
-        assert_eq!(repo.read_by_id(&user_stub().id), Ok(Some(user_after_update_stub())));
-        assert_eq!(repo.read_by_credentials(&user_credentials_stub()), Ok(None));
-        assert_eq!(repo.read_count_unique_info(&user_unique_info_stub_3()), Ok(UserUniqueInfoCount { username: 0, email: 0 }));
+        assert_eq!(repository.read_by_id(&user_stub().id), Ok(Some(user_after_update_stub())));
+        assert_eq!(repository.read_by_credentials(&user_credentials_stub()), Ok(None));
+        assert_eq!(repository.read_count_unique_info(&user_unique_info_stub_3()), Ok(UserUniqueInfoCount { username: 0, email: 0 }));
 
-        assert_eq!(repo.delete(&user_stub().id), Ok(()));
+        assert_eq!(repository.delete(&user_stub().id), Ok(()));
 
-        assert_eq!(repo.read_by_id(&user_stub().id), Ok(None));
-        assert_eq!(repo.read_by_credentials(&user_credentials_stub()), Ok(None));
-        assert_eq!(repo.read_count_unique_info(&user_unique_info_stub_3()), Ok(UserUniqueInfoCount { username: 0, email: 0 }));
+        assert_eq!(repository.read_by_id(&user_stub().id), Ok(None));
+        assert_eq!(repository.read_by_credentials(&user_credentials_stub()), Ok(None));
+        assert_eq!(repository.read_count_unique_info(&user_unique_info_stub_3()), Ok(UserUniqueInfoCount { username: 0, email: 0 }));
     }
 }
