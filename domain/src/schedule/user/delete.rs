@@ -9,7 +9,7 @@ pub fn user_delete(repository: &dyn UserRepository, id: String) -> Result<User, 
 #[cfg(test)]
 mod tests {
     use super::user_delete;
-    
+
     use crate::{
         database::DBErr,
         schedule::user::{

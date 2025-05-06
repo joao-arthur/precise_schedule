@@ -164,7 +164,10 @@ mod tests {
         assert_eq!(UserRepositoryStub::default().delete(&user_stub().id), Ok(()));
         assert_eq!(UserRepositoryStub::default().read_by_id(&user_stub().id), Ok(Some(user_stub())));
         assert_eq!(UserRepositoryStub::default().read_by_credentials(&user_credentials_stub()), Ok(Some(user_stub())));
-        assert_eq!(UserRepositoryStub::default().read_count_unique_info(&user_unique_info_stub_1()), Ok(UserUniqueInfoCount { email: 0, username: 0 }));
+        assert_eq!(
+            UserRepositoryStub::default().read_count_unique_info(&user_unique_info_stub_1()),
+            Ok(UserUniqueInfoCount { email: 0, username: 0 })
+        );
     }
 
     #[test]

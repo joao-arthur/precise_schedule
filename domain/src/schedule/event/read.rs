@@ -83,7 +83,10 @@ mod tests {
 
     #[test]
     fn event_read_not_found() {
-        assert_eq!(event_read_by_id(&EventRepositoryStub::of_none(), &user_stub().id, &event_stub().id), Err(EventErr::EventIdNotFound(EventIdNotFoundErr)));
+        assert_eq!(
+            event_read_by_id(&EventRepositoryStub::of_none(), &user_stub().id, &event_stub().id),
+            Err(EventErr::EventIdNotFound(EventIdNotFoundErr))
+        );
         assert_eq!(
             event_read_info_by_id(&EventRepositoryStub::of_none(), &user_stub().id, &event_stub().id),
             Err(EventErr::EventIdNotFound(EventIdNotFoundErr))

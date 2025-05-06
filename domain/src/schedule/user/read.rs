@@ -64,7 +64,10 @@ mod tests {
 
     #[test]
     fn user_read_not_found() {
-        assert_eq!(user_read_by_credentials(&UserRepositoryStub::of_none(), &user_credentials_stub()), Err(UserErr::UserCredentialsNotFound(UserCredentialsNotFoundErr)));
+        assert_eq!(
+            user_read_by_credentials(&UserRepositoryStub::of_none(), &user_credentials_stub()),
+            Err(UserErr::UserCredentialsNotFound(UserCredentialsNotFoundErr))
+        );
         assert_eq!(user_read_by_id(&UserRepositoryStub::of_none(), &user_stub().id), Err(UserErr::UserIdNotFound(UserIdNotFoundErr)));
         assert_eq!(user_read_info_by_id(&UserRepositoryStub::of_none(), &user_stub().id), Err(UserErr::UserIdNotFound(UserIdNotFoundErr)));
     }

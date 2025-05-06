@@ -1,18 +1,18 @@
-use araucaria::{error::SchemaErr, validation::Validation, value::Value};
+use araucaria::{error::SchemaErr, schema::Schema, value::Value};
 
 pub trait Validator {
-    fn validate(&self, validation: &Validation, value: &Value) -> Result<(), SchemaErr>;
+    fn validate(&self, validation: &Schema, value: &Value) -> Result<(), SchemaErr>;
 }
 
 pub mod stub {
-    use araucaria::{error::SchemaErr, validation::Validation, value::Value};
+    use araucaria::{error::SchemaErr, schema::Schema, value::Value};
 
     use super::Validator;
 
     pub struct ValidatorStub(pub Result<(), SchemaErr>);
 
     impl Validator for ValidatorStub {
-        fn validate(&self, _validation: &Validation, _value: &Value) -> Result<(), SchemaErr> {
+        fn validate(&self, _validation: &Schema, _value: &Value) -> Result<(), SchemaErr> {
             self.0.clone()
         }
     }
@@ -24,7 +24,7 @@ pub mod stub {
         use araucaria::{
             error::{SchemaErr, ValidationErr},
             operation::{Operand, OperandValue, Operation},
-            validation::{BoolValidation, ObjValidation, Validation},
+            schema::{BoolSchema, ObjSchema, Schema},
             value::Value,
         };
 
@@ -35,15 +35,11 @@ pub mod stub {
 
         #[test]
         fn validator_stub() {
-            let v = Validation::from(
-                ObjValidation::default()
-                    .optional()
-                    .validation(BTreeMap::from([("is".into(), Validation::Bool(BoolValidation::default().eq(false)))])),
-            );
+            let v = Schema::from(ObjSchema::from(BTreeMap::from([("is".into(), Schema::Bool(BoolSchema::default().eq(false)))])).optional());
             let value = Value::Obj(BTreeMap::from([("is".into(), Value::Bool(false))]));
-            let err = SchemaErr::obj([(
+            let err = SchemaErr::from([(
                 "is".into(),
-                SchemaErr::validation([REQUIRED, BOOL, ValidationErr::Operation(Operation::Eq(Operand::Value(OperandValue::Bool(false))))]),
+                SchemaErr::from([REQUIRED, BOOL, ValidationErr::Operation(Operation::Eq(Operand::Value(OperandValue::Bool(false))))]),
             )]);
             assert_eq!(ValidatorStub(Ok(())).validate(&v, &value), Ok(()));
             assert_eq!(ValidatorStub(Err(err.clone())).validate(&v, &Value::None), Err(err.clone()));

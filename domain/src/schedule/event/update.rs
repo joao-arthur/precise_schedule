@@ -30,7 +30,13 @@ pub fn event_from_update(event_update: EventUpdate, event: Event, updated_at: St
     }
 }
 
-pub fn event_update(repository: &dyn EventRepository, date_time_generator: &dyn DateTimeGenerator, event_update: EventUpdate, event_id: String, user_id: String) -> Result<Event, EventErr> {
+pub fn event_update(
+    repository: &dyn EventRepository,
+    date_time_generator: &dyn DateTimeGenerator,
+    event_update: EventUpdate,
+    event_id: String,
+    user_id: String,
+) -> Result<Event, EventErr> {
     let old_event = event_read_by_id(repository, &user_id, &event_id)?;
     let now = date_time_generator.now_as_iso();
     let event = event_from_update(event_update, old_event, now);

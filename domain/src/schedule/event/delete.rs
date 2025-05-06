@@ -29,6 +29,9 @@ mod tests {
     #[test]
     fn event_delete_err() {
         assert_eq!(event_delete(&EventRepositoryStub::of_db_err(), &user_stub().id, &event_stub().id), Err(EventErr::DB(DBErr)));
-        assert_eq!(event_delete(&EventRepositoryStub::of_none(), &user_stub().id, &event_stub().id), Err(EventErr::EventIdNotFound(EventIdNotFoundErr)));
+        assert_eq!(
+            event_delete(&EventRepositoryStub::of_none(), &user_stub().id, &event_stub().id),
+            Err(EventErr::EventIdNotFound(EventIdNotFoundErr))
+        );
     }
 }

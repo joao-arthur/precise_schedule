@@ -1,6 +1,6 @@
 use std::{collections::BTreeMap, sync::LazyLock};
 
-use araucaria::validation::{BoolValidation, DateValidation, EnumValidation, ObjValidation, StrValidation, TimeValidation, Validation};
+use araucaria::schema::{BoolSchema, DateSchema, EnumSchema, ObjSchema, Schema, StrSchema, TimeSchema};
 
 use crate::{
     generator::{DateTimeGenerator, IdGenerator},
@@ -21,14 +21,14 @@ pub struct AppointmentCreate {
     pub weekend_repeat: Option<bool>,
 }
 
-pub static APPOINTMENT_CREATE_SCHEMA: LazyLock<Validation> = LazyLock::new(|| {
-    Validation::Obj(ObjValidation::default().validation(BTreeMap::from([
-        ("name".into(), Validation::Str(StrValidation::default().chars_len_btwn(1, 32))),
-        ("day".into(), Validation::Date(DateValidation::default().ge("1970-01-01".into()))),
-        ("begin".into(), Validation::Time(TimeValidation::default().lt_field("end".into()))),
-        ("end".into(), Validation::Time(TimeValidation::default().gt_field("begin".into()))),
-        ("frequency".into(), Validation::Enum(EnumValidation::from(["1D", "2D", "1W", "1M", "3M", "6M", "1Y", "2Y"]))),
-        ("weekend_repeat".into(), Validation::Bool(BoolValidation::default())),
+pub static APPOINTMENT_CREATE_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
+    Schema::from(ObjSchema::from(BTreeMap::from([
+        ("name".into(), Schema::from(StrSchema::default().chars_len_btwn(1, 32))),
+        ("day".into(), Schema::from(DateSchema::default().ge("1970-01-01".into()))),
+        ("begin".into(), Schema::from(TimeSchema::default().lt_field("end".into()))),
+        ("end".into(), Schema::from(TimeSchema::default().gt_field("begin".into()))),
+        ("frequency".into(), Schema::from(EnumSchema::from(["1D", "2D", "1W", "1M", "3M", "6M", "1Y", "2Y"]))),
+        ("weekend_repeat".into(), Schema::from(BoolSchema::default())),
     ])))
 });
 

@@ -1,6 +1,6 @@
 use std::{collections::BTreeMap, sync::LazyLock};
 
-use araucaria::validation::{DateValidation, EmailValidation, ObjValidation, StrValidation, Validation};
+use araucaria::schema::{DateSchema, EmailSchema, ObjSchema, Schema, StrSchema};
 
 use crate::{
     generator::DateTimeGenerator,
@@ -30,17 +30,15 @@ pub struct UserUResult {
     pub session: Session,
 }
 
-pub static USER_UPDATE_SCHEMA: LazyLock<Validation> = LazyLock::new(|| {
-    Validation::Obj(ObjValidation::default().validation(BTreeMap::from([
-        ("first_name".into(), Validation::Str(StrValidation::default().chars_len_btwn(1, 256))),
-        ("birthdate".into(), Validation::Date(DateValidation::default().ge("1970-01-01".into()))),
-        ("email".into(), Validation::Email(EmailValidation::default())),
-        ("username".into(), Validation::Str(StrValidation::default().chars_len_btwn(1, 64))),
+pub static USER_UPDATE_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
+    Schema::from(ObjSchema::from(BTreeMap::from([
+        ("first_name".into(), Schema::from(StrSchema::default().chars_len_btwn(1, 256))),
+        ("birthdate".into(), Schema::from(DateSchema::default().unix_epoch())),
+        ("email".into(), Schema::from(EmailSchema::default())),
+        ("username".into(), Schema::from(StrSchema::default().chars_len_btwn(1, 64))),
         (
             "password".into(),
-            Validation::Str(
-                StrValidation::default().chars_len_btwn(1, 64).uppercase_len_ge(1).lowercase_len_ge(1).numbers_len_ge(1).symbols_len_ge(1),
-            ),
+            Schema::from(StrSchema::default().chars_len_btwn(1, 64).uppercase_len_ge(1).lowercase_len_ge(1).numbers_len_ge(1).symbols_len_ge(1)),
         ),
     ])))
 });

@@ -1,6 +1,6 @@
 use std::{collections::BTreeMap, sync::LazyLock};
 
-use araucaria::validation::{ObjValidation, StrValidation, Validation};
+use araucaria::schema::{ObjSchema, Schema, StrSchema};
 
 use crate::{
     generator::DateTimeGenerator,
@@ -15,14 +15,12 @@ pub struct UserCredentials {
     pub password: String,
 }
 
-pub static USER_LOGIN_SCHEMA: LazyLock<Validation> = LazyLock::new(|| {
-    Validation::Obj(ObjValidation::default().validation(BTreeMap::from([
-        ("username".into(), Validation::Str(StrValidation::default().chars_len_btwn(1, 64))),
+pub static USER_LOGIN_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
+    Schema::from(ObjSchema::from(BTreeMap::from([
+        ("username".into(), Schema::from(StrSchema::default().chars_len_btwn(1, 64))),
         (
             "password".into(),
-            Validation::Str(
-                StrValidation::default().chars_len_btwn(1, 64).uppercase_len_gt(1).lowercase_len_gt(1).numbers_len_gt(1).symbols_len_gt(1),
-            ),
+            Schema::from(StrSchema::default().chars_len_btwn(1, 64).uppercase_len_gt(1).lowercase_len_gt(1).numbers_len_gt(1).symbols_len_gt(1)),
         ),
     ])))
 });
