@@ -4,7 +4,7 @@ use super::{
     create::EventCreate,
     model::{Event, EventCategory, EventFrequency},
     read::EventInfo,
-    repository::EventRepo,
+    repository::EventRepository,
     update::EventUpdate,
 };
 
@@ -72,12 +72,12 @@ pub fn event_info_stub() -> EventInfo {
     }
 }
 
-pub struct EventRepoStub {
+pub struct EventRepositoryStub {
     err: bool,
     event: Option<Event>,
 }
 
-impl EventRepo for EventRepoStub {
+impl EventRepository for EventRepositoryStub {
     fn create(&self, _: &Event) -> DBOp<()> {
         if self.err {
             return Err(DBErr);
@@ -106,7 +106,7 @@ impl EventRepo for EventRepoStub {
         Ok(self.event.clone())
     }
 
-    fn r_by_user(&self, _: &str) -> DBOp<Vec<Event>> {
+    fn read_by_user(&self, _: &str) -> DBOp<Vec<Event>> {
         if self.err {
             return Err(DBErr);
         }
@@ -114,48 +114,48 @@ impl EventRepo for EventRepoStub {
     }
 }
 
-impl Default for EventRepoStub {
+impl Default for EventRepositoryStub {
     fn default() -> Self {
-        EventRepoStub { err: false, event: Some(event_stub()) }
+        EventRepositoryStub { err: false, event: Some(event_stub()) }
     }
 }
 
-impl EventRepoStub {
+impl EventRepositoryStub {
     pub fn of_none() -> Self {
-        EventRepoStub { event: None, ..Default::default() }
+        EventRepositoryStub { event: None, ..Default::default() }
     }
 
     pub fn of_db_err() -> Self {
-        EventRepoStub { err: true, ..Default::default() }
+        EventRepositoryStub { err: true, ..Default::default() }
     }
 }
 
 #[cfg(test)]
 mod test {
-    use super::{EventRepoStub, event_stub};
+    use super::{EventRepositoryStub, event_stub};
     use crate::{
         database::DBErr,
-        schedule::{event::repository::EventRepo, user::stub::user_stub},
+        schedule::{event::repository::EventRepository, user::stub::user_stub},
     };
 
     #[test]
     fn test_user_repo_stub_default() {
-        assert_eq!(EventRepoStub::default().create(&event_stub()), Ok(()));
-        assert_eq!(EventRepoStub::default().update(&event_stub()), Ok(()));
-        assert_eq!(EventRepoStub::default().delete(&event_stub().id), Ok(()));
-        assert_eq!(EventRepoStub::default().read_by_id(&user_stub().id, &event_stub().id), Ok(Some(event_stub())));
+        assert_eq!(EventRepositoryStub::default().create(&event_stub()), Ok(()));
+        assert_eq!(EventRepositoryStub::default().update(&event_stub()), Ok(()));
+        assert_eq!(EventRepositoryStub::default().delete(&event_stub().id), Ok(()));
+        assert_eq!(EventRepositoryStub::default().read_by_id(&user_stub().id, &event_stub().id), Ok(Some(event_stub())));
     }
 
     #[test]
     fn test_user_repo_stub_of_bd_err() {
-        assert_eq!(EventRepoStub::of_db_err().create(&event_stub()), Err(DBErr));
-        assert_eq!(EventRepoStub::of_db_err().update(&event_stub()), Err(DBErr));
-        assert_eq!(EventRepoStub::of_db_err().delete(&event_stub().id), Err(DBErr));
-        assert_eq!(EventRepoStub::of_db_err().read_by_id(&user_stub().id, &event_stub().id), Err(DBErr));
+        assert_eq!(EventRepositoryStub::of_db_err().create(&event_stub()), Err(DBErr));
+        assert_eq!(EventRepositoryStub::of_db_err().update(&event_stub()), Err(DBErr));
+        assert_eq!(EventRepositoryStub::of_db_err().delete(&event_stub().id), Err(DBErr));
+        assert_eq!(EventRepositoryStub::of_db_err().read_by_id(&user_stub().id, &event_stub().id), Err(DBErr));
     }
 
     #[test]
     fn test_user_repo_stub_from_1() {
-        assert_eq!(EventRepoStub::of_none().read_by_id(&user_stub().id, &event_stub().id), Ok(None));
+        assert_eq!(EventRepositoryStub::of_none().read_by_id(&user_stub().id, &event_stub().id), Ok(None));
     }
 }

@@ -4,7 +4,7 @@ use super::{
     error::EventErr,
     model::{Event, EventCategory, EventFrequency},
     read::event_read_by_id,
-    repository::EventRepo,
+    repository::EventRepository,
 };
 
 #[derive(Debug, PartialEq)]
@@ -30,7 +30,7 @@ pub fn event_from_update(event_update: EventUpdate, event: Event, updated_at: St
     }
 }
 
-pub fn event_update(repository: &dyn EventRepo, date_time_generator: &dyn DateTimeGenerator, event_update: EventUpdate, event_id: String, user_id: String) -> Result<Event, EventErr> {
+pub fn event_update(repository: &dyn EventRepository, date_time_generator: &dyn DateTimeGenerator, event_update: EventUpdate, event_id: String, user_id: String) -> Result<Event, EventErr> {
     let old_event = event_read_by_id(repository, &user_id, &event_id)?;
     let now = date_time_generator.now_as_iso();
     let event = event_from_update(event_update, old_event, now);
@@ -47,7 +47,7 @@ mod test {
         schedule::{
             event::{
                 error::EventErr,
-                stub::{EventRepoStub, event_after_update_stub, event_stub, event_update_stub},
+                stub::{EventRepositoryStub, event_after_update_stub, event_stub, event_update_stub},
             },
             user::stub::user_stub,
         },
@@ -62,7 +62,7 @@ mod test {
     fn test_event_update_ok() {
         assert_eq!(
             event_update(
-                &EventRepoStub::default(),
+                &EventRepositoryStub::default(),
                 &DateTimeGeneratorStub(event_stub().updated_at, 1734555761),
                 event_update_stub(),
                 user_stub().id,
@@ -76,7 +76,7 @@ mod test {
     fn test_user_update_err() {
         assert_eq!(
             event_update(
-                &EventRepoStub::of_db_err(),
+                &EventRepositoryStub::of_db_err(),
                 &DateTimeGeneratorStub(user_stub().updated_at, 1734555761),
                 event_update_stub(),
                 user_stub().id,

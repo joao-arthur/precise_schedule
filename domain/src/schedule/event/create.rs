@@ -3,7 +3,7 @@ use crate::generator::{DateTimeGenerator, IdGenerator};
 use super::{
     error::EventErr,
     model::{Event, EventCategory, EventFrequency},
-    repository::EventRepo,
+    repository::EventRepository,
 };
 
 #[derive(Debug, PartialEq)]
@@ -32,7 +32,7 @@ pub fn event_from_create(model: EventCreate, id: String, user_id: String, create
 }
 
 pub fn event_create(
-    repository: &dyn EventRepo,
+    repository: &dyn EventRepository,
     id_generator: &dyn IdGenerator,
     date_time_generator: &dyn DateTimeGenerator,
     event_create: EventCreate,
@@ -54,7 +54,7 @@ mod test {
         schedule::{
             event::{
                 error::EventErr,
-                stub::{EventRepoStub, event_after_create_stub, event_create_stub, event_stub},
+                stub::{EventRepositoryStub, event_after_create_stub, event_create_stub, event_stub},
             },
             user::stub::user_stub,
         },
@@ -69,7 +69,7 @@ mod test {
     fn test_event_create_ok() {
         assert_eq!(
             event_create(
-                &EventRepoStub::default(),
+                &EventRepositoryStub::default(),
                 &IdGeneratorStub(event_stub().id),
                 &DateTimeGeneratorStub(event_stub().created_at, 1734555761),
                 event_create_stub(),
@@ -83,7 +83,7 @@ mod test {
     fn test_user_create_err() {
         assert_eq!(
             event_create(
-                &EventRepoStub::of_db_err(),
+                &EventRepositoryStub::of_db_err(),
                 &IdGeneratorStub(user_stub().id),
                 &DateTimeGeneratorStub(user_stub().created_at, 1734555761),
                 event_create_stub(),

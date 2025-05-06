@@ -8,7 +8,7 @@ use crate::{
         create::{EventCreate, event_create},
         error::EventErr,
         model::{Event, EventCategory, EventFrequency},
-        repository::EventRepo,
+        repository::EventRepository,
     },
 };
 
@@ -44,7 +44,7 @@ pub fn event_create_from_appointment_create(model: AppointmentCreate) -> EventCr
 }
 
 pub fn event_appointment_create(
-    repository: &dyn EventRepo,
+    repository: &dyn EventRepository,
     id_generator: &dyn IdGenerator,
     date_time_generator: &dyn DateTimeGenerator,
     model: AppointmentCreate,
