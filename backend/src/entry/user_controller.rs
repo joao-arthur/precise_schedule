@@ -1,6 +1,6 @@
 use domain::{
     schedule::user::{
-        create::{USER_CREATE_SCHEMA, UserCreate, user_create},
+        create::{user_create, UserCreate, UserCreateResult, USER_CREATE_SCHEMA},
         error::UserErr,
         update::UserUpdate,
     },
@@ -16,29 +16,17 @@ use crate::{
     infra::validation::language_to_locale,
 };
 
-#[derive(Debug, PartialEq, Clone, Serialize)]
-pub struct User {
-    pub id: String,
-    pub first_name: String,
-    pub birthdate: String,
-    pub email: String,
-    pub username: String,
-    pub created_at: String,
-    pub password: String,
-    pub updated_at: String,
-}
-
 #[derive(Deserialize)]
 #[serde(remote = "UserCreate")]
 struct UserCreateProxy {
-    pub email: String,
-    pub first_name: String,
-    pub birthdate: String,
-    pub username: String,
-    pub password: String,
+    email: String,
+    first_name: String,
+    birthdate: String,
+    username: String,
+    password: String,
 }
 
-pub struct UserCreateWrapper(pub UserCreate);
+struct UserCreateWrapper(pub UserCreate);
 
 impl<'de> Deserialize<'de> for UserCreateWrapper {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
@@ -49,16 +37,49 @@ impl<'de> Deserialize<'de> for UserCreateWrapper {
     }
 }
 
-#[derive(Debug, PartialEq, Serialize)]
-pub struct UserCreateResult {
-    pub user: User,
-    pub session: Session,
+#[derive(Debug, PartialEq, Clone, Serialize)]
+struct UserProxy {
+    id: String,
+    first_name: String,
+    birthdate: String,
+    email: String,
+    username: String,
+    created_at: String,
+    password: String,
+    updated_at: String,
 }
 
 #[derive(Debug, PartialEq, Clone, Serialize)]
-pub struct Session {
-    pub token: String,
+struct SessionProxy {
+    token: String,
 }
+
+#[derive(Debug, PartialEq, Serialize)]
+struct UserCreateResultProxy {
+    user: UserProxy,
+    session: SessionProxy,
+}
+
+impl From<UserCreateResult> for UserCreateResultProxy {
+    fn from(value: UserCreateResult) -> Self {
+        UserCreateResultProxy {
+            user: UserProxy {
+                id: value.user.id,
+                first_name: value.user.first_name,
+                birthdate: value.user.birthdate,
+                email: value.user.email,
+                username: value.user.username,
+                created_at: value.user.created_at,
+                password: value.user.password,
+                updated_at: value.user.updated_at,
+            },
+            session: SessionProxy {
+                token: value.session.token
+            }
+        }
+    }
+}
+
 
 #[derive(Debug, PartialEq, Clone, Serialize)]
 struct ErrorGeneric {
@@ -66,7 +87,7 @@ struct ErrorGeneric {
 }
 
 #[post("/", format = "application/json", data = "<data>")]
-pub async fn endpoint_user_create(data: Data<'_>, lg: LanguageGuard) -> Result<Json<UserCreateResult>, Custom<String>> {
+pub async fn endpoint_user_create(data: Data<'_>, lg: LanguageGuard) -> Result<Json<UserCreateResultProxy>, Custom<String>> {
     let limit = 1.kilobytes();
     let body = match data.open(limit).into_bytes().await {
         Ok(body) => {
@@ -145,19 +166,7 @@ pub async fn endpoint_user_create(data: Data<'_>, lg: LanguageGuard) -> Result<J
         }
     }
     let result = result_create.unwrap();
-    return Ok(Json(UserCreateResult {
-        user: User {
-            id: result.user.id.clone(),
-            first_name: result.user.first_name.clone(),
-            birthdate: result.user.birthdate.clone(),
-            email: result.user.email.clone(),
-            username: result.user.username.clone(),
-            created_at: result.user.created_at.clone(),
-            password: result.user.password.clone(),
-            updated_at: result.user.updated_at.clone(),
-        },
-        session: Session { token: result.session.token },
-    }));
+    return Ok(Json(UserCreateResultProxy::from(result)));
 }
 
 #[put("/", format = "application/json")]
