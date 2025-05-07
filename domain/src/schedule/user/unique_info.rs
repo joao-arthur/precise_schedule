@@ -7,20 +7,20 @@ pub struct UserUniqueInfo {
 }
 
 impl From<&User> for UserUniqueInfo {
-    fn from(user: &User) -> Self {
-        UserUniqueInfo { username: user.username.clone(), email: user.email.clone() }
+    fn from(model: &User) -> Self {
+        UserUniqueInfo { username: model.username.clone(), email: model.email.clone() }
     }
 }
 
 impl From<&UserCreate> for UserUniqueInfo {
-    fn from(user: &UserCreate) -> Self {
-        UserUniqueInfo { username: user.username.clone(), email: user.email.clone() }
+    fn from(model: &UserCreate) -> Self {
+        UserUniqueInfo { username: model.username.clone(), email: model.email.clone() }
     }
 }
 
 impl From<&UserUpdate> for UserUniqueInfo {
-    fn from(user: &UserUpdate) -> Self {
-        UserUniqueInfo { username: user.username.clone(), email: user.email.clone() }
+    fn from(model: &UserUpdate) -> Self {
+        UserUniqueInfo { username: model.username.clone(), email: model.email.clone() }
     }
 }
 

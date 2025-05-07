@@ -10,7 +10,7 @@ use crate::{
 use super::{
     error::UserErr,
     model::User,
-    read::user_read_by_id,
+    read::{UserInfo, user_read_by_id},
     repository::UserRepository,
     unique_info::{UserUniqueInfo, user_update_unique_info_is_valid},
 };
@@ -25,8 +25,8 @@ pub struct UserUpdate {
 }
 
 #[derive(Debug, PartialEq)]
-pub struct UserUResult {
-    pub user: User,
+pub struct UserUpdateResult {
+    pub user: UserInfo,
     pub session: Session,
 }
 
@@ -43,13 +43,13 @@ pub static USER_UPDATE_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
     ]))
 });
 
-fn user_from_update(user_update: UserUpdate, user: User, updated_at: String) -> User {
+fn user_of_update(model: UserUpdate, user: User, updated_at: String) -> User {
     User {
-        first_name: user_update.first_name,
-        birthdate: user_update.birthdate,
-        email: user_update.email,
-        username: user_update.username,
-        password: user_update.password,
+        first_name: model.first_name,
+        birthdate: model.birthdate,
+        email: model.email,
+        username: model.username,
+        password: model.password,
         updated_at,
         ..user
     }
@@ -60,38 +60,37 @@ pub fn user_update(
     date_time_generator: &dyn DateTimeGenerator,
     session_service: &dyn SessionService,
     id: String,
-    user_update: UserUpdate,
-) -> Result<UserUResult, UserErr> {
+    model: UserUpdate,
+) -> Result<UserUpdateResult, UserErr> {
     let old_user = user_read_by_id(repository, &id)?;
-    user_update_unique_info_is_valid(repository, &UserUniqueInfo::from(&user_update), &UserUniqueInfo::from(&old_user))?;
+    user_update_unique_info_is_valid(repository, &UserUniqueInfo::from(&model), &UserUniqueInfo::from(&old_user))?;
     let now = date_time_generator.now_as_iso();
-    let user = user_from_update(user_update, old_user, now);
+    let user = user_of_update(model, old_user, now);
     repository.update(&user).map_err(UserErr::DB)?;
     let session = session_service.encode(&user, date_time_generator).map_err(UserErr::Session)?;
-    Ok(UserUResult { user, session })
+    Ok(UserUpdateResult { user: user.into(), session })
 }
 
 #[cfg(test)]
 mod tests {
-    use super::{UserUResult, user_from_update, user_update};
+    use super::{user_of_update, user_update};
     use crate::{
         database::DBErr,
         generator::stub::DateTimeGeneratorStub,
         schedule::user::{
             error::UserErr,
             read::UserIdNotFoundErr,
-            stub::{UserRepositoryStub, user_after_update_stub, user_stub, user_update_stub},
+            stub::{user_after_update_stub, user_stub, user_update_result_stub, user_update_stub, UserRepositoryStub},
             unique_info::{UserUniqueInfoCount, UserUniqueInfoFieldErr},
         },
         session::{
-            SessionEncodeErr, SessionErr,
-            stub::{SessionServiceStub, session_stub},
+            stub::SessionServiceStub, SessionEncodeErr, SessionErr
         },
     };
 
     #[test]
-    fn test_user_from_update() {
-        assert_eq!(user_from_update(user_update_stub(), user_stub(), user_stub().updated_at), user_after_update_stub());
+    fn test_user_of_update() {
+        assert_eq!(user_of_update(user_update_stub(), user_stub(), user_stub().updated_at), user_after_update_stub());
     }
 
     #[test]
@@ -104,7 +103,7 @@ mod tests {
                 user_stub().id,
                 user_update_stub()
             ),
-            Ok(UserUResult { user: user_after_update_stub(), session: session_stub() })
+            Ok(user_update_result_stub())
         );
     }
 

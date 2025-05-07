@@ -1,4 +1,4 @@
-use std::{collections::BTreeMap, sync::LazyLock};
+use std::sync::LazyLock;
 
 use araucaria::schema::{DateSchema, EmailSchema, ObjSchema, Schema, StrSchema};
 
@@ -10,6 +10,7 @@ use crate::{
 use super::{
     error::UserErr,
     model::User,
+    read::UserInfo,
     repository::UserRepository,
     unique_info::{UserUniqueInfo, user_create_unique_info_is_valid},
 };
@@ -25,7 +26,7 @@ pub struct UserCreate {
 
 #[derive(Debug, PartialEq)]
 pub struct UserCreateResult {
-    pub user: User,
+    pub user: UserInfo,
     pub session: Session,
 }
 
@@ -42,7 +43,7 @@ pub static USER_CREATE_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
     ]))
 });
 
-fn user_from_create(model: UserCreate, id: String, created_at: String) -> User {
+fn user_of_create(model: UserCreate, id: String, created_at: String) -> User {
     User {
         id,
         first_name: model.first_name,
@@ -65,32 +66,31 @@ pub fn user_create(
     user_create_unique_info_is_valid(repository, &UserUniqueInfo::from(&model))?;
     let id = id_generator.generate();
     let now = date_time_generator.now_as_iso();
-    let user = user_from_create(model, id, now);
+    let user = user_of_create(model, id, now);
     repository.create(&user).map_err(UserErr::DB)?;
     let session = session_service.encode(&user, date_time_generator).map_err(UserErr::Session)?;
-    Ok(UserCreateResult { user, session })
+    Ok(UserCreateResult { user: user.into(), session })
 }
 
 #[cfg(test)]
 mod tests {
-    use super::{UserCreateResult, user_create, user_from_create};
+    use super::{user_create, user_of_create};
     use crate::{
         database::DBErr,
         generator::stub::{DateTimeGeneratorStub, IdGeneratorStub},
         schedule::user::{
             error::UserErr,
-            stub::{UserRepositoryStub, user_after_create_stub, user_create_stub, user_stub},
+            stub::{user_after_create_stub, user_create_result_stub, user_create_stub, user_stub, UserRepositoryStub},
             unique_info::{UserUniqueInfoCount, UserUniqueInfoFieldErr},
         },
         session::{
-            SessionEncodeErr, SessionErr,
-            stub::{SessionServiceStub, session_stub},
+            stub::SessionServiceStub, SessionEncodeErr, SessionErr
         },
     };
 
     #[test]
-    fn test_user_from_create() {
-        assert_eq!(user_from_create(user_create_stub(), user_stub().id, user_stub().created_at), user_after_create_stub());
+    fn test_user_of_create() {
+        assert_eq!(user_of_create(user_create_stub(), user_stub().id, user_stub().created_at), user_after_create_stub());
     }
 
     #[test]
@@ -103,7 +103,7 @@ mod tests {
                 &SessionServiceStub::default(),
                 user_create_stub()
             ),
-            Ok(UserCreateResult { user: user_after_create_stub(), session: session_stub() })
+            Ok(user_create_result_stub())
         );
     }
 

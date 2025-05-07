@@ -1,13 +1,13 @@
-use crate::database::{DBErr, DBOp};
+use crate::{database::{DBErr, DBOp}, session::stub::session_stub};
 
 use super::{
-    create::UserCreate,
+    create::{UserCreate, UserCreateResult},
     login::UserCredentials,
     model::User,
     read::UserInfo,
     repository::UserRepository,
     unique_info::{UserUniqueInfo, UserUniqueInfoCount},
-    update::UserUpdate,
+    update::{UserUpdate, UserUpdateResult},
 };
 
 pub fn user_stub() -> User {
@@ -37,6 +37,18 @@ pub fn user_create_stub() -> UserCreate {
     }
 }
 
+pub fn user_create_result_stub() -> UserCreateResult {
+    UserCreateResult {
+        user: UserInfo {
+            email: "paul@gmail.com".into(),
+            first_name: "Paul McCartney".into(),
+            birthdate: "1942-06-18".into(),
+            username: "paul_mc".into(),
+        },
+        session: session_stub()
+    }
+} 
+
 pub fn user_after_create_stub() -> User {
     User { updated_at: "2024-03-01T11:26Z".into(), ..user_stub() }
 }
@@ -62,6 +74,18 @@ pub fn user_after_update_stub() -> User {
         ..user_stub()
     }
 }
+
+pub fn user_update_result_stub() -> UserUpdateResult {
+    UserUpdateResult {
+        user: UserInfo {
+            email: "john@gmail.com".into(),
+            first_name: "John Lennon".into(),
+            birthdate: "1940-10-09".into(),
+            username: "john_lennon".into(),
+        },
+        session: session_stub()
+    }
+} 
 
 pub fn user_unique_info_stub_1() -> UserUniqueInfo {
     UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() }
