@@ -19,8 +19,6 @@ pub mod stub {
 
     #[cfg(test)]
     mod tests {
-        use std::collections::BTreeMap;
-
         use araucaria::{
             error::{SchemaErr, ValidationErr},
             operation::{Operand, OperandValue, Operation},
@@ -35,8 +33,8 @@ pub mod stub {
 
         #[test]
         fn validator_stub() {
-            let v = Schema::from(ObjSchema::from(BTreeMap::from([("is".into(), Schema::Bool(BoolSchema::default().eq(false)))])).optional());
-            let value = Value::Obj(BTreeMap::from([("is".into(), Value::Bool(false))]));
+            let v = Schema::from(ObjSchema::from([("is".into(), Schema::Bool(BoolSchema::default().eq(false)))]).optional());
+            let value = Value::from([("is".into(), Value::Bool(false))]);
             let err = SchemaErr::from([(
                 "is".into(),
                 SchemaErr::from([REQUIRED, BOOL, ValidationErr::Operation(Operation::Eq(Operand::Value(OperandValue::Bool(false))))]),

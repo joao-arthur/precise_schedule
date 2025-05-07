@@ -22,14 +22,14 @@ pub struct AppointmentCreate {
 }
 
 pub static APPOINTMENT_CREATE_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
-    Schema::from(ObjSchema::from(BTreeMap::from([
+    Schema::from(ObjSchema::from([
         ("name".into(), Schema::from(StrSchema::default().chars_len_btwn(1, 32))),
-        ("day".into(), Schema::from(DateSchema::default().ge("1970-01-01".into()))),
+        ("day".into(), Schema::from(DateSchema::default().unix_epoch())),
         ("begin".into(), Schema::from(TimeSchema::default().lt_field("end".into()))),
         ("end".into(), Schema::from(TimeSchema::default().gt_field("begin".into()))),
         ("frequency".into(), Schema::from(EnumSchema::from(["1D", "2D", "1W", "1M", "3M", "6M", "1Y", "2Y"]))),
         ("weekend_repeat".into(), Schema::from(BoolSchema::default())),
-    ])))
+    ]))
 });
 
 pub fn event_create_from_appointment_create(model: AppointmentCreate) -> EventCreate {

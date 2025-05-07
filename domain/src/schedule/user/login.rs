@@ -1,4 +1,4 @@
-use std::{collections::BTreeMap, sync::LazyLock};
+use std::sync::LazyLock;
 
 use araucaria::schema::{ObjSchema, Schema, StrSchema};
 
@@ -16,13 +16,13 @@ pub struct UserCredentials {
 }
 
 pub static USER_LOGIN_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
-    Schema::from(ObjSchema::from(BTreeMap::from([
+    Schema::from(ObjSchema::from([
         ("username".into(), Schema::from(StrSchema::default().chars_len_btwn(1, 64))),
         (
             "password".into(),
             Schema::from(StrSchema::default().chars_len_btwn(1, 64).uppercase_len_gt(1).lowercase_len_gt(1).numbers_len_gt(1).symbols_len_gt(1)),
         ),
-    ])))
+    ]))
 });
 
 pub fn user_login(

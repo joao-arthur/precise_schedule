@@ -30,7 +30,7 @@ pub struct UserCreateResult {
 }
 
 pub static USER_CREATE_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
-    Schema::from(ObjSchema::from(BTreeMap::from([
+    Schema::from(ObjSchema::from([
         ("first_name".into(), Schema::from(StrSchema::default().chars_len_btwn(1, 256))),
         ("birthdate".into(), Schema::from(DateSchema::default().unix_epoch())),
         ("email".into(), Schema::from(EmailSchema::default())),
@@ -39,7 +39,7 @@ pub static USER_CREATE_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
             "password".into(),
             Schema::from(StrSchema::default().chars_len_btwn(1, 64).uppercase_len_ge(1).lowercase_len_ge(1).numbers_len_ge(1).symbols_len_ge(1)),
         ),
-    ])))
+    ]))
 });
 
 fn user_from_create(model: UserCreate, id: String, created_at: String) -> User {
