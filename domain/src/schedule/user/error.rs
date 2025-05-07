@@ -1,5 +1,3 @@
-use araucaria::error::SchemaErr;
-
 use crate::{database::DBErr, session::SessionErr};
 
 use super::{
@@ -10,7 +8,6 @@ use super::{
 #[derive(PartialEq, Debug)]
 pub enum UserErr {
     DB(DBErr),
-    Schema(SchemaErr),
     UserUniqueInfoField(UserUniqueInfoFieldErr),
     UserIdNotFound(UserIdNotFoundErr),
     UserCredentialsNotFound(UserCredentialsNotFoundErr),
