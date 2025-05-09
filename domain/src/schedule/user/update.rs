@@ -81,7 +81,7 @@ pub mod stub {
 
 #[cfg(test)]
 mod tests {
-    use super::{stub::user_update_input_stub, user_update, transform_to_user};
+    use super::{stub::user_update_input_stub, transform_to_user, user_update};
 
     use crate::{
         database::DBErr,

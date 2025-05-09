@@ -87,15 +87,15 @@ pub mod stub {
 
 #[cfg(test)]
 mod tests {
-    use super::{stub::user_sign_up_input_stub, user_sign_up, transform_to_user};
+    use super::{stub::user_sign_up_input_stub, transform_to_user, user_sign_up};
 
     use crate::{
         database::DBErr,
         generator::stub::{DateTimeGeneratorStub, IdGeneratorStub},
         schedule::user::{
-            create::{UserSignUpInput, UserSignUpOutput},
             error::UserErr,
             model::User,
+            sign_up::{UserSignUpInput, UserSignUpOutput},
             stub::{UserRepositoryStub, user_stub},
             unique_info::{UserUniqueInfoCount, UserUniqueInfoFieldErr},
         },

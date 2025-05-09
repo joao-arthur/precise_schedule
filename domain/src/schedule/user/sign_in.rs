@@ -15,7 +15,7 @@ pub struct UserCredentials {
     pub password: String,
 }
 
-pub static USER_SIGN_IN_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
+pub static USER_CREDENTIALS_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
     Schema::from(ObjSchema::from([
         ("username".into(), Schema::from(StrSchema::default().chars_len_btwn(1, 64))),
         (

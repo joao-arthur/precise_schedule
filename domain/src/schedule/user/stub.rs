@@ -1,9 +1,9 @@
 use crate::database::{DBErr, DBOp};
 
 use super::{
-    login::UserCredentials,
     model::User,
     repository::UserRepository,
+    sign_in::UserCredentials,
     unique_info::{UserUniqueInfo, UserUniqueInfoCount},
 };
 
@@ -97,8 +97,8 @@ mod tests {
     use crate::{
         database::DBErr,
         schedule::user::{
-            login::stub::user_credentials_stub,
             repository::UserRepository,
+            sign_in::stub::user_credentials_stub,
             unique_info::{UserUniqueInfoCount, stub::user_unique_info_stub_1},
         },
     };

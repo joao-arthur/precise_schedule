@@ -1,4 +1,4 @@
-use super::{error::UserErr, login::UserCredentials, model::User, repository::UserRepository};
+use super::{error::UserErr, model::User, repository::UserRepository, sign_in::UserCredentials};
 
 #[derive(Debug, PartialEq)]
 pub struct UserCredentialsNotFoundErr;
@@ -47,8 +47,8 @@ mod tests {
         database::DBErr,
         schedule::user::{
             error::UserErr,
-            login::stub::user_credentials_stub,
             read::stub::user_info_stub,
+            sign_in::stub::user_credentials_stub,
             stub::{UserRepositoryStub, user_stub},
         },
     };

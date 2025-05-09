@@ -1,4 +1,4 @@
-use super::{create::UserSignUpInput, error::UserErr, model::User, repository::UserRepository, update::UserUpdateInput};
+use super::{error::UserErr, model::User, repository::UserRepository, sign_up::UserSignUpInput, update::UserUpdateInput};
 
 #[derive(Debug, PartialEq)]
 pub struct UserUniqueInfo {
@@ -74,8 +74,8 @@ mod tests {
     use crate::{
         database::DBErr,
         schedule::user::{
-            create::stub::user_sign_up_input_stub,
             error::UserErr,
+            sign_up::stub::user_sign_up_input_stub,
             stub::{UserRepositoryStub, user_stub},
             update::stub::user_update_input_stub,
         },
