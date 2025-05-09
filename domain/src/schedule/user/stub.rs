@@ -1,7 +1,9 @@
-use crate::{database::{DBErr, DBOp}, session::stub::session_stub};
+use crate::{
+    database::{DBErr, DBOp},
+    session::stub::session_stub,
+};
 
 use super::{
-    create::{UserCreate, UserCreateResult},
     login::UserCredentials,
     model::User,
     read::UserInfo,
@@ -25,32 +27,6 @@ pub fn user_stub() -> User {
 
 pub fn user_credentials_stub() -> UserCredentials {
     UserCredentials { username: "paul_mc".into(), password: "asdf!@#123".into() }
-}
-
-pub fn user_create_stub() -> UserCreate {
-    UserCreate {
-        email: "paul@gmail.com".into(),
-        first_name: "Paul McCartney".into(),
-        birthdate: "1942-06-18".into(),
-        username: "paul_mc".into(),
-        password: "asdf!@#123".into(),
-    }
-}
-
-pub fn user_create_result_stub() -> UserCreateResult {
-    UserCreateResult {
-        user: UserInfo {
-            email: "paul@gmail.com".into(),
-            first_name: "Paul McCartney".into(),
-            birthdate: "1942-06-18".into(),
-            username: "paul_mc".into(),
-        },
-        session: session_stub()
-    }
-} 
-
-pub fn user_after_create_stub() -> User {
-    User { updated_at: "2024-03-01T11:26Z".into(), ..user_stub() }
 }
 
 pub fn user_update_stub() -> UserUpdate {
@@ -83,9 +59,9 @@ pub fn user_update_result_stub() -> UserUpdateResult {
             birthdate: "1940-10-09".into(),
             username: "john_lennon".into(),
         },
-        session: session_stub()
+        session: session_stub(),
     }
-} 
+}
 
 pub fn user_unique_info_stub_1() -> UserUniqueInfo {
     UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() }

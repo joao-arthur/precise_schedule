@@ -10,13 +10,12 @@ use crate::{
 use super::{
     error::UserErr,
     model::User,
-    read::UserInfo,
     repository::UserRepository,
     unique_info::{UserUniqueInfo, user_create_unique_info_is_valid},
 };
 
 #[derive(Debug, PartialEq)]
-pub struct UserCreate {
+pub struct UserCreateInput {
     pub email: String,
     pub first_name: String,
     pub birthdate: String,
@@ -25,8 +24,8 @@ pub struct UserCreate {
 }
 
 #[derive(Debug, PartialEq)]
-pub struct UserCreateResult {
-    pub user: UserInfo,
+pub struct UserCreateOutput {
+    pub id: String,
     pub session: Session,
 }
 
@@ -43,7 +42,7 @@ pub static USER_CREATE_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
     ]))
 });
 
-fn user_of_create(model: UserCreate, id: String, created_at: String) -> User {
+fn user_create_input_to_user(model: UserCreateInput, id: String, created_at: String) -> User {
     User {
         id,
         first_name: model.first_name,
@@ -61,36 +60,57 @@ pub fn user_create(
     id_generator: &dyn IdGenerator,
     date_time_generator: &dyn DateTimeGenerator,
     session_service: &dyn SessionService,
-    model: UserCreate,
-) -> Result<UserCreateResult, UserErr> {
+    model: UserCreateInput,
+) -> Result<UserCreateOutput, UserErr> {
     user_create_unique_info_is_valid(repository, &UserUniqueInfo::from(&model))?;
     let id = id_generator.generate();
     let now = date_time_generator.now_as_iso();
-    let user = user_of_create(model, id, now);
+    let user = user_create_input_to_user(model, id, now);
     repository.create(&user).map_err(UserErr::DB)?;
     let session = session_service.encode(&user, date_time_generator).map_err(UserErr::Session)?;
-    Ok(UserCreateResult { user: user.into(), session })
+    Ok(UserCreateOutput { id: user.id, session })
+}
+
+pub mod stub {
+    use super::UserCreateInput;
+
+    pub fn user_create_input_stub() -> UserCreateInput {
+        UserCreateInput {
+            email: "paul@gmail.com".into(),
+            first_name: "Paul McCartney".into(),
+            birthdate: "1942-06-18".into(),
+            username: "paul_mc".into(),
+            password: "asdf!@#123".into(),
+        }
+    }
 }
 
 #[cfg(test)]
 mod tests {
-    use super::{user_create, user_of_create};
+    use super::{stub::user_create_input_stub, user_create, user_create_input_to_user};
+
     use crate::{
         database::DBErr,
         generator::stub::{DateTimeGeneratorStub, IdGeneratorStub},
         schedule::user::{
+            create::UserCreateOutput,
             error::UserErr,
-            stub::{user_after_create_stub, user_create_result_stub, user_create_stub, user_stub, UserRepositoryStub},
+            model::User,
+            stub::{UserRepositoryStub, user_stub},
             unique_info::{UserUniqueInfoCount, UserUniqueInfoFieldErr},
         },
         session::{
-            stub::SessionServiceStub, SessionEncodeErr, SessionErr
+            SessionEncodeErr, SessionErr,
+            stub::{SessionServiceStub, session_stub},
         },
     };
 
     #[test]
-    fn test_user_of_create() {
-        assert_eq!(user_of_create(user_create_stub(), user_stub().id, user_stub().created_at), user_after_create_stub());
+    fn test_user_create_input_to_user() {
+        assert_eq!(
+            user_create_input_to_user(user_create_input_stub(), user_stub().id, user_stub().created_at),
+            User { updated_at: "2024-03-01T11:26Z".into(), ..user_stub() }
+        );
     }
 
     #[test]
@@ -101,9 +121,9 @@ mod tests {
                 &IdGeneratorStub(user_stub().id),
                 &DateTimeGeneratorStub(user_stub().created_at, 1734555761),
                 &SessionServiceStub::default(),
-                user_create_stub()
+                user_create_input_stub()
             ),
-            Ok(user_create_result_stub())
+            Ok(UserCreateOutput { id: user_stub().id, session: session_stub() })
         );
     }
 
@@ -115,7 +135,7 @@ mod tests {
                 &IdGeneratorStub(user_stub().id),
                 &DateTimeGeneratorStub(user_stub().created_at, 1734555761),
                 &SessionServiceStub::default(),
-                user_create_stub()
+                user_create_input_stub()
             ),
             Err(UserErr::DB(DBErr))
         );
@@ -125,7 +145,7 @@ mod tests {
                 &IdGeneratorStub(user_stub().id),
                 &DateTimeGeneratorStub(user_stub().created_at, 1734555761),
                 &SessionServiceStub::default(),
-                user_create_stub()
+                user_create_input_stub()
             ),
             Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr { username: true, email: true }))
         );
@@ -135,7 +155,7 @@ mod tests {
                 &IdGeneratorStub(user_stub().id),
                 &DateTimeGeneratorStub(user_stub().created_at, 1734555761),
                 &SessionServiceStub::of_session_err(),
-                user_create_stub()
+                user_create_input_stub()
             ),
             Err(UserErr::Session(SessionErr::Encode(SessionEncodeErr)))
         );

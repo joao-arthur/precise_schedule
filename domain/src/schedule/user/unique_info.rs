@@ -1,4 +1,4 @@
-use super::{create::UserCreate, error::UserErr, model::User, repository::UserRepository, update::UserUpdate};
+use super::{create::UserCreateInput, error::UserErr, model::User, repository::UserRepository, update::UserUpdate};
 
 #[derive(Debug, PartialEq)]
 pub struct UserUniqueInfo {
@@ -12,8 +12,8 @@ impl From<&User> for UserUniqueInfo {
     }
 }
 
-impl From<&UserCreate> for UserUniqueInfo {
-    fn from(model: &UserCreate) -> Self {
+impl From<&UserCreateInput> for UserUniqueInfo {
+    fn from(model: &UserCreateInput) -> Self {
         UserUniqueInfo { username: model.username.clone(), email: model.email.clone() }
     }
 }
@@ -65,15 +65,16 @@ mod tests {
     use crate::{
         database::DBErr,
         schedule::user::{
+            create::stub::user_create_input_stub,
             error::UserErr,
-            stub::{UserRepositoryStub, user_create_stub, user_stub, user_unique_info_stub_1, user_unique_info_stub_2, user_update_stub},
+            stub::{UserRepositoryStub, user_stub, user_unique_info_stub_1, user_unique_info_stub_2, user_update_stub},
         },
     };
 
     #[test]
     fn unique_info() {
         assert_eq!(UserUniqueInfo::from(&user_stub()), UserUniqueInfo { username: "paul_mc".into(), email: "paul@gmail.com".into() });
-        assert_eq!(UserUniqueInfo::from(&user_create_stub()), UserUniqueInfo { username: "paul_mc".into(), email: "paul@gmail.com".into() });
+        assert_eq!(UserUniqueInfo::from(&user_create_input_stub()), UserUniqueInfo { username: "paul_mc".into(), email: "paul@gmail.com".into() });
         assert_eq!(UserUniqueInfo::from(&user_update_stub()), UserUniqueInfo { username: "john_lennon".into(), email: "john@gmail.com".into() })
     }
 

@@ -15,8 +15,8 @@ pub struct UserInfo {
 }
 
 impl From<User> for UserInfo {
-    fn from(model: User) -> Self {
-        UserInfo { first_name: model.first_name, birthdate: model.birthdate, email: model.email, username: model.username }
+    fn from(user: User) -> Self {
+        UserInfo { first_name: user.first_name, birthdate: user.birthdate, email: user.email, username: user.username }
     }
 }
 

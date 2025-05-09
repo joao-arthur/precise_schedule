@@ -80,12 +80,10 @@ mod tests {
         schedule::user::{
             error::UserErr,
             read::UserIdNotFoundErr,
-            stub::{user_after_update_stub, user_stub, user_update_result_stub, user_update_stub, UserRepositoryStub},
+            stub::{UserRepositoryStub, user_after_update_stub, user_stub, user_update_result_stub, user_update_stub},
             unique_info::{UserUniqueInfoCount, UserUniqueInfoFieldErr},
         },
-        session::{
-            stub::SessionServiceStub, SessionEncodeErr, SessionErr
-        },
+        session::{SessionEncodeErr, SessionErr, stub::SessionServiceStub},
     };
 
     #[test]
