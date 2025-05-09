@@ -36,13 +36,12 @@ pub mod stub {
     use super::UserInfo;
 
     pub fn user_info_stub() -> UserInfo {
-        UserInfo { email: "paul@gmail.com".into(), first_name: "Paul McCartney".into(), birthdate: "1942-06-18".into(), username: "paul_mc".into() }
+        UserInfo { email: "paul@gmail.com".into(), first_name: "Paul McCartney".into(), birthdate: "1942-06-18".into(), username: "macca".into() }
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use super::{UserCredentialsNotFoundErr, UserIdNotFoundErr, UserInfo, user_read_by_credentials, user_read_by_id, user_read_info_by_id};
     use crate::{
         database::DBErr,
         schedule::user::{
@@ -52,6 +51,8 @@ mod tests {
             stub::{UserRepositoryStub, user_stub},
         },
     };
+
+    use super::{UserCredentialsNotFoundErr, UserIdNotFoundErr, UserInfo, user_read_by_credentials, user_read_by_id, user_read_info_by_id};
 
     #[test]
     fn user_info() {

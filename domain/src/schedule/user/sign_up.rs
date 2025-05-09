@@ -11,7 +11,7 @@ use super::{
     error::UserErr,
     model::User,
     repository::UserRepository,
-    unique_info::{UserUniqueInfo, user_create_unique_info_is_valid},
+    unique_info::{UserUniqueInfo, user_sign_up_unique_info_is_valid},
 };
 
 #[derive(Debug, PartialEq)]
@@ -62,7 +62,7 @@ pub fn user_sign_up(
     session_service: &dyn SessionService,
     model: UserSignUpInput,
 ) -> Result<UserSignUpOutput, UserErr> {
-    user_create_unique_info_is_valid(repository, &UserUniqueInfo::from(&model))?;
+    user_sign_up_unique_info_is_valid(repository, &UserUniqueInfo::from(&model))?;
     let id = id_generator.generate();
     let now = date_time_generator.now_as_iso();
     let user = transform_to_user(model, id, now);
@@ -71,7 +71,7 @@ pub fn user_sign_up(
     Ok(UserSignUpOutput { id: user.id, session })
 }
 
-pub mod stub {
+mod stub {
     use super::UserSignUpInput;
 
     pub fn user_sign_up_input_stub() -> UserSignUpInput {
@@ -79,7 +79,7 @@ pub mod stub {
             email: "paul@gmail.com".into(),
             first_name: "Paul McCartney".into(),
             birthdate: "1942-06-18".into(),
-            username: "paul_mc".into(),
+            username: "macca".into(),
             password: "asdf!@#123".into(),
         }
     }
@@ -87,8 +87,6 @@ pub mod stub {
 
 #[cfg(test)]
 mod tests {
-    use super::{stub::user_sign_up_input_stub, transform_to_user, user_sign_up};
-
     use crate::{
         database::DBErr,
         generator::stub::{DateTimeGeneratorStub, IdGeneratorStub},
@@ -96,14 +94,13 @@ mod tests {
             error::UserErr,
             model::User,
             sign_up::{UserSignUpInput, UserSignUpOutput},
-            stub::{UserRepositoryStub, user_stub},
+            stub::UserRepositoryStub,
             unique_info::{UserUniqueInfoCount, UserUniqueInfoFieldErr},
         },
-        session::{
-            SessionEncodeErr, SessionErr,
-            stub::{SessionServiceStub, session_stub},
-        },
+        session::{Session, SessionEncodeErr, SessionErr, stub::SessionServiceStub},
     };
+
+    use super::{stub::user_sign_up_input_stub, transform_to_user, user_sign_up};
 
     #[test]
     fn test_transform_to_user() {
@@ -113,7 +110,7 @@ mod tests {
                     email: "paul@gmail.com".into(),
                     first_name: "Paul McCartney".into(),
                     birthdate: "1942-06-18".into(),
-                    username: "paul_mc".into(),
+                    username: "macca".into(),
                     password: "asdf!@#123".into(),
                 },
                 "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
@@ -124,7 +121,7 @@ mod tests {
                 email: "paul@gmail.com".into(),
                 first_name: "Paul McCartney".into(),
                 birthdate: "1942-06-18".into(),
-                username: "paul_mc".into(),
+                username: "macca".into(),
                 password: "asdf!@#123".into(),
                 created_at: "2024-03-01T11:26Z".into(),
                 updated_at: "2024-03-01T11:26Z".into(),
@@ -139,10 +136,10 @@ mod tests {
                 &UserRepositoryStub::default(),
                 &IdGeneratorStub("a6edc906-2f9f-5fb2-a373-efac406f0ef2".into()),
                 &DateTimeGeneratorStub::of_iso("2024-03-01T11:26Z".into()),
-                &SessionServiceStub::default(),
+                &SessionServiceStub::of_encode_token("TENGO SUERTE".into()),
                 user_sign_up_input_stub()
             ),
-            Ok(UserSignUpOutput { id: "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(), session: session_stub() })
+            Ok(UserSignUpOutput { id: "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(), session: Session { token: "TENGO SUERTE".into() } })
         );
     }
 
@@ -151,9 +148,9 @@ mod tests {
         assert_eq!(
             user_sign_up(
                 &UserRepositoryStub::of_db_err(),
-                &IdGeneratorStub(user_stub().id),
-                &DateTimeGeneratorStub::of_iso(user_stub().created_at),
-                &SessionServiceStub::default(),
+                &IdGeneratorStub("a6edc906-2f9f-5fb2-a373-efac406f0ef2".into()),
+                &DateTimeGeneratorStub::of_iso("2024-03-01T11:26Z".into()),
+                &SessionServiceStub::of_encode_token("TENGO SUERTE".into()),
                 user_sign_up_input_stub()
             ),
             Err(UserErr::DB(DBErr))
@@ -161,9 +158,9 @@ mod tests {
         assert_eq!(
             user_sign_up(
                 &UserRepositoryStub::of_unique_info(UserUniqueInfoCount { username: 2, email: 2 }),
-                &IdGeneratorStub(user_stub().id),
-                &DateTimeGeneratorStub::of_iso(user_stub().created_at),
-                &SessionServiceStub::default(),
+                &IdGeneratorStub("a6edc906-2f9f-5fb2-a373-efac406f0ef2".into()),
+                &DateTimeGeneratorStub::of_iso("2024-03-01T11:26Z".into()),
+                &SessionServiceStub::of_encode_token("TENGO SUERTE".into()),
                 user_sign_up_input_stub()
             ),
             Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr { username: true, email: true }))
@@ -171,8 +168,8 @@ mod tests {
         assert_eq!(
             user_sign_up(
                 &UserRepositoryStub::default(),
-                &IdGeneratorStub(user_stub().id),
-                &DateTimeGeneratorStub::of_iso(user_stub().created_at),
+                &IdGeneratorStub("a6edc906-2f9f-5fb2-a373-efac406f0ef2".into()),
+                &DateTimeGeneratorStub::of_iso("2024-03-01T11:26Z".into()),
                 &SessionServiceStub::of_session_err(),
                 user_sign_up_input_stub()
             ),

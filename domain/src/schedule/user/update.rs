@@ -65,7 +65,7 @@ pub fn user_update(
     Ok(session)
 }
 
-pub mod stub {
+mod stub {
     use super::UserUpdateInput;
 
     pub fn user_update_input_stub() -> UserUpdateInput {
@@ -81,36 +81,47 @@ pub mod stub {
 
 #[cfg(test)]
 mod tests {
-    use super::{stub::user_update_input_stub, transform_to_user, user_update};
-
     use crate::{
         database::DBErr,
         generator::stub::DateTimeGeneratorStub,
-        schedule::user::{
-            error::UserErr,
-            model::User,
-            read::UserIdNotFoundErr,
-            stub::{UserRepositoryStub, user_stub},
-            unique_info::{UserUniqueInfoCount, UserUniqueInfoFieldErr},
-        },
-        session::{
-            SessionEncodeErr, SessionErr,
-            stub::{SessionServiceStub, session_stub},
-        },
+        schedule::user::{User, UserErr, UserIdNotFoundErr, UserUniqueInfoCount, UserUniqueInfoFieldErr, UserUpdateInput, stub::UserRepositoryStub},
+        session::{Session, SessionEncodeErr, SessionErr, stub::SessionServiceStub},
     };
 
+    use super::{stub::user_update_input_stub, transform_to_user, user_update};
+
     #[test]
-    fn test_user_of_update() {
+    fn test_transform_to_user() {
         assert_eq!(
-            transform_to_user(user_update_input_stub(), user_stub(), user_stub().updated_at),
+            transform_to_user(
+                UserUpdateInput {
+                    email: "john@gmail.com".into(),
+                    first_name: "John Lennon".into(),
+                    birthdate: "1940-10-09".into(),
+                    username: "john_lennon".into(),
+                    password: "abcd!@#$4321".into(),
+                },
+                User {
+                    id: "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
+                    email: "paul@gmail.com".into(),
+                    first_name: "Paul McCartney".into(),
+                    birthdate: "1942-06-18".into(),
+                    username: "macca".into(),
+                    password: "asdf!@#123".into(),
+                    created_at: "2024-03-01T11:26Z".into(),
+                    updated_at: "2024-03-01T11:26Z".into(),
+                },
+                "2025-09-27T18:02Z".into()
+            ),
             User {
+                id: "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
                 email: "john@gmail.com".into(),
                 first_name: "John Lennon".into(),
                 birthdate: "1940-10-09".into(),
                 username: "john_lennon".into(),
                 password: "abcd!@#$4321".into(),
-                updated_at: "2024-07-03T22:49Z".into(),
-                ..user_stub()
+                created_at: "2024-03-01T11:26Z".into(),
+                updated_at: "2025-09-27T18:02Z".into()
             }
         );
     }
@@ -120,12 +131,12 @@ mod tests {
         assert_eq!(
             user_update(
                 &UserRepositoryStub::default(),
-                &DateTimeGeneratorStub(user_stub().updated_at, 1734555761),
-                &SessionServiceStub::default(),
-                user_stub().id,
+                &DateTimeGeneratorStub::of_iso("2025-09-27T18:02Z".into()),
+                &SessionServiceStub::of_encode_token("TENGO SUERTE".into()),
+                "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
                 user_update_input_stub()
             ),
-            Ok(session_stub())
+            Ok(Session { token: "TENGO SUERTE".into() })
         );
     }
 
@@ -134,9 +145,9 @@ mod tests {
         assert_eq!(
             user_update(
                 &UserRepositoryStub::of_db_err(),
-                &DateTimeGeneratorStub(user_stub().updated_at, 1734555761),
-                &SessionServiceStub::default(),
-                user_stub().id,
+                &DateTimeGeneratorStub::of_iso("2025-09-27T18:02Z".into()),
+                &SessionServiceStub::of_encode_token("TENGO SUERTE".into()),
+                "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
                 user_update_input_stub()
             ),
             Err(UserErr::DB(DBErr))
@@ -144,9 +155,9 @@ mod tests {
         assert_eq!(
             user_update(
                 &UserRepositoryStub::of_none(),
-                &DateTimeGeneratorStub(user_stub().updated_at, 1734555761),
-                &SessionServiceStub::default(),
-                user_stub().id,
+                &DateTimeGeneratorStub::of_iso("2025-09-27T18:02Z".into()),
+                &SessionServiceStub::of_encode_token("TENGO SUERTE".into()),
+                "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
                 user_update_input_stub()
             ),
             Err(UserErr::UserIdNotFound(UserIdNotFoundErr))
@@ -154,9 +165,9 @@ mod tests {
         assert_eq!(
             user_update(
                 &UserRepositoryStub::of_unique_info(UserUniqueInfoCount { username: 2, email: 2 }),
-                &DateTimeGeneratorStub(user_stub().updated_at, 1734555761),
-                &SessionServiceStub::default(),
-                user_stub().id,
+                &DateTimeGeneratorStub::of_iso("2025-09-27T18:02Z".into()),
+                &SessionServiceStub::of_encode_token("TENGO SUERTE".into()),
+                "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
                 user_update_input_stub()
             ),
             Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr { username: true, email: true }))
@@ -164,9 +175,9 @@ mod tests {
         assert_eq!(
             user_update(
                 &UserRepositoryStub::default(),
-                &DateTimeGeneratorStub(user_stub().updated_at, 1734555761),
+                &DateTimeGeneratorStub::of_iso("2025-09-27T18:02Z".into()),
                 &SessionServiceStub::of_session_err(),
-                user_stub().id,
+                "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
                 user_update_input_stub()
             ),
             Err(UserErr::Session(SessionErr::Encode(SessionEncodeErr)))

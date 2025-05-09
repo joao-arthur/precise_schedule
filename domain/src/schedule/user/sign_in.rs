@@ -40,34 +40,31 @@ pub mod stub {
     use super::UserCredentials;
 
     pub fn user_credentials_stub() -> UserCredentials {
-        UserCredentials { username: "paul_mc".into(), password: "asdf!@#123".into() }
+        UserCredentials { username: "macca".into(), password: "asdf!@#123".into() }
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use super::{stub::user_credentials_stub, user_sign_in};
-
     use crate::{
         database::DBErr,
         generator::stub::DateTimeGeneratorStub,
         schedule::user::{error::UserErr, stub::UserRepositoryStub},
-        session::{
-            SessionEncodeErr, SessionErr,
-            stub::{SessionServiceStub, session_stub},
-        },
+        session::{Session, SessionEncodeErr, SessionErr, stub::SessionServiceStub},
     };
+
+    use super::{stub::user_credentials_stub, user_sign_in};
 
     #[test]
     fn user_login_ok() {
         assert_eq!(
             user_sign_in(
                 &UserRepositoryStub::default(),
-                &DateTimeGeneratorStub("2024-12-18T18:02Z".into(), 1734555761),
-                &SessionServiceStub::default(),
+                &DateTimeGeneratorStub::of_iso("2024-12-18T18:02Z".into()),
+                &SessionServiceStub::of_encode_token("TENGO SUERTE".into()),
                 user_credentials_stub()
             ),
-            Ok(session_stub())
+            Ok(Session { token: "TENGO SUERTE".into() })
         );
     }
 
@@ -76,8 +73,8 @@ mod tests {
         assert_eq!(
             user_sign_in(
                 &UserRepositoryStub::of_db_err(),
-                &DateTimeGeneratorStub("2024-12-18T18:02Z".into(), 1734555761),
-                &SessionServiceStub::default(),
+                &DateTimeGeneratorStub::of_iso("2024-12-18T18:02Z".into()),
+                &SessionServiceStub::of_encode_token("TENGO SUERTE".into()),
                 user_credentials_stub()
             ),
             Err(UserErr::DB(DBErr))
@@ -85,7 +82,7 @@ mod tests {
         assert_eq!(
             user_sign_in(
                 &UserRepositoryStub::default(),
-                &DateTimeGeneratorStub("2024-12-18T18:02Z".into(), 1734555761),
+                &DateTimeGeneratorStub::of_iso("2024-12-18T18:02Z".into()),
                 &SessionServiceStub::of_session_err(),
                 user_credentials_stub()
             ),

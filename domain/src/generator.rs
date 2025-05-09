@@ -40,25 +40,25 @@ pub mod stub {
         pub fn of_iso(value: String) -> Self {
             DateTimeGeneratorStub(value, Default::default())
         }
-    
+
         pub fn of_unix_epoch(value: u64) -> Self {
             DateTimeGeneratorStub(Default::default(), value)
         }
     }
+}
 
-    #[cfg(test)]
-    mod tests {
-        use super::{DateTimeGenerator, DateTimeGeneratorStub, IdGenerator, IdGeneratorStub};
+#[cfg(test)]
+mod tests {
+    use super::{DateTimeGenerator, DateTimeGeneratorStub, IdGenerator, IdGeneratorStub};
 
-        #[test]
-        fn id_gen_stub() {
-            assert_eq!(IdGeneratorStub("1aa4b955-2e7b-47d8-8ce2-758389cb1789".into()).generate(), "1aa4b955-2e7b-47d8-8ce2-758389cb1789".to_string());
-        }
+    #[test]
+    fn id_gen_stub() {
+        assert_eq!(IdGeneratorStub("1aa4b955-2e7b-47d8-8ce2-758389cb1789".into()).generate(), "1aa4b955-2e7b-47d8-8ce2-758389cb1789".to_string());
+    }
 
-        #[test]
-        fn date_time_gen_stub() {
-            assert_eq!(DateTimeGeneratorStub("2025-04-18T10:23Z".into(), 1734555761).now_as_iso(), "2025-04-18T10:23Z".to_string());
-            assert_eq!(DateTimeGeneratorStub("2025-04-18T10:23Z".into(), 1734555761).now_as_unix_epoch(), 1734555761);
-        }
+    #[test]
+    fn date_time_gen_stub() {
+        assert_eq!(DateTimeGeneratorStub("2025-04-18T10:23Z".into(), 1734555761).now_as_iso(), "2025-04-18T10:23Z".to_string());
+        assert_eq!(DateTimeGeneratorStub("2025-04-18T10:23Z".into(), 1734555761).now_as_unix_epoch(), 1734555761);
     }
 }

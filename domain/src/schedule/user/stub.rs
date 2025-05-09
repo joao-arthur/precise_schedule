@@ -13,7 +13,7 @@ pub fn user_stub() -> User {
         email: "paul@gmail.com".into(),
         first_name: "Paul McCartney".into(),
         birthdate: "1942-06-18".into(),
-        username: "paul_mc".into(),
+        username: "macca".into(),
         password: "asdf!@#123".into(),
         created_at: "2024-03-01T11:26Z".into(),
         updated_at: "2024-07-03T22:49Z".into(),
@@ -72,7 +72,7 @@ impl UserRepository for UserRepositoryStub {
 
 impl Default for UserRepositoryStub {
     fn default() -> Self {
-        UserRepositoryStub { err: false, user: Some(user_stub()), user_unique_count: UserUniqueInfoCount { email: 0, username: 0 } }
+        UserRepositoryStub { err: false, user: None, user_unique_count: UserUniqueInfoCount { email: 0, username: 0 } }
     }
 }
 
@@ -92,16 +92,16 @@ impl UserRepositoryStub {
 
 #[cfg(test)]
 mod tests {
-    use super::{UserRepositoryStub, user_stub};
-
     use crate::{
         database::DBErr,
         schedule::user::{
             repository::UserRepository,
             sign_in::stub::user_credentials_stub,
-            unique_info::{UserUniqueInfoCount, stub::user_unique_info_stub_1},
+            unique_info::{UserUniqueInfoCount, stub::user_unique_info_stub},
         },
     };
+
+    use super::{UserRepositoryStub, user_stub};
 
     #[test]
     fn user_repo_stub_default() {
@@ -111,7 +111,7 @@ mod tests {
         assert_eq!(UserRepositoryStub::default().read_by_id(&user_stub().id), Ok(Some(user_stub())));
         assert_eq!(UserRepositoryStub::default().read_by_credentials(&user_credentials_stub()), Ok(Some(user_stub())));
         assert_eq!(
-            UserRepositoryStub::default().read_count_unique_info(&user_unique_info_stub_1()),
+            UserRepositoryStub::default().read_count_unique_info(&user_unique_info_stub()),
             Ok(UserUniqueInfoCount { email: 0, username: 0 })
         );
     }
@@ -123,7 +123,7 @@ mod tests {
         assert_eq!(UserRepositoryStub::of_db_err().delete(&user_stub().id), Err(DBErr));
         assert_eq!(UserRepositoryStub::of_db_err().read_by_id(&user_stub().id), Err(DBErr));
         assert_eq!(UserRepositoryStub::of_db_err().read_by_credentials(&user_credentials_stub()), Err(DBErr));
-        assert_eq!(UserRepositoryStub::of_db_err().read_count_unique_info(&user_unique_info_stub_1()), Err(DBErr));
+        assert_eq!(UserRepositoryStub::of_db_err().read_count_unique_info(&user_unique_info_stub()), Err(DBErr));
     }
 
     #[test]
@@ -135,7 +135,7 @@ mod tests {
     #[test]
     fn user_repo_stub_of_unique_info() {
         assert_eq!(
-            UserRepositoryStub::of_unique_info(UserUniqueInfoCount { username: 1, email: 0 }).read_count_unique_info(&user_unique_info_stub_1()),
+            UserRepositoryStub::of_unique_info(UserUniqueInfoCount { username: 1, email: 0 }).read_count_unique_info(&user_unique_info_stub()),
             Ok(UserUniqueInfoCount { username: 1, email: 0 })
         );
     }

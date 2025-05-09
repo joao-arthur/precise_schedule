@@ -43,35 +43,42 @@ pub mod stub {
         }
     }
 
-    impl Default for SessionServiceStub {
-        fn default() -> Self {
-            SessionServiceStub(Ok(session_stub()), Ok("id".into()))
-        }
-    }
-
     impl SessionServiceStub {
+        pub fn of_encode_token(token: String) -> Self {
+            SessionServiceStub(Ok(Session { token }), Err(SessionErr::Decode(SessionDecodeErr)))
+        }
+
+        pub fn of_encode_err() -> Self {
+            SessionServiceStub(Err(SessionErr::Encode(SessionEncodeErr)), Err(SessionErr::Decode(SessionDecodeErr)))
+        }
+
+        pub fn of_decode_err() -> Self {
+            SessionServiceStub(Err(SessionErr::Encode(SessionEncodeErr)), Err(SessionErr::Decode(SessionDecodeErr)))
+        }
+
         pub fn of_session_err() -> Self {
             SessionServiceStub(Err(SessionErr::Encode(SessionEncodeErr)), Err(SessionErr::Decode(SessionDecodeErr)))
         }
     }
+}
 
-    #[cfg(test)]
-    mod tests {
-        use super::{SessionDecodeErr, SessionEncodeErr, SessionErr, SessionService, SessionServiceStub, session_stub};
-        use crate::{generator::stub::DateTimeGeneratorStub, schedule::user::stub::user_stub};
+#[cfg(test)]
+mod tests {
+    use crate::{generator::stub::DateTimeGeneratorStub, schedule::user::stub::user_stub};
 
-        #[test]
-        fn session_service_stub() {
-            assert_eq!(
-                SessionServiceStub::default().encode(&user_stub(), &DateTimeGeneratorStub("2024-12-18T18:02Z".into(), 1734555761)),
-                Ok(session_stub())
-            );
-            assert_eq!(SessionServiceStub::default().decode(session_stub()), Ok("id".into()));
-            assert_eq!(
-                SessionServiceStub::of_session_err().encode(&user_stub(), &DateTimeGeneratorStub("2024-12-18T18:02Z".into(), 1734555761)),
-                Err(SessionErr::Encode(SessionEncodeErr))
-            );
-            assert_eq!(SessionServiceStub::of_session_err().decode(session_stub()), Err(SessionErr::Decode(SessionDecodeErr)));
-        }
+    use super::{SessionDecodeErr, SessionEncodeErr, SessionErr, SessionService};
+
+    #[test]
+    fn session_service_stub() {
+        assert_eq!(
+            SessionServiceStub::default().encode(&user_stub(), &DateTimeGeneratorStub("2024-12-18T18:02Z".into(), 1734555761)),
+            Ok(session_stub())
+        );
+        assert_eq!(SessionServiceStub::default().decode(session_stub()), Ok("id".into()));
+        assert_eq!(
+            SessionServiceStub::of_session_err().encode(&user_stub(), &DateTimeGeneratorStub("2024-12-18T18:02Z".into(), 1734555761)),
+            Err(SessionErr::Encode(SessionEncodeErr))
+        );
+        assert_eq!(SessionServiceStub::of_session_err().decode(session_stub()), Err(SessionErr::Decode(SessionDecodeErr)));
     }
 }
