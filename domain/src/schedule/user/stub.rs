@@ -1,15 +1,10 @@
-use crate::{
-    database::{DBErr, DBOp},
-    session::stub::session_stub,
-};
+use crate::database::{DBErr, DBOp};
 
 use super::{
     login::UserCredentials,
     model::User,
-    read::UserInfo,
     repository::UserRepository,
     unique_info::{UserUniqueInfo, UserUniqueInfoCount},
-    update::{UserUpdate, UserUpdateResult},
 };
 
 pub fn user_stub() -> User {
@@ -23,60 +18,6 @@ pub fn user_stub() -> User {
         created_at: "2024-03-01T11:26Z".into(),
         updated_at: "2024-07-03T22:49Z".into(),
     }
-}
-
-pub fn user_credentials_stub() -> UserCredentials {
-    UserCredentials { username: "paul_mc".into(), password: "asdf!@#123".into() }
-}
-
-pub fn user_update_stub() -> UserUpdate {
-    UserUpdate {
-        email: "john@gmail.com".into(),
-        first_name: "John Lennon".into(),
-        birthdate: "1940-10-09".into(),
-        username: "john_lennon".into(),
-        password: "abcd!@#$4321".into(),
-    }
-}
-
-pub fn user_after_update_stub() -> User {
-    User {
-        email: "john@gmail.com".into(),
-        first_name: "John Lennon".into(),
-        birthdate: "1940-10-09".into(),
-        username: "john_lennon".into(),
-        password: "abcd!@#$4321".into(),
-        updated_at: "2024-07-03T22:49Z".into(),
-        ..user_stub()
-    }
-}
-
-pub fn user_update_result_stub() -> UserUpdateResult {
-    UserUpdateResult {
-        user: UserInfo {
-            email: "john@gmail.com".into(),
-            first_name: "John Lennon".into(),
-            birthdate: "1940-10-09".into(),
-            username: "john_lennon".into(),
-        },
-        session: session_stub(),
-    }
-}
-
-pub fn user_unique_info_stub_1() -> UserUniqueInfo {
-    UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() }
-}
-
-pub fn user_unique_info_stub_2() -> UserUniqueInfo {
-    UserUniqueInfo { username: "peter987".into(), email: "peter@gmail.com".into() }
-}
-
-pub fn user_unique_info_stub_3() -> UserUniqueInfo {
-    UserUniqueInfo { username: "paul_mc".into(), email: "paul@gmail.com".into() }
-}
-
-pub fn user_info_stub() -> UserInfo {
-    UserInfo { email: "paul@gmail.com".into(), first_name: "Paul McCartney".into(), birthdate: "1942-06-18".into(), username: "paul_mc".into() }
 }
 
 pub struct UserRepositoryStub {
@@ -151,10 +92,15 @@ impl UserRepositoryStub {
 
 #[cfg(test)]
 mod tests {
-    use super::{UserRepositoryStub, user_credentials_stub, user_stub, user_unique_info_stub_1};
+    use super::{UserRepositoryStub, user_stub};
+
     use crate::{
         database::DBErr,
-        schedule::user::{repository::UserRepository, unique_info::UserUniqueInfoCount},
+        schedule::user::{
+            login::stub::user_credentials_stub,
+            repository::UserRepository,
+            unique_info::{UserUniqueInfoCount, stub::user_unique_info_stub_1},
+        },
     };
 
     #[test]

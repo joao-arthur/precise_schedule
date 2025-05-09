@@ -10,24 +10,18 @@ use crate::{
 use super::{
     error::UserErr,
     model::User,
-    read::{UserInfo, user_read_by_id},
+    read::user_read_by_id,
     repository::UserRepository,
     unique_info::{UserUniqueInfo, user_update_unique_info_is_valid},
 };
 
 #[derive(Debug, PartialEq)]
-pub struct UserUpdate {
+pub struct UserUpdateInput {
     pub email: String,
     pub first_name: String,
     pub birthdate: String,
     pub username: String,
     pub password: String,
-}
-
-#[derive(Debug, PartialEq)]
-pub struct UserUpdateResult {
-    pub user: UserInfo,
-    pub session: Session,
 }
 
 pub static USER_UPDATE_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
@@ -43,7 +37,7 @@ pub static USER_UPDATE_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
     ]))
 });
 
-fn user_of_update(model: UserUpdate, user: User, updated_at: String) -> User {
+fn transform_to_user(model: UserUpdateInput, current_user: User, updated_at: String) -> User {
     User {
         first_name: model.first_name,
         birthdate: model.birthdate,
@@ -51,7 +45,7 @@ fn user_of_update(model: UserUpdate, user: User, updated_at: String) -> User {
         username: model.username,
         password: model.password,
         updated_at,
-        ..user
+        ..current_user
     }
 }
 
@@ -60,35 +54,65 @@ pub fn user_update(
     date_time_generator: &dyn DateTimeGenerator,
     session_service: &dyn SessionService,
     id: String,
-    model: UserUpdate,
-) -> Result<UserUpdateResult, UserErr> {
+    model: UserUpdateInput,
+) -> Result<Session, UserErr> {
     let old_user = user_read_by_id(repository, &id)?;
     user_update_unique_info_is_valid(repository, &UserUniqueInfo::from(&model), &UserUniqueInfo::from(&old_user))?;
     let now = date_time_generator.now_as_iso();
-    let user = user_of_update(model, old_user, now);
+    let user = transform_to_user(model, old_user, now);
     repository.update(&user).map_err(UserErr::DB)?;
     let session = session_service.encode(&user, date_time_generator).map_err(UserErr::Session)?;
-    Ok(UserUpdateResult { user: user.into(), session })
+    Ok(session)
+}
+
+pub mod stub {
+    use super::UserUpdateInput;
+
+    pub fn user_update_input_stub() -> UserUpdateInput {
+        UserUpdateInput {
+            email: "john@gmail.com".into(),
+            first_name: "John Lennon".into(),
+            birthdate: "1940-10-09".into(),
+            username: "john_lennon".into(),
+            password: "abcd!@#$4321".into(),
+        }
+    }
 }
 
 #[cfg(test)]
 mod tests {
-    use super::{user_of_update, user_update};
+    use super::{stub::user_update_input_stub, user_update, transform_to_user};
+
     use crate::{
         database::DBErr,
         generator::stub::DateTimeGeneratorStub,
         schedule::user::{
             error::UserErr,
+            model::User,
             read::UserIdNotFoundErr,
-            stub::{UserRepositoryStub, user_after_update_stub, user_stub, user_update_result_stub, user_update_stub},
+            stub::{UserRepositoryStub, user_stub},
             unique_info::{UserUniqueInfoCount, UserUniqueInfoFieldErr},
         },
-        session::{SessionEncodeErr, SessionErr, stub::SessionServiceStub},
+        session::{
+            SessionEncodeErr, SessionErr,
+            stub::{SessionServiceStub, session_stub},
+        },
     };
 
     #[test]
     fn test_user_of_update() {
-        assert_eq!(user_of_update(user_update_stub(), user_stub(), user_stub().updated_at), user_after_update_stub());
+        assert_eq!(
+            transform_to_user(user_update_input_stub(), user_stub(), user_stub().updated_at),
+            User {
+                email: "john@gmail.com".into(),
+                first_name: "John Lennon".into(),
+                birthdate: "1940-10-09".into(),
+                username: "john_lennon".into(),
+                password: "abcd!@#$4321".into(),
+                updated_at: "2024-07-03T22:49Z".into(),
+                ..user_stub()
+            }
+        );
     }
 
     #[test]
@@ -99,9 +123,9 @@ mod tests {
                 &DateTimeGeneratorStub(user_stub().updated_at, 1734555761),
                 &SessionServiceStub::default(),
                 user_stub().id,
-                user_update_stub()
+                user_update_input_stub()
             ),
-            Ok(user_update_result_stub())
+            Ok(session_stub())
         );
     }
 
@@ -113,7 +137,7 @@ mod tests {
                 &DateTimeGeneratorStub(user_stub().updated_at, 1734555761),
                 &SessionServiceStub::default(),
                 user_stub().id,
-                user_update_stub()
+                user_update_input_stub()
             ),
             Err(UserErr::DB(DBErr))
         );
@@ -123,7 +147,7 @@ mod tests {
                 &DateTimeGeneratorStub(user_stub().updated_at, 1734555761),
                 &SessionServiceStub::default(),
                 user_stub().id,
-                user_update_stub()
+                user_update_input_stub()
             ),
             Err(UserErr::UserIdNotFound(UserIdNotFoundErr))
         );
@@ -133,7 +157,7 @@ mod tests {
                 &DateTimeGeneratorStub(user_stub().updated_at, 1734555761),
                 &SessionServiceStub::default(),
                 user_stub().id,
-                user_update_stub()
+                user_update_input_stub()
             ),
             Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr { username: true, email: true }))
         );
@@ -143,7 +167,7 @@ mod tests {
                 &DateTimeGeneratorStub(user_stub().updated_at, 1734555761),
                 &SessionServiceStub::of_session_err(),
                 user_stub().id,
-                user_update_stub()
+                user_update_input_stub()
             ),
             Err(UserErr::Session(SessionErr::Encode(SessionEncodeErr)))
         );

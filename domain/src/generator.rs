@@ -30,6 +30,22 @@ pub mod stub {
         }
     }
 
+    impl Default for DateTimeGeneratorStub {
+        fn default() -> Self {
+            DateTimeGeneratorStub("1970-01-01T00:00Z".into(), 0)
+        }
+    }
+
+    impl DateTimeGeneratorStub {
+        pub fn of_iso(value: String) -> Self {
+            DateTimeGeneratorStub(value, Default::default())
+        }
+    
+        pub fn of_unix_epoch(value: u64) -> Self {
+            DateTimeGeneratorStub(Default::default(), value)
+        }
+    }
+
     #[cfg(test)]
     mod tests {
         use super::{DateTimeGenerator, DateTimeGeneratorStub, IdGenerator, IdGeneratorStub};

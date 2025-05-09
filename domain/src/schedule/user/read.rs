@@ -32,6 +32,14 @@ pub fn user_read_info_by_id(repository: &dyn UserRepository, id: &str) -> Result
     user_read_by_id(repository, id).map(UserInfo::from)
 }
 
+pub mod stub {
+    use super::UserInfo;
+
+    pub fn user_info_stub() -> UserInfo {
+        UserInfo { email: "paul@gmail.com".into(), first_name: "Paul McCartney".into(), birthdate: "1942-06-18".into(), username: "paul_mc".into() }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::{UserCredentialsNotFoundErr, UserIdNotFoundErr, UserInfo, user_read_by_credentials, user_read_by_id, user_read_info_by_id};
@@ -39,7 +47,9 @@ mod tests {
         database::DBErr,
         schedule::user::{
             error::UserErr,
-            stub::{UserRepositoryStub, user_credentials_stub, user_info_stub, user_stub},
+            login::stub::user_credentials_stub,
+            read::stub::user_info_stub,
+            stub::{UserRepositoryStub, user_stub},
         },
     };
 
@@ -57,6 +67,7 @@ mod tests {
 
     #[test]
     fn user_read_db_err() {
+        let err = UserErr::DB(DBErr);
         assert_eq!(user_read_by_credentials(&UserRepositoryStub::of_db_err(), &user_credentials_stub()), Err(UserErr::DB(DBErr)));
         assert_eq!(user_read_by_id(&UserRepositoryStub::of_db_err(), &user_stub().id), Err(UserErr::DB(DBErr)));
         assert_eq!(user_read_info_by_id(&UserRepositoryStub::of_db_err(), &user_stub().id), Err(UserErr::DB(DBErr)));
