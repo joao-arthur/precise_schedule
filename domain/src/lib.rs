@@ -3,4 +3,3 @@ pub mod generator;
 pub mod language;
 pub mod schedule;
 pub mod session;
-pub mod validation;

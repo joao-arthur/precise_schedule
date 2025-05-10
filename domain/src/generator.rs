@@ -49,7 +49,10 @@ pub mod stub {
 
 #[cfg(test)]
 mod tests {
-    use super::{DateTimeGenerator, DateTimeGeneratorStub, IdGenerator, IdGeneratorStub};
+    use super::{
+        DateTimeGenerator, IdGenerator,
+        stub::{DateTimeGeneratorStub, IdGeneratorStub},
+    };
 
     #[test]
     fn id_gen_stub() {
