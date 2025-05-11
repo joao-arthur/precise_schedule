@@ -144,7 +144,7 @@ mod tests {
     }
 
     #[test]
-    fn user_sign_up_err() {
+    fn user_sign_up_db_err() {
         assert_eq!(
             user_sign_up(
                 &UserRepositoryStub::of_db_err(),
@@ -155,9 +155,13 @@ mod tests {
             ),
             Err(UserErr::DB(DBErr))
         );
+    }
+
+    #[test]
+    fn user_sign_up_user_unique_info_field_err() {
         assert_eq!(
             user_sign_up(
-                &UserRepositoryStub::of_unique_info(UserUniqueInfoCount { username: 2, email: 2 }),
+                &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount { username: 2, email: 2 }),
                 &IdGeneratorStub("a6edc906-2f9f-5fb2-a373-efac406f0ef2".into()),
                 &DateTimeGeneratorStub::of_iso("2024-03-01T11:26Z".into()),
                 &SessionEncodeServiceStub::of_token("TENGO SUERTE".into()),
@@ -165,6 +169,10 @@ mod tests {
             ),
             Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr { username: true, email: true }))
         );
+    }
+
+    #[test]
+    fn user_sign_up_session_encode_err() {
         assert_eq!(
             user_sign_up(
                 &UserRepositoryStub::default(),

@@ -69,7 +69,7 @@ mod tests {
     }
 
     #[test]
-    fn user_sign_in_err() {
+    fn user_sign_in_db_err() {
         assert_eq!(
             user_sign_in(
                 &UserRepositoryStub::of_db_err(),
@@ -79,6 +79,10 @@ mod tests {
             ),
             Err(UserErr::DB(DBErr))
         );
+    }
+
+    #[test]
+    fn user_sign_in_encode_err() {
         assert_eq!(
             user_sign_in(
                 &UserRepositoryStub::of_user(user_stub()),

@@ -148,7 +148,7 @@ mod tests {
         assert_eq!(EventRepositoryStub::default().create(&event_stub()), Ok(()));
         assert_eq!(EventRepositoryStub::default().update(&event_stub()), Ok(()));
         assert_eq!(EventRepositoryStub::default().delete(&event_stub().id), Ok(()));
-    //    assert_eq!(EventRepositoryStub::default().read_by_id(&user_stub().id, &event_stub().id), Ok(Some(event_stub())));
+        //    assert_eq!(EventRepositoryStub::default().read_by_id(&user_stub().id, &event_stub().id), Ok(Some(event_stub())));
     }
 
     #[test]

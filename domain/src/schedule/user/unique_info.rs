@@ -135,21 +135,21 @@ mod tests {
         );
         assert_eq!(
             user_sign_up_unique_info_is_valid(
-                &UserRepositoryStub::of_unique_info(UserUniqueInfoCount { username: 1, email: 0 }),
+                &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount { username: 1, email: 0 }),
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() }
             ),
             Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr { username: true, email: false })),
         );
         assert_eq!(
             user_sign_up_unique_info_is_valid(
-                &UserRepositoryStub::of_unique_info(UserUniqueInfoCount { username: 0, email: 1 }),
+                &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount { username: 0, email: 1 }),
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() }
             ),
             Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr { username: false, email: true })),
         );
         assert_eq!(
             user_sign_up_unique_info_is_valid(
-                &UserRepositoryStub::of_unique_info(UserUniqueInfoCount { username: 1, email: 1 }),
+                &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount { username: 1, email: 1 }),
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() }
             ),
             Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr { username: true, email: true })),
@@ -168,7 +168,7 @@ mod tests {
         );
         assert_eq!(
             user_update_unique_info_is_valid(
-                &UserRepositoryStub::of_unique_info(UserUniqueInfoCount { username: 1, email: 0 }),
+                &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount { username: 1, email: 0 }),
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() },
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() },
             ),
@@ -176,7 +176,7 @@ mod tests {
         );
         assert_eq!(
             user_update_unique_info_is_valid(
-                &UserRepositoryStub::of_unique_info(UserUniqueInfoCount { username: 0, email: 1 }),
+                &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount { username: 0, email: 1 }),
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() },
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() },
             ),
@@ -184,7 +184,7 @@ mod tests {
         );
         assert_eq!(
             user_update_unique_info_is_valid(
-                &UserRepositoryStub::of_unique_info(UserUniqueInfoCount { username: 1, email: 1 }),
+                &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount { username: 1, email: 1 }),
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() },
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() },
             ),
@@ -192,7 +192,7 @@ mod tests {
         );
         assert_eq!(
             user_update_unique_info_is_valid(
-                &UserRepositoryStub::of_unique_info(UserUniqueInfoCount { username: 2, email: 1 }),
+                &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount { username: 2, email: 1 }),
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() },
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() },
             ),
@@ -200,7 +200,7 @@ mod tests {
         );
         assert_eq!(
             user_update_unique_info_is_valid(
-                &UserRepositoryStub::of_unique_info(UserUniqueInfoCount { username: 1, email: 2 }),
+                &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount { username: 1, email: 2 }),
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() },
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() },
             ),
@@ -217,7 +217,7 @@ mod tests {
     }
 
     #[test]
-    fn user_update_unique_info_is_valid_err() {
+    fn user_update_unique_info_is_valid_db_err() {
         assert_eq!(
             user_update_unique_info_is_valid(
                 &UserRepositoryStub::of_db_err(),
@@ -226,9 +226,13 @@ mod tests {
             ),
             Err(UserErr::DB(DBErr))
         );
+    }
+
+    #[test]
+    fn user_update_unique_info_is_valid_user_unique_info_field_err() {
         assert_eq!(
             user_update_unique_info_is_valid(
-                &UserRepositoryStub::of_unique_info(UserUniqueInfoCount { username: 1, email: 0 }),
+                &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount { username: 1, email: 0 }),
                 &UserUniqueInfo { username: "peter987".into(), email: "peter@gmail.com".into() },
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() },
             ),
@@ -236,7 +240,7 @@ mod tests {
         );
         assert_eq!(
             user_update_unique_info_is_valid(
-                &UserRepositoryStub::of_unique_info(UserUniqueInfoCount { username: 0, email: 1 }),
+                &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount { username: 0, email: 1 }),
                 &UserUniqueInfo { username: "peter987".into(), email: "peter@gmail.com".into() },
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() },
             ),
@@ -244,7 +248,7 @@ mod tests {
         );
         assert_eq!(
             user_update_unique_info_is_valid(
-                &UserRepositoryStub::of_unique_info(UserUniqueInfoCount { username: 1, email: 1 }),
+                &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount { username: 1, email: 1 }),
                 &UserUniqueInfo { username: "peter987".into(), email: "peter@gmail.com".into() },
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() },
             ),

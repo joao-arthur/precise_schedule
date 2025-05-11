@@ -148,7 +148,7 @@ mod tests {
     }
 
     #[test]
-    fn user_update_err() {
+    fn user_update_db_err() {
         assert_eq!(
             user_update(
                 &UserRepositoryStub::of_db_err(),
@@ -159,9 +159,13 @@ mod tests {
             ),
             Err(UserErr::DB(DBErr))
         );
+    }
+
+    #[test]
+    fn user_update_user_id_not_found_err() {
         assert_eq!(
             user_update(
-                &UserRepositoryStub::of_none(),
+                &UserRepositoryStub::default(),
                 &DateTimeGeneratorStub::of_iso("2025-09-27T18:02Z".into()),
                 &SessionEncodeServiceStub::of_token("TENGO SUERTE".into()),
                 "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
@@ -169,22 +173,30 @@ mod tests {
             ),
             Err(UserErr::UserIdNotFound(UserIdNotFoundErr))
         );
+    }
+
+    #[test]
+    fn user_update_user_unique_info_field_err() {
         assert_eq!(
             user_update(
                 &UserRepositoryStub { err: false, user: Some(user_stub()), user_unique_count: UserUniqueInfoCount { username: 2, email: 2 } },
                 &DateTimeGeneratorStub::of_iso("2025-09-27T18:02Z".into()),
                 &SessionEncodeServiceStub::of_token("TENGO SUERTE".into()),
-                "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
+                user_stub().id,
                 user_update_input_stub()
             ),
             Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr { username: true, email: true }))
         );
+    }
+
+    #[test]
+    fn user_update_session_encode_err() {
         assert_eq!(
             user_update(
                 &UserRepositoryStub::of_user(user_stub()),
                 &DateTimeGeneratorStub::of_iso("2025-09-27T18:02Z".into()),
                 &SessionEncodeServiceStub::of_err(),
-                "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
+                user_stub().id,
                 user_update_input_stub()
             ),
             Err(UserErr::Session(SessionErr::Encode(SessionEncodeErr)))

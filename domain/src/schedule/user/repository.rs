@@ -84,15 +84,11 @@ pub mod stub {
     }
 
     impl UserRepositoryStub {
-        pub fn of_none() -> Self {
-            UserRepositoryStub { user: None, ..Default::default() }
-        }
-
         pub fn of_user(user: User) -> Self {
             UserRepositoryStub { user: Some(user), ..Default::default() }
         }
 
-        pub fn of_unique_info(user_unique_count: UserUniqueInfoCount) -> Self {
+        pub fn of_unique_info_count(user_unique_count: UserUniqueInfoCount) -> Self {
             UserRepositoryStub { user_unique_count, ..Default::default() }
         }
 
@@ -121,9 +117,15 @@ mod tests {
         assert_eq!(UserRepositoryStub::default().create(&user_stub()), Ok(()));
         assert_eq!(UserRepositoryStub::default().update(&user_stub()), Ok(()));
         assert_eq!(UserRepositoryStub::default().delete(&user_stub().id), Ok(()));
-  //      assert_eq!(UserRepositoryStub::default().read_by_id(&user_stub().id), Ok(Some(user_stub())));
-  //      assert_eq!(UserRepositoryStub::default().read_by_credentials(&user_credentials_stub()), Ok(Some(user_stub())));
-       assert_eq!(UserRepositoryStub::default().read_count_unique_info(&user_unique_info_stub()), Ok(UserUniqueInfoCount { email: 0, username: 0 }));
+        assert_eq!(UserRepositoryStub::default().read_by_id(&user_stub().id), Ok(None));
+        assert_eq!(UserRepositoryStub::default().read_by_credentials(&user_credentials_stub()), Ok(None));
+        assert_eq!(UserRepositoryStub::default().read_count_unique_info(&user_unique_info_stub()), Ok(UserUniqueInfoCount { email: 0, username: 0 }));
+    }
+
+    #[test]
+    fn user_repo_stub_of_user() {
+        assert_eq!(UserRepositoryStub::of_user(user_stub()).read_by_id(&user_stub().id), Ok(Some(user_stub())));
+        assert_eq!(UserRepositoryStub::of_user(user_stub()).read_by_credentials(&user_credentials_stub()), Ok(Some(user_stub())));
     }
 
     #[test]
@@ -137,15 +139,9 @@ mod tests {
     }
 
     #[test]
-    fn user_repo_stub_of_none() {
-        assert_eq!(UserRepositoryStub::of_none().read_by_credentials(&user_credentials_stub()), Ok(None));
-        assert_eq!(UserRepositoryStub::of_none().read_by_id(&user_stub().id), Ok(None));
-    }
-
-    #[test]
     fn user_repo_stub_of_unique_info() {
         assert_eq!(
-            UserRepositoryStub::of_unique_info(UserUniqueInfoCount { username: 1, email: 0 }).read_count_unique_info(&user_unique_info_stub()),
+            UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount { username: 1, email: 0 }).read_count_unique_info(&user_unique_info_stub()),
             Ok(UserUniqueInfoCount { username: 1, email: 0 })
         );
     }
