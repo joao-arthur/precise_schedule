@@ -45,10 +45,8 @@ mod tests {
     use crate::{
         database::DBErr,
         schedule::user::{
-            error::UserErr,
-            read::stub::user_info_stub,
+            error::UserErr, model::stub::user_stub, read::stub::user_info_stub, repository::stub::UserRepositoryStub,
             sign_in::stub::user_credentials_stub,
-            stub::{UserRepositoryStub, user_stub},
         },
     };
 
@@ -61,14 +59,13 @@ mod tests {
 
     #[test]
     fn user_read_ok() {
-        assert_eq!(user_read_by_credentials(&UserRepositoryStub::default(), &user_credentials_stub()), Ok(user_stub()));
-        assert_eq!(user_read_by_id(&UserRepositoryStub::default(), &user_stub().id), Ok(user_stub()));
-        assert_eq!(user_read_info_by_id(&UserRepositoryStub::default(), &user_stub().id), Ok(user_info_stub()));
+        assert_eq!(user_read_by_credentials(&UserRepositoryStub::of_user(user_stub()), &user_credentials_stub()), Ok(user_stub()));
+        assert_eq!(user_read_by_id(&UserRepositoryStub::of_user(user_stub()), &user_stub().id), Ok(user_stub()));
+        assert_eq!(user_read_info_by_id(&UserRepositoryStub::of_user(user_stub()), &user_stub().id), Ok(user_info_stub()));
     }
 
     #[test]
     fn user_read_db_err() {
-        let err = UserErr::DB(DBErr);
         assert_eq!(user_read_by_credentials(&UserRepositoryStub::of_db_err(), &user_credentials_stub()), Err(UserErr::DB(DBErr)));
         assert_eq!(user_read_by_id(&UserRepositoryStub::of_db_err(), &user_stub().id), Err(UserErr::DB(DBErr)));
         assert_eq!(user_read_info_by_id(&UserRepositoryStub::of_db_err(), &user_stub().id), Err(UserErr::DB(DBErr)));

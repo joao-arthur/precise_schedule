@@ -16,7 +16,7 @@ pub struct EventCreate {
     pub weekend_repeat: Option<bool>,
 }
 
-pub fn event_from_create(model: EventCreate, id: String, user_id: String, created_at: String) -> Event {
+pub fn event_of_create(model: EventCreate, id: String, user_id: String, created_at: String) -> Event {
     Event {
         id,
         name: model.name,
@@ -40,14 +40,13 @@ pub fn event_create(
 ) -> Result<Event, EventErr> {
     let id = id_generator.generate();
     let now = date_time_generator.now_as_iso();
-    let event = event_from_create(model, id, user_id, now);
+    let event = event_of_create(model, id, user_id, now);
     repository.create(&event).map_err(EventErr::DB)?;
     Ok(event)
 }
 
 #[cfg(test)]
 mod tests {
-    use super::{event_create, event_from_create};
     use crate::{
         database::DBErr,
         generator::stub::{DateTimeGeneratorStub, IdGeneratorStub},
@@ -56,13 +55,15 @@ mod tests {
                 error::EventErr,
                 stub::{EventRepositoryStub, event_after_create_stub, event_create_stub, event_stub},
             },
-            user::stub::user_stub,
+            user::model::stub::user_stub,
         },
     };
 
+    use super::{event_create, event_of_create};
+
     #[test]
-    fn test_event_from_create() {
-        assert_eq!(event_from_create(event_create_stub(), event_stub().id, user_stub().id, event_stub().created_at), event_after_create_stub());
+    fn test_event_of_create() {
+        assert_eq!(event_of_create(event_create_stub(), event_stub().id, user_stub().id, event_stub().created_at), event_after_create_stub());
     }
 
     #[test]

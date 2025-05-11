@@ -4,7 +4,7 @@ use araucaria::schema::{DateSchema, EmailSchema, ObjSchema, Schema, StrSchema};
 
 use crate::{
     generator::{DateTimeGenerator, IdGenerator},
-    session::{Session, SessionService},
+    session::{Session, SessionEncodeService},
 };
 
 use super::{
@@ -59,7 +59,7 @@ pub fn user_sign_up(
     repository: &dyn UserRepository,
     id_generator: &dyn IdGenerator,
     date_time_generator: &dyn DateTimeGenerator,
-    session_service: &dyn SessionService,
+    session_encode_service: &dyn SessionEncodeService,
     model: UserSignUpInput,
 ) -> Result<UserSignUpOutput, UserErr> {
     user_sign_up_unique_info_is_valid(repository, &UserUniqueInfo::from(&model))?;
@@ -67,7 +67,7 @@ pub fn user_sign_up(
     let now = date_time_generator.now_as_iso();
     let user = transform_to_user(model, id, now);
     repository.create(&user).map_err(UserErr::DB)?;
-    let session = session_service.encode(&user, date_time_generator).map_err(UserErr::Session)?;
+    let session = session_encode_service.encode(&user, date_time_generator).map_err(UserErr::Session)?;
     Ok(UserSignUpOutput { id: user.id, session })
 }
 
@@ -93,11 +93,11 @@ mod tests {
         schedule::user::{
             error::UserErr,
             model::User,
+            repository::stub::UserRepositoryStub,
             sign_up::{UserSignUpInput, UserSignUpOutput},
-            stub::UserRepositoryStub,
             unique_info::{UserUniqueInfoCount, UserUniqueInfoFieldErr},
         },
-        session::{Session, SessionEncodeErr, SessionErr, stub::SessionServiceStub},
+        session::{Session, SessionEncodeErr, SessionErr, stub::SessionEncodeServiceStub},
     };
 
     use super::{stub::user_sign_up_input_stub, transform_to_user, user_sign_up};
@@ -136,7 +136,7 @@ mod tests {
                 &UserRepositoryStub::default(),
                 &IdGeneratorStub("a6edc906-2f9f-5fb2-a373-efac406f0ef2".into()),
                 &DateTimeGeneratorStub::of_iso("2024-03-01T11:26Z".into()),
-                &SessionServiceStub::of_encode_token("TENGO SUERTE".into()),
+                &SessionEncodeServiceStub::of_token("TENGO SUERTE".into()),
                 user_sign_up_input_stub()
             ),
             Ok(UserSignUpOutput { id: "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(), session: Session { token: "TENGO SUERTE".into() } })
@@ -150,7 +150,7 @@ mod tests {
                 &UserRepositoryStub::of_db_err(),
                 &IdGeneratorStub("a6edc906-2f9f-5fb2-a373-efac406f0ef2".into()),
                 &DateTimeGeneratorStub::of_iso("2024-03-01T11:26Z".into()),
-                &SessionServiceStub::of_encode_token("TENGO SUERTE".into()),
+                &SessionEncodeServiceStub::of_token("TENGO SUERTE".into()),
                 user_sign_up_input_stub()
             ),
             Err(UserErr::DB(DBErr))
@@ -160,7 +160,7 @@ mod tests {
                 &UserRepositoryStub::of_unique_info(UserUniqueInfoCount { username: 2, email: 2 }),
                 &IdGeneratorStub("a6edc906-2f9f-5fb2-a373-efac406f0ef2".into()),
                 &DateTimeGeneratorStub::of_iso("2024-03-01T11:26Z".into()),
-                &SessionServiceStub::of_encode_token("TENGO SUERTE".into()),
+                &SessionEncodeServiceStub::of_token("TENGO SUERTE".into()),
                 user_sign_up_input_stub()
             ),
             Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr { username: true, email: true }))
@@ -170,7 +170,7 @@ mod tests {
                 &UserRepositoryStub::default(),
                 &IdGeneratorStub("a6edc906-2f9f-5fb2-a373-efac406f0ef2".into()),
                 &DateTimeGeneratorStub::of_iso("2024-03-01T11:26Z".into()),
-                &SessionServiceStub::of_session_err(),
+                &SessionEncodeServiceStub::of_err(),
                 user_sign_up_input_stub()
             ),
             Err(UserErr::Session(SessionErr::Encode(SessionEncodeErr)))

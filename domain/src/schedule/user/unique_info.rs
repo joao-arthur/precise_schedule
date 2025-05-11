@@ -71,7 +71,7 @@ pub mod stub {
 mod tests {
     use crate::{
         database::DBErr,
-        schedule::user::{User, UserErr, UserSignUpInput, UserUpdateInput, stub::UserRepositoryStub},
+        schedule::user::{error::UserErr, model::User, repository::stub::UserRepositoryStub, sign_up::UserSignUpInput, update::UserUpdateInput},
     };
 
     use super::{UserUniqueInfo, UserUniqueInfoCount, UserUniqueInfoFieldErr, user_sign_up_unique_info_is_valid, user_update_unique_info_is_valid};

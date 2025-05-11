@@ -31,3 +31,20 @@ struct Password {
     hash: String,
 }
 */
+
+pub mod stub {
+    use super::User;
+
+    pub fn user_stub() -> User {
+        User {
+            id: "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
+            email: "paul@gmail.com".into(),
+            first_name: "Paul McCartney".into(),
+            birthdate: "1942-06-18".into(),
+            username: "macca".into(),
+            password: "asdf!@#123".into(),
+            created_at: "2024-03-01T11:26Z".into(),
+            updated_at: "2024-07-03T22:49Z".into(),
+        }
+    }
+}

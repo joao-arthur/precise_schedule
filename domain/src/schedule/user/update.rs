@@ -4,7 +4,7 @@ use araucaria::schema::{DateSchema, EmailSchema, ObjSchema, Schema, StrSchema};
 
 use crate::{
     generator::DateTimeGenerator,
-    session::{Session, SessionService},
+    session::{Session, SessionEncodeService},
 };
 
 use super::{
@@ -52,7 +52,7 @@ fn transform_to_user(model: UserUpdateInput, current_user: User, updated_at: Str
 pub fn user_update(
     repository: &dyn UserRepository,
     date_time_generator: &dyn DateTimeGenerator,
-    session_service: &dyn SessionService,
+    session_service: &dyn SessionEncodeService,
     id: String,
     model: UserUpdateInput,
 ) -> Result<Session, UserErr> {
@@ -84,8 +84,15 @@ mod tests {
     use crate::{
         database::DBErr,
         generator::stub::DateTimeGeneratorStub,
-        schedule::user::{User, UserErr, UserIdNotFoundErr, UserUniqueInfoCount, UserUniqueInfoFieldErr, UserUpdateInput, stub::UserRepositoryStub},
-        session::{Session, SessionEncodeErr, SessionErr, stub::SessionServiceStub},
+        schedule::user::{
+            error::UserErr,
+            model::{User, stub::user_stub},
+            read::UserIdNotFoundErr,
+            repository::stub::UserRepositoryStub,
+            unique_info::{UserUniqueInfoCount, UserUniqueInfoFieldErr},
+            update::UserUpdateInput,
+        },
+        session::{Session, SessionEncodeErr, SessionErr, stub::SessionEncodeServiceStub},
     };
 
     use super::{stub::user_update_input_stub, transform_to_user, user_update};
@@ -130,9 +137,9 @@ mod tests {
     fn user_update_ok() {
         assert_eq!(
             user_update(
-                &UserRepositoryStub::default(),
+                &UserRepositoryStub::of_user(user_stub()),
                 &DateTimeGeneratorStub::of_iso("2025-09-27T18:02Z".into()),
-                &SessionServiceStub::of_encode_token("TENGO SUERTE".into()),
+                &SessionEncodeServiceStub::of_token("TENGO SUERTE".into()),
                 "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
                 user_update_input_stub()
             ),
@@ -146,7 +153,7 @@ mod tests {
             user_update(
                 &UserRepositoryStub::of_db_err(),
                 &DateTimeGeneratorStub::of_iso("2025-09-27T18:02Z".into()),
-                &SessionServiceStub::of_encode_token("TENGO SUERTE".into()),
+                &SessionEncodeServiceStub::of_token("TENGO SUERTE".into()),
                 "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
                 user_update_input_stub()
             ),
@@ -156,7 +163,7 @@ mod tests {
             user_update(
                 &UserRepositoryStub::of_none(),
                 &DateTimeGeneratorStub::of_iso("2025-09-27T18:02Z".into()),
-                &SessionServiceStub::of_encode_token("TENGO SUERTE".into()),
+                &SessionEncodeServiceStub::of_token("TENGO SUERTE".into()),
                 "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
                 user_update_input_stub()
             ),
@@ -164,9 +171,9 @@ mod tests {
         );
         assert_eq!(
             user_update(
-                &UserRepositoryStub::of_unique_info(UserUniqueInfoCount { username: 2, email: 2 }),
+                &UserRepositoryStub { err: false, user: Some(user_stub()), user_unique_count: UserUniqueInfoCount { username: 2, email: 2 } },
                 &DateTimeGeneratorStub::of_iso("2025-09-27T18:02Z".into()),
-                &SessionServiceStub::of_encode_token("TENGO SUERTE".into()),
+                &SessionEncodeServiceStub::of_token("TENGO SUERTE".into()),
                 "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
                 user_update_input_stub()
             ),
@@ -174,9 +181,9 @@ mod tests {
         );
         assert_eq!(
             user_update(
-                &UserRepositoryStub::default(),
+                &UserRepositoryStub::of_user(user_stub()),
                 &DateTimeGeneratorStub::of_iso("2025-09-27T18:02Z".into()),
-                &SessionServiceStub::of_session_err(),
+                &SessionEncodeServiceStub::of_err(),
                 "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
                 user_update_input_stub()
             ),

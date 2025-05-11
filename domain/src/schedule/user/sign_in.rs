@@ -4,7 +4,7 @@ use araucaria::schema::{ObjSchema, Schema, StrSchema};
 
 use crate::{
     generator::DateTimeGenerator,
-    session::{Session, SessionService},
+    session::{Session, SessionEncodeService},
 };
 
 use super::{error::UserErr, read::user_read_by_credentials, repository::UserRepository};
@@ -28,11 +28,11 @@ pub static USER_CREDENTIALS_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
 pub fn user_sign_in(
     repository: &dyn UserRepository,
     date_time_generator: &dyn DateTimeGenerator,
-    session_service: &dyn SessionService,
+    session_encode_service: &dyn SessionEncodeService,
     model: UserCredentials,
 ) -> Result<Session, UserErr> {
     let user = user_read_by_credentials(repository, &model)?;
-    let session = session_service.encode(&user, date_time_generator).map_err(UserErr::Session)?;
+    let session = session_encode_service.encode(&user, date_time_generator).map_err(UserErr::Session)?;
     Ok(session)
 }
 
@@ -49,19 +49,19 @@ mod tests {
     use crate::{
         database::DBErr,
         generator::stub::DateTimeGeneratorStub,
-        schedule::user::{error::UserErr, stub::UserRepositoryStub},
-        session::{Session, SessionEncodeErr, SessionErr, stub::SessionServiceStub},
+        schedule::user::{error::UserErr, model::stub::user_stub, repository::stub::UserRepositoryStub},
+        session::{Session, SessionEncodeErr, SessionErr, stub::SessionEncodeServiceStub},
     };
 
     use super::{stub::user_credentials_stub, user_sign_in};
 
     #[test]
-    fn user_login_ok() {
+    fn user_sign_in_ok() {
         assert_eq!(
             user_sign_in(
-                &UserRepositoryStub::default(),
+                &UserRepositoryStub::of_user(user_stub()),
                 &DateTimeGeneratorStub::of_iso("2024-12-18T18:02Z".into()),
-                &SessionServiceStub::of_encode_token("TENGO SUERTE".into()),
+                &SessionEncodeServiceStub::of_token("TENGO SUERTE".into()),
                 user_credentials_stub()
             ),
             Ok(Session { token: "TENGO SUERTE".into() })
@@ -69,21 +69,21 @@ mod tests {
     }
 
     #[test]
-    fn user_login_err() {
+    fn user_sign_in_err() {
         assert_eq!(
             user_sign_in(
                 &UserRepositoryStub::of_db_err(),
                 &DateTimeGeneratorStub::of_iso("2024-12-18T18:02Z".into()),
-                &SessionServiceStub::of_encode_token("TENGO SUERTE".into()),
+                &SessionEncodeServiceStub::of_token("TENGO SUERTE".into()),
                 user_credentials_stub()
             ),
             Err(UserErr::DB(DBErr))
         );
         assert_eq!(
             user_sign_in(
-                &UserRepositoryStub::default(),
+                &UserRepositoryStub::of_user(user_stub()),
                 &DateTimeGeneratorStub::of_iso("2024-12-18T18:02Z".into()),
-                &SessionServiceStub::of_session_err(),
+                &SessionEncodeServiceStub::of_err(),
                 user_credentials_stub()
             ),
             Err(UserErr::Session(SessionErr::Encode(SessionEncodeErr)))

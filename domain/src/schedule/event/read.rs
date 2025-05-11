@@ -18,14 +18,14 @@ pub struct EventInfo {
 }
 
 impl From<Event> for EventInfo {
-    fn from(event: Event) -> Self {
+    fn from(model: Event) -> Self {
         EventInfo {
-            name: event.name,
-            begin: event.begin,
-            end: event.end,
-            category: event.category,
-            frequency: event.frequency,
-            weekend_repeat: event.weekend_repeat,
+            name: model.name,
+            begin: model.begin,
+            end: model.end,
+            category: model.category,
+            frequency: model.frequency,
+            weekend_repeat: model.weekend_repeat,
         }
     }
 }
@@ -48,7 +48,6 @@ pub fn event_read_info_by_user(repository: &dyn EventRepository, user_id: &str) 
 
 #[cfg(test)]
 mod tests {
-    use super::{EventIdNotFoundErr, EventInfo, event_read_by_id, event_read_by_user, event_read_info_by_id, event_read_info_by_user};
     use crate::{
         database::DBErr,
         schedule::{
@@ -56,9 +55,11 @@ mod tests {
                 error::EventErr,
                 stub::{EventRepositoryStub, event_info_stub, event_stub},
             },
-            user::stub::user_stub,
+            user::model::stub::user_stub,
         },
     };
+
+    use super::{EventIdNotFoundErr, EventInfo, event_read_by_id, event_read_by_user, event_read_info_by_id, event_read_info_by_user};
 
     #[test]
     fn event_info() {
@@ -67,10 +68,10 @@ mod tests {
 
     #[test]
     fn event_read_ok() {
-        assert_eq!(event_read_by_id(&EventRepositoryStub::default(), &user_stub().id, &event_stub().id), Ok(event_stub()));
-        assert_eq!(event_read_info_by_id(&EventRepositoryStub::default(), &user_stub().id, &event_stub().id), Ok(event_info_stub()));
-        assert_eq!(event_read_by_user(&EventRepositoryStub::default(), &user_stub().id), Ok(vec![event_stub()]));
-        assert_eq!(event_read_info_by_user(&EventRepositoryStub::default(), &user_stub().id), Ok(vec![event_info_stub()]));
+        assert_eq!(event_read_by_id(&EventRepositoryStub::of_event(event_stub()), &user_stub().id, &event_stub().id), Ok(event_stub()));
+        assert_eq!(event_read_info_by_id(&EventRepositoryStub::of_event(event_stub()), &user_stub().id, &event_stub().id), Ok(event_info_stub()));
+        assert_eq!(event_read_by_user(&EventRepositoryStub::of_event(event_stub()), &user_stub().id), Ok(vec![event_stub()]));
+        assert_eq!(event_read_info_by_user(&EventRepositoryStub::of_event(event_stub()), &user_stub().id), Ok(vec![event_info_stub()]));
     }
 
     #[test]

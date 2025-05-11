@@ -26,7 +26,7 @@ pub trait SessionDecodeService {
 }
 
 pub mod stub {
-    use crate::{generator::DateTimeGenerator, schedule::user::User};
+    use crate::{generator::DateTimeGenerator, schedule::user::model::User};
 
     use super::{Session, SessionDecodeErr, SessionDecodeService, SessionEncodeErr, SessionEncodeService, SessionErr};
 
@@ -75,7 +75,7 @@ pub mod stub {
 mod tests {
     use crate::{
         generator::stub::DateTimeGeneratorStub,
-        schedule::user::stub::user_stub,
+        schedule::user::model::stub::user_stub,
         session::{Session, stub::session_stub},
     };
 
@@ -87,12 +87,11 @@ mod tests {
     #[test]
     fn session_encode_service_stub() {
         assert_eq!(
-            SessionEncodeServiceStub::of_token(Session { token: "TOKEN".into() })
-                .encode(&user_stub(), &DateTimeGeneratorStub::of_unix_epoch(1734555761)),
+            SessionEncodeServiceStub::of_token("TOKEN".into()).encode(&user_stub(), &DateTimeGeneratorStub::of_unix_epoch(1734555761)),
             Ok(Session { token: "TOKEN".into() })
         );
         assert_eq!(
-            SessionEncodeServiceStub::of_session_err().encode(&user_stub(), &DateTimeGeneratorStub::of_unix_epoch(1734555761)),
+            SessionEncodeServiceStub::of_err().encode(&user_stub(), &DateTimeGeneratorStub::of_unix_epoch(1734555761)),
             Err(SessionErr::Encode(SessionEncodeErr))
         );
     }
@@ -100,6 +99,6 @@ mod tests {
     #[test]
     fn session_decode_service_stub() {
         assert_eq!(SessionDecodeServiceStub::of_value("id".into()).decode(session_stub()), Ok("id".into()));
-        assert_eq!(SessionDecodeServiceStub::of_session_err().decode(session_stub()), Err(SessionErr::Decode(SessionDecodeErr)));
+        assert_eq!(SessionDecodeServiceStub::of_err().decode(session_stub()), Err(SessionErr::Decode(SessionDecodeErr)));
     }
 }

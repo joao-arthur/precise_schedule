@@ -8,7 +8,6 @@ pub fn event_delete(repository: &dyn EventRepository, user_id: &str, id: &str) -
 
 #[cfg(test)]
 mod tests {
-    use super::event_delete;
     use crate::{
         database::DBErr,
         schedule::{
@@ -17,13 +16,15 @@ mod tests {
                 read::EventIdNotFoundErr,
                 stub::{EventRepositoryStub, event_stub},
             },
-            user::stub::user_stub,
+            user::model::stub::user_stub,
         },
     };
 
+    use super::event_delete;
+
     #[test]
     fn event_delete_ok() {
-        assert_eq!(event_delete(&EventRepositoryStub::default(), &user_stub().id, &event_stub().id), Ok(event_stub()));
+        assert_eq!(event_delete(&EventRepositoryStub::of_event(event_stub()), &user_stub().id, &event_stub().id), Ok(event_stub()));
     }
 
     #[test]

@@ -17,7 +17,7 @@ pub struct EventUpdate {
     pub weekend_repeat: Option<bool>,
 }
 
-pub fn event_from_update(event_update: EventUpdate, event: Event, updated_at: String) -> Event {
+pub fn event_of_update(event_update: EventUpdate, event: Event, updated_at: String) -> Event {
     Event {
         name: event_update.name,
         begin: event_update.begin,
@@ -39,14 +39,13 @@ pub fn event_update(
 ) -> Result<Event, EventErr> {
     let old_event = event_read_by_id(repository, &user_id, &event_id)?;
     let now = date_time_generator.now_as_iso();
-    let event = event_from_update(event_update, old_event, now);
+    let event = event_of_update(event_update, old_event, now);
     repository.update(&event).map_err(EventErr::DB)?;
     Ok(event)
 }
 
 #[cfg(test)]
 mod tests {
-    use super::{event_from_update, event_update};
     use crate::{
         database::DBErr,
         generator::stub::DateTimeGeneratorStub,
@@ -55,20 +54,22 @@ mod tests {
                 error::EventErr,
                 stub::{EventRepositoryStub, event_after_update_stub, event_stub, event_update_stub},
             },
-            user::stub::user_stub,
+            user::model::stub::user_stub,
         },
     };
 
+    use super::{event_of_update, event_update};
+
     #[test]
-    fn test_event_from_update() {
-        assert_eq!(event_from_update(event_update_stub(), event_stub(), event_stub().updated_at), event_after_update_stub());
+    fn test_event_of_update() {
+        assert_eq!(event_of_update(event_update_stub(), event_stub(), event_stub().updated_at), event_after_update_stub());
     }
 
     #[test]
     fn event_update_ok() {
         assert_eq!(
             event_update(
-                &EventRepositoryStub::default(),
+                &EventRepositoryStub::of_event(event_stub()),
                 &DateTimeGeneratorStub(event_stub().updated_at, 1734555761),
                 event_update_stub(),
                 user_stub().id,

@@ -1,4 +1,4 @@
-use std::{collections::BTreeMap, sync::LazyLock};
+use std::sync::LazyLock;
 
 use araucaria::schema::{BoolSchema, DateSchema, EnumSchema, ObjSchema, Schema, StrSchema, TimeSchema};
 
@@ -32,7 +32,7 @@ pub static APPOINTMENT_CREATE_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
     ]))
 });
 
-pub fn event_create_from_appointment_create(model: AppointmentCreate) -> EventCreate {
+pub fn event_create_of_appointment_create(model: AppointmentCreate) -> EventCreate {
     EventCreate {
         name: model.name,
         begin: format!("{}T{}Z", model.day, model.begin),
@@ -50,21 +50,22 @@ pub fn event_appointment_create(
     model: AppointmentCreate,
     user_id: String,
 ) -> Result<Event, EventErr> {
-    let event_create_model = event_create_from_appointment_create(model);
+    let event_create_model = event_create_of_appointment_create(model);
     return event_create(repository, id_generator, date_time_generator, event_create_model, user_id);
 }
 
 #[cfg(test)]
 mod tests {
-    use super::{AppointmentCreate, event_create_from_appointment_create};
     use crate::schedule::event::{
         create::EventCreate,
         model::{EventCategory, EventFrequency},
     };
 
+    use super::{AppointmentCreate, event_create_of_appointment_create};
+
     #[test]
-    fn event_create_from_appointment() {
-        let appointment = AppointmentCreate {
+    fn test_event_create_from_appointment_create() {
+        let appointment_create = AppointmentCreate {
             name: "Dentist".into(),
             day: "2024-03-31".into(),
             begin: "18:00".into(),
@@ -72,7 +73,7 @@ mod tests {
             frequency: Some("2D".into()),
             weekend_repeat: Some(true),
         };
-        let create_event = EventCreate {
+        let event_create = EventCreate {
             name: "Dentist".into(),
             begin: "2024-03-31T18:00Z".into(),
             end: "2024-03-31T22:00Z".into(),
@@ -80,6 +81,6 @@ mod tests {
             frequency: Some(EventFrequency::D2),
             weekend_repeat: Some(true),
         };
-        assert_eq!(event_create_from_appointment_create(appointment), create_event);
+        assert_eq!(event_create_of_appointment_create(appointment_create), event_create);
     }
 }
