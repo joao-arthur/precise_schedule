@@ -3,9 +3,9 @@ use std::cell::RefCell;
 use domain::{
     database::DBOp,
     schedule::user::{
-        login::UserCredentials,
         model::User,
         repository::UserRepository,
+        sign_in::UserCredentials,
         unique_info::{UserUniqueInfo, UserUniqueInfoCount},
     },
 };
@@ -62,9 +62,10 @@ impl UserRepository for UserRepositoryMemory {
 #[cfg(test)]
 mod test {
     use domain::schedule::user::{
+        model::{User, stub::user_stub},
         repository::UserRepository,
-        stub::{user_after_update_stub, user_credentials_stub, user_stub, user_unique_info_stub_3},
-        unique_info::UserUniqueInfoCount,
+        sign_in::{UserCredentials, stub::user_credentials_stub},
+        unique_info::{UserUniqueInfo, UserUniqueInfoCount},
     };
 
     use super::UserRepositoryMemory;
@@ -73,33 +74,96 @@ mod test {
     fn test_user_repo_memory() {
         let repository = UserRepositoryMemory::default();
 
-        assert_eq!(repository.read_by_id(&user_stub().id), Ok(None));
-        assert_eq!(repository.read_by_credentials(&user_credentials_stub()), Ok(None));
-        assert_eq!(repository.read_count_unique_info(&user_unique_info_stub_3()), Ok(UserUniqueInfoCount { username: 0, email: 0 }));
+        assert_eq!(repository.read_by_id(&"a6edc906-2f9f-5fb2-a373-efac406f0ef2"), Ok(None));
+        assert_eq!(repository.read_by_credentials(&UserCredentials { username: "macca".into(), password: "asdf!@#123".into() }), Ok(None));
+        assert_eq!(
+            repository.read_count_unique_info(&UserUniqueInfo { email: "paul@gmail.com".into(), username: "macca".into() }),
+            Ok(UserUniqueInfoCount { username: 0, email: 0 })
+        );
 
-        assert_eq!(repository.delete(&user_stub().id), Ok(()));
+        assert_eq!(repository.delete(&"a6edc906-2f9f-5fb2-a373-efac406f0ef2"), Ok(()));
         assert_eq!(repository.update(&user_stub()), Ok(()));
 
-        assert_eq!(repository.read_by_id(&user_stub().id), Ok(None));
-        assert_eq!(repository.read_by_credentials(&user_credentials_stub()), Ok(None));
-        assert_eq!(repository.read_count_unique_info(&user_unique_info_stub_3()), Ok(UserUniqueInfoCount { username: 0, email: 0 }));
+        assert_eq!(repository.read_by_id(&"a6edc906-2f9f-5fb2-a373-efac406f0ef2"), Ok(None));
+        assert_eq!(repository.read_by_credentials(&UserCredentials { username: "macca".into(), password: "asdf!@#123".into() }), Ok(None));
+        assert_eq!(
+            repository.read_count_unique_info(&UserUniqueInfo { email: "paul@gmail.com".into(), username: "macca".into() }),
+            Ok(UserUniqueInfoCount { username: 0, email: 0 })
+        );
 
         assert_eq!(repository.create(&user_stub()), Ok(()));
 
-        assert_eq!(repository.read_by_id(&user_stub().id), Ok(Some(user_stub())));
-        assert_eq!(repository.read_by_credentials(&user_credentials_stub()), Ok(Some(user_stub())));
-        assert_eq!(repository.read_count_unique_info(&user_unique_info_stub_3()), Ok(UserUniqueInfoCount { username: 1, email: 1 }));
+        assert_eq!(
+            repository.read_by_id(&"a6edc906-2f9f-5fb2-a373-efac406f0ef2"),
+            Ok(Some(User {
+                id: "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
+                email: "paul@gmail.com".into(),
+                first_name: "Paul McCartney".into(),
+                birthdate: "1942-06-18".into(),
+                username: "macca".into(),
+                password: "asdf!@#123".into(),
+                created_at: "2024-03-01T11:26Z".into(),
+                updated_at: "2024-07-03T22:49Z".into(),
+            }))
+        );
+        assert_eq!(
+            repository.read_by_credentials(&user_credentials_stub()),
+            Ok(Some(User {
+                id: "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
+                email: "paul@gmail.com".into(),
+                first_name: "Paul McCartney".into(),
+                birthdate: "1942-06-18".into(),
+                username: "macca".into(),
+                password: "asdf!@#123".into(),
+                created_at: "2024-03-01T11:26Z".into(),
+                updated_at: "2024-07-03T22:49Z".into(),
+            }))
+        );
+        assert_eq!(
+            repository.read_count_unique_info(&UserUniqueInfo { email: "paul@gmail.com".into(), username: "macca".into() }),
+            Ok(UserUniqueInfoCount { username: 1, email: 1 })
+        );
 
-        assert_eq!(repository.update(&user_after_update_stub()), Ok(()));
+        assert_eq!(
+            repository.update(&User {
+                id: "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
+                email: "john@gmail.com".into(),
+                first_name: "John Lennon".into(),
+                birthdate: "1940-10-09".into(),
+                username: "john_lennon".into(),
+                password: "abcd!@#$4321".into(),
+                created_at: "2024-03-01T11:26Z".into(),
+                updated_at: "2025-09-27T18:02Z".into()
+            }),
+            Ok(())
+        );
 
-        assert_eq!(repository.read_by_id(&user_stub().id), Ok(Some(user_after_update_stub())));
-        assert_eq!(repository.read_by_credentials(&user_credentials_stub()), Ok(None));
-        assert_eq!(repository.read_count_unique_info(&user_unique_info_stub_3()), Ok(UserUniqueInfoCount { username: 0, email: 0 }));
+        assert_eq!(
+            repository.read_by_id(&"a6edc906-2f9f-5fb2-a373-efac406f0ef2"),
+            Ok(Some(User {
+                id: "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
+                email: "john@gmail.com".into(),
+                first_name: "John Lennon".into(),
+                birthdate: "1940-10-09".into(),
+                username: "john_lennon".into(),
+                password: "abcd!@#$4321".into(),
+                created_at: "2024-03-01T11:26Z".into(),
+                updated_at: "2025-09-27T18:02Z".into()
+            }))
+        );
+        assert_eq!(repository.read_by_credentials(&UserCredentials { username: "macca".into(), password: "asdf!@#123".into() }), Ok(None));
+        assert_eq!(
+            repository.read_count_unique_info(&UserUniqueInfo { email: "paul@gmail.com".into(), username: "macca".into() }),
+            Ok(UserUniqueInfoCount { username: 0, email: 0 })
+        );
 
-        assert_eq!(repository.delete(&user_stub().id), Ok(()));
+        assert_eq!(repository.delete(&"a6edc906-2f9f-5fb2-a373-efac406f0ef2"), Ok(()));
 
-        assert_eq!(repository.read_by_id(&user_stub().id), Ok(None));
-        assert_eq!(repository.read_by_credentials(&user_credentials_stub()), Ok(None));
-        assert_eq!(repository.read_count_unique_info(&user_unique_info_stub_3()), Ok(UserUniqueInfoCount { username: 0, email: 0 }));
+        assert_eq!(repository.read_by_id(&"a6edc906-2f9f-5fb2-a373-efac406f0ef2"), Ok(None));
+        assert_eq!(repository.read_by_credentials(&UserCredentials { username: "macca".into(), password: "asdf!@#123".into() }), Ok(None));
+        assert_eq!(
+            repository.read_count_unique_info(&UserUniqueInfo { email: "paul@gmail.com".into(), username: "macca".into() }),
+            Ok(UserUniqueInfoCount { username: 0, email: 0 })
+        );
     }
 }

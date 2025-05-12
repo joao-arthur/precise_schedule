@@ -1,41 +1,39 @@
-use std::sync::OnceLock;
+use std::{ops::Deref, sync::LazyLock};
 
 use domain::{
     generator::{DateTimeGenerator, IdGenerator},
     schedule::user::repository::UserRepository,
-    session::SessionService,
-    validation::Validator,
+    session::{SessionDecodeService, SessionEncodeService},
 };
 
 use crate::infra::{
     generator::{DateTimeGeneratorImpl, IdGeneratorUUID4},
     schedule::user::repository::UserRepositoryMemory,
-    session::SessionServiceJWT,
-    validation::ValidatorCustom,
+    session::{SessionDecodeServiceJWT, SessionEncodeServiceJWT},
 };
 
-static USER_REPO: OnceLock<UserRepositoryMemory> = OnceLock::new();
-static ID_GEN: OnceLock<IdGeneratorUUID4> = OnceLock::new();
-static DATE_TIME_GEN: OnceLock<DateTimeGeneratorImpl> = OnceLock::new();
-static VALIDATOR: OnceLock<ValidatorCustom> = OnceLock::new();
-static SESSION_SERVICE: OnceLock<SessionServiceJWT> = OnceLock::new();
+static USER_REPOSITORY: LazyLock<UserRepositoryMemory> = LazyLock::new(|| UserRepositoryMemory::default());
+static ID_GENERATOR: LazyLock<IdGeneratorUUID4> = LazyLock::new(|| IdGeneratorUUID4);
+static DATE_TIME_GENERATOR: LazyLock<DateTimeGeneratorImpl> = LazyLock::new(|| DateTimeGeneratorImpl);
+static SESSION_ENCODE_SERVICER_GENERATOR: LazyLock<SessionEncodeServiceJWT> = LazyLock::new(|| SessionEncodeServiceJWT);
+static SESSION_DECODE_SERVICER_GENERATOR: LazyLock<SessionDecodeServiceJWT> = LazyLock::new(|| SessionDecodeServiceJWT);
 
 pub fn get_user_repository() -> &'static dyn UserRepository {
-    USER_REPO.get_or_init(|| UserRepositoryMemory::default())
+    &*USER_REPOSITORY
 }
 
-pub fn get_id_gen() -> &'static dyn IdGenerator {
-    ID_GEN.get_or_init(|| IdGeneratorUUID4)
+pub fn get_id_generator() -> &'static dyn IdGenerator {
+    &*ID_GENERATOR
 }
 
-pub fn get_date_time_gen() -> &'static dyn DateTimeGenerator {
-    DATE_TIME_GEN.get_or_init(|| DateTimeGeneratorImpl)
+pub fn get_date_time_generator() -> &'static dyn DateTimeGenerator {
+    &*DATE_TIME_GENERATOR
 }
 
-pub fn get_validator() -> &'static dyn Validator {
-    VALIDATOR.get_or_init(|| ValidatorCustom)
+pub fn get_encode_session_service() -> &'static dyn SessionEncodeService {
+    &*SESSION_ENCODE_SERVICER_GENERATOR
 }
 
-pub fn get_session_service() -> &'static dyn SessionService {
-    SESSION_SERVICE.get_or_init(|| SessionServiceJWT)
+pub fn get_decode_session_service() -> &'static dyn SessionDecodeService {
+    &*SESSION_DECODE_SERVICER_GENERATOR
 }

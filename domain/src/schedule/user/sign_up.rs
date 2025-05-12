@@ -23,12 +23,6 @@ pub struct UserSignUpInput {
     pub password: String,
 }
 
-#[derive(Debug, PartialEq)]
-pub struct UserSignUpOutput {
-    pub id: String,
-    pub session: Session,
-}
-
 pub static USER_SIGN_UP_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
     Schema::from(ObjSchema::from([
         ("first_name".into(), Schema::from(StrSchema::default().chars_len_btwn(1, 256))),
@@ -61,14 +55,14 @@ pub fn user_sign_up(
     date_time_generator: &dyn DateTimeGenerator,
     session_encode_service: &dyn SessionEncodeService,
     model: UserSignUpInput,
-) -> Result<UserSignUpOutput, UserErr> {
+) -> Result<Session, UserErr> {
     user_sign_up_unique_info_is_valid(repository, &UserUniqueInfo::from(&model))?;
     let id = id_generator.generate();
     let now = date_time_generator.now_as_iso();
     let user = transform_to_user(model, id, now);
     repository.create(&user).map_err(UserErr::DB)?;
     let session = session_encode_service.encode(&user, date_time_generator).map_err(UserErr::Session)?;
-    Ok(UserSignUpOutput { id: user.id, session })
+    Ok(session)
 }
 
 mod stub {
@@ -94,7 +88,7 @@ mod tests {
             error::UserErr,
             model::User,
             repository::stub::UserRepositoryStub,
-            sign_up::{UserSignUpInput, UserSignUpOutput},
+            sign_up::UserSignUpInput,
             unique_info::{UserUniqueInfoCount, UserUniqueInfoFieldErr},
         },
         session::{Session, SessionEncodeErr, SessionErr, stub::SessionEncodeServiceStub},
@@ -139,7 +133,7 @@ mod tests {
                 &SessionEncodeServiceStub::of_token("TENGO SUERTE".into()),
                 user_sign_up_input_stub()
             ),
-            Ok(UserSignUpOutput { id: "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(), session: Session { token: "TENGO SUERTE".into() } })
+            Ok(Session { token: "TENGO SUERTE".into() })
         );
     }
 
