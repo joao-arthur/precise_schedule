@@ -9,7 +9,7 @@ use entry::{
         endpoint_event_party_u, endpoint_event_r_many, endpoint_event_r_one,
     },
     health_controller::endpoint_health_r,
-    user_controller::{endpoint_user_create, endpoint_user_login, endpoint_user_read, endpoint_user_update},
+    user_controller::{endpoint_user_sign_up, endpoint_user_sign_in, endpoint_user_read, endpoint_user_update},
 };
 use rocket::{
     Request,
@@ -66,7 +66,7 @@ async fn main() -> Result<(), rocket::Error> {
                 endpoint_event_r_one
             ],
         )
-        .mount("/user", routes![endpoint_user_create, endpoint_user_read, endpoint_user_update, endpoint_user_login])
+        .mount("/user", routes![endpoint_user_sign_up, endpoint_user_read, endpoint_user_update, endpoint_user_sign_in])
         .launch()
         .await?;
 

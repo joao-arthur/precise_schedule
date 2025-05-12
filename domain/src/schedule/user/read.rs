@@ -20,15 +20,15 @@ impl From<User> for UserInfo {
     }
 }
 
-pub fn user_read_by_credentials(repository: &dyn UserRepository, credentials: &UserCredentials) -> Result<User, UserErr> {
+pub fn user_read_by_credentials<Repo: UserRepository>(repository: &Repo, credentials: &UserCredentials) -> Result<User, UserErr> {
     repository.read_by_credentials(credentials).map_err(UserErr::DB)?.ok_or(UserErr::UserCredentialsNotFound(UserCredentialsNotFoundErr))
 }
 
-pub fn user_read_by_id(repository: &dyn UserRepository, id: &str) -> Result<User, UserErr> {
+pub fn user_read_by_id<Repo: UserRepository>(repository: &Repo, id: &str) -> Result<User, UserErr> {
     repository.read_by_id(id).map_err(UserErr::DB)?.ok_or(UserErr::UserIdNotFound(UserIdNotFoundErr))
 }
 
-pub fn user_read_info_by_id(repository: &dyn UserRepository, id: &str) -> Result<UserInfo, UserErr> {
+pub fn user_read_info_by_id<Repo: UserRepository>(repository: &Repo, id: &str) -> Result<UserInfo, UserErr> {
     user_read_by_id(repository, id).map(UserInfo::from)
 }
 

@@ -11,11 +11,10 @@ use serde_json::Value;
 
 use crate::{
     LanguageGuard,
-    entry::deps::{get_date_time_generator, get_id_generator, get_user_repository},
     infra::validation::language_to_locale,
 };
 
-use super::deps::get_encode_session_service;
+use super::deps::{SESSION_ENCODE_SERVICER_GENERATOR, DATE_TIME_GENERATOR, ID_GENERATOR, USER_REPOSITORY};
 
 #[derive(Deserialize)]
 #[serde(remote = "UserSignUpInput")]
@@ -82,8 +81,7 @@ pub async fn endpoint_user_sign_up(data: Data<'_>, lg: LanguageGuard) -> Result<
         return Err(status::Custom(Status::UnprocessableEntity, serde_json::to_string(&err).unwrap()));
     }
     let user = result_deserialize.unwrap().0;
-    let repository = get_user_repository();
-    let result_create = user_sign_up(repository, get_id_generator(), get_date_time_generator(), get_encode_session_service(), user);
+    let result_create = user_sign_up(&*USER_REPOSITORY, &*ID_GENERATOR, &*DATE_TIME_GENERATOR, &*SESSION_ENCODE_SERVICER_GENERATOR, user);
     if let Err(err) = result_create {
         match err {
             UserErr::DB(db_err) => {

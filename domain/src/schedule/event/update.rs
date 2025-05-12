@@ -30,9 +30,9 @@ fn transform_to_event(model: EventUpdateInput, event: Event, updated_at: String)
     }
 }
 
-pub fn event_update(
-    repository: &dyn EventRepository,
-    date_time_generator: &dyn DateTimeGenerator,
+pub fn event_update<Repo: EventRepository, DtTmGen: DateTimeGenerator>(
+    repository: &Repo,
+    date_time_generator: &DtTmGen,
     event_update: EventUpdateInput,
     event_id: String,
     user_id: String,

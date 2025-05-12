@@ -25,10 +25,10 @@ pub static USER_CREDENTIALS_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
     ]))
 });
 
-pub fn user_sign_in(
-    repository: &dyn UserRepository,
-    date_time_generator: &dyn DateTimeGenerator,
-    session_encode_service: &dyn SessionEncodeService,
+pub fn user_sign_in<Repo: UserRepository, DtTmGen: DateTimeGenerator, SessionEnc: SessionEncodeService>(
+    repository: &Repo,
+    date_time_generator: &DtTmGen,
+    session_encode_service: &SessionEnc,
     model: UserCredentials,
 ) -> Result<Session, UserErr> {
     let user = user_read_by_credentials(repository, &model)?;

@@ -49,11 +49,11 @@ fn transform_to_user(model: UserSignUpInput, id: String, created_at: String) -> 
     }
 }
 
-pub fn user_sign_up(
-    repository: &dyn UserRepository,
-    id_generator: &dyn IdGenerator,
-    date_time_generator: &dyn DateTimeGenerator,
-    session_encode_service: &dyn SessionEncodeService,
+pub fn user_sign_up<Repo: UserRepository, IdGen: IdGenerator, DtTmGen: DateTimeGenerator, SessionEnc: SessionEncodeService>(
+    repository: &Repo,
+    id_generator: &IdGen,
+    date_time_generator: &DtTmGen,
+    session_encode_service: &SessionEnc,
     model: UserSignUpInput,
 ) -> Result<Session, UserErr> {
     user_sign_up_unique_info_is_valid(repository, &UserUniqueInfo::from(&model))?;

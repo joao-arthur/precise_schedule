@@ -43,10 +43,10 @@ pub fn transform_to_event_create(model: AppointmentCreate) -> EventCreateInput {
     }
 }
 
-pub fn event_appointment_create(
-    repository: &dyn EventRepository,
-    id_generator: &dyn IdGenerator,
-    date_time_generator: &dyn DateTimeGenerator,
+pub fn event_appointment_create<Repo: EventRepository, IdGen: IdGenerator, DtTmGen: DateTimeGenerator>(
+    repository: &Repo,
+    id_generator: &IdGen,
+    date_time_generator: &DtTmGen,
     model: AppointmentCreate,
     user_id: String,
 ) -> Result<Event, EventErr> {

@@ -1,6 +1,6 @@
 use super::{error::UserErr, model::User, read::user_read_by_id, repository::UserRepository};
 
-pub fn user_delete(repository: &dyn UserRepository, id: String) -> Result<User, UserErr> {
+pub fn user_delete<Repo: UserRepository>(repository: &Repo, id: String) -> Result<User, UserErr> {
     let found_user = user_read_by_id(repository, &id)?;
     repository.delete(&found_user.id).map_err(UserErr::DB)?;
     Ok(found_user)

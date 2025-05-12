@@ -30,19 +30,19 @@ impl From<Event> for EventInfo {
     }
 }
 
-pub fn event_read_by_id(repository: &dyn EventRepository, user_id: &str, id: &str) -> Result<Event, EventErr> {
+pub fn event_read_by_id<Repo: EventRepository>(repository: &Repo, user_id: &str, id: &str) -> Result<Event, EventErr> {
     repository.read_by_id(user_id, id).map_err(EventErr::DB)?.ok_or(EventErr::EventIdNotFound(EventIdNotFoundErr))
 }
 
-pub fn event_read_info_by_id(repository: &dyn EventRepository, user_id: &str, id: &str) -> Result<EventInfo, EventErr> {
+pub fn event_read_info_by_id<Repo: EventRepository>(repository: &Repo, user_id: &str, id: &str) -> Result<EventInfo, EventErr> {
     event_read_by_id(repository, user_id, id).map(|e| EventInfo::from(e))
 }
 
-pub fn event_read_by_user(repository: &dyn EventRepository, user_id: &str) -> Result<Vec<Event>, EventErr> {
+pub fn event_read_by_user<Repo: EventRepository>(repository: &Repo, user_id: &str) -> Result<Vec<Event>, EventErr> {
     repository.read_by_user(user_id).map_err(EventErr::DB)
 }
 
-pub fn event_read_info_by_user(repository: &dyn EventRepository, user_id: &str) -> Result<Vec<EventInfo>, EventErr> {
+pub fn event_read_info_by_user<Repo: EventRepository>(repository: &Repo, user_id: &str) -> Result<Vec<EventInfo>, EventErr> {
     event_read_by_user(repository, user_id).map(|e_vec| e_vec.into_iter().map(|e| EventInfo::from(e)).collect())
 }
 

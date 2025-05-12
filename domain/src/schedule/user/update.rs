@@ -49,10 +49,10 @@ fn transform_to_user(model: UserUpdateInput, current_user: User, updated_at: Str
     }
 }
 
-pub fn user_update(
-    repository: &dyn UserRepository,
-    date_time_generator: &dyn DateTimeGenerator,
-    session_service: &dyn SessionEncodeService,
+pub fn user_update<Repo: UserRepository, DtTmGen: DateTimeGenerator, SessionEnc: SessionEncodeService>(
+    repository: &Repo,
+    date_time_generator: &DtTmGen,
+    session_service: &SessionEnc,
     id: String,
     model: UserUpdateInput,
 ) -> Result<Session, UserErr> {

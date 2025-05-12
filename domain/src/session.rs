@@ -18,7 +18,7 @@ pub enum SessionErr {
 }
 
 pub trait SessionEncodeService {
-    fn encode(&self, user: &User, date_time_generator: &dyn DateTimeGenerator) -> Result<Session, SessionErr>;
+    fn encode<DtTmGen: DateTimeGenerator>(&self, user: &User, date_time_generator: &DtTmGen) -> Result<Session, SessionErr>;
 }
 
 pub trait SessionDecodeService {
@@ -37,7 +37,7 @@ pub mod stub {
     pub struct SessionEncodeServiceStub(pub Result<Session, SessionErr>);
 
     impl SessionEncodeService for SessionEncodeServiceStub {
-        fn encode(&self, _user: &User, _date_time_gen: &dyn DateTimeGenerator) -> Result<Session, SessionErr> {
+        fn encode<DtTmGen: DateTimeGenerator>(&self, _user: &User, _date_time_gen: &DtTmGen) -> Result<Session, SessionErr> {
             self.0.clone()
         }
     }

@@ -36,7 +36,7 @@ pub struct UserUniqueInfoFieldErr {
     pub email: bool,
 }
 
-pub fn user_sign_up_unique_info_is_valid(repository: &dyn UserRepository, user: &UserUniqueInfo) -> Result<(), UserErr> {
+pub fn user_sign_up_unique_info_is_valid<Repo: UserRepository>(repository: &Repo, user: &UserUniqueInfo) -> Result<(), UserErr> {
     let unique_info = repository.read_count_unique_info(&user).map_err(UserErr::DB)?;
     let username_err = unique_info.username > 0;
     let email_err = unique_info.email > 0;
@@ -46,7 +46,7 @@ pub fn user_sign_up_unique_info_is_valid(repository: &dyn UserRepository, user: 
     Ok(())
 }
 
-pub fn user_update_unique_info_is_valid(repository: &dyn UserRepository, user: &UserUniqueInfo, old_user: &UserUniqueInfo) -> Result<(), UserErr> {
+pub fn user_update_unique_info_is_valid<Repo: UserRepository>(repository: &Repo, user: &UserUniqueInfo, old_user: &UserUniqueInfo) -> Result<(), UserErr> {
     if user.username == old_user.username && user.email == old_user.email {
         return Ok(());
     }

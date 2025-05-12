@@ -24,7 +24,7 @@ pub struct SessionEncodeServiceJWT;
 pub struct SessionDecodeServiceJWT;
 
 impl SessionEncodeService for SessionEncodeServiceJWT {
-    fn encode(&self, user: &User, date_time_gen: &dyn DateTimeGenerator) -> Result<Session, SessionErr> {
+    fn encode<DtTmGen: DateTimeGenerator>(&self, user: &User, date_time_gen: &DtTmGen) -> Result<Session, SessionErr> {
         let claims = Claims {
             username: user.username.clone(),
             sub: user.id.clone(),

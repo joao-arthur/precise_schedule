@@ -31,10 +31,10 @@ pub fn transform_to_event(model: EventCreateInput, id: String, user_id: String, 
     }
 }
 
-pub fn event_create(
-    repository: &dyn EventRepository,
-    id_generator: &dyn IdGenerator,
-    date_time_generator: &dyn DateTimeGenerator,
+pub fn event_create<Repo: EventRepository, IdGen: IdGenerator, DtTmGen: DateTimeGenerator>(
+    repository: &Repo,
+    id_generator: &IdGen,
+    date_time_generator: &DtTmGen,
     model: EventCreateInput,
     user_id: String,
 ) -> Result<Event, EventErr> {
