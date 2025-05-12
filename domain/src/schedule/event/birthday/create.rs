@@ -5,7 +5,7 @@ use araucaria::schema::{BoolSchema, DateSchema, EnumSchema, ObjSchema, Schema, S
 use crate::{
     generator::{DateTimeGenerator, IdGenerator},
     schedule::event::{
-        create::{EventCreate, event_create},
+        create::{EventCreateInput, event_create},
         error::EventErr,
         model::{Event, EventCategory, EventFrequency},
         repository::EventRepository,
@@ -24,8 +24,8 @@ pub static BIRTHDAY_CREATE_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
     ]))
 });
 
-pub fn event_create_of_birthday_create(model: BirthdayCreate) -> EventCreate {
-    EventCreate {
+pub fn event_create_of_birthday_create(model: BirthdayCreate) -> EventCreateInput {
+    EventCreateInput {
         name: model.name,
         begin: format!("{}T{}Z", model.day, "00:00"),
         end: format!("{}T{}Z", model.day, "23:59"),
@@ -49,7 +49,7 @@ pub fn event_birthday_create(
 #[cfg(test)]
 mod tests {
     use crate::schedule::event::{
-        create::EventCreate,
+        create::EventCreateInput,
         model::{EventCategory, EventFrequency},
     };
 
@@ -58,7 +58,7 @@ mod tests {
     #[test]
     fn test_event_create_of_appointment_create() {
         let birthday_create = BirthdayCreate { name: "Fernando's birthday".into(), day: "2025-08-19".into() };
-        let event_create = EventCreate {
+        let event_create = EventCreateInput {
             name: "Fernando's birthday".into(),
             begin: "2025-08-19T00:00Z".into(),
             end: "2025-08-19T23:59Z".into(),

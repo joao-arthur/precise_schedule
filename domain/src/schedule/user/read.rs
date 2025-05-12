@@ -32,7 +32,7 @@ pub fn user_read_info_by_id(repository: &dyn UserRepository, id: &str) -> Result
     user_read_by_id(repository, id).map(UserInfo::from)
 }
 
-pub mod stub {
+mod stub {
     use super::UserInfo;
 
     pub fn user_info_stub() -> UserInfo {

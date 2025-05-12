@@ -8,7 +8,7 @@ use super::{
 };
 
 #[derive(Debug, PartialEq)]
-pub struct EventUpdate {
+pub struct EventUpdateInput {
     pub name: String,
     pub begin: String,
     pub end: String,
@@ -17,14 +17,14 @@ pub struct EventUpdate {
     pub weekend_repeat: Option<bool>,
 }
 
-pub fn event_of_update(event_update: EventUpdate, event: Event, updated_at: String) -> Event {
+fn transform_to_event(model: EventUpdateInput, event: Event, updated_at: String) -> Event {
     Event {
-        name: event_update.name,
-        begin: event_update.begin,
-        end: event_update.end,
-        category: event_update.category,
-        frequency: event_update.frequency,
-        weekend_repeat: event_update.weekend_repeat,
+        name: model.name,
+        begin: model.begin,
+        end: model.end,
+        category: model.category,
+        frequency: model.frequency,
+        weekend_repeat: model.weekend_repeat,
         updated_at,
         ..event
     }
@@ -33,15 +33,32 @@ pub fn event_of_update(event_update: EventUpdate, event: Event, updated_at: Stri
 pub fn event_update(
     repository: &dyn EventRepository,
     date_time_generator: &dyn DateTimeGenerator,
-    event_update: EventUpdate,
+    event_update: EventUpdateInput,
     event_id: String,
     user_id: String,
 ) -> Result<Event, EventErr> {
     let old_event = event_read_by_id(repository, &user_id, &event_id)?;
     let now = date_time_generator.now_as_iso();
-    let event = event_of_update(event_update, old_event, now);
+    let event = transform_to_event(event_update, old_event, now);
     repository.update(&event).map_err(EventErr::DB)?;
     Ok(event)
+}
+
+mod stub {
+    use crate::schedule::event::model::{EventCategory, EventFrequency};
+
+    use super::EventUpdateInput;
+
+    pub fn event_update_stub() -> EventUpdateInput {
+        EventUpdateInput {
+            name: "Medical physicist".into(),
+            begin: "2025-08-11T10:00Z".into(),
+            end: "2025-08-11T11:00Z".into(),
+            category: EventCategory::Appointment,
+            frequency: Some(EventFrequency::Y1),
+            weekend_repeat: None,
+        }
+    }
 }
 
 #[cfg(test)]
@@ -52,39 +69,121 @@ mod tests {
         schedule::{
             event::{
                 error::EventErr,
-                stub::{EventRepositoryStub, event_after_update_stub, event_stub, event_update_stub},
+                model::{Event, EventCategory, EventFrequency, stub::event_stub},
+                read::EventIdNotFoundErr,
+                repository::stub::EventRepositoryStub,
+                update::{EventUpdateInput, stub::event_update_stub},
             },
             user::model::stub::user_stub,
         },
     };
 
-    use super::{event_of_update, event_update};
+    use super::{event_update, transform_to_event};
 
     #[test]
-    fn test_event_of_update() {
-        assert_eq!(event_of_update(event_update_stub(), event_stub(), event_stub().updated_at), event_after_update_stub());
+    fn test_transform_to_event() {
+        assert_eq!(
+            transform_to_event(
+                EventUpdateInput {
+                    name: "Medical physicist".into(),
+                    begin: "2025-08-11T10:00Z".into(),
+                    end: "2025-08-11T11:00Z".into(),
+                    category: EventCategory::Appointment,
+                    frequency: Some(EventFrequency::Y1),
+                    weekend_repeat: None,
+                },
+                Event {
+                    id: "6d470410-5e51-40d1-bd13-0bb6a99de95e".into(),
+                    name: "Dentist".into(),
+                    begin: "2024-03-31T18:00Z".into(),
+                    end: "2024-03-31T22:00Z".into(),
+                    category: EventCategory::Appointment,
+                    frequency: Some(EventFrequency::D2),
+                    weekend_repeat: Some(true),
+                    user: "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
+                    created_at: "2025-02-05T22:49Z".into(),
+                    updated_at: "2025-02-05T22:49Z".into(),
+                },
+                "2025-04-18T10:23Z".into()
+            ),
+            Event {
+                id: "6d470410-5e51-40d1-bd13-0bb6a99de95e".into(),
+                name: "Medical physicist".into(),
+                begin: "2025-08-11T10:00Z".into(),
+                end: "2025-08-11T11:00Z".into(),
+                category: EventCategory::Appointment,
+                frequency: Some(EventFrequency::Y1),
+                weekend_repeat: None,
+                user: "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
+                created_at: "2025-02-05T22:49Z".into(),
+                updated_at: "2025-04-18T10:23Z".into(),
+            }
+        );
     }
 
     #[test]
     fn event_update_ok() {
         assert_eq!(
             event_update(
-                &EventRepositoryStub::of_event(event_stub()),
-                &DateTimeGeneratorStub(event_stub().updated_at, 1734555761),
-                event_update_stub(),
-                user_stub().id,
-                event_stub().id
+                &EventRepositoryStub::of_event(Event {
+                    id: "6d470410-5e51-40d1-bd13-0bb6a99de95e".into(),
+                    name: "Dentist".into(),
+                    begin: "2024-03-31T18:00Z".into(),
+                    end: "2024-03-31T22:00Z".into(),
+                    category: EventCategory::Appointment,
+                    frequency: Some(EventFrequency::D2),
+                    weekend_repeat: Some(true),
+                    user: "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
+                    created_at: "2025-02-05T22:49Z".into(),
+                    updated_at: "2025-04-18T10:23Z".into(),
+                }),
+                &DateTimeGeneratorStub::of_iso("2025-04-18T10:23Z".into()),
+                EventUpdateInput {
+                    name: "Medical physicist".into(),
+                    begin: "2025-08-11T10:00Z".into(),
+                    end: "2025-08-11T11:00Z".into(),
+                    category: EventCategory::Appointment,
+                    frequency: Some(EventFrequency::Y1),
+                    weekend_repeat: None,
+                },
+                "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
+                "6d470410-5e51-40d1-bd13-0bb6a99de95e".into(),
             ),
-            Ok(event_after_update_stub())
+            Ok(Event {
+                id: "6d470410-5e51-40d1-bd13-0bb6a99de95e".into(),
+                name: "Medical physicist".into(),
+                begin: "2025-08-11T10:00Z".into(),
+                end: "2025-08-11T11:00Z".into(),
+                category: EventCategory::Appointment,
+                frequency: Some(EventFrequency::Y1),
+                weekend_repeat: None,
+                user: "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
+                created_at: "2025-02-05T22:49Z".into(),
+                updated_at: "2025-04-18T10:23Z".into(),
+            })
         );
     }
 
     #[test]
-    fn user_update_err() {
+    fn user_update_refgedb_err() {
+        assert_eq!(
+            event_update(
+                &EventRepositoryStub::default(),
+                &DateTimeGeneratorStub::of_iso(user_stub().updated_at),
+                event_update_stub(),
+                user_stub().id,
+                event_stub().id
+            ),
+            Err(EventErr::EventIdNotFound(EventIdNotFoundErr))
+        );
+    }
+
+    #[test]
+    fn user_update_db_err() {
         assert_eq!(
             event_update(
                 &EventRepositoryStub::of_db_err(),
-                &DateTimeGeneratorStub(user_stub().updated_at, 1734555761),
+                &DateTimeGeneratorStub::of_iso(user_stub().updated_at),
                 event_update_stub(),
                 user_stub().id,
                 event_stub().id

@@ -11,11 +11,7 @@ mod tests {
     use crate::{
         database::DBErr,
         schedule::{
-            event::{
-                error::EventErr,
-                read::EventIdNotFoundErr,
-                stub::{EventRepositoryStub, event_stub},
-            },
+            event::{error::EventErr, model::stub::event_stub, read::EventIdNotFoundErr, repository::stub::EventRepositoryStub},
             user::model::stub::user_stub,
         },
     };
@@ -28,10 +24,14 @@ mod tests {
     }
 
     #[test]
-    fn event_delete_err() {
+    fn event_delete_db_err() {
         assert_eq!(event_delete(&EventRepositoryStub::of_db_err(), &user_stub().id, &event_stub().id), Err(EventErr::DB(DBErr)));
+    }
+
+    #[test]
+    fn event_delete_event_id_not_found_err() {
         assert_eq!(
-            event_delete(&EventRepositoryStub::of_none(), &user_stub().id, &event_stub().id),
+            event_delete(&EventRepositoryStub::default(), &user_stub().id, &event_stub().id),
             Err(EventErr::EventIdNotFound(EventIdNotFoundErr))
         );
     }

@@ -20,22 +20,6 @@ pub enum EventFrequency {
     Y2,
 }
 
-impl EventFrequency {
-    pub fn parse(frequency: &str) -> Option<EventFrequency> {
-        match frequency {
-            "1D" => Some(EventFrequency::D1),
-            "2D" => Some(EventFrequency::D2),
-            "1W" => Some(EventFrequency::W1),
-            "1M" => Some(EventFrequency::M1),
-            "3M" => Some(EventFrequency::M3),
-            "6M" => Some(EventFrequency::M6),
-            "1Y" => Some(EventFrequency::Y1),
-            "2Y" => Some(EventFrequency::Y2),
-            _ => None,
-        }
-    }
-}
-
 #[derive(Debug, PartialEq, Clone)]
 pub struct Event {
     pub id: String,
@@ -50,20 +34,21 @@ pub struct Event {
     pub updated_at: String,
 }
 
-#[cfg(test)]
-mod tests {
-    use super::EventFrequency;
+pub mod stub {
+    use super::{Event, EventCategory, EventFrequency};
 
-    #[test]
-    fn event_frequency_parse() {
-        assert_eq!(EventFrequency::parse("365D"), None);
-        assert_eq!(EventFrequency::parse("1D"), Some(EventFrequency::D1));
-        assert_eq!(EventFrequency::parse("2D"), Some(EventFrequency::D2));
-        assert_eq!(EventFrequency::parse("1W"), Some(EventFrequency::W1));
-        assert_eq!(EventFrequency::parse("1M"), Some(EventFrequency::M1));
-        assert_eq!(EventFrequency::parse("3M"), Some(EventFrequency::M3));
-        assert_eq!(EventFrequency::parse("6M"), Some(EventFrequency::M6));
-        assert_eq!(EventFrequency::parse("1Y"), Some(EventFrequency::Y1));
-        assert_eq!(EventFrequency::parse("2Y"), Some(EventFrequency::Y2));
+    pub fn event_stub() -> Event {
+        Event {
+            id: "6d470410-5e51-40d1-bd13-0bb6a99de95e".into(),
+            name: "Dentist".into(),
+            begin: "2024-03-31T18:00Z".into(),
+            end: "2024-03-31T22:00Z".into(),
+            category: EventCategory::Appointment,
+            frequency: Some(EventFrequency::D2),
+            weekend_repeat: Some(true),
+            user: "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
+            created_at: "2025-02-05T22:49Z".into(),
+            updated_at: "2025-04-18T10:23Z".into(),
+        }
     }
 }

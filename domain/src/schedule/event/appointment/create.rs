@@ -5,7 +5,7 @@ use araucaria::schema::{BoolSchema, DateSchema, EnumSchema, ObjSchema, Schema, S
 use crate::{
     generator::{DateTimeGenerator, IdGenerator},
     schedule::event::{
-        create::{EventCreate, event_create},
+        create::{EventCreateInput, event_create},
         error::EventErr,
         model::{Event, EventCategory, EventFrequency},
         repository::EventRepository,
@@ -17,7 +17,7 @@ pub struct AppointmentCreate {
     pub day: String,
     pub begin: String,
     pub end: String,
-    pub frequency: Option<String>,
+    pub frequency: Option<EventFrequency>,
     pub weekend_repeat: Option<bool>,
 }
 
@@ -32,13 +32,13 @@ pub static APPOINTMENT_CREATE_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
     ]))
 });
 
-pub fn event_create_of_appointment_create(model: AppointmentCreate) -> EventCreate {
-    EventCreate {
+pub fn transform_to_event_create(model: AppointmentCreate) -> EventCreateInput {
+    EventCreateInput {
         name: model.name,
         begin: format!("{}T{}Z", model.day, model.begin),
         end: format!("{}T{}Z", model.day, model.end),
         category: EventCategory::Appointment,
-        frequency: model.frequency.and_then(|freq| EventFrequency::parse(&freq)),
+        frequency: model.frequency,
         weekend_repeat: model.weekend_repeat,
     }
 }
@@ -50,37 +50,38 @@ pub fn event_appointment_create(
     model: AppointmentCreate,
     user_id: String,
 ) -> Result<Event, EventErr> {
-    let event_create_model = event_create_of_appointment_create(model);
+    let event_create_model = transform_to_event_create(model);
     return event_create(repository, id_generator, date_time_generator, event_create_model, user_id);
 }
 
 #[cfg(test)]
 mod tests {
     use crate::schedule::event::{
-        create::EventCreate,
+        create::EventCreateInput,
         model::{EventCategory, EventFrequency},
     };
 
-    use super::{AppointmentCreate, event_create_of_appointment_create};
+    use super::{AppointmentCreate, transform_to_event_create};
 
     #[test]
-    fn test_event_create_from_appointment_create() {
-        let appointment_create = AppointmentCreate {
-            name: "Dentist".into(),
-            day: "2024-03-31".into(),
-            begin: "18:00".into(),
-            end: "22:00".into(),
-            frequency: Some("2D".into()),
-            weekend_repeat: Some(true),
-        };
-        let event_create = EventCreate {
-            name: "Dentist".into(),
-            begin: "2024-03-31T18:00Z".into(),
-            end: "2024-03-31T22:00Z".into(),
-            category: EventCategory::Appointment,
-            frequency: Some(EventFrequency::D2),
-            weekend_repeat: Some(true),
-        };
-        assert_eq!(event_create_of_appointment_create(appointment_create), event_create);
+    fn test_transform_to_event_create() {
+        assert_eq!(
+            transform_to_event_create(AppointmentCreate {
+                name: "Dentist".into(),
+                day: "2024-03-31".into(),
+                begin: "18:00".into(),
+                end: "22:00".into(),
+                frequency: Some(EventFrequency::D2),
+                weekend_repeat: Some(true),
+            }),
+            EventCreateInput {
+                name: "Dentist".into(),
+                begin: "2024-03-31T18:00Z".into(),
+                end: "2024-03-31T22:00Z".into(),
+                category: EventCategory::Appointment,
+                frequency: Some(EventFrequency::D2),
+                weekend_repeat: Some(true),
+            }
+        );
     }
 }

@@ -5,7 +5,7 @@ use araucaria::schema::{BoolSchema, DateSchema, EnumSchema, ObjSchema, Schema, S
 use crate::{
     generator::{DateTimeGenerator, IdGenerator},
     schedule::event::{
-        create::{EventCreate, event_create},
+        create::{EventCreateInput, event_create},
         error::EventErr,
         model::{Event, EventCategory, EventFrequency},
         repository::EventRepository,

@@ -7,7 +7,7 @@ use super::{
 };
 
 #[derive(Debug, PartialEq)]
-pub struct EventCreate {
+pub struct EventCreateInput {
     pub name: String,
     pub begin: String,
     pub end: String,
@@ -16,7 +16,7 @@ pub struct EventCreate {
     pub weekend_repeat: Option<bool>,
 }
 
-pub fn event_of_create(model: EventCreate, id: String, user_id: String, created_at: String) -> Event {
+pub fn transform_to_event(model: EventCreateInput, id: String, user_id: String, created_at: String) -> Event {
     Event {
         id,
         name: model.name,
@@ -35,14 +35,31 @@ pub fn event_create(
     repository: &dyn EventRepository,
     id_generator: &dyn IdGenerator,
     date_time_generator: &dyn DateTimeGenerator,
-    model: EventCreate,
+    model: EventCreateInput,
     user_id: String,
 ) -> Result<Event, EventErr> {
     let id = id_generator.generate();
     let now = date_time_generator.now_as_iso();
-    let event = event_of_create(model, id, user_id, now);
+    let event = transform_to_event(model, id, user_id, now);
     repository.create(&event).map_err(EventErr::DB)?;
     Ok(event)
+}
+
+mod stubs {
+    use crate::schedule::event::model::{EventCategory, EventFrequency};
+
+    use super::EventCreateInput;
+
+    pub fn event_create_stub() -> EventCreateInput {
+        EventCreateInput {
+            name: "Dentist".into(),
+            begin: "2024-03-31T18:00Z".into(),
+            end: "2024-03-31T22:00Z".into(),
+            category: EventCategory::Appointment,
+            frequency: Some(EventFrequency::D2),
+            weekend_repeat: Some(true),
+        }
+    }
 }
 
 #[cfg(test)]
@@ -52,18 +69,46 @@ mod tests {
         generator::stub::{DateTimeGeneratorStub, IdGeneratorStub},
         schedule::{
             event::{
+                create::{EventCreateInput, stubs::event_create_stub},
                 error::EventErr,
-                stub::{EventRepositoryStub, event_after_create_stub, event_create_stub, event_stub},
+                model::{Event, EventCategory, EventFrequency, stub::event_stub},
+                repository::stub::EventRepositoryStub,
             },
             user::model::stub::user_stub,
         },
     };
 
-    use super::{event_create, event_of_create};
+    use super::{event_create, transform_to_event};
 
     #[test]
-    fn test_event_of_create() {
-        assert_eq!(event_of_create(event_create_stub(), event_stub().id, user_stub().id, event_stub().created_at), event_after_create_stub());
+    fn test_transform_to_event() {
+        assert_eq!(
+            transform_to_event(
+                EventCreateInput {
+                    name: "Dentist".into(),
+                    begin: "2024-03-31T18:00Z".into(),
+                    end: "2024-03-31T22:00Z".into(),
+                    category: EventCategory::Appointment,
+                    frequency: Some(EventFrequency::D2),
+                    weekend_repeat: Some(true),
+                },
+                "6d470410-5e51-40d1-bd13-0bb6a99de95e".into(),
+                "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
+                "2025-02-05T22:49Z".into()
+            ),
+            Event {
+                id: "6d470410-5e51-40d1-bd13-0bb6a99de95e".into(),
+                name: "Dentist".into(),
+                begin: "2024-03-31T18:00Z".into(),
+                end: "2024-03-31T22:00Z".into(),
+                category: EventCategory::Appointment,
+                frequency: Some(EventFrequency::D2),
+                weekend_repeat: Some(true),
+                user: "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
+                created_at: "2025-02-05T22:49Z".into(),
+                updated_at: "2025-02-05T22:49Z".into(),
+            }
+        );
     }
 
     #[test]
@@ -72,21 +117,39 @@ mod tests {
             event_create(
                 &EventRepositoryStub::default(),
                 &IdGeneratorStub(event_stub().id),
-                &DateTimeGeneratorStub(event_stub().created_at, 1734555761),
-                event_create_stub(),
-                user_stub().id
+                &DateTimeGeneratorStub::of_iso("2025-02-05T22:49Z".into()),
+                EventCreateInput {
+                    name: "Dentist".into(),
+                    begin: "2024-03-31T18:00Z".into(),
+                    end: "2024-03-31T22:00Z".into(),
+                    category: EventCategory::Appointment,
+                    frequency: Some(EventFrequency::D2),
+                    weekend_repeat: Some(true),
+                },
+                "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into()
             ),
-            Ok(event_after_create_stub())
+            Ok(Event {
+                id: "6d470410-5e51-40d1-bd13-0bb6a99de95e".into(),
+                name: "Dentist".into(),
+                begin: "2024-03-31T18:00Z".into(),
+                end: "2024-03-31T22:00Z".into(),
+                category: EventCategory::Appointment,
+                frequency: Some(EventFrequency::D2),
+                weekend_repeat: Some(true),
+                user: "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
+                created_at: "2025-02-05T22:49Z".into(),
+                updated_at: "2025-02-05T22:49Z".into(),
+            })
         );
     }
 
     #[test]
-    fn user_create_err() {
+    fn user_create_db_err() {
         assert_eq!(
             event_create(
                 &EventRepositoryStub::of_db_err(),
                 &IdGeneratorStub(user_stub().id),
-                &DateTimeGeneratorStub(user_stub().created_at, 1734555761),
+                &DateTimeGeneratorStub::of_iso(user_stub().created_at),
                 event_create_stub(),
                 user_stub().id
             ),
