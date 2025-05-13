@@ -1,6 +1,8 @@
 use std::sync::LazyLock;
 
-use araucaria::schema::{BoolSchema, DateSchema, EnumSchema, ObjSchema, Schema, StrSchema, TimeSchema};
+use araucaria::schema::{
+    BoolSchema, DateSchema, EnumSchema, ObjSchema, Schema, StrSchema, TimeSchema,
+};
 
 use crate::{
     generator::{DateTimeGenerator, IdGenerator},
@@ -35,7 +37,11 @@ pub fn event_create_of_birthday_create(model: BirthdayCreate) -> EventCreateInpu
     }
 }
 
-pub fn event_birthday_create<Repo: EventRepository, IdGen: IdGenerator, DtTmGen: DateTimeGenerator>(
+pub fn event_birthday_create<
+    Repo: EventRepository,
+    IdGen: IdGenerator,
+    DtTmGen: DateTimeGenerator,
+>(
     repository: &Repo,
     id_generator: &IdGen,
     date_time_generator: &DtTmGen,
@@ -43,7 +49,13 @@ pub fn event_birthday_create<Repo: EventRepository, IdGen: IdGenerator, DtTmGen:
     user_id: String,
 ) -> Result<Event, EventErr> {
     let event_create_model = event_create_of_birthday_create(model);
-    return event_create(repository, id_generator, date_time_generator, event_create_model, user_id);
+    return event_create(
+        repository,
+        id_generator,
+        date_time_generator,
+        event_create_model,
+        user_id,
+    );
 }
 
 #[cfg(test)]
@@ -57,7 +69,8 @@ mod tests {
 
     #[test]
     fn test_event_create_of_appointment_create() {
-        let birthday_create = BirthdayCreate { name: "Fernando's birthday".into(), day: "2025-08-19".into() };
+        let birthday_create =
+            BirthdayCreate { name: "Fernando's birthday".into(), day: "2025-08-19".into() };
         let event_create = EventCreateInput {
             name: "Fernando's birthday".into(),
             begin: "2025-08-19T00:00Z".into(),

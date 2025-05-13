@@ -56,12 +56,21 @@ mod tests {
 
     #[test]
     fn id_generator_stub() {
-        assert_eq!(IdGeneratorStub("1aa4b955-2e7b-47d8-8ce2-758389cb1789".into()).generate(), "1aa4b955-2e7b-47d8-8ce2-758389cb1789".to_string());
+        assert_eq!(
+            IdGeneratorStub("1aa4b955-2e7b-47d8-8ce2-758389cb1789".into()).generate(),
+            "1aa4b955-2e7b-47d8-8ce2-758389cb1789".to_string()
+        );
     }
 
     #[test]
     fn date_time_generator_stub() {
-        assert_eq!(DateTimeGeneratorStub("2025-04-18T10:23Z".into(), 1734555761).now_as_iso(), "2025-04-18T10:23Z".to_string());
-        assert_eq!(DateTimeGeneratorStub("2025-04-18T10:23Z".into(), 1734555761).now_as_unix_epoch(), 1734555761);
+        assert_eq!(
+            DateTimeGeneratorStub("2025-04-18T10:23Z".into(), 1734555761).now_as_iso(),
+            "2025-04-18T10:23Z".to_string()
+        );
+        assert_eq!(
+            DateTimeGeneratorStub("2025-04-18T10:23Z".into(), 1734555761).now_as_unix_epoch(),
+            1734555761
+        );
     }
 }

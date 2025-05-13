@@ -32,7 +32,14 @@ pub static USER_UPDATE_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
         ("username".into(), Schema::from(StrSchema::default().chars_len_btwn(1, 64))),
         (
             "password".into(),
-            Schema::from(StrSchema::default().chars_len_btwn(1, 64).uppercase_len_ge(1).lowercase_len_ge(1).numbers_len_ge(1).symbols_len_ge(1)),
+            Schema::from(
+                StrSchema::default()
+                    .chars_len_btwn(1, 64)
+                    .uppercase_len_ge(1)
+                    .lowercase_len_ge(1)
+                    .numbers_len_ge(1)
+                    .symbols_len_ge(1),
+            ),
         ),
     ]))
 });
@@ -49,7 +56,11 @@ fn transform_to_user(model: UserUpdateInput, current_user: User, updated_at: Str
     }
 }
 
-pub async fn user_update<Repo: UserRepository, DtTmGen: DateTimeGenerator, SessionEnc: SessionEncodeService>(
+pub async fn user_update<
+    Repo: UserRepository,
+    DtTmGen: DateTimeGenerator,
+    SessionEnc: SessionEncodeService,
+>(
     repository: &Repo,
     date_time_generator: &DtTmGen,
     session_service: &SessionEnc,
@@ -57,7 +68,12 @@ pub async fn user_update<Repo: UserRepository, DtTmGen: DateTimeGenerator, Sessi
     model: UserUpdateInput,
 ) -> Result<Session, UserErr> {
     let old_user = user_read_by_id(repository, &id).await?;
-    user_update_unique_info_is_valid(repository, &UserUniqueInfo::from(&model), &UserUniqueInfo::from(&old_user)).await?;
+    user_update_unique_info_is_valid(
+        repository,
+        &UserUniqueInfo::from(&model),
+        &UserUniqueInfo::from(&old_user),
+    )
+    .await?;
     let now = date_time_generator.now_as_iso();
     let user = transform_to_user(model, old_user, now);
     repository.update(&user).await.map_err(UserErr::DB)?;
@@ -182,14 +198,21 @@ mod tests {
     async fn user_update_user_unique_info_field_err() {
         assert_eq!(
             user_update(
-                &UserRepositoryStub { err: false, user: Some(user_stub()), user_unique_count: UserUniqueInfoCount { username: 2, email: 2 } },
+                &UserRepositoryStub {
+                    err: false,
+                    user: Some(user_stub()),
+                    user_unique_count: UserUniqueInfoCount { username: 2, email: 2 }
+                },
                 &DateTimeGeneratorStub::of_iso("2025-09-27T18:02Z".into()),
                 &SessionEncodeServiceStub::of_token("TENGO SUERTE".into()),
                 user_stub().id,
                 user_update_input_stub()
             )
             .await,
-            Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr { username: true, email: true }))
+            Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr {
+                username: true,
+                email: true
+            }))
         );
     }
 

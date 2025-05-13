@@ -16,7 +16,12 @@ pub struct EventCreateInput {
     pub weekend_repeat: Option<bool>,
 }
 
-pub fn transform_to_event(model: EventCreateInput, id: String, user_id: String, created_at: String) -> Event {
+pub fn transform_to_event(
+    model: EventCreateInput,
+    id: String,
+    user_id: String,
+    created_at: String,
+) -> Event {
     Event {
         id,
         name: model.name,

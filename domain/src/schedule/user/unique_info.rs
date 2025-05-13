@@ -1,4 +1,7 @@
-use super::{error::UserErr, model::User, repository::UserRepository, sign_up::UserSignUpInput, update::UserUpdateInput};
+use super::{
+    error::UserErr, model::User, repository::UserRepository, sign_up::UserSignUpInput,
+    update::UserUpdateInput,
+};
 
 #[derive(Debug, PartialEq)]
 pub struct UserUniqueInfo {
@@ -36,12 +39,18 @@ pub struct UserUniqueInfoFieldErr {
     pub email: bool,
 }
 
-pub async fn user_sign_up_unique_info_is_valid<Repo: UserRepository>(repository: &Repo, user: &UserUniqueInfo) -> Result<(), UserErr> {
+pub async fn user_sign_up_unique_info_is_valid<Repo: UserRepository>(
+    repository: &Repo,
+    user: &UserUniqueInfo,
+) -> Result<(), UserErr> {
     let unique_info = repository.read_count_unique_info(&user).await.map_err(UserErr::DB)?;
     let username_err = unique_info.username > 0;
     let email_err = unique_info.email > 0;
     if username_err || email_err {
-        return Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr { username: username_err, email: email_err }));
+        return Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr {
+            username: username_err,
+            email: email_err,
+        }));
     }
     Ok(())
 }
@@ -58,7 +67,10 @@ pub async fn user_update_unique_info_is_valid<Repo: UserRepository>(
     let username_err = user.username != old_user.username && unique_info.username > 0;
     let email_err = user.email != old_user.email && unique_info.email > 0;
     if username_err || email_err {
-        return Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr { username: username_err, email: email_err }));
+        return Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr {
+            username: username_err,
+            email: email_err,
+        }));
     }
     Ok(())
 }
@@ -75,10 +87,16 @@ pub mod stub {
 mod tests {
     use crate::{
         database::DBErr,
-        schedule::user::{error::UserErr, model::User, repository::stub::UserRepositoryStub, sign_up::UserSignUpInput, update::UserUpdateInput},
+        schedule::user::{
+            error::UserErr, model::User, repository::stub::UserRepositoryStub,
+            sign_up::UserSignUpInput, update::UserUpdateInput,
+        },
     };
 
-    use super::{UserUniqueInfo, UserUniqueInfoCount, UserUniqueInfoFieldErr, user_sign_up_unique_info_is_valid, user_update_unique_info_is_valid};
+    use super::{
+        UserUniqueInfo, UserUniqueInfoCount, UserUniqueInfoFieldErr,
+        user_sign_up_unique_info_is_valid, user_update_unique_info_is_valid,
+    };
 
     #[test]
     fn unique_info_from() {
@@ -141,27 +159,45 @@ mod tests {
         );
         assert_eq!(
             user_sign_up_unique_info_is_valid(
-                &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount { username: 1, email: 0 }),
+                &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount {
+                    username: 1,
+                    email: 0
+                }),
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() }
             )
             .await,
-            Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr { username: true, email: false })),
+            Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr {
+                username: true,
+                email: false
+            })),
         );
         assert_eq!(
             user_sign_up_unique_info_is_valid(
-                &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount { username: 0, email: 1 }),
+                &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount {
+                    username: 0,
+                    email: 1
+                }),
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() }
             )
             .await,
-            Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr { username: false, email: true })),
+            Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr {
+                username: false,
+                email: true
+            })),
         );
         assert_eq!(
             user_sign_up_unique_info_is_valid(
-                &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount { username: 1, email: 1 }),
+                &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount {
+                    username: 1,
+                    email: 1
+                }),
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() }
             )
             .await,
-            Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr { username: true, email: true })),
+            Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr {
+                username: true,
+                email: true
+            })),
         );
     }
 
@@ -178,7 +214,10 @@ mod tests {
         );
         assert_eq!(
             user_update_unique_info_is_valid(
-                &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount { username: 1, email: 0 }),
+                &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount {
+                    username: 1,
+                    email: 0
+                }),
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() },
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() },
             )
@@ -187,7 +226,10 @@ mod tests {
         );
         assert_eq!(
             user_update_unique_info_is_valid(
-                &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount { username: 0, email: 1 }),
+                &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount {
+                    username: 0,
+                    email: 1
+                }),
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() },
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() },
             )
@@ -196,7 +238,10 @@ mod tests {
         );
         assert_eq!(
             user_update_unique_info_is_valid(
-                &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount { username: 1, email: 1 }),
+                &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount {
+                    username: 1,
+                    email: 1
+                }),
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() },
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() },
             )
@@ -205,7 +250,10 @@ mod tests {
         );
         assert_eq!(
             user_update_unique_info_is_valid(
-                &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount { username: 2, email: 1 }),
+                &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount {
+                    username: 2,
+                    email: 1
+                }),
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() },
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() },
             )
@@ -214,7 +262,10 @@ mod tests {
         );
         assert_eq!(
             user_update_unique_info_is_valid(
-                &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount { username: 1, email: 2 }),
+                &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount {
+                    username: 1,
+                    email: 2
+                }),
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() },
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() },
             )
@@ -249,30 +300,48 @@ mod tests {
     async fn user_update_unique_info_is_valid_user_unique_info_field_err() {
         assert_eq!(
             user_update_unique_info_is_valid(
-                &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount { username: 1, email: 0 }),
+                &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount {
+                    username: 1,
+                    email: 0
+                }),
                 &UserUniqueInfo { username: "peter987".into(), email: "peter@gmail.com".into() },
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() },
             )
             .await,
-            Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr { username: true, email: false })),
+            Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr {
+                username: true,
+                email: false
+            })),
         );
         assert_eq!(
             user_update_unique_info_is_valid(
-                &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount { username: 0, email: 1 }),
+                &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount {
+                    username: 0,
+                    email: 1
+                }),
                 &UserUniqueInfo { username: "peter987".into(), email: "peter@gmail.com".into() },
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() },
             )
             .await,
-            Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr { username: false, email: true })),
+            Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr {
+                username: false,
+                email: true
+            })),
         );
         assert_eq!(
             user_update_unique_info_is_valid(
-                &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount { username: 1, email: 1 }),
+                &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount {
+                    username: 1,
+                    email: 1
+                }),
                 &UserUniqueInfo { username: "peter987".into(), email: "peter@gmail.com".into() },
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() },
             )
             .await,
-            Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr { username: true, email: true })),
+            Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr {
+                username: true,
+                email: true
+            })),
         );
     }
 }

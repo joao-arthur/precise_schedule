@@ -18,7 +18,11 @@ pub enum SessionErr {
 }
 
 pub trait SessionEncodeService {
-    fn encode<DtTmGen: DateTimeGenerator>(&self, user: &User, date_time_generator: &DtTmGen) -> Result<Session, SessionErr>;
+    fn encode<DtTmGen: DateTimeGenerator>(
+        &self,
+        user: &User,
+        date_time_generator: &DtTmGen,
+    ) -> Result<Session, SessionErr>;
 }
 
 pub trait SessionDecodeService {
@@ -28,7 +32,10 @@ pub trait SessionDecodeService {
 pub mod stub {
     use crate::{generator::DateTimeGenerator, schedule::user::model::User};
 
-    use super::{Session, SessionDecodeErr, SessionDecodeService, SessionEncodeErr, SessionEncodeService, SessionErr};
+    use super::{
+        Session, SessionDecodeErr, SessionDecodeService, SessionEncodeErr, SessionEncodeService,
+        SessionErr,
+    };
 
     pub fn session_stub() -> Session {
         Session { token: "TOKEN".into() }
@@ -37,7 +44,11 @@ pub mod stub {
     pub struct SessionEncodeServiceStub(pub Result<Session, SessionErr>);
 
     impl SessionEncodeService for SessionEncodeServiceStub {
-        fn encode<DtTmGen: DateTimeGenerator>(&self, _user: &User, _date_time_gen: &DtTmGen) -> Result<Session, SessionErr> {
+        fn encode<DtTmGen: DateTimeGenerator>(
+            &self,
+            _user: &User,
+            _date_time_gen: &DtTmGen,
+        ) -> Result<Session, SessionErr> {
             self.0.clone()
         }
     }
@@ -87,18 +98,26 @@ mod tests {
     #[test]
     fn session_encode_service_stub() {
         assert_eq!(
-            SessionEncodeServiceStub::of_token("TOKEN".into()).encode(&user_stub(), &DateTimeGeneratorStub::of_unix_epoch(1734555761)),
+            SessionEncodeServiceStub::of_token("TOKEN".into())
+                .encode(&user_stub(), &DateTimeGeneratorStub::of_unix_epoch(1734555761)),
             Ok(Session { token: "TOKEN".into() })
         );
         assert_eq!(
-            SessionEncodeServiceStub::of_err().encode(&user_stub(), &DateTimeGeneratorStub::of_unix_epoch(1734555761)),
+            SessionEncodeServiceStub::of_err()
+                .encode(&user_stub(), &DateTimeGeneratorStub::of_unix_epoch(1734555761)),
             Err(SessionErr::Encode(SessionEncodeErr))
         );
     }
 
     #[test]
     fn session_decode_service_stub() {
-        assert_eq!(SessionDecodeServiceStub::of_value("id".into()).decode(session_stub()), Ok("id".into()));
-        assert_eq!(SessionDecodeServiceStub::of_err().decode(session_stub()), Err(SessionErr::Decode(SessionDecodeErr)));
+        assert_eq!(
+            SessionDecodeServiceStub::of_value("id".into()).decode(session_stub()),
+            Ok("id".into())
+        );
+        assert_eq!(
+            SessionDecodeServiceStub::of_err().decode(session_stub()),
+            Err(SessionErr::Decode(SessionDecodeErr))
+        );
     }
 }

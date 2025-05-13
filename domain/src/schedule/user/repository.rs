@@ -12,7 +12,10 @@ pub trait UserRepository {
     async fn delete(&self, id: &str) -> DBOp<()>;
     async fn read_by_credentials(&self, credentials: &UserCredentials) -> DBOp<Option<User>>;
     async fn read_by_id(&self, id: &str) -> DBOp<Option<User>>;
-    async fn read_count_unique_info(&self, user_unique_info: &UserUniqueInfo) -> DBOp<UserUniqueInfoCount>;
+    async fn read_count_unique_info(
+        &self,
+        user_unique_info: &UserUniqueInfo,
+    ) -> DBOp<UserUniqueInfoCount>;
 }
 
 pub mod stub {
@@ -79,7 +82,11 @@ pub mod stub {
 
     impl Default for UserRepositoryStub {
         fn default() -> Self {
-            UserRepositoryStub { err: false, user: None, user_unique_count: UserUniqueInfoCount { email: 0, username: 0 } }
+            UserRepositoryStub {
+                err: false,
+                user: None,
+                user_unique_count: UserUniqueInfoCount { email: 0, username: 0 },
+            }
         }
     }
 
@@ -118,7 +125,10 @@ mod tests {
         assert_eq!(UserRepositoryStub::default().update(&user_stub()).await, Ok(()));
         assert_eq!(UserRepositoryStub::default().delete(&user_stub().id).await, Ok(()));
         assert_eq!(UserRepositoryStub::default().read_by_id(&user_stub().id).await, Ok(None));
-        assert_eq!(UserRepositoryStub::default().read_by_credentials(&user_credentials_stub()).await, Ok(None));
+        assert_eq!(
+            UserRepositoryStub::default().read_by_credentials(&user_credentials_stub()).await,
+            Ok(None)
+        );
         assert_eq!(
             UserRepositoryStub::default().read_count_unique_info(&user_unique_info_stub()).await,
             Ok(UserUniqueInfoCount { email: 0, username: 0 })
@@ -127,8 +137,16 @@ mod tests {
 
     #[tokio::test]
     async fn user_repo_stub_of_user() {
-        assert_eq!(UserRepositoryStub::of_user(user_stub()).read_by_id(&user_stub().id).await, Ok(Some(user_stub())));
-        assert_eq!(UserRepositoryStub::of_user(user_stub()).read_by_credentials(&user_credentials_stub()).await, Ok(Some(user_stub())));
+        assert_eq!(
+            UserRepositoryStub::of_user(user_stub()).read_by_id(&user_stub().id).await,
+            Ok(Some(user_stub()))
+        );
+        assert_eq!(
+            UserRepositoryStub::of_user(user_stub())
+                .read_by_credentials(&user_credentials_stub())
+                .await,
+            Ok(Some(user_stub()))
+        );
     }
 
     #[tokio::test]
@@ -137,8 +155,14 @@ mod tests {
         assert_eq!(UserRepositoryStub::of_db_err().update(&user_stub()).await, Err(DBErr));
         assert_eq!(UserRepositoryStub::of_db_err().delete(&user_stub().id).await, Err(DBErr));
         assert_eq!(UserRepositoryStub::of_db_err().read_by_id(&user_stub().id).await, Err(DBErr));
-        assert_eq!(UserRepositoryStub::of_db_err().read_by_credentials(&user_credentials_stub()).await, Err(DBErr));
-        assert_eq!(UserRepositoryStub::of_db_err().read_count_unique_info(&user_unique_info_stub()).await, Err(DBErr));
+        assert_eq!(
+            UserRepositoryStub::of_db_err().read_by_credentials(&user_credentials_stub()).await,
+            Err(DBErr)
+        );
+        assert_eq!(
+            UserRepositoryStub::of_db_err().read_count_unique_info(&user_unique_info_stub()).await,
+            Err(DBErr)
+        );
     }
 
     #[tokio::test]

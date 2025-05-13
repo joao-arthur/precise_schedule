@@ -31,7 +31,14 @@ pub static USER_SIGN_UP_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
         ("username".into(), Schema::from(StrSchema::default().chars_len_btwn(1, 64))),
         (
             "password".into(),
-            Schema::from(StrSchema::default().chars_len_btwn(1, 64).uppercase_len_ge(1).lowercase_len_ge(1).numbers_len_ge(1).symbols_len_ge(1)),
+            Schema::from(
+                StrSchema::default()
+                    .chars_len_btwn(1, 64)
+                    .uppercase_len_ge(1)
+                    .lowercase_len_ge(1)
+                    .numbers_len_ge(1)
+                    .symbols_len_ge(1),
+            ),
         ),
     ]))
 });
@@ -49,7 +56,12 @@ fn transform_to_user(model: UserSignUpInput, id: String, created_at: String) -> 
     }
 }
 
-pub async fn user_sign_up<Repo: UserRepository, IdGen: IdGenerator, DtTmGen: DateTimeGenerator, SessionEnc: SessionEncodeService>(
+pub async fn user_sign_up<
+    Repo: UserRepository,
+    IdGen: IdGenerator,
+    DtTmGen: DateTimeGenerator,
+    SessionEnc: SessionEncodeService,
+>(
     repository: &Repo,
     id_generator: &IdGen,
     date_time_generator: &DtTmGen,
@@ -61,7 +73,8 @@ pub async fn user_sign_up<Repo: UserRepository, IdGen: IdGenerator, DtTmGen: Dat
     let now = date_time_generator.now_as_iso();
     let user = transform_to_user(model, id, now);
     repository.create(&user).await.map_err(UserErr::DB)?;
-    let session = session_encode_service.encode(&user, date_time_generator).map_err(UserErr::Session)?;
+    let session =
+        session_encode_service.encode(&user, date_time_generator).map_err(UserErr::Session)?;
     Ok(session)
 }
 
@@ -157,14 +170,20 @@ mod tests {
     async fn user_sign_up_user_unique_info_field_err() {
         assert_eq!(
             user_sign_up(
-                &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount { username: 2, email: 2 }),
+                &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount {
+                    username: 2,
+                    email: 2
+                }),
                 &IdGeneratorStub("a6edc906-2f9f-5fb2-a373-efac406f0ef2".into()),
                 &DateTimeGeneratorStub::of_iso("2024-03-01T11:26Z".into()),
                 &SessionEncodeServiceStub::of_token("TENGO SUERTE".into()),
                 user_sign_up_input_stub()
             )
             .await,
-            Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr { username: true, email: true }))
+            Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr {
+                username: true,
+                email: true
+            }))
         );
     }
 

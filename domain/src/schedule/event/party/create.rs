@@ -1,6 +1,8 @@
 use std::sync::LazyLock;
 
-use araucaria::schema::{BoolSchema, DateSchema, EnumSchema, ObjSchema, Schema, StrSchema, TimeSchema};
+use araucaria::schema::{
+    BoolSchema, DateSchema, EnumSchema, ObjSchema, Schema, StrSchema, TimeSchema,
+};
 
 use crate::{
     generator::{DateTimeGenerator, IdGenerator},

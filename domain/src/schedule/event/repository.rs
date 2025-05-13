@@ -95,12 +95,19 @@ mod tests {
         assert_eq!(EventRepositoryStub::default().create(&event_stub()), Ok(()));
         assert_eq!(EventRepositoryStub::default().update(&event_stub()), Ok(()));
         assert_eq!(EventRepositoryStub::default().delete(&event_stub().id), Ok(()));
-        assert_eq!(EventRepositoryStub::default().read_by_id(&user_stub().id, &event_stub().id), Ok(None));
+        assert_eq!(
+            EventRepositoryStub::default().read_by_id(&user_stub().id, &event_stub().id),
+            Ok(None)
+        );
     }
 
     #[test]
     fn event_repo_stub_of_event() {
-        assert_eq!(EventRepositoryStub::of_event(event_stub()).read_by_id(&user_stub().id, &event_stub().id), Ok(Some(event_stub())));
+        assert_eq!(
+            EventRepositoryStub::of_event(event_stub())
+                .read_by_id(&user_stub().id, &event_stub().id),
+            Ok(Some(event_stub()))
+        );
     }
 
     #[test]
@@ -108,6 +115,9 @@ mod tests {
         assert_eq!(EventRepositoryStub::of_db_err().create(&event_stub()), Err(DBErr));
         assert_eq!(EventRepositoryStub::of_db_err().update(&event_stub()), Err(DBErr));
         assert_eq!(EventRepositoryStub::of_db_err().delete(&event_stub().id), Err(DBErr));
-        assert_eq!(EventRepositoryStub::of_db_err().read_by_id(&user_stub().id, &event_stub().id), Err(DBErr));
+        assert_eq!(
+            EventRepositoryStub::of_db_err().read_by_id(&user_stub().id, &event_stub().id),
+            Err(DBErr)
+        );
     }
 }

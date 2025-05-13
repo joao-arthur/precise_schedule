@@ -20,19 +20,31 @@ pub static USER_CREDENTIALS_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
         ("username".into(), Schema::from(StrSchema::default().chars_len_btwn(1, 64))),
         (
             "password".into(),
-            Schema::from(StrSchema::default().chars_len_btwn(1, 64).uppercase_len_gt(1).lowercase_len_gt(1).numbers_len_gt(1).symbols_len_gt(1)),
+            Schema::from(
+                StrSchema::default()
+                    .chars_len_btwn(1, 64)
+                    .uppercase_len_gt(1)
+                    .lowercase_len_gt(1)
+                    .numbers_len_gt(1)
+                    .symbols_len_gt(1),
+            ),
         ),
     ]))
 });
 
-pub async fn user_sign_in<Repo: UserRepository, DtTmGen: DateTimeGenerator, SessionEnc: SessionEncodeService>(
+pub async fn user_sign_in<
+    Repo: UserRepository,
+    DtTmGen: DateTimeGenerator,
+    SessionEnc: SessionEncodeService,
+>(
     repository: &Repo,
     date_time_generator: &DtTmGen,
     session_encode_service: &SessionEnc,
     model: UserCredentials,
 ) -> Result<Session, UserErr> {
     let user = user_read_by_credentials(repository, &model).await?;
-    let session = session_encode_service.encode(&user, date_time_generator).map_err(UserErr::Session)?;
+    let session =
+        session_encode_service.encode(&user, date_time_generator).map_err(UserErr::Session)?;
     Ok(session)
 }
 
@@ -49,7 +61,9 @@ mod tests {
     use crate::{
         database::DBErr,
         generator::stub::DateTimeGeneratorStub,
-        schedule::user::{error::UserErr, model::stub::user_stub, repository::stub::UserRepositoryStub},
+        schedule::user::{
+            error::UserErr, model::stub::user_stub, repository::stub::UserRepositoryStub,
+        },
         session::{Session, SessionEncodeErr, SessionErr, stub::SessionEncodeServiceStub},
     };
 
