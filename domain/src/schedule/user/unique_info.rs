@@ -36,8 +36,8 @@ pub struct UserUniqueInfoFieldErr {
     pub email: bool,
 }
 
-pub fn user_sign_up_unique_info_is_valid<Repo: UserRepository>(repository: &Repo, user: &UserUniqueInfo) -> Result<(), UserErr> {
-    let unique_info = repository.read_count_unique_info(&user).map_err(UserErr::DB)?;
+pub async fn user_sign_up_unique_info_is_valid<Repo: UserRepository>(repository: &Repo, user: &UserUniqueInfo) -> Result<(), UserErr> {
+    let unique_info = repository.read_count_unique_info(&user).await.map_err(UserErr::DB)?;
     let username_err = unique_info.username > 0;
     let email_err = unique_info.email > 0;
     if username_err || email_err {
@@ -46,11 +46,15 @@ pub fn user_sign_up_unique_info_is_valid<Repo: UserRepository>(repository: &Repo
     Ok(())
 }
 
-pub fn user_update_unique_info_is_valid<Repo: UserRepository>(repository: &Repo, user: &UserUniqueInfo, old_user: &UserUniqueInfo) -> Result<(), UserErr> {
+pub async fn user_update_unique_info_is_valid<Repo: UserRepository>(
+    repository: &Repo,
+    user: &UserUniqueInfo,
+    old_user: &UserUniqueInfo,
+) -> Result<(), UserErr> {
     if user.username == old_user.username && user.email == old_user.email {
         return Ok(());
     }
-    let unique_info = repository.read_count_unique_info(&user).map_err(UserErr::DB)?;
+    let unique_info = repository.read_count_unique_info(&user).await.map_err(UserErr::DB)?;
     let username_err = user.username != old_user.username && unique_info.username > 0;
     let email_err = user.email != old_user.email && unique_info.email > 0;
     if username_err || email_err {
@@ -113,57 +117,63 @@ mod tests {
         )
     }
 
-    #[test]
-    fn user_sign_up_unique_info_is_valid_ok() {
+    #[tokio::test]
+    async fn user_sign_up_unique_info_is_valid_ok() {
         assert_eq!(
             user_sign_up_unique_info_is_valid(
                 &UserRepositoryStub::default(),
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() }
-            ),
+            )
+            .await,
             Ok(())
         );
     }
 
-    #[test]
-    fn user_sign_up_unique_info_is_valid_err() {
+    #[tokio::test]
+    async fn user_sign_up_unique_info_is_valid_err() {
         assert_eq!(
             user_sign_up_unique_info_is_valid(
                 &UserRepositoryStub::of_db_err(),
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() }
-            ),
+            )
+            .await,
             Err(UserErr::DB(DBErr))
         );
         assert_eq!(
             user_sign_up_unique_info_is_valid(
                 &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount { username: 1, email: 0 }),
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() }
-            ),
+            )
+            .await,
             Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr { username: true, email: false })),
         );
         assert_eq!(
             user_sign_up_unique_info_is_valid(
                 &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount { username: 0, email: 1 }),
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() }
-            ),
+            )
+            .await,
             Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr { username: false, email: true })),
         );
         assert_eq!(
             user_sign_up_unique_info_is_valid(
                 &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount { username: 1, email: 1 }),
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() }
-            ),
+            )
+            .await,
             Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr { username: true, email: true })),
         );
     }
 
-    #[test]
-    fn user_update_unique_info_is_valid_ok() {
+    #[tokio::test]
+    async fn user_update_unique_info_is_valid_ok() {
         assert_eq!(
             user_update_unique_info_is_valid(
                 &UserRepositoryStub::default(),
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() },
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() }
-            ),
+            )
+            .await,
             Ok(())
         );
         assert_eq!(
@@ -171,7 +181,8 @@ mod tests {
                 &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount { username: 1, email: 0 }),
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() },
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() },
-            ),
+            )
+            .await,
             Ok(()),
         );
         assert_eq!(
@@ -179,7 +190,8 @@ mod tests {
                 &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount { username: 0, email: 1 }),
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() },
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() },
-            ),
+            )
+            .await,
             Ok(()),
         );
         assert_eq!(
@@ -187,7 +199,8 @@ mod tests {
                 &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount { username: 1, email: 1 }),
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() },
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() },
-            ),
+            )
+            .await,
             Ok(()),
         );
         assert_eq!(
@@ -195,7 +208,8 @@ mod tests {
                 &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount { username: 2, email: 1 }),
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() },
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() },
-            ),
+            )
+            .await,
             Ok(()),
         );
         assert_eq!(
@@ -203,7 +217,8 @@ mod tests {
                 &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount { username: 1, email: 2 }),
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() },
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() },
-            ),
+            )
+            .await,
             Ok(()),
         );
         assert_eq!(
@@ -211,31 +226,34 @@ mod tests {
                 &UserRepositoryStub::default(),
                 &UserUniqueInfo { username: "peter987".into(), email: "peter@gmail.com".into() },
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() }
-            ),
+            )
+            .await,
             Ok(())
         );
     }
 
-    #[test]
-    fn user_update_unique_info_is_valid_db_err() {
+    #[tokio::test]
+    async fn user_update_unique_info_is_valid_db_err() {
         assert_eq!(
             user_update_unique_info_is_valid(
                 &UserRepositoryStub::of_db_err(),
                 &UserUniqueInfo { username: "peter987".into(), email: "peter@gmail.com".into() },
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() }
-            ),
+            )
+            .await,
             Err(UserErr::DB(DBErr))
         );
     }
 
-    #[test]
-    fn user_update_unique_info_is_valid_user_unique_info_field_err() {
+    #[tokio::test]
+    async fn user_update_unique_info_is_valid_user_unique_info_field_err() {
         assert_eq!(
             user_update_unique_info_is_valid(
                 &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount { username: 1, email: 0 }),
                 &UserUniqueInfo { username: "peter987".into(), email: "peter@gmail.com".into() },
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() },
-            ),
+            )
+            .await,
             Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr { username: true, email: false })),
         );
         assert_eq!(
@@ -243,7 +261,8 @@ mod tests {
                 &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount { username: 0, email: 1 }),
                 &UserUniqueInfo { username: "peter987".into(), email: "peter@gmail.com".into() },
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() },
-            ),
+            )
+            .await,
             Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr { username: false, email: true })),
         );
         assert_eq!(
@@ -251,7 +270,8 @@ mod tests {
                 &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount { username: 1, email: 1 }),
                 &UserUniqueInfo { username: "peter987".into(), email: "peter@gmail.com".into() },
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() },
-            ),
+            )
+            .await,
             Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr { username: true, email: true })),
         );
     }

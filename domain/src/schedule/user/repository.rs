@@ -7,12 +7,12 @@ use super::{
 };
 
 pub trait UserRepository {
-    fn create(&self, user: &User) -> DBOp<()>;
-    fn update(&self, user: &User) -> DBOp<()>;
-    fn delete(&self, id: &str) -> DBOp<()>;
-    fn read_by_credentials(&self, credentials: &UserCredentials) -> DBOp<Option<User>>;
-    fn read_by_id(&self, id: &str) -> DBOp<Option<User>>;
-    fn read_count_unique_info(&self, user_unique_info: &UserUniqueInfo) -> DBOp<UserUniqueInfoCount>;
+    async fn create(&self, user: &User) -> DBOp<()>;
+    async fn update(&self, user: &User) -> DBOp<()>;
+    async fn delete(&self, id: &str) -> DBOp<()>;
+    async fn read_by_credentials(&self, credentials: &UserCredentials) -> DBOp<Option<User>>;
+    async fn read_by_id(&self, id: &str) -> DBOp<Option<User>>;
+    async fn read_count_unique_info(&self, user_unique_info: &UserUniqueInfo) -> DBOp<UserUniqueInfoCount>;
 }
 
 pub mod stub {
@@ -34,42 +34,42 @@ pub mod stub {
     }
 
     impl UserRepository for UserRepositoryStub {
-        fn create(&self, _: &User) -> DBOp<()> {
+        async fn create(&self, _: &User) -> DBOp<()> {
             if self.err {
                 return Err(DBErr);
             }
             Ok(())
         }
 
-        fn update(&self, _: &User) -> DBOp<()> {
+        async fn update(&self, _: &User) -> DBOp<()> {
             if self.err {
                 return Err(DBErr);
             }
             Ok(())
         }
 
-        fn delete(&self, _: &str) -> DBOp<()> {
+        async fn delete(&self, _: &str) -> DBOp<()> {
             if self.err {
                 return Err(DBErr);
             }
             Ok(())
         }
 
-        fn read_by_id(&self, _: &str) -> DBOp<Option<User>> {
+        async fn read_by_id(&self, _: &str) -> DBOp<Option<User>> {
             if self.err {
                 return Err(DBErr);
             }
             Ok(self.user.clone())
         }
 
-        fn read_by_credentials(&self, _: &UserCredentials) -> DBOp<Option<User>> {
+        async fn read_by_credentials(&self, _: &UserCredentials) -> DBOp<Option<User>> {
             if self.err {
                 return Err(DBErr);
             }
             Ok(self.user.clone())
         }
 
-        fn read_count_unique_info(&self, _: &UserUniqueInfo) -> DBOp<UserUniqueInfoCount> {
+        async fn read_count_unique_info(&self, _: &UserUniqueInfo) -> DBOp<UserUniqueInfoCount> {
             if self.err {
                 return Err(DBErr);
             }
@@ -112,36 +112,41 @@ mod tests {
 
     use super::stub::UserRepositoryStub;
 
-    #[test]
-    fn user_repo_stub_default() {
-        assert_eq!(UserRepositoryStub::default().create(&user_stub()), Ok(()));
-        assert_eq!(UserRepositoryStub::default().update(&user_stub()), Ok(()));
-        assert_eq!(UserRepositoryStub::default().delete(&user_stub().id), Ok(()));
-        assert_eq!(UserRepositoryStub::default().read_by_id(&user_stub().id), Ok(None));
-        assert_eq!(UserRepositoryStub::default().read_by_credentials(&user_credentials_stub()), Ok(None));
-        assert_eq!(UserRepositoryStub::default().read_count_unique_info(&user_unique_info_stub()), Ok(UserUniqueInfoCount { email: 0, username: 0 }));
-    }
-
-    #[test]
-    fn user_repo_stub_of_user() {
-        assert_eq!(UserRepositoryStub::of_user(user_stub()).read_by_id(&user_stub().id), Ok(Some(user_stub())));
-        assert_eq!(UserRepositoryStub::of_user(user_stub()).read_by_credentials(&user_credentials_stub()), Ok(Some(user_stub())));
-    }
-
-    #[test]
-    fn user_repo_stub_of_bd_err() {
-        assert_eq!(UserRepositoryStub::of_db_err().create(&user_stub()), Err(DBErr));
-        assert_eq!(UserRepositoryStub::of_db_err().update(&user_stub()), Err(DBErr));
-        assert_eq!(UserRepositoryStub::of_db_err().delete(&user_stub().id), Err(DBErr));
-        assert_eq!(UserRepositoryStub::of_db_err().read_by_id(&user_stub().id), Err(DBErr));
-        assert_eq!(UserRepositoryStub::of_db_err().read_by_credentials(&user_credentials_stub()), Err(DBErr));
-        assert_eq!(UserRepositoryStub::of_db_err().read_count_unique_info(&user_unique_info_stub()), Err(DBErr));
-    }
-
-    #[test]
-    fn user_repo_stub_of_unique_info() {
+    #[tokio::test]
+    async fn user_repo_stub_default() {
+        assert_eq!(UserRepositoryStub::default().create(&user_stub()).await, Ok(()));
+        assert_eq!(UserRepositoryStub::default().update(&user_stub()).await, Ok(()));
+        assert_eq!(UserRepositoryStub::default().delete(&user_stub().id).await, Ok(()));
+        assert_eq!(UserRepositoryStub::default().read_by_id(&user_stub().id).await, Ok(None));
+        assert_eq!(UserRepositoryStub::default().read_by_credentials(&user_credentials_stub()).await, Ok(None));
         assert_eq!(
-            UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount { username: 1, email: 0 }).read_count_unique_info(&user_unique_info_stub()),
+            UserRepositoryStub::default().read_count_unique_info(&user_unique_info_stub()).await,
+            Ok(UserUniqueInfoCount { email: 0, username: 0 })
+        );
+    }
+
+    #[tokio::test]
+    async fn user_repo_stub_of_user() {
+        assert_eq!(UserRepositoryStub::of_user(user_stub()).read_by_id(&user_stub().id).await, Ok(Some(user_stub())));
+        assert_eq!(UserRepositoryStub::of_user(user_stub()).read_by_credentials(&user_credentials_stub()).await, Ok(Some(user_stub())));
+    }
+
+    #[tokio::test]
+    async fn user_repo_stub_of_bd_err() {
+        assert_eq!(UserRepositoryStub::of_db_err().create(&user_stub()).await, Err(DBErr));
+        assert_eq!(UserRepositoryStub::of_db_err().update(&user_stub()).await, Err(DBErr));
+        assert_eq!(UserRepositoryStub::of_db_err().delete(&user_stub().id).await, Err(DBErr));
+        assert_eq!(UserRepositoryStub::of_db_err().read_by_id(&user_stub().id).await, Err(DBErr));
+        assert_eq!(UserRepositoryStub::of_db_err().read_by_credentials(&user_credentials_stub()).await, Err(DBErr));
+        assert_eq!(UserRepositoryStub::of_db_err().read_count_unique_info(&user_unique_info_stub()).await, Err(DBErr));
+    }
+
+    #[tokio::test]
+    async fn user_repo_stub_of_unique_info() {
+        assert_eq!(
+            UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount { username: 1, email: 0 })
+                .read_count_unique_info(&user_unique_info_stub())
+                .await,
             Ok(UserUniqueInfoCount { username: 1, email: 0 })
         );
     }

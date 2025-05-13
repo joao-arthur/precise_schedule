@@ -49,18 +49,18 @@ fn transform_to_user(model: UserSignUpInput, id: String, created_at: String) -> 
     }
 }
 
-pub fn user_sign_up<Repo: UserRepository, IdGen: IdGenerator, DtTmGen: DateTimeGenerator, SessionEnc: SessionEncodeService>(
+pub async fn user_sign_up<Repo: UserRepository, IdGen: IdGenerator, DtTmGen: DateTimeGenerator, SessionEnc: SessionEncodeService>(
     repository: &Repo,
     id_generator: &IdGen,
     date_time_generator: &DtTmGen,
     session_encode_service: &SessionEnc,
     model: UserSignUpInput,
 ) -> Result<Session, UserErr> {
-    user_sign_up_unique_info_is_valid(repository, &UserUniqueInfo::from(&model))?;
+    user_sign_up_unique_info_is_valid(repository, &UserUniqueInfo::from(&model)).await?;
     let id = id_generator.generate();
     let now = date_time_generator.now_as_iso();
     let user = transform_to_user(model, id, now);
-    repository.create(&user).map_err(UserErr::DB)?;
+    repository.create(&user).await.map_err(UserErr::DB)?;
     let session = session_encode_service.encode(&user, date_time_generator).map_err(UserErr::Session)?;
     Ok(session)
 }
@@ -123,8 +123,8 @@ mod tests {
         );
     }
 
-    #[test]
-    fn user_sign_up_ok() {
+    #[tokio::test]
+    async fn user_sign_up_ok() {
         assert_eq!(
             user_sign_up(
                 &UserRepositoryStub::default(),
@@ -132,13 +132,14 @@ mod tests {
                 &DateTimeGeneratorStub::of_iso("2024-03-01T11:26Z".into()),
                 &SessionEncodeServiceStub::of_token("TENGO SUERTE".into()),
                 user_sign_up_input_stub()
-            ),
+            )
+            .await,
             Ok(Session { token: "TENGO SUERTE".into() })
         );
     }
 
-    #[test]
-    fn user_sign_up_db_err() {
+    #[tokio::test]
+    async fn user_sign_up_db_err() {
         assert_eq!(
             user_sign_up(
                 &UserRepositoryStub::of_db_err(),
@@ -146,13 +147,14 @@ mod tests {
                 &DateTimeGeneratorStub::of_iso("2024-03-01T11:26Z".into()),
                 &SessionEncodeServiceStub::of_token("TENGO SUERTE".into()),
                 user_sign_up_input_stub()
-            ),
+            )
+            .await,
             Err(UserErr::DB(DBErr))
         );
     }
 
-    #[test]
-    fn user_sign_up_user_unique_info_field_err() {
+    #[tokio::test]
+    async fn user_sign_up_user_unique_info_field_err() {
         assert_eq!(
             user_sign_up(
                 &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount { username: 2, email: 2 }),
@@ -160,13 +162,14 @@ mod tests {
                 &DateTimeGeneratorStub::of_iso("2024-03-01T11:26Z".into()),
                 &SessionEncodeServiceStub::of_token("TENGO SUERTE".into()),
                 user_sign_up_input_stub()
-            ),
+            )
+            .await,
             Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr { username: true, email: true }))
         );
     }
 
-    #[test]
-    fn user_sign_up_session_encode_err() {
+    #[tokio::test]
+    async fn user_sign_up_session_encode_err() {
         assert_eq!(
             user_sign_up(
                 &UserRepositoryStub::default(),
@@ -174,7 +177,8 @@ mod tests {
                 &DateTimeGeneratorStub::of_iso("2024-03-01T11:26Z".into()),
                 &SessionEncodeServiceStub::of_err(),
                 user_sign_up_input_stub()
-            ),
+            )
+            .await,
             Err(UserErr::Session(SessionErr::Encode(SessionEncodeErr)))
         );
     }

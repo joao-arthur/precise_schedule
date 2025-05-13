@@ -25,13 +25,13 @@ pub static USER_CREDENTIALS_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
     ]))
 });
 
-pub fn user_sign_in<Repo: UserRepository, DtTmGen: DateTimeGenerator, SessionEnc: SessionEncodeService>(
+pub async fn user_sign_in<Repo: UserRepository, DtTmGen: DateTimeGenerator, SessionEnc: SessionEncodeService>(
     repository: &Repo,
     date_time_generator: &DtTmGen,
     session_encode_service: &SessionEnc,
     model: UserCredentials,
 ) -> Result<Session, UserErr> {
-    let user = user_read_by_credentials(repository, &model)?;
+    let user = user_read_by_credentials(repository, &model).await?;
     let session = session_encode_service.encode(&user, date_time_generator).map_err(UserErr::Session)?;
     Ok(session)
 }
@@ -55,41 +55,44 @@ mod tests {
 
     use super::{stub::user_credentials_stub, user_sign_in};
 
-    #[test]
-    fn user_sign_in_ok() {
+    #[tokio::test]
+    async fn user_sign_in_ok() {
         assert_eq!(
             user_sign_in(
                 &UserRepositoryStub::of_user(user_stub()),
                 &DateTimeGeneratorStub::of_iso("2024-12-18T18:02Z".into()),
                 &SessionEncodeServiceStub::of_token("TENGO SUERTE".into()),
                 user_credentials_stub()
-            ),
+            )
+            .await,
             Ok(Session { token: "TENGO SUERTE".into() })
         );
     }
 
-    #[test]
-    fn user_sign_in_db_err() {
+    #[tokio::test]
+    async fn user_sign_in_db_err() {
         assert_eq!(
             user_sign_in(
                 &UserRepositoryStub::of_db_err(),
                 &DateTimeGeneratorStub::of_iso("2024-12-18T18:02Z".into()),
                 &SessionEncodeServiceStub::of_token("TENGO SUERTE".into()),
                 user_credentials_stub()
-            ),
+            )
+            .await,
             Err(UserErr::DB(DBErr))
         );
     }
 
-    #[test]
-    fn user_sign_in_encode_err() {
+    #[tokio::test]
+    async fn user_sign_in_encode_err() {
         assert_eq!(
             user_sign_in(
                 &UserRepositoryStub::of_user(user_stub()),
                 &DateTimeGeneratorStub::of_iso("2024-12-18T18:02Z".into()),
                 &SessionEncodeServiceStub::of_err(),
                 user_credentials_stub()
-            ),
+            )
+            .await,
             Err(UserErr::Session(SessionErr::Encode(SessionEncodeErr)))
         );
     }

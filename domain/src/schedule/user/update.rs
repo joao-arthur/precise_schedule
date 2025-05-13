@@ -49,18 +49,18 @@ fn transform_to_user(model: UserUpdateInput, current_user: User, updated_at: Str
     }
 }
 
-pub fn user_update<Repo: UserRepository, DtTmGen: DateTimeGenerator, SessionEnc: SessionEncodeService>(
+pub async fn user_update<Repo: UserRepository, DtTmGen: DateTimeGenerator, SessionEnc: SessionEncodeService>(
     repository: &Repo,
     date_time_generator: &DtTmGen,
     session_service: &SessionEnc,
     id: String,
     model: UserUpdateInput,
 ) -> Result<Session, UserErr> {
-    let old_user = user_read_by_id(repository, &id)?;
-    user_update_unique_info_is_valid(repository, &UserUniqueInfo::from(&model), &UserUniqueInfo::from(&old_user))?;
+    let old_user = user_read_by_id(repository, &id).await?;
+    user_update_unique_info_is_valid(repository, &UserUniqueInfo::from(&model), &UserUniqueInfo::from(&old_user)).await?;
     let now = date_time_generator.now_as_iso();
     let user = transform_to_user(model, old_user, now);
-    repository.update(&user).map_err(UserErr::DB)?;
+    repository.update(&user).await.map_err(UserErr::DB)?;
     let session = session_service.encode(&user, date_time_generator).map_err(UserErr::Session)?;
     Ok(session)
 }
@@ -133,8 +133,8 @@ mod tests {
         );
     }
 
-    #[test]
-    fn user_update_ok() {
+    #[tokio::test]
+    async fn user_update_ok() {
         assert_eq!(
             user_update(
                 &UserRepositoryStub::of_user(user_stub()),
@@ -142,13 +142,14 @@ mod tests {
                 &SessionEncodeServiceStub::of_token("TENGO SUERTE".into()),
                 "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
                 user_update_input_stub()
-            ),
+            )
+            .await,
             Ok(Session { token: "TENGO SUERTE".into() })
         );
     }
 
-    #[test]
-    fn user_update_db_err() {
+    #[tokio::test]
+    async fn user_update_db_err() {
         assert_eq!(
             user_update(
                 &UserRepositoryStub::of_db_err(),
@@ -156,13 +157,14 @@ mod tests {
                 &SessionEncodeServiceStub::of_token("TENGO SUERTE".into()),
                 "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
                 user_update_input_stub()
-            ),
+            )
+            .await,
             Err(UserErr::DB(DBErr))
         );
     }
 
-    #[test]
-    fn user_update_user_id_not_found_err() {
+    #[tokio::test]
+    async fn user_update_user_id_not_found_err() {
         assert_eq!(
             user_update(
                 &UserRepositoryStub::default(),
@@ -170,13 +172,14 @@ mod tests {
                 &SessionEncodeServiceStub::of_token("TENGO SUERTE".into()),
                 "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
                 user_update_input_stub()
-            ),
+            )
+            .await,
             Err(UserErr::UserIdNotFound(UserIdNotFoundErr))
         );
     }
 
-    #[test]
-    fn user_update_user_unique_info_field_err() {
+    #[tokio::test]
+    async fn user_update_user_unique_info_field_err() {
         assert_eq!(
             user_update(
                 &UserRepositoryStub { err: false, user: Some(user_stub()), user_unique_count: UserUniqueInfoCount { username: 2, email: 2 } },
@@ -184,13 +187,14 @@ mod tests {
                 &SessionEncodeServiceStub::of_token("TENGO SUERTE".into()),
                 user_stub().id,
                 user_update_input_stub()
-            ),
+            )
+            .await,
             Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr { username: true, email: true }))
         );
     }
 
-    #[test]
-    fn user_update_session_encode_err() {
+    #[tokio::test]
+    async fn user_update_session_encode_err() {
         assert_eq!(
             user_update(
                 &UserRepositoryStub::of_user(user_stub()),
@@ -198,7 +202,8 @@ mod tests {
                 &SessionEncodeServiceStub::of_err(),
                 user_stub().id,
                 user_update_input_stub()
-            ),
+            )
+            .await,
             Err(UserErr::Session(SessionErr::Encode(SessionEncodeErr)))
         );
     }

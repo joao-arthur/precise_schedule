@@ -20,16 +20,16 @@ impl From<User> for UserInfo {
     }
 }
 
-pub fn user_read_by_credentials<Repo: UserRepository>(repository: &Repo, credentials: &UserCredentials) -> Result<User, UserErr> {
-    repository.read_by_credentials(credentials).map_err(UserErr::DB)?.ok_or(UserErr::UserCredentialsNotFound(UserCredentialsNotFoundErr))
+pub async fn user_read_by_credentials<Repo: UserRepository>(repository: &Repo, credentials: &UserCredentials) -> Result<User, UserErr> {
+    repository.read_by_credentials(credentials).await.map_err(UserErr::DB)?.ok_or(UserErr::UserCredentialsNotFound(UserCredentialsNotFoundErr))
 }
 
-pub fn user_read_by_id<Repo: UserRepository>(repository: &Repo, id: &str) -> Result<User, UserErr> {
-    repository.read_by_id(id).map_err(UserErr::DB)?.ok_or(UserErr::UserIdNotFound(UserIdNotFoundErr))
+pub async fn user_read_by_id<Repo: UserRepository>(repository: &Repo, id: &str) -> Result<User, UserErr> {
+    repository.read_by_id(id).await.map_err(UserErr::DB)?.ok_or(UserErr::UserIdNotFound(UserIdNotFoundErr))
 }
 
-pub fn user_read_info_by_id<Repo: UserRepository>(repository: &Repo, id: &str) -> Result<UserInfo, UserErr> {
-    user_read_by_id(repository, id).map(UserInfo::from)
+pub async fn user_read_info_by_id<Repo: UserRepository>(repository: &Repo, id: &str) -> Result<UserInfo, UserErr> {
+    user_read_by_id(repository, id).await.map(UserInfo::from)
 }
 
 mod stub {
@@ -57,27 +57,27 @@ mod tests {
         assert_eq!(UserInfo::from(user_stub()), user_info_stub());
     }
 
-    #[test]
-    fn user_read_ok() {
-        assert_eq!(user_read_by_credentials(&UserRepositoryStub::of_user(user_stub()), &user_credentials_stub()), Ok(user_stub()));
-        assert_eq!(user_read_by_id(&UserRepositoryStub::of_user(user_stub()), &user_stub().id), Ok(user_stub()));
-        assert_eq!(user_read_info_by_id(&UserRepositoryStub::of_user(user_stub()), &user_stub().id), Ok(user_info_stub()));
+    #[tokio::test]
+    async fn user_read_ok() {
+        assert_eq!(user_read_by_credentials(&UserRepositoryStub::of_user(user_stub()), &user_credentials_stub()).await, Ok(user_stub()));
+        assert_eq!(user_read_by_id(&UserRepositoryStub::of_user(user_stub()), &user_stub().id).await, Ok(user_stub()));
+        assert_eq!(user_read_info_by_id(&UserRepositoryStub::of_user(user_stub()), &user_stub().id).await, Ok(user_info_stub()));
     }
 
-    #[test]
-    fn user_read_db_err() {
-        assert_eq!(user_read_by_credentials(&UserRepositoryStub::of_db_err(), &user_credentials_stub()), Err(UserErr::DB(DBErr)));
-        assert_eq!(user_read_by_id(&UserRepositoryStub::of_db_err(), &user_stub().id), Err(UserErr::DB(DBErr)));
-        assert_eq!(user_read_info_by_id(&UserRepositoryStub::of_db_err(), &user_stub().id), Err(UserErr::DB(DBErr)));
+    #[tokio::test]
+    async fn user_read_db_err() {
+        assert_eq!(user_read_by_credentials(&UserRepositoryStub::of_db_err(), &user_credentials_stub()).await, Err(UserErr::DB(DBErr)));
+        assert_eq!(user_read_by_id(&UserRepositoryStub::of_db_err(), &user_stub().id).await, Err(UserErr::DB(DBErr)));
+        assert_eq!(user_read_info_by_id(&UserRepositoryStub::of_db_err(), &user_stub().id).await, Err(UserErr::DB(DBErr)));
     }
 
-    #[test]
-    fn user_read_not_found() {
+    #[tokio::test]
+    async fn user_read_not_found() {
         assert_eq!(
-            user_read_by_credentials(&UserRepositoryStub::default(), &user_credentials_stub()),
+            user_read_by_credentials(&UserRepositoryStub::default(), &user_credentials_stub()).await,
             Err(UserErr::UserCredentialsNotFound(UserCredentialsNotFoundErr))
         );
-        assert_eq!(user_read_by_id(&UserRepositoryStub::default(), &user_stub().id), Err(UserErr::UserIdNotFound(UserIdNotFoundErr)));
-        assert_eq!(user_read_info_by_id(&UserRepositoryStub::default(), &user_stub().id), Err(UserErr::UserIdNotFound(UserIdNotFoundErr)));
+        assert_eq!(user_read_by_id(&UserRepositoryStub::default(), &user_stub().id).await, Err(UserErr::UserIdNotFound(UserIdNotFoundErr)));
+        assert_eq!(user_read_info_by_id(&UserRepositoryStub::default(), &user_stub().id).await, Err(UserErr::UserIdNotFound(UserIdNotFoundErr)));
     }
 }
