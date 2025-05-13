@@ -9,3 +9,6 @@ crate-type = ["rlib"]
 
 [dependencies]
 araucaria = { git = "https://github.com/joao-arthur/araucaria", rev = "e32a8774832a90e8014469dd26c986c0f883c7d2" }
+
+[dev-dependencies]
+tokio = { version = "1.45.0", features = [ "macros", "rt" ] }
