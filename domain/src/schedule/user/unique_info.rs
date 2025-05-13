@@ -43,7 +43,7 @@ pub async fn user_sign_up_unique_info_is_valid<Repo: UserRepository>(
     repository: &Repo,
     user: &UserUniqueInfo,
 ) -> Result<(), UserErr> {
-    let unique_info = repository.read_count_unique_info(&user).await.map_err(UserErr::DB)?;
+    let unique_info = repository.read_count_unique_info(user).await.map_err(UserErr::DB)?;
     let username_err = unique_info.username > 0;
     let email_err = unique_info.email > 0;
     if username_err || email_err {
@@ -63,7 +63,7 @@ pub async fn user_update_unique_info_is_valid<Repo: UserRepository>(
     if user.username == old_user.username && user.email == old_user.email {
         return Ok(());
     }
-    let unique_info = repository.read_count_unique_info(&user).await.map_err(UserErr::DB)?;
+    let unique_info = repository.read_count_unique_info(user).await.map_err(UserErr::DB)?;
     let username_err = user.username != old_user.username && unique_info.username > 0;
     let email_err = user.email != old_user.email && unique_info.email > 0;
     if username_err || email_err {

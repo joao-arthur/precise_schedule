@@ -30,7 +30,7 @@ pub fn transform_to_event(
         category: model.category,
         frequency: model.frequency,
         weekend_repeat: model.weekend_repeat,
-        user: user_id.into(),
+        user: user_id,
         created_at: created_at.clone(),
         updated_at: created_at,
     }
@@ -120,7 +120,7 @@ mod tests {
     fn event_create_ok() {
         assert_eq!(
             event_create(
-                &EventRepositoryStub::default(),
+                &EventRepositoryStub::of_none(),
                 &IdGeneratorStub(event_stub().id),
                 &DateTimeGeneratorStub::of_iso("2025-02-05T22:49Z".into()),
                 EventCreateInput {

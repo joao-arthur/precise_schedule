@@ -4,7 +4,7 @@ pub async fn user_delete<Repo: UserRepository>(
     repository: &Repo,
     id: &str,
 ) -> Result<User, UserErr> {
-    let found_user = user_read_by_id(repository, &id).await?;
+    let found_user = user_read_by_id(repository, id).await?;
     repository.delete(&found_user.id).await.map_err(UserErr::DB)?;
     Ok(found_user)
 }

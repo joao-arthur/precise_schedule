@@ -16,7 +16,7 @@ impl Language {
         if lg == "pt" || lg.starts_with("pt-") {
             return Language::Portuguese;
         }
-        return Language::English;
+        Language::English
     }
 
     pub fn to_iso_639_1(&self) -> &'static str {

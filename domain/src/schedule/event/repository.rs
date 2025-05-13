@@ -56,23 +56,21 @@ pub mod stub {
             if self.err {
                 return Err(DBErr);
             }
-            Ok(vec![self.event.clone()].into_iter().filter_map(|e| e).collect())
-        }
-    }
-
-    impl Default for EventRepositoryStub {
-        fn default() -> Self {
-            EventRepositoryStub { err: false, event: None }
+            Ok(vec![self.event.clone()].into_iter().flatten().collect())
         }
     }
 
     impl EventRepositoryStub {
         pub fn of_event(event: Event) -> Self {
-            EventRepositoryStub { event: Some(event), ..Default::default() }
+            EventRepositoryStub { err: false, event: Some(event) }
         }
 
         pub fn of_db_err() -> Self {
-            EventRepositoryStub { err: true, ..Default::default() }
+            EventRepositoryStub { err: true, event: None }
+        }
+
+        pub fn of_none() -> Self {
+            EventRepositoryStub { err: false, event: None }
         }
     }
 }
@@ -92,11 +90,11 @@ mod tests {
 
     #[test]
     fn event_repo_stub_default() {
-        assert_eq!(EventRepositoryStub::default().create(&event_stub()), Ok(()));
-        assert_eq!(EventRepositoryStub::default().update(&event_stub()), Ok(()));
-        assert_eq!(EventRepositoryStub::default().delete(&event_stub().id), Ok(()));
+        assert_eq!(EventRepositoryStub::of_none().create(&event_stub()), Ok(()));
+        assert_eq!(EventRepositoryStub::of_none().update(&event_stub()), Ok(()));
+        assert_eq!(EventRepositoryStub::of_none().delete(&event_stub().id), Ok(()));
         assert_eq!(
-            EventRepositoryStub::default().read_by_id(&user_stub().id, &event_stub().id),
+            EventRepositoryStub::of_none().read_by_id(&user_stub().id, &event_stub().id),
             Ok(None)
         );
     }

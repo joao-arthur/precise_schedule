@@ -46,7 +46,7 @@ pub fn event_read_info_by_id<Repo: EventRepository>(
     user_id: &str,
     id: &str,
 ) -> Result<EventInfo, EventErr> {
-    event_read_by_id(repository, user_id, id).map(|e| EventInfo::from(e))
+    event_read_by_id(repository, user_id, id).map(EventInfo::from)
 }
 
 pub fn event_read_by_user<Repo: EventRepository>(
@@ -61,7 +61,7 @@ pub fn event_read_info_by_user<Repo: EventRepository>(
     user_id: &str,
 ) -> Result<Vec<EventInfo>, EventErr> {
     event_read_by_user(repository, user_id)
-        .map(|e_vec| e_vec.into_iter().map(|e| EventInfo::from(e)).collect())
+        .map(|e_vec| e_vec.into_iter().map(EventInfo::from).collect())
 }
 
 mod stub {
@@ -159,23 +159,23 @@ mod tests {
     #[test]
     fn event_read_not_found() {
         assert_eq!(
-            event_read_by_id(&EventRepositoryStub::default(), &user_stub().id, &event_stub().id),
+            event_read_by_id(&EventRepositoryStub::of_none(), &user_stub().id, &event_stub().id),
             Err(EventErr::EventIdNotFound(EventIdNotFoundErr))
         );
         assert_eq!(
             event_read_info_by_id(
-                &EventRepositoryStub::default(),
+                &EventRepositoryStub::of_none(),
                 &user_stub().id,
                 &event_stub().id
             ),
             Err(EventErr::EventIdNotFound(EventIdNotFoundErr))
         );
         assert_eq!(
-            event_read_by_user(&EventRepositoryStub::default(), &user_stub().id),
+            event_read_by_user(&EventRepositoryStub::of_none(), &user_stub().id),
             Ok(vec![])
         );
         assert_eq!(
-            event_read_info_by_user(&EventRepositoryStub::default(), &user_stub().id),
+            event_read_info_by_user(&EventRepositoryStub::of_none(), &user_stub().id),
             Ok(vec![])
         );
     }

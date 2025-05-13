@@ -60,13 +60,7 @@ pub fn event_appointment_create<
     user_id: String,
 ) -> Result<Event, EventErr> {
     let event_create_model = transform_to_event_create(model);
-    return event_create(
-        repository,
-        id_generator,
-        date_time_generator,
-        event_create_model,
-        user_id,
-    );
+    event_create(repository, id_generator, date_time_generator, event_create_model, user_id)
 }
 
 #[cfg(test)]

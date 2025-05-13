@@ -5,7 +5,7 @@ pub fn event_delete<Repo: EventRepository>(
     user_id: &str,
     id: &str,
 ) -> Result<Event, EventErr> {
-    let found_event = event_read_by_id(repository, &user_id, &id)?;
+    let found_event = event_read_by_id(repository, user_id, id)?;
     repository.delete(&found_event.id).map_err(EventErr::DB)?;
     Ok(found_event)
 }
@@ -48,7 +48,7 @@ mod tests {
     #[test]
     fn event_delete_event_id_not_found_err() {
         assert_eq!(
-            event_delete(&EventRepositoryStub::default(), &user_stub().id, &event_stub().id),
+            event_delete(&EventRepositoryStub::of_none(), &user_stub().id, &event_stub().id),
             Err(EventErr::EventIdNotFound(EventIdNotFoundErr))
         );
     }

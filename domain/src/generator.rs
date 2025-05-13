@@ -26,7 +26,7 @@ pub mod stub {
         }
 
         fn now_as_unix_epoch(&self) -> u64 {
-            self.1.clone()
+            self.1
         }
     }
 

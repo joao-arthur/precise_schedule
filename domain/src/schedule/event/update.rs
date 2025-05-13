@@ -168,7 +168,7 @@ mod tests {
     fn user_update_refgedb_err() {
         assert_eq!(
             event_update(
-                &EventRepositoryStub::default(),
+                &EventRepositoryStub::of_none(),
                 &DateTimeGeneratorStub::of_iso(user_stub().updated_at),
                 event_update_stub(),
                 user_stub().id,
