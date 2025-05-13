@@ -88,7 +88,7 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn user_read_ok() {
+    async fn user_read_by_credentials_ok() {
         assert_eq!(
             user_read_by_credentials(
                 &UserRepositoryStub::of_user(user_stub()),
@@ -97,6 +97,28 @@ mod tests {
             .await,
             Ok(user_stub())
         );
+    }
+
+    #[tokio::test]
+    async fn user_read_by_credentials_db_err() {
+        assert_eq!(
+            user_read_by_credentials(&UserRepositoryStub::of_db_err(), &user_credentials_stub())
+                .await,
+            Err(UserErr::DB(DBErr))
+        );
+    }
+
+    #[tokio::test]
+    async fn user_read_by_credentials_user_credentials_not_found_err() {
+        assert_eq!(
+            user_read_by_credentials(&UserRepositoryStub::default(), &user_credentials_stub())
+                .await,
+            Err(UserErr::UserCredentialsNotFound(UserCredentialsNotFoundErr))
+        );
+    }
+
+    #[tokio::test]
+    async fn user_read_by_id_ok() {
         assert_eq!(
             user_read_by_id(&UserRepositoryStub::of_user(user_stub()), &user_stub().id).await,
             Ok(user_stub())
@@ -108,12 +130,7 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn user_read_db_err() {
-        assert_eq!(
-            user_read_by_credentials(&UserRepositoryStub::of_db_err(), &user_credentials_stub())
-                .await,
-            Err(UserErr::DB(DBErr))
-        );
+    async fn user_read_by_id_db_err() {
         assert_eq!(
             user_read_by_id(&UserRepositoryStub::of_db_err(), &user_stub().id).await,
             Err(UserErr::DB(DBErr))
@@ -125,12 +142,43 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn user_read_not_found() {
+    async fn user_read_by_id_user_id_not_found_err() {
         assert_eq!(
-            user_read_by_credentials(&UserRepositoryStub::default(), &user_credentials_stub())
-                .await,
-            Err(UserErr::UserCredentialsNotFound(UserCredentialsNotFoundErr))
+            user_read_by_id(&UserRepositoryStub::default(), &user_stub().id).await,
+            Err(UserErr::UserIdNotFound(UserIdNotFoundErr))
         );
+        assert_eq!(
+            user_read_info_by_id(&UserRepositoryStub::default(), &user_stub().id).await,
+            Err(UserErr::UserIdNotFound(UserIdNotFoundErr))
+        );
+    }
+
+    #[tokio::test]
+    async fn user_read_info_by_id_ok() {
+        assert_eq!(
+            user_read_by_id(&UserRepositoryStub::of_user(user_stub()), &user_stub().id).await,
+            Ok(user_stub())
+        );
+        assert_eq!(
+            user_read_info_by_id(&UserRepositoryStub::of_user(user_stub()), &user_stub().id).await,
+            Ok(user_info_stub())
+        );
+    }
+
+    #[tokio::test]
+    async fn user_read_info_by_id_db_err() {
+        assert_eq!(
+            user_read_by_id(&UserRepositoryStub::of_db_err(), &user_stub().id).await,
+            Err(UserErr::DB(DBErr))
+        );
+        assert_eq!(
+            user_read_info_by_id(&UserRepositoryStub::of_db_err(), &user_stub().id).await,
+            Err(UserErr::DB(DBErr))
+        );
+    }
+
+    #[tokio::test]
+    async fn user_read_info_by_id_user_id_not_found_err() {
         assert_eq!(
             user_read_by_id(&UserRepositoryStub::default(), &user_stub().id).await,
             Err(UserErr::UserIdNotFound(UserIdNotFoundErr))
