@@ -10,9 +10,9 @@ use crate::{
 use super::{
     error::UserErr,
     model::User,
-    read::user_read_by_id,
+    read::read_by_id::user_read_by_id,
     repository::UserRepository,
-    unique_info::{UserUniqueInfo, user_update_unique_info_is_valid},
+    unique_info::{UserUniqueInfo, unique_info_is_valid_update::user_unique_info_is_valid_update},
 };
 
 #[derive(Debug, PartialEq)]
@@ -68,7 +68,7 @@ pub async fn user_update<
     model: UserUpdateInput,
 ) -> Result<Session, UserErr> {
     let old_user = user_read_by_id(repository, &id).await?;
-    user_update_unique_info_is_valid(
+    user_unique_info_is_valid_update(
         repository,
         &UserUniqueInfo::from(&model),
         &UserUniqueInfo::from(&old_user),
@@ -101,11 +101,10 @@ mod tests {
         database::DBErr,
         generator::stub::DateTimeGeneratorStub,
         schedule::user::{
-            error::UserErr,
+            error::{UserErr, UserIdNotFoundErr, UserUniqueInfoFieldErr},
             model::{User, stub::user_stub},
-            read::UserIdNotFoundErr,
             repository::stub::UserRepositoryStub,
-            unique_info::{UserUniqueInfoCount, UserUniqueInfoFieldErr},
+            unique_info::UserUniqueInfoCount,
             update::UserUpdateInput,
         },
         session::{Session, SessionEncodeErr, SessionErr, stub::SessionEncodeServiceStub},

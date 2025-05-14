@@ -7,7 +7,9 @@ use crate::{
     session::{Session, SessionEncodeService},
 };
 
-use super::{error::UserErr, read::user_read_by_credentials, repository::UserRepository};
+use super::{
+    error::UserErr, read::read_by_credentials::user_read_by_credentials, repository::UserRepository,
+};
 
 #[derive(Debug, PartialEq)]
 pub struct UserCredentials {

@@ -11,7 +11,9 @@ use super::{
     error::UserErr,
     model::User,
     repository::UserRepository,
-    unique_info::{UserUniqueInfo, user_sign_up_unique_info_is_valid},
+    unique_info::{
+        UserUniqueInfo, unique_info_is_valid_sign_up::user_unique_info_is_valid_sign_up,
+    },
 };
 
 #[derive(Debug, PartialEq)]
@@ -68,7 +70,7 @@ pub async fn user_sign_up<
     session_encode_service: &SessionEnc,
     model: UserSignUpInput,
 ) -> Result<Session, UserErr> {
-    user_sign_up_unique_info_is_valid(repository, &UserUniqueInfo::from(&model)).await?;
+    user_unique_info_is_valid_sign_up(repository, &UserUniqueInfo::from(&model)).await?;
     let id = id_generator.generate();
     let now = date_time_generator.now_as_iso();
     let user = transform_to_user(model, id, now);
@@ -98,11 +100,11 @@ mod tests {
         database::DBErr,
         generator::stub::{DateTimeGeneratorStub, IdGeneratorStub},
         schedule::user::{
-            error::UserErr,
+            error::{UserErr, UserUniqueInfoFieldErr},
             model::User,
             repository::stub::UserRepositoryStub,
             sign_up::UserSignUpInput,
-            unique_info::{UserUniqueInfoCount, UserUniqueInfoFieldErr},
+            unique_info::UserUniqueInfoCount,
         },
         session::{Session, SessionEncodeErr, SessionErr, stub::SessionEncodeServiceStub},
     };
