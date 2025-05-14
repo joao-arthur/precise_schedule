@@ -1,1 +1,1 @@
-pub fn event_travel_update() {}
+pub async fn event_travel_update() {}

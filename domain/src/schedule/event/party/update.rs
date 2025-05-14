@@ -1,1 +1,1 @@
-pub fn event_party_update() {}
+pub async fn event_party_update() {}

@@ -1,1 +1,1 @@
-pub fn event_date_update() {}
+pub async fn event_date_update() {}

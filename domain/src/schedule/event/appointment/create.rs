@@ -48,7 +48,7 @@ pub fn transform_to_event_create(model: AppointmentCreate) -> EventCreateInput {
     }
 }
 
-pub fn event_appointment_create<
+pub async fn event_appointment_create<
     Repo: EventRepository,
     IdGen: IdGenerator,
     DtTmGen: DateTimeGenerator,
@@ -60,7 +60,7 @@ pub fn event_appointment_create<
     user_id: String,
 ) -> Result<Event, EventErr> {
     let event_create_model = transform_to_event_create(model);
-    event_create(repository, id_generator, date_time_generator, event_create_model, user_id)
+    event_create(repository, id_generator, date_time_generator, event_create_model, user_id).await
 }
 
 #[cfg(test)]

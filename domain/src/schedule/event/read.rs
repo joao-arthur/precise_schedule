@@ -30,37 +30,39 @@ impl From<Event> for EventInfo {
     }
 }
 
-pub fn event_read_by_id<Repo: EventRepository>(
+pub async fn event_read_by_id<Repo: EventRepository>(
     repository: &Repo,
     user_id: &str,
     id: &str,
 ) -> Result<Event, EventErr> {
     repository
         .read_by_id(user_id, id)
+        .await
         .map_err(EventErr::DB)?
         .ok_or(EventErr::EventIdNotFound(EventIdNotFoundErr))
 }
 
-pub fn event_read_info_by_id<Repo: EventRepository>(
+pub async fn event_read_info_by_id<Repo: EventRepository>(
     repository: &Repo,
     user_id: &str,
     id: &str,
 ) -> Result<EventInfo, EventErr> {
-    event_read_by_id(repository, user_id, id).map(EventInfo::from)
+    event_read_by_id(repository, user_id, id).await.map(EventInfo::from)
 }
 
-pub fn event_read_by_user<Repo: EventRepository>(
+pub async fn event_read_by_user<Repo: EventRepository>(
     repository: &Repo,
     user_id: &str,
 ) -> Result<Vec<Event>, EventErr> {
-    repository.read_by_user(user_id).map_err(EventErr::DB)
+    repository.read_by_user(user_id).await.map_err(EventErr::DB)
 }
 
-pub fn event_read_info_by_user<Repo: EventRepository>(
+pub async fn event_read_info_by_user<Repo: EventRepository>(
     repository: &Repo,
     user_id: &str,
 ) -> Result<Vec<EventInfo>, EventErr> {
     event_read_by_user(repository, user_id)
+        .await
         .map(|e_vec| e_vec.into_iter().map(EventInfo::from).collect())
 }
 
@@ -104,14 +106,15 @@ mod tests {
         assert_eq!(EventInfo::from(event_stub()), event_info_stub());
     }
 
-    #[test]
-    fn event_read_ok() {
+    #[tokio::test]
+    async fn event_read_ok() {
         assert_eq!(
             event_read_by_id(
                 &EventRepositoryStub::of_event(event_stub()),
                 &user_stub().id,
                 &event_stub().id
-            ),
+            )
+            .await,
             Ok(event_stub())
         );
         assert_eq!(
@@ -119,23 +122,26 @@ mod tests {
                 &EventRepositoryStub::of_event(event_stub()),
                 &user_stub().id,
                 &event_stub().id
-            ),
+            )
+            .await,
             Ok(event_info_stub())
         );
         assert_eq!(
-            event_read_by_user(&EventRepositoryStub::of_event(event_stub()), &user_stub().id),
+            event_read_by_user(&EventRepositoryStub::of_event(event_stub()), &user_stub().id).await,
             Ok(vec![event_stub()])
         );
         assert_eq!(
-            event_read_info_by_user(&EventRepositoryStub::of_event(event_stub()), &user_stub().id),
+            event_read_info_by_user(&EventRepositoryStub::of_event(event_stub()), &user_stub().id)
+                .await,
             Ok(vec![event_info_stub()])
         );
     }
 
-    #[test]
-    fn event_read_db_err() {
+    #[tokio::test]
+    async fn event_read_db_err() {
         assert_eq!(
-            event_read_by_id(&EventRepositoryStub::of_db_err(), &user_stub().id, &event_stub().id),
+            event_read_by_id(&EventRepositoryStub::of_db_err(), &user_stub().id, &event_stub().id)
+                .await,
             Err(EventErr::DB(DBErr))
         );
         assert_eq!(
@@ -143,23 +149,25 @@ mod tests {
                 &EventRepositoryStub::of_db_err(),
                 &user_stub().id,
                 &event_stub().id
-            ),
+            )
+            .await,
             Err(EventErr::DB(DBErr))
         );
         assert_eq!(
-            event_read_by_user(&EventRepositoryStub::of_db_err(), &user_stub().id),
+            event_read_by_user(&EventRepositoryStub::of_db_err(), &user_stub().id).await,
             Err(EventErr::DB(DBErr))
         );
         assert_eq!(
-            event_read_info_by_user(&EventRepositoryStub::of_db_err(), &user_stub().id),
+            event_read_info_by_user(&EventRepositoryStub::of_db_err(), &user_stub().id).await,
             Err(EventErr::DB(DBErr))
         );
     }
 
-    #[test]
-    fn event_read_not_found() {
+    #[tokio::test]
+    async fn event_read_not_found() {
         assert_eq!(
-            event_read_by_id(&EventRepositoryStub::of_none(), &user_stub().id, &event_stub().id),
+            event_read_by_id(&EventRepositoryStub::of_none(), &user_stub().id, &event_stub().id)
+                .await,
             Err(EventErr::EventIdNotFound(EventIdNotFoundErr))
         );
         assert_eq!(
@@ -167,15 +175,16 @@ mod tests {
                 &EventRepositoryStub::of_none(),
                 &user_stub().id,
                 &event_stub().id
-            ),
+            )
+            .await,
             Err(EventErr::EventIdNotFound(EventIdNotFoundErr))
         );
         assert_eq!(
-            event_read_by_user(&EventRepositoryStub::of_none(), &user_stub().id),
+            event_read_by_user(&EventRepositoryStub::of_none(), &user_stub().id).await,
             Ok(vec![])
         );
         assert_eq!(
-            event_read_info_by_user(&EventRepositoryStub::of_none(), &user_stub().id),
+            event_read_info_by_user(&EventRepositoryStub::of_none(), &user_stub().id).await,
             Ok(vec![])
         );
     }

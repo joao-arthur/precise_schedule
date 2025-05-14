@@ -9,4 +9,4 @@ pub struct AppointmentUpdate {
     pub weekend_repeat: Option<bool>,
 }
 
-pub fn event_appointment_update() {}
+pub async fn event_appointment_update() {}

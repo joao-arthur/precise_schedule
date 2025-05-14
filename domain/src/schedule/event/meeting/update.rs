@@ -1,1 +1,1 @@
-pub fn event_meeting_update() {}
+pub async fn event_meeting_update() {}

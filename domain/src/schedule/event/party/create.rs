@@ -18,4 +18,4 @@ pub static PARTY_CREATE_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
     ]))
 });
 
-pub fn event_party_create() {}
+pub async fn event_party_create() {}

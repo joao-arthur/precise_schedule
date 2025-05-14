@@ -3,11 +3,11 @@ use crate::database::DBOp;
 use super::model::Event;
 
 pub trait EventRepository {
-    fn create(&self, event: &Event) -> DBOp<()>;
-    fn update(&self, event: &Event) -> DBOp<()>;
-    fn delete(&self, id: &str) -> DBOp<()>;
-    fn read_by_id(&self, user_id: &str, id: &str) -> DBOp<Option<Event>>;
-    fn read_by_user(&self, user_id: &str) -> DBOp<Vec<Event>>;
+    async fn create(&self, event: &Event) -> DBOp<()>;
+    async fn update(&self, event: &Event) -> DBOp<()>;
+    async fn delete(&self, id: &str) -> DBOp<()>;
+    async fn read_by_id(&self, user_id: &str, id: &str) -> DBOp<Option<Event>>;
+    async fn read_by_user(&self, user_id: &str) -> DBOp<Vec<Event>>;
 }
 
 pub mod stub {
@@ -24,35 +24,35 @@ pub mod stub {
     }
 
     impl EventRepository for EventRepositoryStub {
-        fn create(&self, _: &Event) -> DBOp<()> {
+        async fn create(&self, _: &Event) -> DBOp<()> {
             if self.err {
                 return Err(DBErr);
             }
             Ok(())
         }
 
-        fn update(&self, _: &Event) -> DBOp<()> {
+        async fn update(&self, _: &Event) -> DBOp<()> {
             if self.err {
                 return Err(DBErr);
             }
             Ok(())
         }
 
-        fn delete(&self, _: &str) -> DBOp<()> {
+        async fn delete(&self, _: &str) -> DBOp<()> {
             if self.err {
                 return Err(DBErr);
             }
             Ok(())
         }
 
-        fn read_by_id(&self, _: &str, __: &str) -> DBOp<Option<Event>> {
+        async fn read_by_id(&self, _: &str, __: &str) -> DBOp<Option<Event>> {
             if self.err {
                 return Err(DBErr);
             }
             Ok(self.event.clone())
         }
 
-        fn read_by_user(&self, _: &str) -> DBOp<Vec<Event>> {
+        async fn read_by_user(&self, _: &str) -> DBOp<Vec<Event>> {
             if self.err {
                 return Err(DBErr);
             }
@@ -88,33 +88,34 @@ mod tests {
         },
     };
 
-    #[test]
-    fn event_repo_stub_default() {
-        assert_eq!(EventRepositoryStub::of_none().create(&event_stub()), Ok(()));
-        assert_eq!(EventRepositoryStub::of_none().update(&event_stub()), Ok(()));
-        assert_eq!(EventRepositoryStub::of_none().delete(&event_stub().id), Ok(()));
+    #[tokio::test]
+    async fn event_repo_stub_default() {
+        assert_eq!(EventRepositoryStub::of_none().create(&event_stub()).await, Ok(()));
+        assert_eq!(EventRepositoryStub::of_none().update(&event_stub()).await, Ok(()));
+        assert_eq!(EventRepositoryStub::of_none().delete(&event_stub().id).await, Ok(()));
         assert_eq!(
-            EventRepositoryStub::of_none().read_by_id(&user_stub().id, &event_stub().id),
+            EventRepositoryStub::of_none().read_by_id(&user_stub().id, &event_stub().id).await,
             Ok(None)
         );
     }
 
-    #[test]
-    fn event_repo_stub_of_event() {
+    #[tokio::test]
+    async fn event_repo_stub_of_event() {
         assert_eq!(
             EventRepositoryStub::of_event(event_stub())
-                .read_by_id(&user_stub().id, &event_stub().id),
+                .read_by_id(&user_stub().id, &event_stub().id)
+                .await,
             Ok(Some(event_stub()))
         );
     }
 
-    #[test]
-    fn event_repo_stub_of_bd_err() {
-        assert_eq!(EventRepositoryStub::of_db_err().create(&event_stub()), Err(DBErr));
-        assert_eq!(EventRepositoryStub::of_db_err().update(&event_stub()), Err(DBErr));
-        assert_eq!(EventRepositoryStub::of_db_err().delete(&event_stub().id), Err(DBErr));
+    #[tokio::test]
+    async fn event_repo_stub_of_bd_err() {
+        assert_eq!(EventRepositoryStub::of_db_err().create(&event_stub()).await, Err(DBErr));
+        assert_eq!(EventRepositoryStub::of_db_err().update(&event_stub()).await, Err(DBErr));
+        assert_eq!(EventRepositoryStub::of_db_err().delete(&event_stub().id).await, Err(DBErr));
         assert_eq!(
-            EventRepositoryStub::of_db_err().read_by_id(&user_stub().id, &event_stub().id),
+            EventRepositoryStub::of_db_err().read_by_id(&user_stub().id, &event_stub().id).await,
             Err(DBErr)
         );
     }

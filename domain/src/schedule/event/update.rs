@@ -30,17 +30,17 @@ fn transform_to_event(model: EventUpdateInput, event: Event, updated_at: String)
     }
 }
 
-pub fn event_update<Repo: EventRepository, DtTmGen: DateTimeGenerator>(
+pub async fn event_update<Repo: EventRepository, DtTmGen: DateTimeGenerator>(
     repository: &Repo,
     date_time_generator: &DtTmGen,
     event_update: EventUpdateInput,
     event_id: String,
     user_id: String,
 ) -> Result<Event, EventErr> {
-    let old_event = event_read_by_id(repository, &user_id, &event_id)?;
+    let old_event = event_read_by_id(repository, &user_id, &event_id).await?;
     let now = date_time_generator.now_as_iso();
     let event = transform_to_event(event_update, old_event, now);
-    repository.update(&event).map_err(EventErr::DB)?;
+    repository.update(&event).await.map_err(EventErr::DB)?;
     Ok(event)
 }
 
@@ -121,8 +121,8 @@ mod tests {
         );
     }
 
-    #[test]
-    fn event_update_ok() {
+    #[tokio::test]
+    async fn event_update_ok() {
         assert_eq!(
             event_update(
                 &EventRepositoryStub::of_event(Event {
@@ -148,7 +148,8 @@ mod tests {
                 },
                 "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
                 "6d470410-5e51-40d1-bd13-0bb6a99de95e".into(),
-            ),
+            )
+            .await,
             Ok(Event {
                 id: "6d470410-5e51-40d1-bd13-0bb6a99de95e".into(),
                 name: "Medical physicist".into(),
@@ -164,8 +165,8 @@ mod tests {
         );
     }
 
-    #[test]
-    fn user_update_refgedb_err() {
+    #[tokio::test]
+    async fn user_update_refgedb_err() {
         assert_eq!(
             event_update(
                 &EventRepositoryStub::of_none(),
@@ -173,13 +174,14 @@ mod tests {
                 event_update_stub(),
                 user_stub().id,
                 event_stub().id
-            ),
+            )
+            .await,
             Err(EventErr::EventIdNotFound(EventIdNotFoundErr))
         );
     }
 
-    #[test]
-    fn user_update_db_err() {
+    #[tokio::test]
+    async fn user_update_db_err() {
         assert_eq!(
             event_update(
                 &EventRepositoryStub::of_db_err(),
@@ -187,7 +189,8 @@ mod tests {
                 event_update_stub(),
                 user_stub().id,
                 event_stub().id
-            ),
+            )
+            .await,
             Err(EventErr::DB(DBErr))
         );
     }

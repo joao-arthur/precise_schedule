@@ -35,7 +35,7 @@ pub fn event_create_of_birthday_create(model: BirthdayCreate) -> EventCreateInpu
     }
 }
 
-pub fn event_birthday_create<
+pub async fn event_birthday_create<
     Repo: EventRepository,
     IdGen: IdGenerator,
     DtTmGen: DateTimeGenerator,
@@ -47,7 +47,7 @@ pub fn event_birthday_create<
     user_id: String,
 ) -> Result<Event, EventErr> {
     let event_create_model = event_create_of_birthday_create(model);
-    event_create(repository, id_generator, date_time_generator, event_create_model, user_id)
+    event_create(repository, id_generator, date_time_generator, event_create_model, user_id).await
 }
 
 #[cfg(test)]

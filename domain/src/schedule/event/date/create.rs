@@ -18,4 +18,4 @@ pub static DATE_CREATE_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
     ]))
 });
 
-pub fn event_date_create() {}
+pub async fn event_date_create() {}

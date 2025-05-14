@@ -36,7 +36,7 @@ pub fn transform_to_event(
     }
 }
 
-pub fn event_create<Repo: EventRepository, IdGen: IdGenerator, DtTmGen: DateTimeGenerator>(
+pub async fn event_create<Repo: EventRepository, IdGen: IdGenerator, DtTmGen: DateTimeGenerator>(
     repository: &Repo,
     id_generator: &IdGen,
     date_time_generator: &DtTmGen,
@@ -46,7 +46,7 @@ pub fn event_create<Repo: EventRepository, IdGen: IdGenerator, DtTmGen: DateTime
     let id = id_generator.generate();
     let now = date_time_generator.now_as_iso();
     let event = transform_to_event(model, id, user_id, now);
-    repository.create(&event).map_err(EventErr::DB)?;
+    repository.create(&event).await.map_err(EventErr::DB)?;
     Ok(event)
 }
 
@@ -116,8 +116,8 @@ mod tests {
         );
     }
 
-    #[test]
-    fn event_create_ok() {
+    #[tokio::test]
+    async fn event_create_ok() {
         assert_eq!(
             event_create(
                 &EventRepositoryStub::of_none(),
@@ -132,7 +132,8 @@ mod tests {
                     weekend_repeat: Some(true),
                 },
                 "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into()
-            ),
+            )
+            .await,
             Ok(Event {
                 id: "6d470410-5e51-40d1-bd13-0bb6a99de95e".into(),
                 name: "Dentist".into(),
@@ -148,8 +149,8 @@ mod tests {
         );
     }
 
-    #[test]
-    fn user_create_db_err() {
+    #[tokio::test]
+    async fn user_create_db_err() {
         assert_eq!(
             event_create(
                 &EventRepositoryStub::of_db_err(),
@@ -157,7 +158,8 @@ mod tests {
                 &DateTimeGeneratorStub::of_iso(user_stub().created_at),
                 event_create_stub(),
                 user_stub().id
-            ),
+            )
+            .await,
             Err(EventErr::DB(DBErr))
         );
     }

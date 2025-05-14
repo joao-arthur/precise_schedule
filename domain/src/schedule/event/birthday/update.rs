@@ -3,4 +3,4 @@ pub struct BirthdayUpdate {
     pub day: String,
 }
 
-pub fn event_birthday_update() {}
+pub async fn event_birthday_update() {}
