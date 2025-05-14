@@ -8,14 +8,9 @@ use crate::{
 };
 
 use super::{
-    error::UserErr, read::read_by_credentials::user_read_by_credentials, repository::UserRepository,
+    error::UserErr, model::UserCredentials, read::user_read_by_credentials,
+    repository::UserRepository,
 };
-
-#[derive(Debug, PartialEq)]
-pub struct UserCredentials {
-    pub username: String,
-    pub password: String,
-}
 
 pub static USER_CREDENTIALS_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
     Schema::from(ObjSchema::from([
@@ -50,26 +45,20 @@ pub async fn user_sign_in<
     Ok(session)
 }
 
-pub mod stub {
-    use super::UserCredentials;
-
-    pub fn user_credentials_stub() -> UserCredentials {
-        UserCredentials { username: "macca".into(), password: "asdf!@#123".into() }
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use crate::{
         database::DBErr,
         generator::stub::DateTimeGeneratorStub,
         schedule::user::{
-            error::UserErr, model::stub::user_stub, repository::stub::UserRepositoryStub,
+            error::UserErr,
+            model::stub::{user_credentials_stub, user_stub},
+            repository::stub::UserRepositoryStub,
         },
         session::{Session, SessionEncodeErr, SessionErr, stub::SessionEncodeServiceStub},
     };
 
-    use super::{stub::user_credentials_stub, user_sign_in};
+    use super::user_sign_in;
 
     #[tokio::test]
     async fn user_sign_in_ok() {

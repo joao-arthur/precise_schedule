@@ -10,7 +10,7 @@ use crate::{
 use super::{
     error::UserErr,
     model::User,
-    read::read_by_id::user_read_by_id,
+    read::user_read_by_id,
     repository::UserRepository,
     unique_info::{UserUniqueInfo, unique_info_is_valid_update::user_unique_info_is_valid_update},
 };

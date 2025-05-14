@@ -1,13 +1,19 @@
-use super::{error::EventErr, model::Event, read::event_read_by_id, repository::EventRepository};
+use crate::schedule::event::{
+    error::{EventErr, EventIdNotFoundErr},
+    model::Event,
+    repository::EventRepository,
+};
 
-pub async fn event_delete<Repo: EventRepository>(
+pub async fn event_read_by_id<Repo: EventRepository>(
     repository: &Repo,
     user_id: &str,
     id: &str,
 ) -> Result<Event, EventErr> {
-    let found_event = event_read_by_id(repository, user_id, id).await?;
-    repository.delete(&found_event.id).await.map_err(EventErr::DB)?;
-    Ok(found_event)
+    repository
+        .read_by_id(user_id, id)
+        .await
+        .map_err(EventErr::DB)?
+        .ok_or(EventErr::EventIdNotFound(EventIdNotFoundErr))
 }
 
 #[cfg(test)]
@@ -24,12 +30,12 @@ mod tests {
         },
     };
 
-    use super::event_delete;
+    use super::event_read_by_id;
 
     #[tokio::test]
-    async fn event_delete_ok() {
+    async fn event_read_by_id_ok() {
         assert_eq!(
-            event_delete(
+            event_read_by_id(
                 &EventRepositoryStub::of_event(event_stub()),
                 &user_stub().id,
                 &event_stub().id
@@ -40,18 +46,19 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn event_delete_db_err() {
+    async fn event_read_by_id_db_err() {
         assert_eq!(
-            event_delete(&EventRepositoryStub::of_db_err(), &user_stub().id, &event_stub().id)
+            event_read_by_id(&EventRepositoryStub::of_db_err(), &user_stub().id, &event_stub().id)
                 .await,
             Err(EventErr::DB(DBErr))
         );
     }
 
     #[tokio::test]
-    async fn event_delete_event_id_not_found_err() {
+    async fn event_read_by_id_not_found() {
         assert_eq!(
-            event_delete(&EventRepositoryStub::of_none(), &user_stub().id, &event_stub().id).await,
+            event_read_by_id(&EventRepositoryStub::of_none(), &user_stub().id, &event_stub().id)
+                .await,
             Err(EventErr::EventIdNotFound(EventIdNotFoundErr))
         );
     }

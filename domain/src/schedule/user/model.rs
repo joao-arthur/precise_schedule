@@ -51,8 +51,14 @@ impl From<User> for UserInfo {
     }
 }
 
+#[derive(Debug, PartialEq)]
+pub struct UserCredentials {
+    pub username: String,
+    pub password: String,
+}
+
 pub mod stub {
-    use super::{User, UserInfo};
+    use super::{User, UserCredentials, UserInfo};
 
     pub fn user_stub() -> User {
         User {
@@ -74,6 +80,10 @@ pub mod stub {
             birthdate: "1942-06-18".into(),
             username: "macca".into(),
         }
+    }
+
+    pub fn user_credentials_stub() -> UserCredentials {
+        UserCredentials { username: "macca".into(), password: "asdf!@#123".into() }
     }
 }
 

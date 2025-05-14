@@ -68,9 +68,8 @@ mod tests {
         generator::stub::DateTimeGeneratorStub,
         schedule::{
             event::{
-                error::EventErr,
+                error::{EventErr, EventIdNotFoundErr},
                 model::{Event, EventCategory, EventFrequency, stub::event_stub},
-                read::EventIdNotFoundErr,
                 repository::stub::EventRepositoryStub,
                 update::{EventUpdateInput, stub::event_update_stub},
             },

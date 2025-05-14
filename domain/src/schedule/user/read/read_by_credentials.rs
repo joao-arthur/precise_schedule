@@ -1,8 +1,7 @@
 use crate::schedule::user::{
     error::{UserCredentialsNotFoundErr, UserErr},
-    model::User,
+    model::{User, UserCredentials},
     repository::UserRepository,
-    sign_in::UserCredentials,
 };
 
 pub async fn user_read_by_credentials<Repo: UserRepository>(
@@ -22,9 +21,8 @@ mod tests {
         database::DBErr,
         schedule::user::{
             error::{UserCredentialsNotFoundErr, UserErr},
-            model::stub::user_stub,
+            model::stub::{user_credentials_stub, user_stub},
             repository::stub::UserRepositoryStub,
-            sign_in::stub::user_credentials_stub,
         },
     };
 

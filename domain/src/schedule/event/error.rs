@@ -1,6 +1,7 @@
 use crate::database::DBErr;
 
-use super::read::EventIdNotFoundErr;
+#[derive(Debug, PartialEq)]
+pub struct EventIdNotFoundErr;
 
 #[derive(PartialEq, Debug)]
 pub enum EventErr {

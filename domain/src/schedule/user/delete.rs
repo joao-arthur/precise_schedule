@@ -1,6 +1,4 @@
-use super::{
-    error::UserErr, model::User, read::read_by_id::user_read_by_id, repository::UserRepository,
-};
+use super::{error::UserErr, model::User, read::user_read_by_id, repository::UserRepository};
 
 pub async fn user_delete<Repo: UserRepository>(
     repository: &Repo,
