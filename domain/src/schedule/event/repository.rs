@@ -61,16 +61,16 @@ pub mod stub {
     }
 
     impl EventRepositoryStub {
+        pub fn of_empty() -> Self {
+            EventRepositoryStub { err: false, event: None }
+        }
+
         pub fn of_event(event: Event) -> Self {
             EventRepositoryStub { err: false, event: Some(event) }
         }
 
         pub fn of_db_err() -> Self {
             EventRepositoryStub { err: true, event: None }
-        }
-
-        pub fn of_none() -> Self {
-            EventRepositoryStub { err: false, event: None }
         }
     }
 }
@@ -90,33 +90,28 @@ mod tests {
 
     #[tokio::test]
     async fn event_repo_stub_default() {
-        assert_eq!(EventRepositoryStub::of_none().create(&event_stub()).await, Ok(()));
-        assert_eq!(EventRepositoryStub::of_none().update(&event_stub()).await, Ok(()));
-        assert_eq!(EventRepositoryStub::of_none().delete(&event_stub().id).await, Ok(()));
-        assert_eq!(
-            EventRepositoryStub::of_none().read_by_id(&user_stub().id, &event_stub().id).await,
-            Ok(None)
-        );
+        let repo = EventRepositoryStub::of_empty();
+        assert_eq!(repo.create(&event_stub()).await, Ok(()));
+        assert_eq!(repo.update(&event_stub()).await, Ok(()));
+        assert_eq!(repo.delete(&event_stub().id).await, Ok(()));
+        assert_eq!(repo.read_by_id(&user_stub().id, &event_stub().id).await, Ok(None));
     }
 
     #[tokio::test]
     async fn event_repo_stub_of_event() {
+        let repo = EventRepositoryStub::of_event(event_stub());
         assert_eq!(
-            EventRepositoryStub::of_event(event_stub())
-                .read_by_id(&user_stub().id, &event_stub().id)
-                .await,
+            repo.read_by_id(&user_stub().id, &event_stub().id).await,
             Ok(Some(event_stub()))
         );
     }
 
     #[tokio::test]
     async fn event_repo_stub_of_bd_err() {
-        assert_eq!(EventRepositoryStub::of_db_err().create(&event_stub()).await, Err(DBErr));
-        assert_eq!(EventRepositoryStub::of_db_err().update(&event_stub()).await, Err(DBErr));
-        assert_eq!(EventRepositoryStub::of_db_err().delete(&event_stub().id).await, Err(DBErr));
-        assert_eq!(
-            EventRepositoryStub::of_db_err().read_by_id(&user_stub().id, &event_stub().id).await,
-            Err(DBErr)
-        );
+        let repo = EventRepositoryStub::of_db_err();
+        assert_eq!(repo.create(&event_stub()).await, Err(DBErr));
+        assert_eq!(repo.update(&event_stub()).await, Err(DBErr));
+        assert_eq!(repo.delete(&event_stub().id).await, Err(DBErr));
+        assert_eq!(repo.read_by_id(&user_stub().id, &event_stub().id).await, Err(DBErr));
     }
 }

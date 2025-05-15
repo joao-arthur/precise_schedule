@@ -47,7 +47,7 @@ mod tests {
     #[tokio::test]
     async fn event_read_not_found() {
         assert_eq!(
-            event_read_info_by_user(&EventRepositoryStub::of_none(), &user_stub().id).await,
+            event_read_info_by_user(&EventRepositoryStub::of_empty(), &user_stub().id).await,
             Ok(vec![])
         );
     }

@@ -120,7 +120,7 @@ mod tests {
     async fn event_create_ok() {
         assert_eq!(
             event_create(
-                &EventRepositoryStub::of_none(),
+                &EventRepositoryStub::of_empty(),
                 &IdGeneratorStub(event_stub().id),
                 &DateTimeGeneratorStub::of_iso("2025-02-05T22:49Z".into()),
                 EventCreateInput {

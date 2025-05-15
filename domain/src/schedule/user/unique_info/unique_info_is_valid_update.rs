@@ -42,7 +42,7 @@ mod tests {
     async fn user_update_unique_info_is_valid_ok() {
         assert_eq!(
             user_unique_info_is_valid_update(
-                &UserRepositoryStub::default(),
+                &UserRepositoryStub::of_empty(),
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() },
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() }
             )
@@ -111,7 +111,7 @@ mod tests {
         );
         assert_eq!(
             user_unique_info_is_valid_update(
-                &UserRepositoryStub::default(),
+                &UserRepositoryStub::of_empty(),
                 &UserUniqueInfo { username: "peter987".into(), email: "peter@gmail.com".into() },
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() }
             )

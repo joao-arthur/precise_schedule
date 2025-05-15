@@ -142,7 +142,7 @@ mod tests {
     async fn user_sign_up_ok() {
         assert_eq!(
             user_sign_up(
-                &UserRepositoryStub::default(),
+                &UserRepositoryStub::of_empty(),
                 &IdGeneratorStub("a6edc906-2f9f-5fb2-a373-efac406f0ef2".into()),
                 &DateTimeGeneratorStub::of_iso("2024-03-01T11:26Z".into()),
                 &SessionEncodeServiceStub::of_token("TENGO SUERTE".into()),
@@ -170,6 +170,7 @@ mod tests {
 
     #[tokio::test]
     async fn user_sign_up_user_unique_info_field_err() {
+        let err = UserUniqueInfoFieldErr { username: true, email: true };
         assert_eq!(
             user_sign_up(
                 &UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount {
@@ -182,10 +183,7 @@ mod tests {
                 user_sign_up_input_stub()
             )
             .await,
-            Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr {
-                username: true,
-                email: true
-            }))
+            Err(UserErr::UserUniqueInfoField(err))
         );
     }
 
@@ -193,7 +191,7 @@ mod tests {
     async fn user_sign_up_session_encode_err() {
         assert_eq!(
             user_sign_up(
-                &UserRepositoryStub::default(),
+                &UserRepositoryStub::of_empty(),
                 &IdGeneratorStub("a6edc906-2f9f-5fb2-a373-efac406f0ef2".into()),
                 &DateTimeGeneratorStub::of_iso("2024-03-01T11:26Z".into()),
                 &SessionEncodeServiceStub::of_err(),

@@ -78,27 +78,33 @@ pub mod stub {
         }
     }
 
-    impl Default for UserRepositoryStub {
-        fn default() -> Self {
+    impl UserRepositoryStub {
+        pub fn of_empty() -> Self {
             UserRepositoryStub {
                 err: false,
                 user: None,
                 user_unique_count: UserUniqueInfoCount { email: 0, username: 0 },
             }
         }
-    }
 
-    impl UserRepositoryStub {
         pub fn of_user(user: User) -> Self {
-            UserRepositoryStub { user: Some(user), ..Default::default() }
+            UserRepositoryStub {
+                err: false,
+                user: Some(user),
+                user_unique_count: UserUniqueInfoCount { email: 0, username: 0 },
+            }
         }
 
         pub fn of_unique_info_count(user_unique_count: UserUniqueInfoCount) -> Self {
-            UserRepositoryStub { user_unique_count, ..Default::default() }
+            UserRepositoryStub { err: false, user: None, user_unique_count }
         }
 
         pub fn of_db_err() -> Self {
-            UserRepositoryStub { err: true, ..Default::default() }
+            UserRepositoryStub {
+                err: true,
+                user: None,
+                user_unique_count: UserUniqueInfoCount { email: 0, username: 0 },
+            }
         }
     }
 }
@@ -117,57 +123,43 @@ mod tests {
     use super::stub::UserRepositoryStub;
 
     #[tokio::test]
-    async fn user_repo_stub_default() {
-        assert_eq!(UserRepositoryStub::default().create(&user_stub()).await, Ok(()));
-        assert_eq!(UserRepositoryStub::default().update(&user_stub()).await, Ok(()));
-        assert_eq!(UserRepositoryStub::default().delete(&user_stub().id).await, Ok(()));
-        assert_eq!(UserRepositoryStub::default().read_by_id(&user_stub().id).await, Ok(None));
+    async fn user_repository_stub_of_empty() {
+        let repo = UserRepositoryStub::of_empty();
+        assert_eq!(repo.create(&user_stub()).await, Ok(()));
+        assert_eq!(repo.update(&user_stub()).await, Ok(()));
+        assert_eq!(repo.delete(&user_stub().id).await, Ok(()));
+        assert_eq!(repo.read_by_id(&user_stub().id).await, Ok(None));
+        assert_eq!(repo.read_by_credentials(&user_credentials_stub()).await, Ok(None));
         assert_eq!(
-            UserRepositoryStub::default().read_by_credentials(&user_credentials_stub()).await,
-            Ok(None)
-        );
-        assert_eq!(
-            UserRepositoryStub::default().read_count_unique_info(&user_unique_info_stub()).await,
+            repo.read_count_unique_info(&user_unique_info_stub()).await,
             Ok(UserUniqueInfoCount { email: 0, username: 0 })
         );
     }
 
     #[tokio::test]
-    async fn user_repo_stub_of_user() {
-        assert_eq!(
-            UserRepositoryStub::of_user(user_stub()).read_by_id(&user_stub().id).await,
-            Ok(Some(user_stub()))
-        );
-        assert_eq!(
-            UserRepositoryStub::of_user(user_stub())
-                .read_by_credentials(&user_credentials_stub())
-                .await,
-            Ok(Some(user_stub()))
-        );
+    async fn user_repository_stub_of_user() {
+        let repo = UserRepositoryStub::of_user(user_stub());
+        assert_eq!(repo.read_by_id(&user_stub().id).await, Ok(Some(user_stub())));
+        assert_eq!(repo.read_by_credentials(&user_credentials_stub()).await, Ok(Some(user_stub())));
     }
 
     #[tokio::test]
-    async fn user_repo_stub_of_bd_err() {
-        assert_eq!(UserRepositoryStub::of_db_err().create(&user_stub()).await, Err(DBErr));
-        assert_eq!(UserRepositoryStub::of_db_err().update(&user_stub()).await, Err(DBErr));
-        assert_eq!(UserRepositoryStub::of_db_err().delete(&user_stub().id).await, Err(DBErr));
-        assert_eq!(UserRepositoryStub::of_db_err().read_by_id(&user_stub().id).await, Err(DBErr));
-        assert_eq!(
-            UserRepositoryStub::of_db_err().read_by_credentials(&user_credentials_stub()).await,
-            Err(DBErr)
-        );
-        assert_eq!(
-            UserRepositoryStub::of_db_err().read_count_unique_info(&user_unique_info_stub()).await,
-            Err(DBErr)
-        );
+    async fn user_repository_stub_of_bd_err() {
+        let repo = UserRepositoryStub::of_db_err();
+        assert_eq!(repo.create(&user_stub()).await, Err(DBErr));
+        assert_eq!(repo.update(&user_stub()).await, Err(DBErr));
+        assert_eq!(repo.delete(&user_stub().id).await, Err(DBErr));
+        assert_eq!(repo.read_by_id(&user_stub().id).await, Err(DBErr));
+        assert_eq!(repo.read_by_credentials(&user_credentials_stub()).await, Err(DBErr));
+        assert_eq!(repo.read_count_unique_info(&user_unique_info_stub()).await, Err(DBErr));
     }
 
     #[tokio::test]
     async fn user_repo_stub_of_unique_info() {
+        let repo =
+            UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount { username: 1, email: 0 });
         assert_eq!(
-            UserRepositoryStub::of_unique_info_count(UserUniqueInfoCount { username: 1, email: 0 })
-                .read_count_unique_info(&user_unique_info_stub())
-                .await,
+            repo.read_count_unique_info(&user_unique_info_stub()).await,
             Ok(UserUniqueInfoCount { username: 1, email: 0 })
         );
     }

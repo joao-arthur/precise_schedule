@@ -168,7 +168,7 @@ mod tests {
     async fn user_update_refgedb_err() {
         assert_eq!(
             event_update(
-                &EventRepositoryStub::of_none(),
+                &EventRepositoryStub::of_empty(),
                 &DateTimeGeneratorStub::of_iso(user_stub().updated_at),
                 event_update_stub(),
                 user_stub().id,

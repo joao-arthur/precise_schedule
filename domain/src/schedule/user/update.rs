@@ -182,7 +182,7 @@ mod tests {
     async fn user_update_user_id_not_found_err() {
         assert_eq!(
             user_update(
-                &UserRepositoryStub::default(),
+                &UserRepositoryStub::of_empty(),
                 &DateTimeGeneratorStub::of_iso("2025-09-27T18:02Z".into()),
                 &SessionEncodeServiceStub::of_token("TENGO SUERTE".into()),
                 "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
@@ -195,6 +195,7 @@ mod tests {
 
     #[tokio::test]
     async fn user_update_user_unique_info_field_err() {
+        let err = UserUniqueInfoFieldErr { username: true, email: true };
         assert_eq!(
             user_update(
                 &UserRepositoryStub {
@@ -204,14 +205,11 @@ mod tests {
                 },
                 &DateTimeGeneratorStub::of_iso("2025-09-27T18:02Z".into()),
                 &SessionEncodeServiceStub::of_token("TENGO SUERTE".into()),
-                user_stub().id,
+                "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
                 user_update_input_stub()
             )
             .await,
-            Err(UserErr::UserUniqueInfoField(UserUniqueInfoFieldErr {
-                username: true,
-                email: true
-            }))
+            Err(UserErr::UserUniqueInfoField(err))
         );
     }
 
@@ -222,7 +220,7 @@ mod tests {
                 &UserRepositoryStub::of_user(user_stub()),
                 &DateTimeGeneratorStub::of_iso("2025-09-27T18:02Z".into()),
                 &SessionEncodeServiceStub::of_err(),
-                user_stub().id,
+                "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
                 user_update_input_stub()
             )
             .await,

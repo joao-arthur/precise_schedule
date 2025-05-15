@@ -38,7 +38,7 @@ mod tests {
     async fn user_unique_info_is_valid_sign_up_ok() {
         assert_eq!(
             user_unique_info_is_valid_sign_up(
-                &UserRepositoryStub::default(),
+                &UserRepositoryStub::of_empty(),
                 &UserUniqueInfo { username: "john123".into(), email: "john@gmail.com".into() }
             )
             .await,

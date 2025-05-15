@@ -52,7 +52,7 @@ mod tests {
     #[tokio::test]
     async fn user_read_by_credentials_user_credentials_not_found_err() {
         assert_eq!(
-            user_read_by_credentials(&UserRepositoryStub::default(), &user_credentials_stub())
+            user_read_by_credentials(&UserRepositoryStub::of_empty(), &user_credentials_stub())
                 .await,
             Err(UserErr::UserCredentialsNotFound(UserCredentialsNotFoundErr))
         );

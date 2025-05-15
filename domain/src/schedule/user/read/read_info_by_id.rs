@@ -41,7 +41,7 @@ mod tests {
     #[tokio::test]
     async fn user_read_info_by_id_user_id_not_found_err() {
         assert_eq!(
-            user_read_info_by_id(&UserRepositoryStub::default(), &user_stub().id).await,
+            user_read_info_by_id(&UserRepositoryStub::of_empty(), &user_stub().id).await,
             Err(UserErr::UserIdNotFound(UserIdNotFoundErr))
         );
     }

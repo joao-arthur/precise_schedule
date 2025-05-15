@@ -41,7 +41,7 @@ mod tests {
     #[tokio::test]
     async fn user_delete_user_id_not_found_err() {
         assert_eq!(
-            user_delete(&UserRepositoryStub::default(), &user_stub().id).await,
+            user_delete(&UserRepositoryStub::of_empty(), &user_stub().id).await,
             Err(UserErr::UserIdNotFound(UserIdNotFoundErr))
         );
     }

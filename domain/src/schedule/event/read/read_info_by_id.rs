@@ -56,7 +56,7 @@ mod tests {
     async fn event_read_info_by_id_not_found() {
         assert_eq!(
             event_read_info_by_id(
-                &EventRepositoryStub::of_none(),
+                &EventRepositoryStub::of_empty(),
                 &user_stub().id,
                 &event_stub().id
             )

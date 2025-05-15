@@ -51,7 +51,7 @@ mod tests {
     #[tokio::test]
     async fn event_delete_event_id_not_found_err() {
         assert_eq!(
-            event_delete(&EventRepositoryStub::of_none(), &user_stub().id, &event_stub().id).await,
+            event_delete(&EventRepositoryStub::of_empty(), &user_stub().id, &event_stub().id).await,
             Err(EventErr::EventIdNotFound(EventIdNotFoundErr))
         );
     }
