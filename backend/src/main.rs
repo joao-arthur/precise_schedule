@@ -1,74 +1,49 @@
-use std::convert::Infallible;
+use axum::{
+    Router,
+    extract::{DefaultBodyLimit, FromRequestParts},
+    http::request::Parts,
+    response::Response,
+    routing::{get, post},
+};
 
 use accept_language::parse;
 use domain::language::Language;
-use entry::{
-    event_controller::{
-        endpoint_event_appointment_c, endpoint_event_appointment_u, endpoint_event_birthday_c, endpoint_event_birthday_u, endpoint_event_d,
-        endpoint_event_date_c, endpoint_event_date_u, endpoint_event_meeting_c, endpoint_event_meeting_u, endpoint_event_party_c,
-        endpoint_event_party_u, endpoint_event_r_many, endpoint_event_r_one,
-    },
-    health_controller::endpoint_health_r,
-    user_controller::{endpoint_user_sign_up, endpoint_user_sign_in, endpoint_user_read, endpoint_user_update},
-};
-use rocket::{
-    Request,
-    request::{self, FromRequest},
-};
+use entry::{health_controller::endpoint_health_check, user::endpoint_user_sign_up};
+use tower_http::limit::RequestBodyLimitLayer;
 
-pub mod entry;
-pub mod infra;
+mod entry;
+mod infra;
 
-#[macro_use]
-extern crate rocket;
+rust_i18n::i18n!("locales");
 
 #[derive(Debug, PartialEq)]
 pub struct LanguageGuard(pub Language);
 
-#[rocket::async_trait]
-impl<'r> FromRequest<'r> for LanguageGuard {
-    type Error = Infallible;
+impl<S> FromRequestParts<S> for LanguageGuard
+where
+    S: Send + Sync,
+{
+    type Rejection = Response;
 
-    async fn from_request(req: &'r Request<'_>) -> request::Outcome<Self, Self::Error> {
-        let user_languages = req.headers().get_one("Accept-Language");
-        match user_languages {
-            Some(t) => {
-                let user_languages = parse(t);
-                let lg = user_languages.get(0).cloned().unwrap_or(String::from("en"));
-                request::Outcome::Success(LanguageGuard(Language::from_iso_639_1(&lg)))
-            }
-            None => request::Outcome::Success(LanguageGuard(Language::English)),
-        }
+    async fn from_request_parts(parts: &mut Parts, _s: &S) -> Result<Self, Self::Rejection> {
+        let lang = parts
+            .headers
+            .get("Accept-Language")
+            .and_then(|header| header.to_str().ok())
+            .and_then(|header| parse(header).get(0).cloned())
+            .unwrap_or_else(|| "en".into());
+        Ok(LanguageGuard(Language::from_iso_639_1(&lang)))
     }
 }
 
-rust_i18n::i18n!("locales");
-
-#[rocket::main]
-async fn main() -> Result<(), rocket::Error> {
-    rocket::build()
-        .mount("/", routes![endpoint_health_r])
-        .mount(
-            "/event",
-            routes![
-                endpoint_event_appointment_c,
-                endpoint_event_appointment_u,
-                endpoint_event_birthday_c,
-                endpoint_event_birthday_u,
-                endpoint_event_d,
-                endpoint_event_date_c,
-                endpoint_event_date_u,
-                endpoint_event_meeting_c,
-                endpoint_event_meeting_u,
-                endpoint_event_party_c,
-                endpoint_event_party_u,
-                endpoint_event_r_many,
-                endpoint_event_r_one
-            ],
-        )
-        .mount("/user", routes![endpoint_user_sign_up, endpoint_user_read, endpoint_user_update, endpoint_user_sign_in])
-        .launch()
-        .await?;
-
-    Ok(())
+#[tokio::main]
+async fn main() {
+    let app = Router::new()
+        .route("/health", get(endpoint_health_check))
+        .route("/user", post(endpoint_user_sign_up))
+        .layer(DefaultBodyLimit::disable())
+        .layer(RequestBodyLimitLayer::new(1024 * 1024))
+        .layer(tower_http::trace::TraceLayer::new_for_http());
+    let listener = tokio::net::TcpListener::bind("0.0.0.0:8000").await.unwrap();
+    axum::serve(listener, app).await.unwrap();
 }

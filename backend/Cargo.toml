@@ -8,7 +8,6 @@ license = "AGPL-3.0"
 araucaria = { git = "https://github.com/joao-arthur/araucaria", rev = "e32a8774832a90e8014469dd26c986c0f883c7d2" }
 araucaria_plugins = { git = "https://github.com/joao-arthur/araucaria_plugins", rev = "0a4e4dcbb234c6859586be890beab8355246d039" }
 domain = { path = "../domain" }
-rocket = { version = "0.5.1", features = ["json"] }
 serde_json = "1.0.140"
 uuid = { version = "1.11.0", features = [ "v4"] }
 chrono = "0.4.40"
@@ -18,3 +17,8 @@ regex = "1.11.1"
 accept-language = "3.1.0"
 rust-i18n = "3.1.2"
 serde = "1.0.219"
+
+axum = "0.8.4"
+tokio = { version = "1.45.0", features = ["macros", "rt-multi-thread"] }
+tower = "0.5.2"
+tower-http = { version = "0.6.4", features = ["limit", "trace"] }
