@@ -15,7 +15,9 @@ use serde_json::Value;
 
 use crate::{LanguageGuard, infra::validation::language_to_locale};
 
-use crate::entry::deps::{DATE_TIME_GENERATOR, ID_GENERATOR, SESSION_ENCODE_SERVICER_GENERATOR, USER_REPOSITORY};
+use crate::entry::deps::{
+    DATE_TIME_GENERATOR, ID_GENERATOR, SESSION_ENCODE_SERVICER_GENERATOR, USER_REPOSITORY,
+};
 
 #[derive(Deserialize)]
 #[serde(remote = "UserSignUpInput")]
@@ -55,17 +57,30 @@ struct ErrorGeneric {
 }
 
 pub async fn endpoint_user_sign_up(lg: LanguageGuard, Json(value): Json<Value>) -> Response {
-    let des = araucaria_plugins::deserialize::deserialize_from_json::<UserSignUpWrapper>(value, &USER_SIGN_UP_SCHEMA, &language_to_locale(&lg.0));
-    if let Err(e) = des {
+    let deserialized = araucaria_plugins::deserialize::deserialize_from_json::<UserSignUpWrapper>(
+        value,
+        &USER_SIGN_UP_SCHEMA,
+        &language_to_locale(&lg.0),
+    );
+    if let Err(e) = deserialized {
         return (StatusCode::UNPROCESSABLE_ENTITY, Json(e)).into_response();
     }
-    let user = (des.unwrap()).0;
-    let result_create = user_sign_up(&*USER_REPOSITORY, &*ID_GENERATOR, &*DATE_TIME_GENERATOR, &*SESSION_ENCODE_SERVICER_GENERATOR, user).await;
+    let user = (deserialized.unwrap()).0;
+    let result_create = user_sign_up(
+        &*USER_REPOSITORY,
+        &*ID_GENERATOR,
+        &*DATE_TIME_GENERATOR,
+        &*SESSION_ENCODE_SERVICER_GENERATOR,
+        user,
+    )
+    .await;
     match result_create {
         Ok(session) => (StatusCode::OK, Json(SessionProxy::from(session))).into_response(),
         Err(e) => {
             let (code, msg) = match e {
-                UserErr::DB(_) => (StatusCode::SERVICE_UNAVAILABLE, "There was an error with the dabatase"),
+                UserErr::DB(_) => {
+                    (StatusCode::SERVICE_UNAVAILABLE, "There was an error with the dabatase")
+                }
                 UserErr::UserUniqueInfoField(u) => {
                     let msg = match (u.email, u.username) {
                         (true, true) => "There is already an user with this email and username",
@@ -76,14 +91,18 @@ pub async fn endpoint_user_sign_up(lg: LanguageGuard, Json(value): Json<Value>) 
                     (StatusCode::UNPROCESSABLE_ENTITY, msg)
                 }
                 UserErr::UserIdNotFound(_) => (StatusCode::NOT_FOUND, "The user was not found"),
-                UserErr::UserCredentialsNotFound(_) => (StatusCode::UNAUTHORIZED, "Wrong username or password"),
+                UserErr::UserCredentialsNotFound(_) => {
+                    (StatusCode::UNAUTHORIZED, "Wrong username or password")
+                }
                 UserErr::Session(se) => match se {
-                    SessionErr::Encode(_) => (StatusCode::INTERNAL_SERVER_ERROR, "It was not possible to create your session"),
+                    SessionErr::Encode(_) => (
+                        StatusCode::INTERNAL_SERVER_ERROR,
+                        "It was not possible to create your session",
+                    ),
                     SessionErr::Decode(_) => (StatusCode::UNAUTHORIZED, "Your session is invalid"),
                 },
             };
-            let err = ErrorGeneric { error: msg.into() };
-            (code, Json(err)).into_response()
+            (code, Json(ErrorGeneric { error: msg.into() })).into_response()
         }
     }
 }

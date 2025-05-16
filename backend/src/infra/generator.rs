@@ -37,8 +37,11 @@ mod test {
     use super::{DateTimeGeneratorImpl, IdGeneratorUUID4, TimeGeneratorUnix};
 
     const EPOCH_2024: u64 = 1704067200;
-    static UUID_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$").unwrap());
-    static ISO_DATE_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}Z$").unwrap());
+    static UUID_RE: LazyLock<Regex> = LazyLock::new(|| {
+        Regex::new(r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$").unwrap()
+    });
+    static ISO_DATE_RE: LazyLock<Regex> =
+        LazyLock::new(|| Regex::new(r"^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}Z$").unwrap());
 
     #[test]
     fn test_id_gen_uuid4() {
