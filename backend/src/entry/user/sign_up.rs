@@ -1,7 +1,5 @@
 use axum::{
-    Json,
-    http::StatusCode,
-    response::{IntoResponse, Response},
+    extract::State, http::StatusCode, response::{IntoResponse, Response}, Json
 };
 use domain::{
     schedule::user::{
@@ -13,7 +11,7 @@ use domain::{
 use serde::{Deserialize, Deserializer, Serialize};
 use serde_json::Value;
 
-use crate::{LanguageGuard, infra::validation::language_to_locale};
+use crate::{infra::validation::language_to_locale, AppState, LanguageGuard};
 
 use crate::entry::deps::{
     DATE_TIME_GENERATOR, ID_GENERATOR, SESSION_ENCODE_SERVICER_GENERATOR, USER_REPOSITORY,
@@ -56,7 +54,11 @@ struct ErrorGeneric {
     error: String,
 }
 
-pub async fn endpoint_user_sign_up(lg: LanguageGuard, Json(value): Json<Value>) -> Response {
+pub async fn endpoint_user_sign_up(
+    state: State<AppState>,
+    lg: LanguageGuard,
+    Json(value): Json<Value>
+) -> Response {
     let deserialized = araucaria_plugins::deserialize::deserialize_from_json::<UserSignUpWrapper>(
         value,
         &USER_SIGN_UP_SCHEMA,
