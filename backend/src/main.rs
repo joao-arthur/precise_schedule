@@ -53,8 +53,8 @@ async fn main() {
     // let port = env::var("PORT").expect("PORT is not set in .env file");
     // let server_url = format!("{host}:{port}");
     let conn = Database::connect("postgres://postgres:123456@localhost:5432/precise_schedule")
-         .await
-         .expect("Database connection failed");
+        .await
+        .expect("Database connection failed");
     Migrator::up(&conn, None).await.unwrap();
     let state = AppState { conn };
 

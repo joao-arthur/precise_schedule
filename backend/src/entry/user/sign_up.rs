@@ -1,5 +1,8 @@
 use axum::{
-    extract::State, http::StatusCode, response::{IntoResponse, Response}, Json
+    Json,
+    extract::State,
+    http::StatusCode,
+    response::{IntoResponse, Response},
 };
 use domain::{
     schedule::user::{
@@ -11,7 +14,7 @@ use domain::{
 use serde::{Deserialize, Deserializer, Serialize};
 use serde_json::Value;
 
-use crate::{infra::validation::language_to_locale, AppState, LanguageGuard};
+use crate::{infra::{schedule::user::db_repository::UserRepositoryDB, validation::language_to_locale}, AppState, LanguageGuard};
 
 use crate::entry::deps::{
     DATE_TIME_GENERATOR, ID_GENERATOR, SESSION_ENCODE_SERVICER_GENERATOR, USER_REPOSITORY,
@@ -57,7 +60,7 @@ struct ErrorGeneric {
 pub async fn endpoint_user_sign_up(
     state: State<AppState>,
     lg: LanguageGuard,
-    Json(value): Json<Value>
+    Json(value): Json<Value>,
 ) -> Response {
     let deserialized = araucaria_plugins::deserialize::deserialize_from_json::<UserSignUpWrapper>(
         value,
@@ -68,8 +71,9 @@ pub async fn endpoint_user_sign_up(
         return (StatusCode::UNPROCESSABLE_ENTITY, Json(e)).into_response();
     }
     let user = (deserialized.unwrap()).0;
+    let repo = UserRepositoryDB { db: &state.conn }; 
     let result_create = user_sign_up(
-        &*USER_REPOSITORY,
+        &repo,
         &*ID_GENERATOR,
         &*DATE_TIME_GENERATOR,
         &*SESSION_ENCODE_SERVICER_GENERATOR,

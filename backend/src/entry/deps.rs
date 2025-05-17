@@ -1,13 +1,12 @@
-use std::sync::LazyLock;
+use std::{cell::LazyCell, sync::LazyLock};
 
 use crate::infra::{
     generator::{DateTimeGeneratorImpl, IdGeneratorUUID4},
-    schedule::user::repository::UserRepositoryMemory,
+    schedule::user::{db_repository::UserRepositoryDB, memory_repository::UserRepositoryMemory},
     session::{SessionDecodeServiceJWT, SessionEncodeServiceJWT},
 };
 
-pub static USER_REPOSITORY: LazyLock<UserRepositoryMemory> =
-    LazyLock::new(|| UserRepositoryMemory::default());
+pub static USER_REPOSITORY: LazyLock<UserRepositoryMemory> = LazyLock::new(|| UserRepositoryMemory::default());
 pub static ID_GENERATOR: LazyLock<IdGeneratorUUID4> = LazyLock::new(|| IdGeneratorUUID4);
 pub static DATE_TIME_GENERATOR: LazyLock<DateTimeGeneratorImpl> =
     LazyLock::new(|| DateTimeGeneratorImpl);
