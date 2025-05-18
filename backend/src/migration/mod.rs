@@ -5,6 +5,7 @@ mod m20250518_02_create_app_user_primary_key;
 mod m20250518_03_create_app_user_created_at_column;
 mod m20250518_04_create_app_user_created_at_not_null;
 mod m20250518_05_create_app_user_updated_at_column;
+mod m20250518_06_create_app_user_updated_at_not_null;
 
 pub struct Migrator;
 
@@ -17,6 +18,7 @@ impl MigratorTrait for Migrator {
             Box::new(m20250518_03_create_app_user_created_at_column::Migration),
             Box::new(m20250518_04_create_app_user_created_at_not_null::Migration),
             Box::new(m20250518_05_create_app_user_updated_at_column::Migration),
+            Box::new(m20250518_06_create_app_user_updated_at_not_null::Migration),
         ]
     }
 }
