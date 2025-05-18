@@ -7,12 +7,15 @@ pub struct Migration;
 impl MigrationTrait for Migration {
     async fn up(&self, manager: &SchemaManager) -> Result<(), DbErr> {
         let db = manager.get_connection();
-        db.execute_unprepared(r#"create table "user" (id varchar(36))"#).await?;
+        db.execute_unprepared(
+            r#"alter table app_user add constraint app_user_pk primary key (id)"#,
+        )
+        .await?;
         Ok(())
     }
 
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
-        manager.get_connection().execute_unprepared(r#"drop table if exists "user""#).await?;
+        manager.get_connection().execute_unprepared(r#"drop constraint app_user_pk"#).await?;
         Ok(())
     }
 }

@@ -14,7 +14,10 @@ use domain::{
 use serde::{Deserialize, Deserializer, Serialize};
 use serde_json::Value;
 
-use crate::{infra::{schedule::user::db_repository::UserRepositoryDB, validation::language_to_locale}, AppState, LanguageGuard};
+use crate::{
+    AppState, LanguageGuard,
+    infra::{schedule::user::db_repository::UserRepositoryDB, validation::language_to_locale},
+};
 
 use crate::entry::deps::{
     DATE_TIME_GENERATOR, ID_GENERATOR, SESSION_ENCODE_SERVICER_GENERATOR, USER_REPOSITORY,
@@ -71,7 +74,7 @@ pub async fn endpoint_user_sign_up(
         return (StatusCode::UNPROCESSABLE_ENTITY, Json(e)).into_response();
     }
     let user = (deserialized.unwrap()).0;
-    let repo = UserRepositoryDB { db: &state.conn }; 
+    let repo = UserRepositoryDB { db: &state.conn };
     let result_create = user_sign_up(
         &repo,
         &*ID_GENERATOR,

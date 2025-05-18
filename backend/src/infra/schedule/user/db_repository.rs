@@ -56,7 +56,7 @@ impl Query {
 }
 
 pub struct UserRepositoryDB<'a> {
-  pub  db: &'a DbConn,
+    pub db: &'a DbConn,
 }
 
 unsafe impl<'a> Sync for UserRepositoryDB<'a> {}
