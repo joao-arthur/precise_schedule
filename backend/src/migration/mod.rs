@@ -3,6 +3,7 @@ use sea_orm_migration::prelude::*;
 mod m20250518_01_create_app_user_table;
 mod m20250518_02_create_app_user_primary_key;
 mod m20250518_03_create_app_user_created_at_column;
+mod m20250518_04_create_app_user_created_at_not_null;
 
 pub struct Migrator;
 
@@ -13,6 +14,7 @@ impl MigratorTrait for Migrator {
             Box::new(m20250518_01_create_app_user_table::Migration),
             Box::new(m20250518_02_create_app_user_primary_key::Migration),
             Box::new(m20250518_03_create_app_user_created_at_column::Migration),
+            Box::new(m20250518_04_create_app_user_created_at_not_null::Migration),
         ]
     }
 }
