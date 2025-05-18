@@ -12,6 +12,7 @@ mod m20250518_09_create_app_user_username_unique;
 mod m20250518_10_create_app_user_password_column;
 mod m20250518_11_create_app_user_password_not_null;
 mod m20250518_12_create_app_user_email_column;
+mod m20250518_13_create_app_user_email_not_null;
 
 pub struct Migrator;
 
@@ -30,7 +31,8 @@ impl MigratorTrait for Migrator {
             Box::new(m20250518_09_create_app_user_username_unique::Migration),
             Box::new(m20250518_10_create_app_user_password_column::Migration),
             Box::new(m20250518_11_create_app_user_password_not_null::Migration),
-            Box::new(m20250518_12::Migration),
+            Box::new(m20250518_12_create_app_user_email_column::Migration),
+            Box::new(m20250518_13_create_app_user_email_not_null::Migration),
         ]
     }
 }
