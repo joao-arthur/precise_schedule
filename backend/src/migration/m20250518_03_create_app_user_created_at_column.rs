@@ -7,12 +7,14 @@ pub struct Migration;
 impl MigrationTrait for Migration {
     async fn up(&self, manager: &SchemaManager) -> Result<(), DbErr> {
         let db = manager.get_connection();
-        db.execute_unprepared(r#"ALTER TABLE app_user ADD COLUMN created_at TIMESTAMPTZ NOT NULL"#).await?;
+        db.execute_unprepared("ALTER TABLE app_user ADD COLUMN created_at TIMESTAMPTZ NOT NULL")
+            .await?;
         Ok(())
     }
 
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
-        manager.get_connection().execute_unprepared(r#"ALTER TABLE app_user DROP COLUMN created_at"#).await?;
+        let db = manager.get_connection();
+        db.execute_unprepared("ALTER TABLE app_user DROP COLUMN created_at").await?;
         Ok(())
     }
 }

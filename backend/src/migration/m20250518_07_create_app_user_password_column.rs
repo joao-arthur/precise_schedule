@@ -7,12 +7,13 @@ pub struct Migration;
 impl MigrationTrait for Migration {
     async fn up(&self, manager: &SchemaManager) -> Result<(), DbErr> {
         let db = manager.get_connection();
-        db.execute_unprepared(r#"ALTER TABLE app_user ADD COLUMN password TEXT NOT NULL"#).await?;
+        db.execute_unprepared("ALTER TABLE app_user ADD COLUMN password TEXT NOT NULL").await?;
         Ok(())
     }
 
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
-        manager.get_connection().execute_unprepared(r#"ALTER TABLE app_user DROP COLUMN password"#).await?;
+        let db = manager.get_connection();
+        db.execute_unprepared("ALTER TABLE app_user DROP COLUMN password").await?;
         Ok(())
     }
 }
