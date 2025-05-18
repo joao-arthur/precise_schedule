@@ -6,7 +6,8 @@ use crate::infra::{
     session::{SessionDecodeServiceJWT, SessionEncodeServiceJWT},
 };
 
-pub static USER_REPOSITORY: LazyLock<UserRepositoryMemory> = LazyLock::new(|| UserRepositoryMemory::default());
+pub static USER_REPOSITORY: LazyLock<UserRepositoryMemory> =
+    LazyLock::new(|| UserRepositoryMemory::default());
 pub static ID_GENERATOR: LazyLock<IdGeneratorUUID4> = LazyLock::new(|| IdGeneratorUUID4);
 pub static DATE_TIME_GENERATOR: LazyLock<DateTimeGeneratorImpl> =
     LazyLock::new(|| DateTimeGeneratorImpl);
