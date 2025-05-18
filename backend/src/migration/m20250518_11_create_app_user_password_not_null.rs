@@ -7,12 +7,12 @@ pub struct Migration;
 impl MigrationTrait for Migration {
     async fn up(&self, manager: &SchemaManager) -> Result<(), DbErr> {
         let db = manager.get_connection();
-        db.execute_unprepared(r#"ALTER TABLE app_user ADD CONSTRAINT app_user_username_not_null CHECK (username IS NOT NULL)"#).await?;
+        db.execute_unprepared(r#"ALTER TABLE app_user ADD CONSTRAINT user_password_not_null CHECK (password IS NOT NULL)"#).await?;
         Ok(())
     }
 
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
-        manager.get_connection().execute_unprepared(r#"DROP CONSTRAINT app_user_username_not_null"#).await?;
+        manager.get_connection().execute_unprepared(r#"DROP CONSTRAINT user_password_not_null"#).await?;
         Ok(())
     }
 }
