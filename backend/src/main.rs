@@ -13,6 +13,7 @@ use domain::language::Language;
 use entry::{health_controller::endpoint_health_check, user::endpoint_user_sign_up};
 use sea_orm_migration::MigratorTrait;
 use tower_http::{limit::RequestBodyLimitLayer, trace::TraceLayer};
+use tracing::Level;
 
 mod entry;
 mod infra;
@@ -52,12 +53,16 @@ async fn main() {
     // let host = env::var("HOST").expect("HOST is not set in .env file");
     // let port = env::var("PORT").expect("PORT is not set in .env file");
     // let server_url = format!("{host}:{port}");
+    let subscriber =
+        tracing_subscriber::FmtSubscriber::builder().with_max_level(Level::INFO).finish();
+    tracing::subscriber::set_global_default(subscriber).expect("setting default subscriber failed");
+    tracing::info!("Connecting to database...");
     let conn = Database::connect("postgres://postgres:123456@localhost:5432/precise_schedule")
         .await
         .expect("Database connection failed");
-    Migrator::up(&conn, None).await.unwrap();
+    tracing::info!("✅ Connected to database");
+    Migrator::up(&conn, None).await.expect("Migrations failed");
     let state = AppState { conn };
-
     let app = Router::new()
         .route("/health", get(endpoint_health_check))
         .route("/user", post(endpoint_user_sign_up))
@@ -66,5 +71,6 @@ async fn main() {
         .layer(TraceLayer::new_for_http())
         .with_state(state);
     let listener = tokio::net::TcpListener::bind("0.0.0.0:8000").await.unwrap();
+    tracing::info!("🚀 Server is running at http://localhost:8000");
     axum::serve(listener, app).await.unwrap();
 }
