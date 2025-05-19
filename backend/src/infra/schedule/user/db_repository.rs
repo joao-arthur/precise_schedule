@@ -18,11 +18,52 @@ unsafe impl<'a> Sync for UserRepositoryDB<'a> {}
 impl<'a> UserRepository for UserRepositoryDB<'a> {
     async fn create(&self, user: &User) -> Result<(), DBErr> {
         let id = uuid::Uuid::try_parse(&user.id).map_err(|_| DBErr)?;
-        let birthdate = chrono::NaiveDate::parse_from_str(&user.birthdate, "%Y-%m-%d").map_err(|_| DBErr)?;
-        let created_at =
-            chrono::DateTime::parse_from_rfc3339(&user.created_at).map_err(|_| DBErr)?;
-        let updated_at =
-            chrono::DateTime::parse_from_rfc3339(&user.updated_at).map_err(|_| DBErr)?;
+        let birthdate =
+            chrono::NaiveDate::parse_from_str(&user.birthdate, "%Y-%m-%d").map_err(|_| DBErr)?;
+        let created_at_parts = iso8601::datetime(&user.created_at).map_err(|_| DBErr)?;
+        let created_at_date = match created_at_parts.date {
+            iso8601::Date::YMD { year, month, day } => Ok((year, month, day)),
+            _ => Err(DBErr),
+        }?;
+        let created_at = chrono::DateTime::<chrono::FixedOffset>::from_naive_utc_and_offset(
+            chrono::NaiveDateTime::new(
+                chrono::NaiveDate::from_ymd_opt(
+                    created_at_date.0,
+                    created_at_date.1,
+                    created_at_date.2,
+                )
+                .unwrap(),
+                chrono::NaiveTime::from_hms_opt(
+                    created_at_parts.time.hour,
+                    created_at_parts.time.minute,
+                    created_at_parts.time.second,
+                )
+                .unwrap(),
+            ),
+            chrono::FixedOffset::east_opt(0).unwrap(),
+        );
+        let updated_at_parts = iso8601::datetime(&user.updated_at).map_err(|_| DBErr)?;
+        let updated_at_date = match updated_at_parts.date {
+            iso8601::Date::YMD { year, month, day } => Ok((year, month, day)),
+            _ => Err(DBErr),
+        }?;
+        let updated_at = chrono::DateTime::<chrono::FixedOffset>::from_naive_utc_and_offset(
+            chrono::NaiveDateTime::new(
+                chrono::NaiveDate::from_ymd_opt(
+                    updated_at_date.0,
+                    updated_at_date.1,
+                    updated_at_date.2,
+                )
+                .unwrap(),
+                chrono::NaiveTime::from_hms_opt(
+                    updated_at_parts.time.hour,
+                    updated_at_parts.time.minute,
+                    updated_at_parts.time.second,
+                )
+                .unwrap(),
+            ),
+            chrono::FixedOffset::east_opt(0).unwrap(),
+        );
         let model = entity::Model {
             id: id.clone(),
             username: user.username.clone(),
@@ -43,7 +84,7 @@ impl<'a> UserRepository for UserRepositoryDB<'a> {
             created_at: Set(model.created_at.to_owned()),
             updated_at: Set(model.updated_at.to_owned()),
         };
-        let res = active_model.save(self.db).await;
+        let res = active_model.insert(self.db).await;
         match res {
             Ok(_) => Ok(()),
             Err(_) => Err(DBErr),
@@ -52,11 +93,52 @@ impl<'a> UserRepository for UserRepositoryDB<'a> {
 
     async fn update(&self, user: &User) -> Result<(), DBErr> {
         let id = uuid::Uuid::try_parse(&user.id).map_err(|_| DBErr)?;
-        let birthdate = chrono::NaiveDate::parse_from_str(&user.birthdate, "%Y-%m-%d").map_err(|_| DBErr)?;
-        let created_at =
-            chrono::DateTime::parse_from_rfc3339(&user.created_at).map_err(|_| DBErr)?;
-        let updated_at =
-            chrono::DateTime::parse_from_rfc3339(&user.updated_at).map_err(|_| DBErr)?;
+        let birthdate =
+            chrono::NaiveDate::parse_from_str(&user.birthdate, "%Y-%m-%d").map_err(|_| DBErr)?;
+        let created_at_parts = iso8601::datetime(&user.created_at).map_err(|_| DBErr)?;
+        let created_at_date = match created_at_parts.date {
+            iso8601::Date::YMD { year, month, day } => Ok((year, month, day)),
+            _ => Err(DBErr),
+        }?;
+        let created_at = chrono::DateTime::<chrono::FixedOffset>::from_naive_utc_and_offset(
+            chrono::NaiveDateTime::new(
+                chrono::NaiveDate::from_ymd_opt(
+                    created_at_date.0,
+                    created_at_date.1,
+                    created_at_date.2,
+                )
+                .unwrap(),
+                chrono::NaiveTime::from_hms_opt(
+                    created_at_parts.time.hour,
+                    created_at_parts.time.minute,
+                    created_at_parts.time.second,
+                )
+                .unwrap(),
+            ),
+            chrono::FixedOffset::east_opt(0).unwrap(),
+        );
+        let updated_at_parts = iso8601::datetime(&user.updated_at).map_err(|_| DBErr)?;
+        let updated_at_date = match updated_at_parts.date {
+            iso8601::Date::YMD { year, month, day } => Ok((year, month, day)),
+            _ => Err(DBErr),
+        }?;
+        let updated_at = chrono::DateTime::<chrono::FixedOffset>::from_naive_utc_and_offset(
+            chrono::NaiveDateTime::new(
+                chrono::NaiveDate::from_ymd_opt(
+                    updated_at_date.0,
+                    updated_at_date.1,
+                    updated_at_date.2,
+                )
+                .unwrap(),
+                chrono::NaiveTime::from_hms_opt(
+                    updated_at_parts.time.hour,
+                    updated_at_parts.time.minute,
+                    updated_at_parts.time.second,
+                )
+                .unwrap(),
+            ),
+            chrono::FixedOffset::east_opt(0).unwrap(),
+        );
         let model = entity::Model {
             id: id.clone(),
             username: user.username.clone(),
@@ -146,12 +228,12 @@ impl<'a> UserRepository for UserRepositoryDB<'a> {
             .filter(entity::Column::Username.eq(user_unique_info.username.clone()))
             .count(self.db)
             .await
-            .map_err(|_|DBErr)?;
+            .map_err(|_| DBErr)?;
         let res_email = entity::Entity::find()
             .filter(entity::Column::Email.eq(user_unique_info.email.clone()))
             .count(self.db)
             .await
-            .map_err(|_|DBErr)?;
+            .map_err(|_| DBErr)?;
         Ok(UserUniqueInfoCount { email: res_email as u32, username: res_username as u32 })
     }
 }

@@ -12,8 +12,8 @@ accept-language = "3.1.0"
 axum = "0.8.4"
 chrono = "0.4.40"
 email_address = "0.2.9"
+iso8601 = "0.6.3"
 jsonwebtoken = "9.3.0"
-regex = "1.11.1"
 rust-i18n = "3.1.2"
 sea-orm = { version = "1.1.11", features = [ "sqlx-postgres", "runtime-tokio-native-tls", "macros",   "debug-print" ] }
 sea-orm-migration = { version = "1.1.11", features = [ "sqlx-postgres", "runtime-tokio-native-tls" ] }
@@ -25,3 +25,6 @@ tokio = { version = "1.45.0", features = ["macros", "rt-multi-thread"] }
 tower = "0.5.2"
 tower-http = { version = "0.6.4", features = ["limit", "trace"] }
 uuid = { version = "1.11.0", features = [ "v4"] }
+
+[dev-dependencies]
+regex = "1.11.1"
