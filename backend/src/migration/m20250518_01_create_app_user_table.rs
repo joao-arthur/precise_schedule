@@ -7,7 +7,7 @@ pub struct Migration;
 impl MigrationTrait for Migration {
     async fn up(&self, manager: &SchemaManager) -> Result<(), DbErr> {
         let db = manager.get_connection();
-        db.execute_unprepared("CREATE TABLE app_user (id VARCHAR(36) NOT NULL)").await?;
+        db.execute_unprepared("CREATE TABLE app_user (id UUID)").await?;
         Ok(())
     }
 
