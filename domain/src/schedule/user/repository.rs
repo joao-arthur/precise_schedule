@@ -1,4 +1,4 @@
-use crate::database::DBOp;
+use crate::database::DBErr;
 
 use super::{
     model::{User, UserCredentials},
@@ -6,20 +6,23 @@ use super::{
 };
 
 pub trait UserRepository {
-    async fn create(&self, user: &User) -> DBOp<()>;
-    async fn update(&self, user: &User) -> DBOp<()>;
-    async fn delete(&self, id: &str) -> DBOp<()>;
-    async fn read_by_credentials(&self, credentials: &UserCredentials) -> DBOp<Option<User>>;
-    async fn read_by_id(&self, id: &str) -> DBOp<Option<User>>;
+    async fn create(&self, user: &User) -> Result<(), DBErr>;
+    async fn update(&self, user: &User) -> Result<(), DBErr>;
+    async fn delete(&self, id: &str) -> Result<(), DBErr>;
+    async fn read_by_credentials(
+        &self,
+        credentials: &UserCredentials,
+    ) -> Result<Option<User>, DBErr>;
+    async fn read_by_id(&self, id: &str) -> Result<Option<User>, DBErr>;
     async fn read_count_unique_info(
         &self,
         user_unique_info: &UserUniqueInfo,
-    ) -> DBOp<UserUniqueInfoCount>;
+    ) -> Result<UserUniqueInfoCount, DBErr>;
 }
 
 pub mod stub {
     use crate::{
-        database::{DBErr, DBOp},
+        database::DBErr,
         schedule::user::{
             model::{User, UserCredentials},
             unique_info::{UserUniqueInfo, UserUniqueInfoCount},
@@ -35,42 +38,45 @@ pub mod stub {
     }
 
     impl UserRepository for UserRepositoryStub {
-        async fn create(&self, _: &User) -> DBOp<()> {
+        async fn create(&self, _: &User) -> Result<(), DBErr> {
             if self.err {
                 return Err(DBErr);
             }
             Ok(())
         }
 
-        async fn update(&self, _: &User) -> DBOp<()> {
+        async fn update(&self, _: &User) -> Result<(), DBErr> {
             if self.err {
                 return Err(DBErr);
             }
             Ok(())
         }
 
-        async fn delete(&self, _: &str) -> DBOp<()> {
+        async fn delete(&self, _: &str) -> Result<(), DBErr> {
             if self.err {
                 return Err(DBErr);
             }
             Ok(())
         }
 
-        async fn read_by_id(&self, _: &str) -> DBOp<Option<User>> {
+        async fn read_by_id(&self, _: &str) -> Result<Option<User>, DBErr> {
             if self.err {
                 return Err(DBErr);
             }
             Ok(self.user.clone())
         }
 
-        async fn read_by_credentials(&self, _: &UserCredentials) -> DBOp<Option<User>> {
+        async fn read_by_credentials(&self, _: &UserCredentials) -> Result<Option<User>, DBErr> {
             if self.err {
                 return Err(DBErr);
             }
             Ok(self.user.clone())
         }
 
-        async fn read_count_unique_info(&self, _: &UserUniqueInfo) -> DBOp<UserUniqueInfoCount> {
+        async fn read_count_unique_info(
+            &self,
+            _: &UserUniqueInfo,
+        ) -> Result<UserUniqueInfoCount, DBErr> {
             if self.err {
                 return Err(DBErr);
             }

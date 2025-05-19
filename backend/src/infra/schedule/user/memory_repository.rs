@@ -1,7 +1,7 @@
 use std::cell::RefCell;
 
 use domain::{
-    database::DBOp,
+    database::DBErr,
     schedule::user::{
         model::{User, UserCredentials},
         repository::UserRepository,
@@ -22,12 +22,12 @@ impl Default for UserRepositoryMemory {
 unsafe impl Sync for UserRepositoryMemory {}
 
 impl UserRepository for UserRepositoryMemory {
-    async fn create(&self, user: &User) -> DBOp<()> {
+    async fn create(&self, user: &User) -> Result<(), DBErr> {
         self.users.borrow_mut().push(user.clone());
         Ok(())
     }
 
-    async fn update(&self, user: &User) -> DBOp<()> {
+    async fn update(&self, user: &User) -> Result<(), DBErr> {
         let pos = self.users.borrow().iter().position(|u| u.id == user.id);
         if let Some(pos) = pos {
             self.users.borrow_mut()[pos] = user.clone();
@@ -35,7 +35,7 @@ impl UserRepository for UserRepositoryMemory {
         Ok(())
     }
 
-    async fn delete(&self, id: &str) -> DBOp<()> {
+    async fn delete(&self, id: &str) -> Result<(), DBErr> {
         let pos = self.users.borrow().iter().position(|u| u.id == *id);
         if let Some(pos) = pos {
             self.users.borrow_mut().swap_remove(pos);
@@ -43,7 +43,10 @@ impl UserRepository for UserRepositoryMemory {
         Ok(())
     }
 
-    async fn read_by_credentials(&self, credentials: &UserCredentials) -> DBOp<Option<User>> {
+    async fn read_by_credentials(
+        &self,
+        credentials: &UserCredentials,
+    ) -> Result<Option<User>, DBErr> {
         Ok(self
             .users
             .borrow()
@@ -52,14 +55,14 @@ impl UserRepository for UserRepositoryMemory {
             .cloned())
     }
 
-    async fn read_by_id(&self, id: &str) -> DBOp<Option<User>> {
+    async fn read_by_id(&self, id: &str) -> Result<Option<User>, DBErr> {
         Ok(self.users.borrow().iter().find(|u| u.id == id).cloned())
     }
 
     async fn read_count_unique_info(
         &self,
         user_unique_info: &UserUniqueInfo,
-    ) -> DBOp<UserUniqueInfoCount> {
+    ) -> Result<UserUniqueInfoCount, DBErr> {
         let username_count =
             self.users.borrow().iter().filter(|u| u.username == user_unique_info.username).count();
         let email_count =

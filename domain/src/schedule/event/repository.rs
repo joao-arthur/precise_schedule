@@ -1,20 +1,17 @@
-use crate::database::DBOp;
+use crate::database::DBErr;
 
 use super::model::Event;
 
 pub trait EventRepository {
-    async fn create(&self, event: &Event) -> DBOp<()>;
-    async fn update(&self, event: &Event) -> DBOp<()>;
-    async fn delete(&self, id: &str) -> DBOp<()>;
-    async fn read_by_id(&self, user_id: &str, id: &str) -> DBOp<Option<Event>>;
-    async fn read_by_user(&self, user_id: &str) -> DBOp<Vec<Event>>;
+    async fn create(&self, event: &Event) -> Result<(), DBErr>;
+    async fn update(&self, event: &Event) -> Result<(), DBErr>;
+    async fn delete(&self, id: &str) -> Result<(), DBErr>;
+    async fn read_by_id(&self, user_id: &str, id: &str) -> Result<Option<Event>, DBErr>;
+    async fn read_by_user(&self, user_id: &str) -> Result<Vec<Event>, DBErr>;
 }
 
 pub mod stub {
-    use crate::{
-        database::{DBErr, DBOp},
-        schedule::event::model::Event,
-    };
+    use crate::{database::DBErr, schedule::event::model::Event};
 
     use super::EventRepository;
 
@@ -24,35 +21,35 @@ pub mod stub {
     }
 
     impl EventRepository for EventRepositoryStub {
-        async fn create(&self, _: &Event) -> DBOp<()> {
+        async fn create(&self, _: &Event) -> Result<(), DBErr> {
             if self.err {
                 return Err(DBErr);
             }
             Ok(())
         }
 
-        async fn update(&self, _: &Event) -> DBOp<()> {
+        async fn update(&self, _: &Event) -> Result<(), DBErr> {
             if self.err {
                 return Err(DBErr);
             }
             Ok(())
         }
 
-        async fn delete(&self, _: &str) -> DBOp<()> {
+        async fn delete(&self, _: &str) -> Result<(), DBErr> {
             if self.err {
                 return Err(DBErr);
             }
             Ok(())
         }
 
-        async fn read_by_id(&self, _: &str, __: &str) -> DBOp<Option<Event>> {
+        async fn read_by_id(&self, _: &str, __: &str) -> Result<Option<Event>, DBErr> {
             if self.err {
                 return Err(DBErr);
             }
             Ok(self.event.clone())
         }
 
-        async fn read_by_user(&self, _: &str) -> DBOp<Vec<Event>> {
+        async fn read_by_user(&self, _: &str) -> Result<Vec<Event>, DBErr> {
             if self.err {
                 return Err(DBErr);
             }
