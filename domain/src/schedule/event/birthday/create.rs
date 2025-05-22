@@ -12,7 +12,7 @@ use crate::{
     },
 };
 
-pub struct BirthdayCreate {
+pub struct BirthdayCreateInput {
     pub name: String,
     pub day: String,
 }
@@ -24,7 +24,7 @@ pub static BIRTHDAY_CREATE_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
     ]))
 });
 
-pub fn event_create_of_birthday_create(model: BirthdayCreate) -> EventCreateInput {
+pub fn transform_to_event_create(model: BirthdayCreateInput) -> EventCreateInput {
     EventCreateInput {
         name: model.name,
         begin: format!("{}T{}Z", model.day, "00:00"),
@@ -43,34 +43,66 @@ pub async fn event_birthday_create<
     repository: &Repo,
     id_generator: &IdGen,
     date_time_generator: &DtTmGen,
-    model: BirthdayCreate,
+    model: BirthdayCreateInput,
     user_id: String,
 ) -> Result<Event, EventErr> {
-    let event_create_model = event_create_of_birthday_create(model);
+    let event_create_model = transform_to_event_create(model);
     event_create(repository, id_generator, date_time_generator, event_create_model, user_id).await
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::schedule::event::{
+    use crate::{generator::stub::{DateTimeGeneratorStub, IdGeneratorStub}, schedule::event::{
         create::EventCreateInput,
-        model::{EventCategory, EventFrequency},
-    };
+        model::{Event, EventCategory, EventFrequency}, repository::stub::EventRepositoryStub,
+    }};
 
-    use super::{BirthdayCreate, event_create_of_birthday_create};
+    use super::{BirthdayCreateInput, transform_to_event_create, event_birthday_create};
 
     #[test]
     fn test_event_create_of_appointment_create() {
-        let birthday_create =
-            BirthdayCreate { name: "Fernando's birthday".into(), day: "2025-08-19".into() };
-        let event_create = EventCreateInput {
-            name: "Fernando's birthday".into(),
-            begin: "2025-08-19T00:00Z".into(),
-            end: "2025-08-19T23:59Z".into(),
-            category: EventCategory::Birthday,
-            frequency: Some(EventFrequency::Y1),
-            weekend_repeat: None,
-        };
-        assert_eq!(event_create_of_birthday_create(birthday_create), event_create);
+        assert_eq!(
+            transform_to_event_create(BirthdayCreateInput {
+                name: "Fernando's birthday".into(),
+                day: "2025-08-19".into()
+            }),
+            EventCreateInput {
+                name: "Fernando's birthday".into(),
+                begin: "2025-08-19T00:00Z".into(),
+                end: "2025-08-19T23:59Z".into(),
+                category: EventCategory::Birthday,
+                frequency: Some(EventFrequency::Y1),
+                weekend_repeat: None,
+            }
+        );
+    }
+
+    #[tokio::test]
+    async fn event_birthday_create_ok() {
+        assert_eq!(
+            event_birthday_create(
+                &EventRepositoryStub::of_empty(),
+                &IdGeneratorStub("6d470410-5e51-40d1-bd13-0bb6a99de95e".into()),
+                &DateTimeGeneratorStub::of_iso("2025-02-05T22:49Z".into()),
+                BirthdayCreateInput {
+                    name: "Fernando's birthday".into(),
+                    day: "2025-08-19".into()
+                },
+                "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into()
+            )
+            .await,
+            Ok(Event {
+                id: "6d470410-5e51-40d1-bd13-0bb6a99de95e".into(),
+                name: "Fernando's birthday".into(),
+                begin: "2025-08-19T00:00Z".into(),
+                end: "2025-08-19T23:59Z".into(),
+                category: EventCategory::Birthday,
+                frequency: Some(EventFrequency::Y1),
+                weekend_repeat: None,
+                user: "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
+                created_at: "2025-02-05T22:49Z".into(),
+                updated_at: "2025-02-05T22:49Z".into(),
+            })
+        );
     }
 }
