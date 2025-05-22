@@ -65,12 +65,16 @@ pub async fn event_appointment_create<
 
 #[cfg(test)]
 mod tests {
-    use crate::{generator::stub::{DateTimeGeneratorStub, IdGeneratorStub}, schedule::event::{
-        create::EventCreateInput,
-        model::{Event, EventCategory, EventFrequency}, repository::stub::EventRepositoryStub,
-    }};
+    use crate::{
+        generator::stub::{DateTimeGeneratorStub, IdGeneratorStub},
+        schedule::event::{
+            create::EventCreateInput,
+            model::{Event, EventCategory, EventFrequency},
+            repository::stub::EventRepositoryStub,
+        },
+    };
 
-    use super::{AppointmentCreateInput, transform_to_event_create, event_appointment_create};
+    use super::{AppointmentCreateInput, event_appointment_create, transform_to_event_create};
 
     #[test]
     fn test_transform_to_event_create() {
