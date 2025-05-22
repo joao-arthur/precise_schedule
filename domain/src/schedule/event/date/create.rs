@@ -39,7 +39,7 @@ pub fn transform_to_event_create(model: DateCreateInput) -> EventCreateInput {
     }
 }
 
-pub async fn date_appointment_create<
+pub async fn event_date_create<
     Repo: EventRepository,
     IdGen: IdGenerator,
     DtTmGen: DateTimeGenerator,
@@ -65,7 +65,7 @@ mod tests {
         },
     };
 
-    use super::{DateCreateInput, date_appointment_create, transform_to_event_create};
+    use super::{DateCreateInput, event_date_create, transform_to_event_create};
 
     #[test]
     fn test_transform_to_event_create() {
@@ -88,9 +88,9 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn date_appointment_create_ok() {
+    async fn event_date_create_ok() {
         assert_eq!(
-            date_appointment_create(
+            event_date_create(
                 &EventRepositoryStub::of_empty(),
                 &IdGeneratorStub("6d470410-5e51-40d1-bd13-0bb6a99de95e".into()),
                 &DateTimeGeneratorStub::of_iso("2025-02-05T22:49Z".into()),

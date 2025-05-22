@@ -1,13 +1,14 @@
 pub mod appointment;
 pub mod birthday;
-pub mod create;
 pub mod date;
+pub mod meeting;
+pub mod party;
+pub mod travel;
+
+pub mod create;
 pub mod delete;
 pub mod error;
-pub mod meeting;
 pub mod model;
-pub mod party;
 pub mod read;
 pub mod repository;
-pub mod travel;
 pub mod update;
