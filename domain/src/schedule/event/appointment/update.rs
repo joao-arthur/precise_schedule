@@ -23,17 +23,6 @@ pub struct AppointmentUpdateInput {
     pub weekend_repeat: Option<bool>,
 }
 
-pub fn transform_to_event_update(model: AppointmentUpdateInput) -> EventUpdateInput {
-    EventUpdateInput {
-        name: model.name,
-        begin: format!("{}T{}Z", model.day, model.begin),
-        end: format!("{}T{}Z", model.day, model.end),
-        category: EventCategory::Appointment,
-        frequency: model.frequency,
-        weekend_repeat: model.weekend_repeat,
-    }
-}
-
 pub static APPOINTMENT_UPDATE_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
     Schema::from(ObjSchema::from([
         ("name".into(), Schema::from(StrSchema::default().chars_len_btwn(1, 32))),
@@ -47,6 +36,17 @@ pub static APPOINTMENT_UPDATE_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
         ("weekend_repeat".into(), Schema::from(BoolSchema::default())),
     ]))
 });
+
+pub fn transform_to_event_update(model: AppointmentUpdateInput) -> EventUpdateInput {
+    EventUpdateInput {
+        name: model.name,
+        begin: format!("{}T{}Z", model.day, model.begin),
+        end: format!("{}T{}Z", model.day, model.end),
+        category: EventCategory::Appointment,
+        frequency: model.frequency,
+        weekend_repeat: model.weekend_repeat,
+    }
+}
 
 pub async fn event_appointment_update<Repo: EventRepository, DtTmGen: DateTimeGenerator>(
     repository: &Repo,
