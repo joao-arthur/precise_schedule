@@ -52,12 +52,16 @@ pub async fn event_birthday_create<
 
 #[cfg(test)]
 mod tests {
-    use crate::{generator::stub::{DateTimeGeneratorStub, IdGeneratorStub}, schedule::event::{
-        create::EventCreateInput,
-        model::{Event, EventCategory, EventFrequency}, repository::stub::EventRepositoryStub,
-    }};
+    use crate::{
+        generator::stub::{DateTimeGeneratorStub, IdGeneratorStub},
+        schedule::event::{
+            create::EventCreateInput,
+            model::{Event, EventCategory, EventFrequency},
+            repository::stub::EventRepositoryStub,
+        },
+    };
 
-    use super::{BirthdayCreateInput, transform_to_event_create, event_birthday_create};
+    use super::{BirthdayCreateInput, event_birthday_create, transform_to_event_create};
 
     #[test]
     fn test_event_create_of_appointment_create() {
