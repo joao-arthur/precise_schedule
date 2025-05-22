@@ -3,7 +3,7 @@ use std::sync::LazyLock;
 use araucaria::schema::{DateSchema, ObjSchema, Schema, StrSchema, TimeSchema};
 
 use crate::{
-    generator::{DateTimeGenerator, IdGenerator},
+    generator::DateTimeGenerator,
     schedule::event::{
         error::EventErr,
         model::{Event, EventCategory},
