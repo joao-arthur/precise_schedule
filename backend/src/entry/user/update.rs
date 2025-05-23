@@ -1,30 +1,30 @@
 use axum::{
     Json,
-    extract::State,
+    extract::{Path, State},
     http::StatusCode,
     response::{IntoResponse, Response},
-};
-use domain::{
-    schedule::user::{
-        error::UserErr,
-        sign_up::{USER_SIGN_UP_SCHEMA, UserSignUpInput, user_sign_up},
-    },
-    session::{Session, SessionErr},
 };
 use serde::{Deserialize, Deserializer, Serialize};
 use serde_json::Value;
 
+use domain::{
+    schedule::user::{
+        error::UserErr,
+        update::{USER_UPDATE_SCHEMA, UserUpdateInput, user_update},
+    },
+    session::{Session, SessionErr},
+};
+use uuid::Uuid;
+
 use crate::{
     AppState, LanguageGuard,
-    entry::deps::{
-        DATE_TIME_GENERATOR, ID_GENERATOR, SESSION_ENCODE_SERVICER_GENERATOR, USER_REPOSITORY,
-    },
+    entry::deps::{DATE_TIME_GENERATOR, SESSION_ENCODE_SERVICER_GENERATOR},
     infra::{schedule::user::db_repository::UserRepositoryDB, validation::language_to_locale},
 };
 
 #[derive(Deserialize)]
-#[serde(remote = "UserSignUpInput")]
-struct UserSignUpInputProxy {
+#[serde(remote = "UserUpdateInput")]
+struct UserUpdateInputProxy {
     email: String,
     first_name: String,
     birthdate: String,
@@ -32,14 +32,14 @@ struct UserSignUpInputProxy {
     password: String,
 }
 
-struct UserSignUpWrapper(pub UserSignUpInput);
+struct UserSignUpWrapper(pub UserUpdateInput);
 
 impl<'de> Deserialize<'de> for UserSignUpWrapper {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
     where
         D: Deserializer<'de>,
     {
-        UserSignUpInputProxy::deserialize(deserializer).map(UserSignUpWrapper)
+        UserUpdateInputProxy::deserialize(deserializer).map(UserSignUpWrapper)
     }
 }
 
@@ -59,14 +59,15 @@ struct ErrorGeneric {
     error: String,
 }
 
-pub async fn endpoint_user_sign_up(
+pub async fn endpoint_user_update(
     state: State<AppState>,
     lg: LanguageGuard,
+    Path(user_id): Path<Uuid>,
     Json(value): Json<Value>,
 ) -> Response {
     let deserialized = araucaria_plugins::deserialize::deserialize_from_json::<UserSignUpWrapper>(
         value,
-        &USER_SIGN_UP_SCHEMA,
+        &USER_UPDATE_SCHEMA,
         &language_to_locale(&lg.0),
     );
     if let Err(e) = deserialized {
@@ -74,11 +75,11 @@ pub async fn endpoint_user_sign_up(
     }
     let user = (deserialized.unwrap()).0;
     let repo = UserRepositoryDB { db: &state.conn };
-    let result_create = user_sign_up(
+    let result_create = user_update(
         &repo,
-        &*ID_GENERATOR,
         &*DATE_TIME_GENERATOR,
         &*SESSION_ENCODE_SERVICER_GENERATOR,
+        user_id.to_string(),
         user,
     )
     .await;

@@ -10,7 +10,10 @@ use sea_orm::{Database, DatabaseConnection};
 
 use accept_language::parse;
 use domain::language::Language;
-use entry::{health_controller::endpoint_health_check, user::endpoint_user_sign_up};
+use entry::{
+    health_controller::endpoint_health_check,
+    user::{sign_up::endpoint_user_sign_up, update::endpoint_user_update},
+};
 use sea_orm_migration::MigratorTrait;
 use tower_http::{limit::RequestBodyLimitLayer, trace::TraceLayer};
 use tracing::Level;
@@ -66,6 +69,7 @@ async fn main() {
     let app = Router::new()
         .route("/health", get(endpoint_health_check))
         .route("/user", post(endpoint_user_sign_up))
+        .route("/user/{user_id}", post(endpoint_user_update))
         .layer(DefaultBodyLimit::disable())
         .layer(RequestBodyLimitLayer::new(1024 * 1024))
         .layer(TraceLayer::new_for_http())
