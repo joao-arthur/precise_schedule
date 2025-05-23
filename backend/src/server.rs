@@ -18,9 +18,6 @@ use sea_orm_migration::MigratorTrait;
 use tower_http::{limit::RequestBodyLimitLayer, trace::TraceLayer};
 use tracing::Level;
 
-mod entry;
-mod infra;
-mod migration;
 
 rust_i18n::i18n!("locales");
 
@@ -49,8 +46,7 @@ where
     }
 }
 
-#[tokio::main]
-async fn main() {
+pub async fn start_server() {
     // dotenvy::dotenv().ok();
     // let db_url = env::var("DATABASE_URL").expect("DATABASE_URL is not set in .env file");
     // let host = env::var("HOST").expect("HOST is not set in .env file");
