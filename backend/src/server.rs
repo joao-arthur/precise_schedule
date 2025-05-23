@@ -1,3 +1,4 @@
+use accept_language::parse;
 use axum::{
     Router,
     extract::{DefaultBodyLimit, FromRequestParts},
@@ -5,24 +6,25 @@ use axum::{
     response::Response,
     routing::{get, post},
 };
-use migration::Migrator;
 use sea_orm::{Database, DatabaseConnection};
-
-use accept_language::parse;
-use domain::language::Language;
-use entry::{
-    health_controller::endpoint_health_check,
-    user::{sign_up::endpoint_user_sign_up, update::endpoint_user_update},
-};
 use sea_orm_migration::MigratorTrait;
 use tower_http::{limit::RequestBodyLimitLayer, trace::TraceLayer};
 use tracing::Level;
 
+use domain::language::Language;
+
+use crate::{
+    entry::{
+        health_controller::endpoint_health_check,
+        user::{sign_up::endpoint_user_sign_up, update::endpoint_user_update},
+    },
+    migration::Migrator,
+};
 
 rust_i18n::i18n!("locales");
 
 #[derive(Clone)]
-struct AppState {
+pub struct AppState {
     pub conn: DatabaseConnection,
 }
 

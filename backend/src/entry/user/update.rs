@@ -17,9 +17,9 @@ use domain::{
 use uuid::Uuid;
 
 use crate::{
-    AppState, LanguageGuard,
     entry::deps::{DATE_TIME_GENERATOR, SESSION_ENCODE_SERVICER_GENERATOR},
     infra::{schedule::user::db_repository::UserRepositoryDB, validation::language_to_locale},
+    server::{AppState, LanguageGuard},
 };
 
 #[derive(Deserialize)]
