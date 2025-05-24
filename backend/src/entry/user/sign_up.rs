@@ -1,9 +1,13 @@
+use araucaria_plugins::deserialize::deserialize_from_json;
 use axum::{
     Json,
     extract::State,
     http::StatusCode,
     response::{IntoResponse, Response},
 };
+use serde::{Deserialize, Deserializer, Serialize};
+use serde_json::Value;
+
 use domain::{
     schedule::user::{
         error::UserErr,
@@ -11,15 +15,12 @@ use domain::{
     },
     session::{Session, SessionErr},
 };
-use serde::{Deserialize, Deserializer, Serialize};
-use serde_json::Value;
 
 use crate::{
-    entry::deps::{
-        DATE_TIME_GENERATOR, ID_GENERATOR, SESSION_ENCODE_SERVICER_GENERATOR, USER_REPOSITORY,
-    },
+    common::language::LanguageExtractor,
+    common::{error::AppError, state::AppState},
+    entry::deps::{DATE_TIME_GENERATOR, ID_GENERATOR, SESSION_ENCODE_SERVICER_GENERATOR},
     infra::{schedule::user::db_repository::UserRepositoryDB, validation::language_to_locale},
-    server::{AppState, LanguageGuard},
 };
 
 #[derive(Deserialize)]
@@ -54,20 +55,15 @@ impl From<Session> for SessionProxy {
     }
 }
 
-#[derive(Debug, PartialEq, Clone, Serialize)]
-struct ErrorGeneric {
-    error: String,
-}
-
 pub async fn endpoint_user_sign_up(
     state: State<AppState>,
-    lg: LanguageGuard,
+    LanguageExtractor(language): LanguageExtractor,
     Json(value): Json<Value>,
 ) -> Response {
-    let deserialized = araucaria_plugins::deserialize::deserialize_from_json::<UserSignUpWrapper>(
+    let deserialized = deserialize_from_json::<UserSignUpWrapper>(
         value,
         &USER_SIGN_UP_SCHEMA,
-        &language_to_locale(&lg.0),
+        &language_to_locale(&language),
     );
     if let Err(e) = deserialized {
         return (StatusCode::UNPROCESSABLE_ENTITY, Json(e)).into_response();
@@ -110,7 +106,7 @@ pub async fn endpoint_user_sign_up(
                     SessionErr::Decode(_) => (StatusCode::UNAUTHORIZED, "Your session is invalid"),
                 },
             };
-            (code, Json(ErrorGeneric { error: msg.into() })).into_response()
+            (code, Json(AppError { error: msg.into() })).into_response()
         }
     }
 }

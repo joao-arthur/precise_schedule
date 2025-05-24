@@ -1,52 +1,21 @@
-use accept_language::parse;
 use axum::{
     Router,
-    extract::{DefaultBodyLimit, FromRequestParts},
-    http::request::Parts,
-    response::Response,
+    extract::DefaultBodyLimit,
     routing::{get, post},
 };
-use sea_orm::{Database, DatabaseConnection};
+use sea_orm::Database;
 use sea_orm_migration::MigratorTrait;
 use tower_http::{limit::RequestBodyLimitLayer, trace::TraceLayer};
 use tracing::Level;
 
-use domain::language::Language;
-
 use crate::{
+    common::state::AppState,
     entry::{
         health_controller::endpoint_health_check,
         user::{sign_up::endpoint_user_sign_up, update::endpoint_user_update},
     },
     migration::Migrator,
 };
-
-rust_i18n::i18n!("locales");
-
-#[derive(Clone)]
-pub struct AppState {
-    pub conn: DatabaseConnection,
-}
-
-#[derive(Debug, PartialEq)]
-pub struct LanguageGuard(pub Language);
-
-impl<S> FromRequestParts<S> for LanguageGuard
-where
-    S: Send + Sync,
-{
-    type Rejection = Response;
-
-    async fn from_request_parts(parts: &mut Parts, _s: &S) -> Result<Self, Self::Rejection> {
-        let lang = parts
-            .headers
-            .get("Accept-Language")
-            .and_then(|header| header.to_str().ok())
-            .and_then(|header| parse(header).get(0).cloned())
-            .unwrap_or_else(|| "en".into());
-        Ok(LanguageGuard(Language::from_iso_639_1(&lang)))
-    }
-}
 
 pub async fn start_server() {
     // dotenvy::dotenv().ok();

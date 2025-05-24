@@ -1,3 +1,4 @@
+mod common;
 mod entry;
 mod infra;
 mod migration;

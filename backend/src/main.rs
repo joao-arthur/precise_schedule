@@ -1,4 +1,6 @@
+use backend::server::start_server;
+
 #[tokio::main]
 async fn main() {
-    let _ = backend::server::start_server().await;
+    let _ = start_server().await;
 }
