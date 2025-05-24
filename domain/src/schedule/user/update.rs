@@ -4,11 +4,11 @@ use araucaria::schema::{DateSchema, EmailSchema, ObjSchema, Schema, StrSchema};
 
 use crate::{
     generator::DateTimeGenerator,
-    session::{EncodedSession, SessionEncodeService},
+    session::{EncodedSession, Session, SessionEncodeService},
 };
 
 use super::{
-    error::UserErr,
+    error::{UserErr, UserIdNotFoundErr},
     model::User,
     read::user_read_by_id,
     repository::UserRepository,
@@ -61,12 +61,16 @@ pub async fn user_update<
     DtTmGen: DateTimeGenerator,
     SessionEnc: SessionEncodeService,
 >(
+    session: &Session,
     repository: &Repo,
     date_time_generator: &DtTmGen,
     session_service: &SessionEnc,
     id: String,
     model: UserUpdateInput,
 ) -> Result<EncodedSession, UserErr> {
+    if session.id != id {
+        return Err(UserErr::UserIdNotFound(UserIdNotFoundErr));
+    }
     let old_user = user_read_by_id(repository, &id).await?;
     user_unique_info_is_valid_update(
         repository,
@@ -108,7 +112,7 @@ mod tests {
             unique_info::UserUniqueInfoCount,
             update::UserUpdateInput,
         },
-        session::{EncodedSession, SessionEncodeErr, stub::SessionEncodeServiceStub},
+        session::{EncodedSession, Session, SessionEncodeErr, stub::SessionEncodeServiceStub},
     };
 
     use super::{stub::user_update_input_stub, transform_to_user, user_update};
@@ -151,8 +155,13 @@ mod tests {
 
     #[tokio::test]
     async fn user_update_ok() {
+        let session = Session {
+            id: "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
+            username: "username".into(),
+        };
         assert_eq!(
             user_update(
+                &session,
                 &UserRepositoryStub::of_user(user_stub()),
                 &DateTimeGeneratorStub::of_iso("2025-09-27T18:02Z".into()),
                 &SessionEncodeServiceStub::of_token("TENGO SUERTE".into()),
@@ -165,9 +174,34 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn user_update_db_err() {
+    async fn user_update_user_tries_to_update_another_user() {
+        let session = Session {
+            id: "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
+            username: "username".into(),
+        };
         assert_eq!(
             user_update(
+                &session,
+                &UserRepositoryStub::of_user(user_stub()),
+                &DateTimeGeneratorStub::of_iso("2025-09-27T18:02Z".into()),
+                &SessionEncodeServiceStub::of_token("TENGO SUERTE".into()),
+                "f5964e5d-dd30-42c1-88d4-ad3d66662bc2".into(),
+                user_update_input_stub()
+            )
+            .await,
+            Err(UserErr::UserIdNotFound(UserIdNotFoundErr))
+        );
+    }
+
+    #[tokio::test]
+    async fn user_update_db_err() {
+        let session = Session {
+            id: "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
+            username: "username".into(),
+        };
+        assert_eq!(
+            user_update(
+                &session,
                 &UserRepositoryStub::of_db_err(),
                 &DateTimeGeneratorStub::of_iso("2025-09-27T18:02Z".into()),
                 &SessionEncodeServiceStub::of_token("TENGO SUERTE".into()),
@@ -181,8 +215,13 @@ mod tests {
 
     #[tokio::test]
     async fn user_update_user_id_not_found_err() {
+        let session = Session {
+            id: "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
+            username: "username".into(),
+        };
         assert_eq!(
             user_update(
+                &session,
                 &UserRepositoryStub::of_empty(),
                 &DateTimeGeneratorStub::of_iso("2025-09-27T18:02Z".into()),
                 &SessionEncodeServiceStub::of_token("TENGO SUERTE".into()),
@@ -196,9 +235,14 @@ mod tests {
 
     #[tokio::test]
     async fn user_update_user_unique_info_field_err() {
+        let session = Session {
+            id: "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
+            username: "username".into(),
+        };
         let err = UserUniqueInfoFieldErr { username: true, email: true };
         assert_eq!(
             user_update(
+                &session,
                 &UserRepositoryStub {
                     err: false,
                     user: Some(user_stub()),
@@ -216,8 +260,13 @@ mod tests {
 
     #[tokio::test]
     async fn user_update_session_encode_err() {
+        let session = Session {
+            id: "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
+            username: "username".into(),
+        };
         assert_eq!(
             user_update(
+                &session,
                 &UserRepositoryStub::of_user(user_stub()),
                 &DateTimeGeneratorStub::of_iso("2025-09-27T18:02Z".into()),
                 &SessionEncodeServiceStub::of_err(),

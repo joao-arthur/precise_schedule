@@ -3,8 +3,8 @@ use crate::session::Session;
 use super::{error::UserErr, model::User, read::user_read_by_id, repository::UserRepository};
 
 pub async fn user_delete<Repo: UserRepository>(
-    repository: &Repo,
     session: &Session,
+    repository: &Repo,
 ) -> Result<User, UserErr> {
     let found_user = user_read_by_id(repository, &session.id).await?;
     repository.delete(&found_user.id).await.map_err(UserErr::DB)?;
@@ -40,7 +40,7 @@ mod tests {
         let session =
             Session { id: "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(), username: "macca".into() };
         assert_eq!(
-            user_delete(&UserRepositoryStub::of_user(user.clone()), &session).await,
+            user_delete(&session, &UserRepositoryStub::of_user(user.clone())).await,
             Ok(user)
         );
     }
@@ -48,7 +48,7 @@ mod tests {
     #[tokio::test]
     async fn user_delete_db_err() {
         assert_eq!(
-            user_delete(&UserRepositoryStub::of_db_err(), &session_stub()).await,
+            user_delete(&session_stub(), &UserRepositoryStub::of_db_err()).await,
             Err(UserErr::DB(DBErr))
         );
     }
@@ -56,7 +56,7 @@ mod tests {
     #[tokio::test]
     async fn user_delete_user_id_not_found_err() {
         assert_eq!(
-            user_delete(&UserRepositoryStub::of_empty(), &session_stub()).await,
+            user_delete(&session_stub(), &UserRepositoryStub::of_empty()).await,
             Err(UserErr::UserIdNotFound(UserIdNotFoundErr))
         );
     }

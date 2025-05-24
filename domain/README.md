@@ -7,5 +7,4 @@
 
 ## Fix
 
-- Anyone can update a user
 - Can update a birthday into an meeting
