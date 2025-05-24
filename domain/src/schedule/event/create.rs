@@ -1,4 +1,7 @@
-use crate::generator::{DateTimeGenerator, IdGenerator};
+use crate::{
+    generator::{DateTimeGenerator, IdGenerator},
+    session::Session,
+};
 
 use super::{
     error::EventErr,
@@ -37,15 +40,15 @@ pub fn transform_to_event(
 }
 
 pub async fn event_create<Repo: EventRepository, IdGen: IdGenerator, DtTmGen: DateTimeGenerator>(
+    session: &Session,
     repository: &Repo,
     id_generator: &IdGen,
     date_time_generator: &DtTmGen,
     model: EventCreateInput,
-    user_id: String,
 ) -> Result<Event, EventErr> {
     let id = id_generator.generate();
     let now = date_time_generator.now_as_iso();
-    let event = transform_to_event(model, id, user_id, now);
+    let event = transform_to_event(model, id, session.id.clone(), now);
     repository.create(&event).await.map_err(EventErr::DB)?;
     Ok(event)
 }
@@ -81,6 +84,7 @@ mod tests {
             },
             user::model::stub::user_stub,
         },
+        session::{Session, stub::session_stub},
     };
 
     use super::{event_create, transform_to_event};
@@ -118,8 +122,13 @@ mod tests {
 
     #[tokio::test]
     async fn event_create_ok() {
+        let session = Session {
+            id: "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
+            username: "username".into(),
+        };
         assert_eq!(
             event_create(
+                &session,
                 &EventRepositoryStub::of_empty(),
                 &IdGeneratorStub(event_stub().id),
                 &DateTimeGeneratorStub::of_iso("2025-02-05T22:49Z".into()),
@@ -131,7 +140,6 @@ mod tests {
                     frequency: Some(EventFrequency::D2),
                     weekend_repeat: Some(true),
                 },
-                "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into()
             )
             .await,
             Ok(Event {
@@ -153,11 +161,11 @@ mod tests {
     async fn user_create_db_err() {
         assert_eq!(
             event_create(
+                &session_stub(),
                 &EventRepositoryStub::of_db_err(),
                 &IdGeneratorStub(user_stub().id),
                 &DateTimeGeneratorStub::of_iso(user_stub().created_at),
                 event_create_stub(),
-                user_stub().id
             )
             .await,
             Err(EventErr::DB(DBErr))

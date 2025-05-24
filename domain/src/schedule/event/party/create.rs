@@ -10,6 +10,7 @@ use crate::{
         model::{Event, EventCategory},
         repository::EventRepository,
     },
+    session::Session,
 };
 
 pub struct PartyCreateInput {
@@ -44,14 +45,14 @@ pub async fn event_party_create<
     IdGen: IdGenerator,
     DtTmGen: DateTimeGenerator,
 >(
+    session: &Session,
     repository: &Repo,
     id_generator: &IdGen,
     party_time_generator: &DtTmGen,
     model: PartyCreateInput,
-    user_id: String,
 ) -> Result<Event, EventErr> {
     let event_create_model = transform_to_event_create(model);
-    event_create(repository, id_generator, party_time_generator, event_create_model, user_id).await
+    event_create(session, repository, id_generator, party_time_generator, event_create_model).await
 }
 
 #[cfg(test)]
@@ -63,6 +64,7 @@ mod tests {
             model::{Event, EventCategory},
             repository::stub::EventRepositoryStub,
         },
+        session::Session,
     };
 
     use super::{PartyCreateInput, event_party_create, transform_to_event_create};
@@ -89,8 +91,13 @@ mod tests {
 
     #[tokio::test]
     async fn event_party_create_ok() {
+        let session = Session {
+            id: "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
+            username: "username".into(),
+        };
         assert_eq!(
             event_party_create(
+                &session,
                 &EventRepositoryStub::of_empty(),
                 &IdGeneratorStub("6d470410-5e51-40d1-bd13-0bb6a99de95e".into()),
                 &DateTimeGeneratorStub::of_iso("2025-02-05T22:49Z".into()),
@@ -100,7 +107,6 @@ mod tests {
                     begin: "18:30".into(),
                     end: "23:59".into(),
                 },
-                "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into()
             )
             .await,
             Ok(Event {
