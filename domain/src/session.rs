@@ -41,6 +41,10 @@ pub mod stub {
         EncodedSession { token: "TOKEN".into() }
     }
 
+    pub fn session_stub() -> Session {
+        Session { id: "id".into(), username: "username".into() }
+    }
+
     pub struct SessionEncodeServiceStub(pub Result<EncodedSession, SessionEncodeErr>);
 
     impl SessionEncodeService for SessionEncodeServiceStub {
@@ -111,13 +115,10 @@ mod tests {
 
     #[test]
     fn session_decode_service_stub() {
+        let session = Session { id: "id".into(), username: "username".into() };
         assert_eq!(
-            SessionDecodeServiceStub::of_session(Session {
-                id: "id".into(),
-                username: "username".into()
-            })
-            .decode(encoded_session_stub()),
-            Ok(Session { id: "id".into(), username: "username".into() })
+            SessionDecodeServiceStub::of_session(session.clone()).decode(encoded_session_stub()),
+            Ok(session)
         );
         assert_eq!(
             SessionDecodeServiceStub::of_err().decode(encoded_session_stub()),
