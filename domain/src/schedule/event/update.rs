@@ -1,4 +1,4 @@
-use crate::generator::DateTimeGenerator;
+use crate::{generator::DateTimeGenerator, session::Session};
 
 use super::{
     error::EventErr,
@@ -31,13 +31,16 @@ fn transform_to_event(model: EventUpdateInput, event: Event, updated_at: String)
 }
 
 pub async fn event_update<Repo: EventRepository, DtTmGen: DateTimeGenerator>(
+    session: &Session,
     repository: &Repo,
     date_time_generator: &DtTmGen,
     event_update: EventUpdateInput,
     event_id: String,
-    user_id: String,
 ) -> Result<Event, EventErr> {
-    let old_event = event_read_by_id(repository, &user_id, &event_id).await?;
+    let old_event = event_read_by_id(repository, &session.id, &event_id).await?;
+    if event_update.category != old_event.category {
+        return 
+    }
     let now = date_time_generator.now_as_iso();
     let event = transform_to_event(event_update, old_event, now);
     repository.update(&event).await.map_err(EventErr::DB)?;
@@ -75,6 +78,7 @@ mod tests {
             },
             user::model::stub::user_stub,
         },
+        session::{Session, stub::session_stub},
     };
 
     use super::{event_update, transform_to_event};
@@ -122,8 +126,13 @@ mod tests {
 
     #[tokio::test]
     async fn event_update_ok() {
+        let session = Session {
+            id: "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
+            username: "username".into(),
+        };
         assert_eq!(
             event_update(
+                &session,
                 &EventRepositoryStub::of_event(Event {
                     id: "6d470410-5e51-40d1-bd13-0bb6a99de95e".into(),
                     name: "Dentist".into(),
@@ -145,7 +154,6 @@ mod tests {
                     frequency: Some(EventFrequency::Y1),
                     weekend_repeat: None,
                 },
-                "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
                 "6d470410-5e51-40d1-bd13-0bb6a99de95e".into(),
             )
             .await,
@@ -165,13 +173,13 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn user_update_refgedb_err() {
+    async fn user_update_event_id_not_found_err() {
         assert_eq!(
             event_update(
+                &session_stub(),
                 &EventRepositoryStub::of_empty(),
                 &DateTimeGeneratorStub::of_iso(user_stub().updated_at),
                 event_update_stub(),
-                user_stub().id,
                 event_stub().id
             )
             .await,
@@ -183,10 +191,10 @@ mod tests {
     async fn user_update_db_err() {
         assert_eq!(
             event_update(
+                &session_stub(),
                 &EventRepositoryStub::of_db_err(),
                 &DateTimeGeneratorStub::of_iso(user_stub().updated_at),
                 event_update_stub(),
-                user_stub().id,
                 event_stub().id
             )
             .await,

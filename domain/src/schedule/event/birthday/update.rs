@@ -10,6 +10,7 @@ use crate::{
         repository::EventRepository,
         update::{EventUpdateInput, event_update},
     },
+    session::Session,
 };
 
 pub struct BirthdayUpdateInput {
@@ -36,14 +37,14 @@ pub fn transform_to_event_update(model: BirthdayUpdateInput) -> EventUpdateInput
 }
 
 pub async fn event_birthday_update<Repo: EventRepository, DtTmGen: DateTimeGenerator>(
+    session: &Session,
     repository: &Repo,
     date_time_generator: &DtTmGen,
     model: BirthdayUpdateInput,
     event_id: String,
-    user_id: String,
 ) -> Result<Event, EventErr> {
     let event_update_model = transform_to_event_update(model);
-    event_update(repository, date_time_generator, event_update_model, event_id, user_id).await
+    event_update(session, repository, date_time_generator, event_update_model, event_id).await
 }
 
 #[cfg(test)]
@@ -55,6 +56,7 @@ mod tests {
             repository::stub::EventRepositoryStub,
             update::EventUpdateInput,
         },
+        session::Session,
     };
 
     use super::{BirthdayUpdateInput, event_birthday_update, transform_to_event_update};
@@ -79,8 +81,13 @@ mod tests {
 
     #[tokio::test]
     async fn event_birthday_update_ok() {
+        let session = Session {
+            id: "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
+            username: "username".into(),
+        };
         assert_eq!(
             event_birthday_update(
+                &session,
                 &EventRepositoryStub::of_event(Event {
                     id: "6d470410-5e51-40d1-bd13-0bb6a99de95e".into(),
                     name: "Frnando birthday".into(),
@@ -99,7 +106,6 @@ mod tests {
                     day: "2025-08-19".into()
                 },
                 "6d470410-5e51-40d1-bd13-0bb6a99de95e".into(),
-                "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into()
             )
             .await,
             Ok(Event {
