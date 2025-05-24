@@ -20,7 +20,7 @@ pub struct PartyUpdateInput {
     pub end: String,
 }
 
-pub static DATE_UPDATE_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
+pub static PARTY_UPDATE_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
     Schema::from(ObjSchema::from([
         ("name".into(), Schema::from(StrSchema::default().chars_len_btwn(1, 32))),
         ("day".into(), Schema::from(DateSchema::default().unix_epoch())),

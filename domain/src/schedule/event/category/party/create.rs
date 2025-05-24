@@ -20,7 +20,7 @@ pub struct PartyCreateInput {
     pub end: String,
 }
 
-pub static DATE_CREATE_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
+pub static PARTY_CREATE_SCHEMA: LazyLock<Schema> = LazyLock::new(|| {
     Schema::from(ObjSchema::from([
         ("name".into(), Schema::from(StrSchema::default().chars_len_btwn(1, 32))),
         ("day".into(), Schema::from(DateSchema::default().unix_epoch())),
@@ -48,11 +48,11 @@ pub async fn event_party_create<
     session: &Session,
     repository: &Repo,
     id_generator: &IdGen,
-    party_time_generator: &DtTmGen,
+    date_time_generator: &DtTmGen,
     model: PartyCreateInput,
 ) -> Result<Event, EventErr> {
     let event_create_model = transform_to_event_create(model);
-    event_create(session, repository, id_generator, party_time_generator, event_create_model).await
+    event_create(session, repository, id_generator, date_time_generator, event_create_model).await
 }
 
 #[cfg(test)]

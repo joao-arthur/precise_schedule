@@ -2,6 +2,7 @@
 pub enum EventCategory {
     Appointment,
     Birthday,
+    Concert,
     Date,
     Meeting,
     Party,
