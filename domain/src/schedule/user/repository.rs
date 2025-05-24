@@ -6,18 +6,21 @@ use super::{
 };
 
 pub trait UserRepository {
-    async fn create(&self, user: &User) -> Result<(), DBErr>;
-    async fn update(&self, user: &User) -> Result<(), DBErr>;
-    async fn delete(&self, id: &str) -> Result<(), DBErr>;
-    async fn read_by_credentials(
+    fn create(&self, user: &User) -> impl std::future::Future<Output = Result<(), DBErr>> + Send;
+    fn update(&self, user: &User) -> impl std::future::Future<Output = Result<(), DBErr>> + Send;
+    fn delete(&self, id: &str) -> impl std::future::Future<Output = Result<(), DBErr>> + Send;
+    fn read_by_credentials(
         &self,
         credentials: &UserCredentials,
-    ) -> Result<Option<User>, DBErr>;
-    async fn read_by_id(&self, id: &str) -> Result<Option<User>, DBErr>;
-    async fn read_count_unique_info(
+    ) -> impl std::future::Future<Output = Result<Option<User>, DBErr>> + Send;
+    fn read_by_id(
+        &self,
+        id: &str,
+    ) -> impl std::future::Future<Output = Result<Option<User>, DBErr>> + Send;
+    fn read_count_unique_info(
         &self,
         user_unique_info: &UserUniqueInfo,
-    ) -> Result<UserUniqueInfoCount, DBErr>;
+    ) -> impl std::future::Future<Output = Result<UserUniqueInfoCount, DBErr>> + Send;
 }
 
 pub mod stub {

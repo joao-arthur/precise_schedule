@@ -3,11 +3,18 @@ use crate::database::DBErr;
 use super::model::Event;
 
 pub trait EventRepository {
-    async fn create(&self, event: &Event) -> Result<(), DBErr>;
-    async fn update(&self, event: &Event) -> Result<(), DBErr>;
-    async fn delete(&self, id: &str) -> Result<(), DBErr>;
-    async fn read_by_id(&self, user_id: &str, id: &str) -> Result<Option<Event>, DBErr>;
-    async fn read_by_user(&self, user_id: &str) -> Result<Vec<Event>, DBErr>;
+    fn create(&self, event: &Event) -> impl std::future::Future<Output = Result<(), DBErr>> + Send;
+    fn update(&self, event: &Event) -> impl std::future::Future<Output = Result<(), DBErr>> + Send;
+    fn delete(&self, id: &str) -> impl std::future::Future<Output = Result<(), DBErr>> + Send;
+    fn read_by_id(
+        &self,
+        user_id: &str,
+        id: &str,
+    ) -> impl std::future::Future<Output = Result<Option<Event>, DBErr>> + Send;
+    fn read_by_user(
+        &self,
+        user_id: &str,
+    ) -> impl std::future::Future<Output = Result<Vec<Event>, DBErr>> + Send;
 }
 
 pub mod stub {
