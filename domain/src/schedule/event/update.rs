@@ -1,7 +1,7 @@
 use crate::{generator::DateTimeGenerator, session::Session};
 
 use super::{
-    error::EventErr,
+    error::{EventErr, EventIdNotFoundErr},
     model::{Event, EventCategory, EventFrequency},
     read::event_read_by_id,
     repository::EventRepository,
@@ -39,7 +39,7 @@ pub async fn event_update<Repo: EventRepository, DtTmGen: DateTimeGenerator>(
 ) -> Result<Event, EventErr> {
     let old_event = event_read_by_id(repository, &session.id, &event_id).await?;
     if event_update.category != old_event.category {
-        return 
+        return Err(EventErr::EventIdNotFound(EventIdNotFoundErr));
     }
     let now = date_time_generator.now_as_iso();
     let event = transform_to_event(event_update, old_event, now);
@@ -169,6 +169,43 @@ mod tests {
                 created_at: "2025-02-05T22:49Z".into(),
                 updated_at: "2025-04-18T10:23Z".into(),
             })
+        );
+    }
+
+    #[tokio::test]
+    async fn event_update_cant_update_event_of_another_category() {
+        let session = Session {
+            id: "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
+            username: "username".into(),
+        };
+        assert_eq!(
+            event_update(
+                &session,
+                &EventRepositoryStub::of_event(Event {
+                    id: "6d470410-5e51-40d1-bd13-0bb6a99de95e".into(),
+                    name: "Dentist".into(),
+                    begin: "2024-03-31T18:00Z".into(),
+                    end: "2024-03-31T22:00Z".into(),
+                    category: EventCategory::Appointment,
+                    frequency: Some(EventFrequency::D2),
+                    weekend_repeat: Some(true),
+                    user: "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
+                    created_at: "2025-02-05T22:49Z".into(),
+                    updated_at: "2025-04-18T10:23Z".into(),
+                }),
+                &DateTimeGeneratorStub::of_iso("2025-04-18T10:23Z".into()),
+                EventUpdateInput {
+                    name: "Movies with Ana".into(),
+                    begin: "2025-05-24T13:00Z".into(),
+                    end: "2025-05-24T17:59Z".into(),
+                    category: EventCategory::Date,
+                    frequency: None,
+                    weekend_repeat: None,
+                },
+                "6d470410-5e51-40d1-bd13-0bb6a99de95e".into(),
+            )
+            .await,
+            Err(EventErr::EventIdNotFound(EventIdNotFoundErr))
         );
     }
 
