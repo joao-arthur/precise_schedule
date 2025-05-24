@@ -14,7 +14,7 @@ use domain::{
         error::UserErr,
         update::{USER_UPDATE_SCHEMA, UserUpdateInput, user_update},
     },
-    session::{Session, SessionErr},
+    session::Session,
 };
 
 use crate::{
@@ -99,13 +99,10 @@ pub async fn endpoint_user_update(
                 UserErr::UserCredentialsNotFound(_) => {
                     (StatusCode::UNAUTHORIZED, "Wrong username or password")
                 }
-                UserErr::Session(se) => match se {
-                    SessionErr::Encode(_) => (
+                UserErr::EncodeSession(_) => (
                         StatusCode::INTERNAL_SERVER_ERROR,
                         "It was not possible to create your session",
                     ),
-                    SessionErr::Decode(_) => (StatusCode::UNAUTHORIZED, "Your session is invalid"),
-                },
             };
             (code, Json(AppError { error: msg.into() })).into_response()
         }

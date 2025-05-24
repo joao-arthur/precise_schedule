@@ -75,8 +75,9 @@ pub async fn user_sign_up<
     let now = date_time_generator.now_as_iso();
     let user = transform_to_user(model, id, now);
     repository.create(&user).await.map_err(UserErr::DB)?;
-    let session =
-        session_encode_service.encode(&user, date_time_generator).map_err(UserErr::Session)?;
+    let session = session_encode_service
+        .encode(&user, date_time_generator)
+        .map_err(UserErr::EncodeSession)?;
     Ok(session)
 }
 
@@ -106,7 +107,7 @@ mod tests {
             sign_up::UserSignUpInput,
             unique_info::UserUniqueInfoCount,
         },
-        session::{Session, SessionEncodeErr, SessionErr, stub::SessionEncodeServiceStub},
+        session::{Session, SessionEncodeErr, stub::SessionEncodeServiceStub},
     };
 
     use super::{stub::user_sign_up_input_stub, transform_to_user, user_sign_up};
@@ -198,7 +199,7 @@ mod tests {
                 user_sign_up_input_stub()
             )
             .await,
-            Err(UserErr::Session(SessionErr::Encode(SessionEncodeErr)))
+            Err(UserErr::EncodeSession(SessionEncodeErr))
         );
     }
 }

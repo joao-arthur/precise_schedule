@@ -4,9 +4,8 @@ use axum::{
     http::{request::Parts, status::StatusCode},
     response::{IntoResponse, Response},
 };
-use domain::session::SessionDecodeService;
 
-use crate::infra::session::SessionDecodeServiceJWT;
+use crate::infra::session::decode_jwt_session;
 
 use super::error::AppError;
 
@@ -32,7 +31,7 @@ where
             .and_then(|header| header.to_str().ok())
             .map(|header| header.replace("Bearer ", ""))
             .map(|token| domain::session::Session { token })
-            .and_then(|session| SessionDecodeServiceJWT.decode(session).ok())
+            .and_then(|session| decode_jwt_session(session).ok())
             .map(|id| SessionExtractor(UserSession { id, username: "".into() }))
             .ok_or_else(|| {
                 (

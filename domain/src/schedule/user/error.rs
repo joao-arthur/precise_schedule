@@ -1,4 +1,4 @@
-use crate::{database::DBErr, session::SessionErr};
+use crate::{database::DBErr, session::SessionEncodeErr};
 
 #[derive(Debug, PartialEq)]
 pub struct UserUniqueInfoFieldErr {
@@ -18,5 +18,5 @@ pub enum UserErr {
     UserUniqueInfoField(UserUniqueInfoFieldErr),
     UserIdNotFound(UserIdNotFoundErr),
     UserCredentialsNotFound(UserCredentialsNotFoundErr),
-    Session(SessionErr),
+    EncodeSession(SessionEncodeErr),
 }

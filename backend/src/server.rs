@@ -17,6 +17,8 @@ use crate::{
     migration::Migrator,
 };
 
+rust_i18n::i18n!("locales");
+
 pub async fn start_server() {
     // dotenvy::dotenv().ok();
     // let db_url = env::var("DATABASE_URL").expect("DATABASE_URL is not set in .env file");

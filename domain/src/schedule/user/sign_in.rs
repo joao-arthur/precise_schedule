@@ -40,8 +40,9 @@ pub async fn user_sign_in<
     model: UserCredentials,
 ) -> Result<Session, UserErr> {
     let user = user_read_by_credentials(repository, &model).await?;
-    let session =
-        session_encode_service.encode(&user, date_time_generator).map_err(UserErr::Session)?;
+    let session = session_encode_service
+        .encode(&user, date_time_generator)
+        .map_err(UserErr::EncodeSession)?;
     Ok(session)
 }
 
@@ -55,7 +56,7 @@ mod tests {
             model::stub::{user_credentials_stub, user_stub},
             repository::stub::UserRepositoryStub,
         },
-        session::{Session, SessionEncodeErr, SessionErr, stub::SessionEncodeServiceStub},
+        session::{Session, SessionEncodeErr, stub::SessionEncodeServiceStub},
     };
 
     use super::user_sign_in;
@@ -98,7 +99,7 @@ mod tests {
                 user_credentials_stub()
             )
             .await,
-            Err(UserErr::Session(SessionErr::Encode(SessionEncodeErr)))
+            Err(UserErr::EncodeSession(SessionEncodeErr))
         );
     }
 }

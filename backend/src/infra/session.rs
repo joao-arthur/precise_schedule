@@ -5,8 +5,7 @@ use domain::{
     generator::DateTimeGenerator,
     schedule::user::model::User,
     session::{
-        Session, SessionDecodeErr, SessionDecodeService, SessionEncodeErr, SessionEncodeService,
-        SessionErr,
+        Session, SessionDecodeErr, SessionEncodeErr, SessionEncodeService,
     },
 };
 
@@ -24,14 +23,12 @@ const SECRET: &str = "your-secret-key";
 
 pub struct SessionEncodeServiceJWT;
 
-pub struct SessionDecodeServiceJWT;
-
 impl SessionEncodeService for SessionEncodeServiceJWT {
     fn encode<DtTmGen: DateTimeGenerator>(
         &self,
         user: &User,
         date_time_gen: &DtTmGen,
-    ) -> Result<Session, SessionErr> {
+    ) -> Result<Session, SessionEncodeErr> {
         let claims = Claims {
             username: user.username.clone(),
             sub: user.id.clone(),
@@ -45,35 +42,33 @@ impl SessionEncodeService for SessionEncodeServiceJWT {
             &claims,
             &EncodingKey::from_secret(SECRET.as_ref()),
         )
-        .map_err(|_| SessionErr::Encode(SessionEncodeErr))?;
+        .map_err(|_| SessionEncodeErr)?;
         Ok(Session { token })
     }
 }
 
-impl SessionDecodeService for SessionDecodeServiceJWT {
-    fn decode(&self, session: Session) -> Result<String, SessionErr> {
-        let mut validation = Validation::new(Algorithm::HS512);
-        validation.set_audience(&["precise_schedule_server".to_string()]);
-        validation.set_issuer(&["precise_schedule".to_string()]);
-        let token_data = decode::<Claims>(
-            &session.token,
-            &DecodingKey::from_secret(SECRET.as_ref()),
-            &validation,
-        )
-        .map_err(|_| SessionErr::Decode(SessionDecodeErr))?;
-        Ok(token_data.claims.sub)
-    }
+pub fn decode_jwt_session(session: Session) -> Result<String, SessionDecodeErr> {
+    let mut validation = Validation::new(Algorithm::HS512);
+    validation.set_audience(&["precise_schedule_server".to_string()]);
+    validation.set_issuer(&["precise_schedule".to_string()]);
+    let token_data = decode::<Claims>(
+        &session.token,
+        &DecodingKey::from_secret(SECRET.as_ref()),
+        &validation,
+    )
+    .map_err(|_| SessionDecodeErr)?;
+    Ok(token_data.claims.sub)
 }
 
 #[cfg(test)]
 mod test {
     use domain::{
         generator::stub::DateTimeGeneratorStub,
-        schedule::user::model::{User, stub::user_stub},
-        session::{Session, SessionDecodeService, SessionEncodeService},
+        schedule::user::model::User,
+        session::{Session,  SessionEncodeService},
     };
 
-    use super::{SessionDecodeServiceJWT, SessionEncodeServiceJWT};
+    use super::{decode_jwt_session, SessionEncodeServiceJWT};
 
     fn session_stub() -> Session {
         Session {
@@ -117,7 +112,7 @@ mod test {
     #[test]
     fn test_session_decode() {
         assert_eq!(
-            SessionDecodeServiceJWT.decode(session_stub()),
+            decode_jwt_session(session_stub()),
             Ok("a6edc906-2f9f-5fb2-a373-efac406f0ef2".into())
         );
     }

@@ -77,7 +77,8 @@ pub async fn user_update<
     let now = date_time_generator.now_as_iso();
     let user = transform_to_user(model, old_user, now);
     repository.update(&user).await.map_err(UserErr::DB)?;
-    let session = session_service.encode(&user, date_time_generator).map_err(UserErr::Session)?;
+    let session =
+        session_service.encode(&user, date_time_generator).map_err(UserErr::EncodeSession)?;
     Ok(session)
 }
 
@@ -107,7 +108,7 @@ mod tests {
             unique_info::UserUniqueInfoCount,
             update::UserUpdateInput,
         },
-        session::{Session, SessionEncodeErr, SessionErr, stub::SessionEncodeServiceStub},
+        session::{Session, SessionEncodeErr, stub::SessionEncodeServiceStub},
     };
 
     use super::{stub::user_update_input_stub, transform_to_user, user_update};
@@ -224,7 +225,7 @@ mod tests {
                 user_update_input_stub()
             )
             .await,
-            Err(UserErr::Session(SessionErr::Encode(SessionEncodeErr)))
+            Err(UserErr::EncodeSession(SessionEncodeErr))
         );
     }
 }

@@ -13,7 +13,7 @@ use domain::{
         error::UserErr,
         sign_up::{USER_SIGN_UP_SCHEMA, UserSignUpInput, user_sign_up},
     },
-    session::{Session, SessionErr},
+    session::Session,
 };
 
 use crate::{
@@ -98,13 +98,10 @@ pub async fn endpoint_user_sign_up(
                 UserErr::UserCredentialsNotFound(_) => {
                     (StatusCode::UNAUTHORIZED, "Wrong username or password")
                 }
-                UserErr::Session(se) => match se {
-                    SessionErr::Encode(_) => (
-                        StatusCode::INTERNAL_SERVER_ERROR,
-                        "It was not possible to create your session",
-                    ),
-                    SessionErr::Decode(_) => (StatusCode::UNAUTHORIZED, "Your session is invalid"),
-                },
+                UserErr::EncodeSession(_) => (
+                    StatusCode::INTERNAL_SERVER_ERROR,
+                    "It was not possible to create your session",
+                ),
             };
             (code, Json(AppError { error: msg.into() })).into_response()
         }
