@@ -45,10 +45,10 @@ pub async fn event_party_update<Repo: EventRepository, DtTmGen: DateTimeGenerato
     repository: &Repo,
     date_time_generator: &DtTmGen,
     model: PartyUpdateInput,
-    event_id: String,
+    id: String,
 ) -> Result<Event, EventErr> {
     let event_update_model = transform_to_event_update(model);
-    event_update(session, repository, date_time_generator, event_update_model, event_id).await
+    event_update(session, repository, date_time_generator, event_update_model, id).await
 }
 
 #[cfg(test)]

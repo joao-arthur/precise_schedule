@@ -41,10 +41,10 @@ pub async fn event_birthday_update<Repo: EventRepository, DtTmGen: DateTimeGener
     repository: &Repo,
     date_time_generator: &DtTmGen,
     model: BirthdayUpdateInput,
-    event_id: String,
+    id: String,
 ) -> Result<Event, EventErr> {
     let event_update_model = transform_to_event_update(model);
-    event_update(session, repository, date_time_generator, event_update_model, event_id).await
+    event_update(session, repository, date_time_generator, event_update_model, id).await
 }
 
 #[cfg(test)]

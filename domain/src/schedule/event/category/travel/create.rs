@@ -1,15 +1,13 @@
 use std::sync::LazyLock;
 
-use araucaria::schema::{
-     DateTimeSchema,  ObjSchema, Schema, StrSchema,
-};
+use araucaria::schema::{DateTimeSchema, ObjSchema, Schema, StrSchema};
 
 use crate::{
     generator::{DateTimeGenerator, IdGenerator},
     schedule::event::{
         create::{EventCreateInput, event_create},
         error::EventErr,
-        model::{Event, EventCategory, EventFrequency},
+        model::{Event, EventCategory},
         repository::EventRepository,
     },
     session::Session,
@@ -61,7 +59,7 @@ mod tests {
         generator::stub::{DateTimeGeneratorStub, IdGeneratorStub},
         schedule::event::{
             create::EventCreateInput,
-            model::{Event, EventCategory, EventFrequency},
+            model::{Event, EventCategory},
             repository::stub::EventRepositoryStub,
         },
         session::Session,

@@ -35,9 +35,9 @@ pub async fn event_update<Repo: EventRepository, DtTmGen: DateTimeGenerator>(
     repository: &Repo,
     date_time_generator: &DtTmGen,
     event_update: EventUpdateInput,
-    event_id: String,
+    id: String,
 ) -> Result<Event, EventErr> {
-    let old_event = event_read_by_id(repository, &session.id, &event_id).await?;
+    let old_event = event_read_by_id(repository, &session.id, &id).await?;
     if event_update.category != old_event.category {
         return Err(EventErr::EventIdNotFound(EventIdNotFoundErr));
     }
