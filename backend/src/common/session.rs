@@ -5,18 +5,14 @@ use axum::{
     response::{IntoResponse, Response},
 };
 
+use domain::session::Session;
+
 use crate::infra::session::decode_jwt_session;
 
 use super::error::AppError;
 
 #[derive(Debug, PartialEq)]
-pub struct UserSession {
-    pub id: String,
-    pub username: String,
-}
-
-#[derive(Debug, PartialEq)]
-pub struct SessionExtractor(pub UserSession);
+pub struct SessionExtractor(pub Session);
 
 impl<S> FromRequestParts<S> for SessionExtractor
 where
@@ -30,9 +26,9 @@ where
             .get("Authorization")
             .and_then(|header| header.to_str().ok())
             .map(|header| header.replace("Bearer ", ""))
-            .map(|token| domain::session::Session { token })
+            .map(|token| domain::session::EncodedSession { token })
             .and_then(|session| decode_jwt_session(session).ok())
-            .map(|id| SessionExtractor(UserSession { id, username: "".into() }))
+            .map(|id| SessionExtractor(Session { id, username: "".into() }))
             .ok_or_else(|| {
                 (
                     StatusCode::UNAUTHORIZED,

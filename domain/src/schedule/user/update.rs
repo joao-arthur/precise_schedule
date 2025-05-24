@@ -4,7 +4,7 @@ use araucaria::schema::{DateSchema, EmailSchema, ObjSchema, Schema, StrSchema};
 
 use crate::{
     generator::DateTimeGenerator,
-    session::{Session, SessionEncodeService},
+    session::{EncodedSession, SessionEncodeService},
 };
 
 use super::{
@@ -66,7 +66,7 @@ pub async fn user_update<
     session_service: &SessionEnc,
     id: String,
     model: UserUpdateInput,
-) -> Result<Session, UserErr> {
+) -> Result<EncodedSession, UserErr> {
     let old_user = user_read_by_id(repository, &id).await?;
     user_unique_info_is_valid_update(
         repository,
@@ -108,7 +108,7 @@ mod tests {
             unique_info::UserUniqueInfoCount,
             update::UserUpdateInput,
         },
-        session::{Session, SessionEncodeErr, stub::SessionEncodeServiceStub},
+        session::{EncodedSession, SessionEncodeErr, stub::SessionEncodeServiceStub},
     };
 
     use super::{stub::user_update_input_stub, transform_to_user, user_update};
@@ -160,7 +160,7 @@ mod tests {
                 user_update_input_stub()
             )
             .await,
-            Ok(Session { token: "TENGO SUERTE".into() })
+            Ok(EncodedSession { token: "TENGO SUERTE".into() })
         );
     }
 

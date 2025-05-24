@@ -2,7 +2,7 @@ use std::sync::LazyLock;
 
 use crate::infra::{
     generator::{DateTimeGeneratorImpl, IdGeneratorUUID4},
-    session::{ SessionEncodeServiceJWT},
+    session::SessionEncodeServiceJWT,
 };
 
 pub static ID_GENERATOR: LazyLock<IdGeneratorUUID4> = LazyLock::new(|| IdGeneratorUUID4);

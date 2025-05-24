@@ -13,7 +13,7 @@ use domain::{
         error::UserErr,
         sign_up::{USER_SIGN_UP_SCHEMA, UserSignUpInput, user_sign_up},
     },
-    session::Session,
+    session::EncodedSession,
 };
 
 use crate::{
@@ -49,8 +49,8 @@ struct SessionProxy {
     token: String,
 }
 
-impl From<Session> for SessionProxy {
-    fn from(value: Session) -> Self {
+impl From<EncodedSession> for SessionProxy {
+    fn from(value: EncodedSession) -> Self {
         SessionProxy { token: value.token }
     }
 }

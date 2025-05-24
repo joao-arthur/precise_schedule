@@ -14,7 +14,7 @@ use domain::{
         error::UserErr,
         update::{USER_UPDATE_SCHEMA, UserUpdateInput, user_update},
     },
-    session::Session,
+    session::EncodedSession,
 };
 
 use crate::{
@@ -49,8 +49,8 @@ struct SessionProxy {
     token: String,
 }
 
-impl From<Session> for SessionProxy {
-    fn from(value: Session) -> Self {
+impl From<EncodedSession> for SessionProxy {
+    fn from(value: EncodedSession) -> Self {
         SessionProxy { token: value.token }
     }
 }
@@ -100,9 +100,9 @@ pub async fn endpoint_user_update(
                     (StatusCode::UNAUTHORIZED, "Wrong username or password")
                 }
                 UserErr::EncodeSession(_) => (
-                        StatusCode::INTERNAL_SERVER_ERROR,
-                        "It was not possible to create your session",
-                    ),
+                    StatusCode::INTERNAL_SERVER_ERROR,
+                    "It was not possible to create your session",
+                ),
             };
             (code, Json(AppError { error: msg.into() })).into_response()
         }

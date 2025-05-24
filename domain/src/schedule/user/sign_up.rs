@@ -4,7 +4,7 @@ use araucaria::schema::{DateSchema, EmailSchema, ObjSchema, Schema, StrSchema};
 
 use crate::{
     generator::{DateTimeGenerator, IdGenerator},
-    session::{Session, SessionEncodeService},
+    session::{EncodedSession, SessionEncodeService},
 };
 
 use super::{
@@ -69,7 +69,7 @@ pub async fn user_sign_up<
     date_time_generator: &DtTmGen,
     session_encode_service: &SessionEnc,
     model: UserSignUpInput,
-) -> Result<Session, UserErr> {
+) -> Result<EncodedSession, UserErr> {
     user_unique_info_is_valid_sign_up(repository, &UserUniqueInfo::from(&model)).await?;
     let id = id_generator.generate();
     let now = date_time_generator.now_as_iso();
@@ -107,7 +107,7 @@ mod tests {
             sign_up::UserSignUpInput,
             unique_info::UserUniqueInfoCount,
         },
-        session::{Session, SessionEncodeErr, stub::SessionEncodeServiceStub},
+        session::{EncodedSession, SessionEncodeErr, stub::SessionEncodeServiceStub},
     };
 
     use super::{stub::user_sign_up_input_stub, transform_to_user, user_sign_up};
@@ -150,7 +150,7 @@ mod tests {
                 user_sign_up_input_stub()
             )
             .await,
-            Ok(Session { token: "TENGO SUERTE".into() })
+            Ok(EncodedSession { token: "TENGO SUERTE".into() })
         );
     }
 

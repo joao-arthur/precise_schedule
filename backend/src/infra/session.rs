@@ -4,9 +4,7 @@ use serde::{Deserialize, Serialize};
 use domain::{
     generator::DateTimeGenerator,
     schedule::user::model::User,
-    session::{
-        Session, SessionDecodeErr, SessionEncodeErr, SessionEncodeService,
-    },
+    session::{EncodedSession, Session, SessionDecodeErr, SessionEncodeErr, SessionEncodeService},
 };
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -28,7 +26,7 @@ impl SessionEncodeService for SessionEncodeServiceJWT {
         &self,
         user: &User,
         date_time_gen: &DtTmGen,
-    ) -> Result<Session, SessionEncodeErr> {
+    ) -> Result<EncodedSession, SessionEncodeErr> {
         let claims = Claims {
             username: user.username.clone(),
             sub: user.id.clone(),
@@ -43,21 +41,18 @@ impl SessionEncodeService for SessionEncodeServiceJWT {
             &EncodingKey::from_secret(SECRET.as_ref()),
         )
         .map_err(|_| SessionEncodeErr)?;
-        Ok(Session { token })
+        Ok(EncodedSession { token })
     }
 }
 
-pub fn decode_jwt_session(session: Session) -> Result<String, SessionDecodeErr> {
+pub fn decode_jwt_session(session: EncodedSession) -> Result<Session, SessionDecodeErr> {
     let mut validation = Validation::new(Algorithm::HS512);
     validation.set_audience(&["precise_schedule_server".to_string()]);
     validation.set_issuer(&["precise_schedule".to_string()]);
-    let token_data = decode::<Claims>(
-        &session.token,
-        &DecodingKey::from_secret(SECRET.as_ref()),
-        &validation,
-    )
-    .map_err(|_| SessionDecodeErr)?;
-    Ok(token_data.claims.sub)
+    let token_data =
+        decode::<Claims>(&session.token, &DecodingKey::from_secret(SECRET.as_ref()), &validation)
+            .map_err(|_| SessionDecodeErr)?;
+    Ok(Session { id: token_data.claims.sub, username: token_data.claims.username })
 }
 
 #[cfg(test)]
@@ -65,13 +60,13 @@ mod test {
     use domain::{
         generator::stub::DateTimeGeneratorStub,
         schedule::user::model::User,
-        session::{Session,  SessionEncodeService},
+        session::{EncodedSession, Session, SessionEncodeService},
     };
 
-    use super::{decode_jwt_session, SessionEncodeServiceJWT};
+    use super::{SessionEncodeServiceJWT, decode_jwt_session};
 
-    fn session_stub() -> Session {
-        Session {
+    fn encded_session_stub() -> EncodedSession {
+        EncodedSession {
             token: [
                 "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9",
                 &[
@@ -105,15 +100,18 @@ mod test {
                 },
                 &DateTimeGeneratorStub::of_unix_epoch(4101300161)
             ),
-            Ok(session_stub())
+            Ok(encded_session_stub())
         );
     }
 
     #[test]
     fn test_session_decode() {
         assert_eq!(
-            decode_jwt_session(session_stub()),
-            Ok("a6edc906-2f9f-5fb2-a373-efac406f0ef2".into())
+            decode_jwt_session(encded_session_stub()),
+            Ok(Session {
+                id: "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
+                username: "macca".into(),
+            })
         );
     }
 }

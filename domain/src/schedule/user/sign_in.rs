@@ -4,7 +4,7 @@ use araucaria::schema::{ObjSchema, Schema, StrSchema};
 
 use crate::{
     generator::DateTimeGenerator,
-    session::{Session, SessionEncodeService},
+    session::{EncodedSession, SessionEncodeService},
 };
 
 use super::{
@@ -38,7 +38,7 @@ pub async fn user_sign_in<
     date_time_generator: &DtTmGen,
     session_encode_service: &SessionEnc,
     model: UserCredentials,
-) -> Result<Session, UserErr> {
+) -> Result<EncodedSession, UserErr> {
     let user = user_read_by_credentials(repository, &model).await?;
     let session = session_encode_service
         .encode(&user, date_time_generator)
@@ -56,7 +56,7 @@ mod tests {
             model::stub::{user_credentials_stub, user_stub},
             repository::stub::UserRepositoryStub,
         },
-        session::{Session, SessionEncodeErr, stub::SessionEncodeServiceStub},
+        session::{EncodedSession, SessionEncodeErr, stub::SessionEncodeServiceStub},
     };
 
     use super::user_sign_in;
@@ -71,7 +71,7 @@ mod tests {
                 user_credentials_stub()
             )
             .await,
-            Ok(Session { token: "TENGO SUERTE".into() })
+            Ok(EncodedSession { token: "TENGO SUERTE".into() })
         );
     }
 

@@ -23,13 +23,6 @@ enum Status {
     Active,
     Excluding,
 }
-
-struct Password {
-    pepper: String,
-    salt: String,
-    iterations: u16,
-    hash: String,
-}
 */
 
 #[derive(Debug, PartialEq)]

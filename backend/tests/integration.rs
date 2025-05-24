@@ -15,7 +15,7 @@ struct ErrorBody {
 }
 
 #[derive(Deserialize)]
-pub struct Session {
+pub struct EncodedSession {
     pub token: String,
 }
 
@@ -26,7 +26,7 @@ async fn integration_tests() {
     let session = test_sign_up_ok().await;
 }
 
-async fn test_sign_up_ok() -> Session {
+async fn test_sign_up_ok() -> EncodedSession {
     let mut headers = HeaderMap::new();
     headers.insert(ACCEPT_LANGUAGE, HeaderValue::from_static("pt-BR"));
     let client = Client::builder().default_headers(headers.clone()).build().unwrap();
@@ -39,7 +39,7 @@ async fn test_sign_up_ok() -> Session {
     });
     let res = client.post("http://127.0.0.1:8000/user").json(&req_body).send().await.unwrap();
     let status = res.status();
-    let body = res.json::<Session>().await.unwrap();
+    let body = res.json::<EncodedSession>().await.unwrap();
     assert_eq!(status, StatusCode::OK);
 
     body
