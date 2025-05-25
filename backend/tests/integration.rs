@@ -5,7 +5,10 @@ use reqwest::{
 use tokio;
 
 use health::test_healthcheck;
-use user::{delete::test_user_delete, sign_up::test_user_sign_up};
+use user::{
+    delete::test_user_delete,
+    sign_up::{test_user_sign_up, test_user_sign_up_empty_body},
+};
 
 mod health;
 mod user;
@@ -32,8 +35,8 @@ async fn integration_tests() {
 
     test_healthcheck(&sessionless_client).await;
     let token = test_user_sign_up(&sessionless_client).await;
-
     let sessionful_client = build_sessionful_client(&token);
+    test_user_sign_up_empty_body(&sessionless_client).await;
 
     test_user_delete(&sessionful_client).await;
 }
