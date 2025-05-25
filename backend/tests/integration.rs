@@ -1,6 +1,7 @@
 use axum::http::StatusCode;
 use reqwest::{
-    header::{HeaderMap, HeaderValue, ACCEPT_LANGUAGE, AUTHORIZATION, CONTENT_TYPE}, Client
+    Client,
+    header::{ACCEPT_LANGUAGE, AUTHORIZATION, CONTENT_TYPE, HeaderMap, HeaderValue},
 };
 use serde::Deserialize;
 use serde_json::json;
@@ -32,16 +33,29 @@ fn build_sessionful_client(token: &str) -> Client {
     Client::builder().default_headers(headers.clone()).build().unwrap()
 }
 
-
 #[tokio::test]
 async fn integration_tests() {
     let sessionless_client = build_sessionless_client();
 
+    test_healthcheck(&sessionless_client).await;
     let token = test_user_sign_up(&sessionless_client).await;
 
     let sessionful_client = build_sessionful_client(&token);
 
     test_user_delete(&sessionful_client).await;
+}
+
+async fn test_healthcheck(client: &Client) {
+    let res = client.get("http://localhost:8000/health").send().await.unwrap();
+    let status = res.status();
+    let body = res.json::<serde_json::Value>().await.unwrap();
+    assert_eq!(status, StatusCode::OK);
+    assert_eq!(
+        body,
+        json!({
+            "message": r#""You're still alive," she said, oh, and do I deserve to be?"#,
+        })
+    );
 }
 
 async fn test_user_sign_up(client: &Client) -> String {

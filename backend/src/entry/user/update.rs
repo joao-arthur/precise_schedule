@@ -18,7 +18,9 @@ use domain::{
 };
 
 use crate::{
-    common::{error::AppError, language::LanguageExtractor, session::SessionExtractor, state::AppState},
+    common::{
+        error::AppError, language::LanguageExtractor, session::SessionExtractor, state::AppState,
+    },
     entry::deps::{DATE_TIME_GENERATOR, SESSION_ENCODE_SERVICER_GENERATOR},
     infra::{schedule::user::db_repository::UserRepositoryDB, validation::language_to_locale},
 };

@@ -12,7 +12,10 @@ use crate::{
     common::state::AppState,
     entry::{
         health_controller::endpoint_health_check,
-        user::{delete::endpoint_user_delete, sign_up::endpoint_user_sign_up, update::endpoint_user_update},
+        user::{
+            delete::endpoint_user_delete, sign_up::endpoint_user_sign_up,
+            update::endpoint_user_update,
+        },
     },
     migration::Migrator,
 };

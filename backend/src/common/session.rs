@@ -25,7 +25,9 @@ where
             .headers
             .get("Authorization")
             .and_then(|header| header.to_str().ok())
-            .and_then(|header| decode_jwt_session(EncodedSession {token: header.replace("Bearer ", "")}).ok() )
+            .and_then(|header| {
+                decode_jwt_session(EncodedSession { token: header.replace("Bearer ", "") }).ok()
+            })
             .map(|session| SessionExtractor(session))
             .ok_or_else(|| {
                 (

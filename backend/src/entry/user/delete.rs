@@ -5,15 +5,13 @@ use axum::{
     response::{IntoResponse, Response},
 };
 
-use domain::{
-    schedule::user::{
-        delete::user_delete, error::UserErr
-    },
-};
+use domain::schedule::user::{delete::user_delete, error::UserErr};
 
 use crate::{
-    common::{error::AppError, language::LanguageExtractor, session::SessionExtractor, state::AppState},
-    infra::{schedule::user::db_repository::UserRepositoryDB},
+    common::{
+        error::AppError, language::LanguageExtractor, session::SessionExtractor, state::AppState,
+    },
+    infra::schedule::user::db_repository::UserRepositoryDB,
 };
 
 pub async fn endpoint_user_delete(
@@ -22,11 +20,7 @@ pub async fn endpoint_user_delete(
     LanguageExtractor(language): LanguageExtractor,
 ) -> Response {
     let repo = UserRepositoryDB { db: &state.conn };
-    let deleted_user = user_delete(
-        &session,
-        &repo,
-    )
-    .await;
+    let deleted_user = user_delete(&session, &repo).await;
     match deleted_user {
         Ok(_) => StatusCode::NO_CONTENT.into_response(),
         Err(e) => {

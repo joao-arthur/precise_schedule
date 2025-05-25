@@ -6,10 +6,14 @@ use axum::{
 use serde::Serialize;
 
 #[derive(Debug, PartialEq, Clone, Serialize)]
-struct Health {
-    status: String,
+struct Message {
+    message: String,
 }
 
 pub async fn endpoint_health_check() -> Response {
-    (StatusCode::OK, Json(Health { status: "OK".into() })).into_response()
+    let status = StatusCode::OK;
+    let body = Message {
+        message: r#""You're still alive," she said, oh, and do I deserve to be?"#.into(),
+    };
+    (status, Json(body)).into_response()
 }
