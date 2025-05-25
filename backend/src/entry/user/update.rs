@@ -1,13 +1,12 @@
 use araucaria_plugins::deserialize::deserialize_from_json;
 use axum::{
     Json,
-    extract::{Path, State},
+    extract::State,
     http::StatusCode,
     response::{IntoResponse, Response},
 };
 use serde::{Deserialize, Deserializer, Serialize};
 use serde_json::Value;
-use uuid::Uuid;
 
 use domain::{
     schedule::user::{
@@ -61,7 +60,6 @@ pub async fn endpoint_user_update(
     state: State<AppState>,
     SessionExtractor(session): SessionExtractor,
     LanguageExtractor(language): LanguageExtractor,
-    Path(user_id): Path<Uuid>,
     Json(value): Json<Value>,
 ) -> Response {
     let deserialized = deserialize_from_json::<UserSignUpWrapper>(
@@ -79,7 +77,6 @@ pub async fn endpoint_user_update(
         &repo,
         &*DATE_TIME_GENERATOR,
         &*SESSION_ENCODE_SERVICER_GENERATOR,
-        user_id.to_string(),
         user,
     )
     .await;

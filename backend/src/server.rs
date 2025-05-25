@@ -40,8 +40,10 @@ pub async fn start_server() {
     let state = AppState { conn };
     let app = Router::new()
         .route("/health", get(endpoint_health_check))
-        .route("/user", post(endpoint_user_sign_up).delete(endpoint_user_delete))
-        .route("/user/{user_id}", post(endpoint_user_update))
+        .route(
+            "/user",
+            post(endpoint_user_sign_up).put(endpoint_user_update).delete(endpoint_user_delete),
+        )
         .layer(DefaultBodyLimit::disable())
         .layer(RequestBodyLimitLayer::new(1024 * 1024))
         .layer(TraceLayer::new_for_http())

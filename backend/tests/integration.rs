@@ -8,6 +8,7 @@ use health::test_healthcheck;
 use user::{
     delete::test_user_delete,
     sign_up::{test_user_sign_up, test_user_sign_up_empty_body},
+    update::{test_user_update, test_user_update_empty_body},
 };
 
 mod health;
@@ -34,9 +35,14 @@ async fn integration_tests() {
     let sessionless_client = build_sessionless_client();
 
     test_healthcheck(&sessionless_client).await;
+
     let token = test_user_sign_up(&sessionless_client).await;
     let sessionful_client = build_sessionful_client(&token);
+    let token = test_user_update(&sessionful_client).await;
+    let sessionful_client = build_sessionful_client(&token);
+
     test_user_sign_up_empty_body(&sessionless_client).await;
+    test_user_update_empty_body(&sessionful_client).await;
 
     test_user_delete(&sessionful_client).await;
 }

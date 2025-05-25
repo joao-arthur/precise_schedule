@@ -8,7 +8,7 @@ use crate::{
 };
 
 use super::{
-    error::{UserErr, UserIdNotFoundErr},
+    error::UserErr,
     model::User,
     read::user_read_by_id,
     repository::UserRepository,
@@ -65,13 +65,9 @@ pub async fn user_update<
     repository: &Repo,
     date_time_generator: &DtTmGen,
     session_service: &SessionEnc,
-    id: String,
     model: UserUpdateInput,
 ) -> Result<EncodedSession, UserErr> {
-    if session.id != id {
-        return Err(UserErr::UserIdNotFound(UserIdNotFoundErr));
-    }
-    let old_user = user_read_by_id(repository, &id).await?;
+    let old_user = user_read_by_id(repository, &session.id).await?;
     user_unique_info_is_valid_update(
         repository,
         &UserUniqueInfo::from(&model),
@@ -165,31 +161,10 @@ mod tests {
                 &UserRepositoryStub::of_user(user_stub()),
                 &DateTimeGeneratorStub::of_iso("2025-09-27T18:02Z".into()),
                 &SessionEncodeServiceStub::of_token("TENGO SUERTE".into()),
-                "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
                 user_update_input_stub()
             )
             .await,
             Ok(EncodedSession { token: "TENGO SUERTE".into() })
-        );
-    }
-
-    #[tokio::test]
-    async fn user_update_user_tries_to_update_another_user() {
-        let session = Session {
-            id: "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
-            username: "username".into(),
-        };
-        assert_eq!(
-            user_update(
-                &session,
-                &UserRepositoryStub::of_user(user_stub()),
-                &DateTimeGeneratorStub::of_iso("2025-09-27T18:02Z".into()),
-                &SessionEncodeServiceStub::of_token("TENGO SUERTE".into()),
-                "f5964e5d-dd30-42c1-88d4-ad3d66662bc2".into(),
-                user_update_input_stub()
-            )
-            .await,
-            Err(UserErr::UserIdNotFound(UserIdNotFoundErr))
         );
     }
 
@@ -205,7 +180,6 @@ mod tests {
                 &UserRepositoryStub::of_db_err(),
                 &DateTimeGeneratorStub::of_iso("2025-09-27T18:02Z".into()),
                 &SessionEncodeServiceStub::of_token("TENGO SUERTE".into()),
-                "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
                 user_update_input_stub()
             )
             .await,
@@ -225,7 +199,6 @@ mod tests {
                 &UserRepositoryStub::of_empty(),
                 &DateTimeGeneratorStub::of_iso("2025-09-27T18:02Z".into()),
                 &SessionEncodeServiceStub::of_token("TENGO SUERTE".into()),
-                "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
                 user_update_input_stub()
             )
             .await,
@@ -250,7 +223,6 @@ mod tests {
                 },
                 &DateTimeGeneratorStub::of_iso("2025-09-27T18:02Z".into()),
                 &SessionEncodeServiceStub::of_token("TENGO SUERTE".into()),
-                "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
                 user_update_input_stub()
             )
             .await,
@@ -270,7 +242,6 @@ mod tests {
                 &UserRepositoryStub::of_user(user_stub()),
                 &DateTimeGeneratorStub::of_iso("2025-09-27T18:02Z".into()),
                 &SessionEncodeServiceStub::of_err(),
-                "a6edc906-2f9f-5fb2-a373-efac406f0ef2".into(),
                 user_update_input_stub()
             )
             .await,
