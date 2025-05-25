@@ -6,9 +6,9 @@ use tokio;
 
 use health::test_healthcheck;
 use user::{
-    delete::test_user_delete,
+    delete::{test_user_delete, test_user_delete_sessionless},
     sign_up::{test_user_sign_up, test_user_sign_up_empty_body},
-    update::{test_user_update, test_user_update_empty_body},
+    update::{test_user_update, test_user_update_empty_body, test_user_update_sessionless},
 };
 
 mod health;
@@ -38,11 +38,13 @@ async fn integration_tests() {
 
     let token = test_user_sign_up(&sessionless_client).await;
     let sessionful_client = build_sessionful_client(&token);
+    test_user_sign_up_empty_body(&sessionless_client).await;
+
     let token = test_user_update(&sessionful_client).await;
     let sessionful_client = build_sessionful_client(&token);
-
-    test_user_sign_up_empty_body(&sessionless_client).await;
     test_user_update_empty_body(&sessionful_client).await;
+    test_user_update_sessionless(&sessionless_client).await;
 
     test_user_delete(&sessionful_client).await;
+    test_user_delete_sessionless(&sessionless_client).await;
 }
