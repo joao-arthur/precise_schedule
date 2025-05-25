@@ -12,7 +12,7 @@ use crate::{
     common::state::AppState,
     entry::{
         health_controller::endpoint_health_check,
-        user::{sign_up::endpoint_user_sign_up, update::endpoint_user_update},
+        user::{delete::endpoint_user_delete, sign_up::endpoint_user_sign_up, update::endpoint_user_update},
     },
     migration::Migrator,
 };
@@ -37,7 +37,7 @@ pub async fn start_server() {
     let state = AppState { conn };
     let app = Router::new()
         .route("/health", get(endpoint_health_check))
-        .route("/user", post(endpoint_user_sign_up))
+        .route("/user", post(endpoint_user_sign_up).delete(endpoint_user_delete))
         .route("/user/{user_id}", post(endpoint_user_update))
         .layer(DefaultBodyLimit::disable())
         .layer(RequestBodyLimitLayer::new(1024 * 1024))

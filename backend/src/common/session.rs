@@ -5,7 +5,7 @@ use axum::{
     response::{IntoResponse, Response},
 };
 
-use domain::session::Session;
+use domain::session::{EncodedSession, Session};
 
 use crate::infra::session::decode_jwt_session;
 
@@ -25,10 +25,8 @@ where
             .headers
             .get("Authorization")
             .and_then(|header| header.to_str().ok())
-            .map(|header| header.replace("Bearer ", ""))
-            .map(|token| domain::session::EncodedSession { token })
-            .and_then(|session| decode_jwt_session(session).ok())
-            .map(|id| SessionExtractor(Session { id, username: "".into() }))
+            .and_then(|header| decode_jwt_session(EncodedSession {token: header.replace("Bearer ", "")}).ok() )
+            .map(|session| SessionExtractor(session))
             .ok_or_else(|| {
                 (
                     StatusCode::UNAUTHORIZED,

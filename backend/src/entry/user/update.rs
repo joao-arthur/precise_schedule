@@ -18,7 +18,7 @@ use domain::{
 };
 
 use crate::{
-    common::{error::AppError, language::LanguageExtractor, state::AppState},
+    common::{error::AppError, language::LanguageExtractor, session::SessionExtractor, state::AppState},
     entry::deps::{DATE_TIME_GENERATOR, SESSION_ENCODE_SERVICER_GENERATOR},
     infra::{schedule::user::db_repository::UserRepositoryDB, validation::language_to_locale},
 };
@@ -57,6 +57,7 @@ impl From<EncodedSession> for SessionProxy {
 
 pub async fn endpoint_user_update(
     state: State<AppState>,
+    SessionExtractor(session): SessionExtractor,
     LanguageExtractor(language): LanguageExtractor,
     Path(user_id): Path<Uuid>,
     Json(value): Json<Value>,
@@ -72,6 +73,7 @@ pub async fn endpoint_user_update(
     let user = (deserialized.unwrap()).0;
     let repo = UserRepositoryDB { db: &state.conn };
     let result_create = user_update(
+        &session,
         &repo,
         &*DATE_TIME_GENERATOR,
         &*SESSION_ENCODE_SERVICER_GENERATOR,
