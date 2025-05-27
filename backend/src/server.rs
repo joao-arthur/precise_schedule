@@ -44,6 +44,7 @@ pub async fn start_server() {
             "/user",
             post(endpoint_user_sign_up).put(endpoint_user_update).delete(endpoint_user_delete),
         )
+        // .route("/login")
         .layer(DefaultBodyLimit::disable())
         .layer(RequestBodyLimitLayer::new(1024 * 1024))
         .layer(TraceLayer::new_for_http())
