@@ -1,5 +1,5 @@
 use crate::date::{
-    gregorian::{intv_between, Dt},
+    gregorian::{Dt, intv_between},
     interval::{self},
 };
 
