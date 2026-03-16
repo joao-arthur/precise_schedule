@@ -2,7 +2,6 @@ use crate::schedule::user::{
     error::{UserErr, UserUniqueInfoFieldErr},
     repository::UserRepository,
 };
-
 use super::UserUniqueInfo;
 
 pub async fn user_unique_info_is_valid_sign_up<Repo: UserRepository>(

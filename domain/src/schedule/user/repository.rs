@@ -1,5 +1,4 @@
 use crate::database::DBErr;
-
 use super::{
     model::{User, UserCredentials},
     unique_info::{UserUniqueInfo, UserUniqueInfoCount},

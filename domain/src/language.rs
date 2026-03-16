@@ -22,7 +22,7 @@ impl Language {
     pub fn to_iso_639_1(&self) -> &'static str {
         match self {
             Language::English => "en",
-            &Language::Portuguese => "pt",
+            Language::Portuguese => "pt",
             Language::Spanish => "es",
         }
     }

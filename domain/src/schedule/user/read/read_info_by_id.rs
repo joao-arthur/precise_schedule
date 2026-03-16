@@ -1,5 +1,4 @@
 use crate::schedule::user::{error::UserErr, model::UserInfo, repository::UserRepository};
-
 use super::read_by_id::user_read_by_id;
 
 pub async fn user_read_info_by_id<Repo: UserRepository>(
